@@ -21,6 +21,20 @@ class awardAuthService {
 
     return createdNewAward;
   }
+
+  static async getAwardInfo({ award_id }) {
+    const award = await Award.findById({ award_id });
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!award) {
+      const errorMessage =
+        "삭제되었거나 등록되지 않은 수상내역입니다.";
+      return { errorMessage };
+    }
+
+    return award;
+  }
+
 }
 
 export { awardAuthService };

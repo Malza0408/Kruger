@@ -32,3 +32,22 @@ awardAuthRouter.post("/award/create", async (req, res, next) => {
         next(error)
     }
 })
+
+awardAuthRouter.get(
+    "/awards/:id",
+    login_required,
+    async (req, res, next) => {
+      try {
+        const award_id = req.params.id;
+        const currentAwardInfo = await awardAuthService.getAwardInfo({ award_id });
+  
+        if (currentUserInfo.errorMessage) {
+          throw new Error(currentUserInfo.errorMessage);
+        }
+  
+        res.status(200).send(currentAwardInfo);
+      } catch (error) {
+        next(error);
+      }
+    }
+)
