@@ -12,6 +12,20 @@ class Award {
     return award;
   }
 
+  static async update({ award_id, fieldToUpdate, newValue }) {
+    const filter = { id: award_id };
+    const update = { [fieldToUpdate]: newValue };
+    const option = { returnOriginal: false };
+
+    const updatedAward = await AwardModel.findOneAndUpdate(
+      filter,
+      update,
+      option
+    );
+    return updatedAward;
+  }
+
+
 }
 
 export { Award };
