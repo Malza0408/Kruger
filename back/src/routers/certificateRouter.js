@@ -58,5 +58,34 @@ certificateAuthRouter.get(
     }
 )
 
+awardAuthRouter.put(
+    "/certificates/:id",
+    login_required,
+    async function (req, res, next) {
+      try {
+        // URI로부터 사용자 id를 추출함.
+        const certificate_id = req.params.id;
+        // body data 로부터 업데이트할 사용자 정보를 추출함.
+        const title = req.body.title ?? null;
+        const description = req.body.description ?? null;
+        const date = req.body.date ?? null;
+  
+        const toUpdate = { title, description, date };
+  
+        // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
+        const updatedCertificate = await certificateAuthService.setCertificate({ certificate_id, toUpdate });
+  
+        if (updatedCertificate.errorMessage) {
+          throw new Error(updatedCertificate.errorMessage);
+        }
+  
+        res.status(200).json(updatedCertificate);
+      } catch (error) {
+        next(error);
+      }
+    }
+);
+
+
   
   export { certificateAuthRouter };
