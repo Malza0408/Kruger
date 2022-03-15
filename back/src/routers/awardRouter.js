@@ -19,6 +19,7 @@ awardAuthRouter.post(
         const user_id = req.currentUserId
         const title = req.body.title
         const description = req.body.description
+        console.log(user_id, title, description)
 
         const newAward = await awardAuthService.addAward({
             user_id,
@@ -81,4 +82,20 @@ awardAuthRouter.put(
       }
     }
 );
+
+awardAuthRouter.get(
+    "/awardlist/:user_id",
+    login_required,
+    async function (req, res, next) {
+      try {
+        // 전체 사용자 목록을 얻음
+        const user_id = req.params.user_id;
+        const awards = await awardAuthService.getAwards({ user_id });
+        res.status(200).send(awards);
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
   
+  export { awardAuthRouter };

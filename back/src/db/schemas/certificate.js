@@ -6,9 +6,8 @@ const CertificateSchema = new Schema(
       type: String,
       required: true,
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+    user_id: {
+      type: String,
       required: true,
     },
     title : {

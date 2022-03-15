@@ -25,6 +25,10 @@ class Award {
     return updatedAward;
   }
 
+  static async findAllById({ user_id }) {
+    const awards = await AwardModel.find({ user_id });
+    return awards;
+  }
 
 }
 
