@@ -13,10 +13,12 @@ awardAuthRouter.post("/award/create", async (req, res, next) => {
             );
         }
 
+        const user_id = req.currentUserId
         const title = req.body.title
         const description = req.body.description
 
         const newAward = await awardAuthService.addAward({
+            user_id,
             title,
             description,
         })
