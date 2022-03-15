@@ -24,7 +24,7 @@ const EducationForm = ({
             />
             {!schoolInput && (
               <Form.Text className="text-danget">
-                대학교를 작성 해 주세요.
+                학교를 작성 해 주세요.
               </Form.Text>
             )}
           </Form.Group>
