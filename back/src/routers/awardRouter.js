@@ -5,14 +5,17 @@ import { awardAuthService } from "../services/awardService";
 
 const awardAuthRouter = Router();
 
-awardAuthRouter.post("/award/create", async (req, res, next) => {
+awardAuthRouter.post(
+    "/award/create",
+    login_required,
+    async (req, res, next) => {
     try {
         if (is.emptyObject(req.body)) {
             throw new Error(
               "headers의 Content-Type을 application/json으로 설정해주세요"
             );
         }
-
+        // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
         const user_id = req.currentUserId
         const title = req.body.title
         const description = req.body.description
@@ -41,8 +44,8 @@ awardAuthRouter.get(
         const award_id = req.params.id;
         const currentAwardInfo = await awardAuthService.getAwardInfo({ award_id });
   
-        if (currentUserInfo.errorMessage) {
-          throw new Error(currentUserInfo.errorMessage);
+        if (currentAwardInfo.errorMessage) {
+          throw new Error(currentAwardInfo.errorMessage);
         }
   
         res.status(200).send(currentAwardInfo);

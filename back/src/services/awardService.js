@@ -13,7 +13,7 @@ class awardAuthService {
 
     // id 는 유니크 값 부여
     const id = uuidv4();
-    const newAward = { id, user_id, title, description };
+    const newAward = { id, title, description };
 
     // db에 저장
     const createdNewAward = await Award.create({ newAward });
