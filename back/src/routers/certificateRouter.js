@@ -39,5 +39,24 @@ certificateAuthRouter.post(
     }
 })
 
+certificateAuthRouter.get(
+    "/certificates/:id",
+    login_required,
+    async (req, res, next) => {
+      try {
+        const certificate_id = req.params.id;
+        const currentCertificateInfo = await certificateAuthService.getCertificateInfo({ certificate_id });
+  
+        if (currentCertificateInfo.errorMessage) {
+          throw new Error(currentCertificateInfo.errorMessage);
+        }
+  
+        res.status(200).send(currentCertificateInfo);
+      } catch (error) {
+        next(error);
+      }
+    }
+)
+
   
   export { certificateAuthRouter };

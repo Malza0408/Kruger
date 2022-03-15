@@ -17,6 +17,19 @@ class certificateAuthService {
     return createdNewCertificate;
   }
 
+  static async getCertificateInfo({ certificate_id }) {
+    const certificate = await Certificate.findById({ certificate_id });
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!certificate) {
+      const errorMessage =
+        "삭제되었거나 등록되지 않은 자격증입니다.";
+      return { errorMessage };
+    }
+
+    return certificate;
+  }
+
 
 }
 
