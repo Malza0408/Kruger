@@ -3,21 +3,37 @@ import { Card, Row, Col, Button } from 'react-bootstrap';
 import Award from './Award';
 import AwardAddForm from './AwardAddForm';
 
-const Awards = () => {
-  // useState 훅을 통해 isEditing 상태를 생성함.
-  const [isEditing, setIsEditing] = useState(false);
+const Awards = ({ portfolioOwnerId }) => {
+  const [awards, setAwards] = useState([
+    {
+      user_id: 1,
+      title: '개근상 수상',
+      description: '하루도 빠짐없이 출석하였습니다.',
+    },
+    {
+      user_id: 2,
+      title: '개근상 수상2',
+      description: '하루도 빠짐없이 출석하였습니다2.',
+    },
+  ]);
   // useState 훅을 통해 isAdding 상태를 생성함.
   const [isAdding, setIsAdding] = useState(false);
+
   return (
-    <Card className='mb-2'>
+    <Card>
       <Card.Body>
         <Card.Title>수상이력</Card.Title>
-        <Award
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          isAdding={isAdding}
-          setIsAdding={setIsAdding}
-        />
+        {awards.map((award) => {
+          return (
+            <Award
+              key={award.id}
+              award={award}
+              awards={awards}
+              setAwards={setAwards}
+            />
+          );
+        })}
+
         <Row className='text-center mt-3 mb-4'>
           <Col>
             <Button
@@ -30,7 +46,13 @@ const Awards = () => {
             </Button>
           </Col>
         </Row>
-        {isAdding ? <AwardAddForm setIsAdding={setIsAdding} /> : null}
+        {isAdding ? (
+          <AwardAddForm
+            setIsAdding={setIsAdding}
+            setAwards={setAwards}
+            awards={awards}
+          />
+        ) : null}
       </Card.Body>
     </Card>
   );

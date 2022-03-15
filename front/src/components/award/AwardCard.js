@@ -1,30 +1,28 @@
 import React from 'react';
 import { Card, Col, Row, Button } from 'react-bootstrap';
-const AwardCard = ({ setIsEditing, isAdding, setIsAdding }) => {
+const AwardCard = ({ setIsEditing, award }) => {
   return (
-    <>
-      <Card.Text>
-        <Row className='align-items-center'>
-          <Col>
-            <span>1</span>
-            <br />
-            <span className='text-muted'>2</span>
-          </Col>
-          <Col className='col-lg-1'>
-            <Button
-              variant='outline-info'
-              size='sm'
-              className='mr-3'
-              onClick={() => {
-                setIsEditing(true);
-              }}
-            >
-              편집
-            </Button>
-          </Col>
-        </Row>
-      </Card.Text>
-    </>
+    <Card.Text>
+      <Row className='align-items-center'>
+        <Col>
+          <span>{award.title}</span>
+          <br />
+          <span className='text-muted'>{award.description}</span>
+        </Col>
+        <Col xs lg='1'>
+          <Button
+            variant='outline-info'
+            size='sm'
+            className='mr-3'
+            onClick={() => {
+              setIsEditing((prev) => !prev);
+            }}
+          >
+            편집
+          </Button>
+        </Col>
+      </Row>
+    </Card.Text>
   );
 };
 

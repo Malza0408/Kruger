@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-const AwardAddForm = ({ setIsAdding }) => {
+const AwardAddForm = ({ setIsAdding, awards, setAwards }) => {
   // const handleClick = async (e) => {
   //   e.preventDefault();
   //   try {
@@ -13,23 +13,51 @@ const AwardAddForm = ({ setIsAdding }) => {
   //     console.log('내역 추가에 실패하였습니다.', err);
   //   }
   // };
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   await axios.post('url', {
+  //     title,
+  //     description,
+  //   });
+  //   await axios.get('url')
+  //   .then((res) => setAwards(res.data));
+  //   setIsAdding(false)
+  // };
+  // };
+
+  //더미 데이터로 테스트
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setAwards([...awards, { title, description }]);
+    setIsAdding(false);
+  };
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group controlId='awardAddTitle'>
-        <Form.Control type='text' placeholder='수상내역' />
+        <Form.Control
+          type='text'
+          placeholder='수상내역'
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+        />
       </Form.Group>
       <Form.Group className='mt-3' controlId='awardAddDescription'>
-        <Form.Control type='text' placeholder='상세내역' />
+        <Form.Control
+          type='text'
+          placeholder='상세내역'
+          onChange={(e) => {
+            setDescription(e.target.value);
+          }}
+        />
       </Form.Group>
 
-      <Row className='text-center mt-3'>
-        <Col>
-          <Button
-            className='me-3'
-            variant='primary'
-            type='submit'
-            // onClick={handleClick}
-          >
+      <Form.Group as={Row} className='text-center mt-3'>
+        <Col sm={{ span: 20 }}>
+          <Button className='me-3' variant='primary' type='submit'>
             확인
           </Button>
           <Button
@@ -42,7 +70,7 @@ const AwardAddForm = ({ setIsAdding }) => {
             취소
           </Button>
         </Col>
-      </Row>
+      </Form.Group>
     </Form>
   );
 };
