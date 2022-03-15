@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Card, Button, Col, Row } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
+import EducationBody from "./EducationBody";
 import EducationForm from "./EducationForm";
 
 const Education = (props) => {
@@ -7,6 +8,7 @@ const Education = (props) => {
   const [schoolInput, setSchoolInput] = useState("");
   const [majorInput, setMajorInput] = useState("");
   const [radioValue, setRadioValue] = useState("");
+  const [educationBody, setEducationBody] = useState([]);
 
   const handleSchoolOnChange = (e) => {
     setSchoolInput(e.target.value);
@@ -28,6 +30,15 @@ const Education = (props) => {
       setMajorInput("");
     }
   };
+  const addEducation = () => {
+    setEducationBody([
+      ...educationBody,
+      <EducationBody
+        key={educationBody.length}
+        handleEditing={handleEditing}
+      />,
+    ]);
+  };
   return (
     <>
       {isEditing ? (
@@ -43,29 +54,13 @@ const Education = (props) => {
       ) : (
         <Card>
           <Card.Body>
-            <Card.Title>학력</Card.Title>
-            <Card.Text className="mb-0">
-              <Row className="align-items-center">
-                <Col>
-                  <span>OO대학교</span>
-                  <br />
-                  <span className="text-muted">OO전공</span>
-                </Col>
-                <Col className="col-lg-1">
-                  <Button
-                    className=""
-                    variant="outline-info"
-                    size="sm"
-                    onClick={handleEditing}
-                  >
-                    편집
-                  </Button>
-                </Col>
-              </Row>
-            </Card.Text>
+            <EducationBody handleEditing={handleEditing} />
+            {educationBody?.map((body, index) => {
+              return body;
+            })}
             <div className="mt-3 text-center mb-1">
               <div className="col-sm-12">
-                <Button variant="primary" onClick={props.addEducation}>
+                <Button variant="primary" onClick={addEducation}>
                   +
                 </Button>
               </div>
