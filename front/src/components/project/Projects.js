@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
-import Award from './Award';
-import AwardAddForm from './AwardAddForm';
+import Project from './Project';
+import ProjectAddForm from './ProjectAddForm';
 
-const Awards = () => {
+const Projects = () => {
   // useState 훅을 통해 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
   // useState 훅을 통해 isAdding 상태를 생성함.
   const [isAdding, setIsAdding] = useState(false);
   return (
-    <Card className='mb-2'>
+    <Card>
       <Card.Body>
-        <Card.Title>수상이력</Card.Title>
-        <Award
+        <Card.Title>프로젝트</Card.Title>
+        <Project
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           isAdding={isAdding}
@@ -30,10 +30,10 @@ const Awards = () => {
             </Button>
           </Col>
         </Row>
-        {isAdding ? <AwardAddForm setIsAdding={setIsAdding} /> : null}
+        {isAdding ? <ProjectAddForm setIsAdding={setIsAdding} /> : null}
       </Card.Body>
     </Card>
   );
 };
 
-export default Awards;
+export default Projects;

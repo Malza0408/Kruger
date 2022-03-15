@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import DatePicker from 'react-datepicker';
 
-const AwardAddForm = ({ setIsAdding }) => {
+const ProjectAddForm = ({ setIsAdding }) => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   // const handleClick = async (e) => {
   //   e.preventDefault();
   //   try {
@@ -15,12 +18,26 @@ const AwardAddForm = ({ setIsAdding }) => {
   // };
   return (
     <Form>
-      <Form.Group controlId='awardAddTitle'>
-        <Form.Control type='text' placeholder='수상내역' />
+      <Form.Group controlId='projectAddTitle'>
+        <Form.Control type='text' placeholder='프로젝트 제목' />
       </Form.Group>
-      <Form.Group className='mt-3' controlId='awardAddDescription'>
+      <Form.Group className='mt-3' controlId='projectAddDescription'>
         <Form.Control type='text' placeholder='상세내역' />
       </Form.Group>
+      <Row className='mt-3'>
+        <Col className='col-auto'>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+          />
+        </Col>
+        <Col className='col-auto'>
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+          />
+        </Col>
+      </Row>
 
       <Row className='text-center mt-3'>
         <Col>
@@ -47,4 +64,4 @@ const AwardAddForm = ({ setIsAdding }) => {
   );
 };
 
-export default AwardAddForm;
+export default ProjectAddForm;
