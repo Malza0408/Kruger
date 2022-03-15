@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Button, Col, Row } from "react-bootstrap";
 
-const Certificate = (props) => {
+const Education = (props) => {
   return (
     <Card>
       <Card.Body>
@@ -30,4 +30,4 @@ const Certificate = (props) => {
   );
 };
 
-export default Certificate;
+export default Education;
