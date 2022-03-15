@@ -25,6 +25,11 @@ class Certificate {
     return updatedCertificate;
   }
 
+  static async findAllById({ user_id }) {
+    const certificates = await CertificateModel.find({ user_id });
+    return certificates;
+  }
+
 
 }
 

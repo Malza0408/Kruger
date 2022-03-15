@@ -58,7 +58,7 @@ certificateAuthRouter.get(
     }
 )
 
-awardAuthRouter.put(
+certificateAuthRouter.put(
     "/certificates/:id",
     login_required,
     async function (req, res, next) {
@@ -85,6 +85,22 @@ awardAuthRouter.put(
       }
     }
 );
+
+certificateAuthRouter.get(
+    "/certificatelist/:user_id",
+    login_required,
+    async function (req, res, next) {
+      try {
+        // 전체 사용자 목록을 얻음
+        const user_id = req.params.user_id;
+        const certificates = await certificateAuthService.getCertificates({ user_id });
+        res.status(200).send(certificates);
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
+
 
 
   
