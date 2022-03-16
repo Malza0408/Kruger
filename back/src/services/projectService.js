@@ -2,10 +2,23 @@ import { Project } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트
 import { v4 as uuidv4 } from 'uuid';
 
 class projectAuthService {
-    static async addProject({ user_id, title, description }) {
+    static async addProject({
+        user_id,
+        title,
+        description,
+        from_date,
+        to_date
+    }) {
         // id 는 유니크 값 부여
         const id = uuidv4();
-        const newProject = { id, user_id, title, description };
+        const newProject = {
+            id,
+            user_id,
+            title,
+            description,
+            from_date,
+            to_date
+        };
 
         console.log(newProject);
 
