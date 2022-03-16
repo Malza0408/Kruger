@@ -7,11 +7,13 @@ class Award {
         return createdNewAward;
     }
 
+    // id를 통해 해당 수상 요소를 가져옴
     static async findById({ award_id }) {
         const award = await AwardModel.findOne({ id: award_id });
         return award;
     }
 
+    // id를 통해 해당 수상 요소를 수정함
     static async update({ award_id, fieldToUpdate, newValue }) {
         const filter = { id: award_id };
         const update = { [fieldToUpdate]: newValue };
@@ -25,9 +27,16 @@ class Award {
         return updatedAward;
     }
 
+    // 같은 user_id를 가진 모든 수상 요소들을 불러옴
     static async findAllById({ user_id }) {
         const awards = await AwardModel.find({ user_id });
         return awards;
+    }
+
+    // id를 통해 해당 수상 요소를 삭제함
+    static async deleteById({ award_id }) {
+        await AwardModel.deleteOne({ id: award_id });
+        return;
     }
 }
 
