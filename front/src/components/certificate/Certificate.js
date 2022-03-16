@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import CertificateEditForm from './CertificateEditForm';
 import CertificateCard from './CertificateCard';
 
+
 const Certificate = ({ certificate, setCertificate, portfolioOwnerId, isEditable }) => {
     // DB get 전 로컬 테스트 데이터. 추후 삭제
     // const [certificate, setCertificate] = useState({
