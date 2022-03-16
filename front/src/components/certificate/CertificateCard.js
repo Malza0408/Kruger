@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, Button, Col, Row } from 'react-bootstrap';
 
-import CertificateAddForm from './CertificateAddForm';
-
-const CertificateCard = ({ certificate, setIsEditing }) => {
-    const [isAdding, setIsAdding] = useState(false);
-
+const CertificateCard = ({ certificate, setIsEditing, isEditable }) => {
     return (
         <>
             <Card>
@@ -18,35 +14,22 @@ const CertificateCard = ({ certificate, setIsEditing }) => {
                             </Card.Subtitle>
                             <Card.Text>{certificate?.date}</Card.Text>
                         </Col>
-
-                        <Col>
-                            <Row className="mt-3 text-info">
-                                <Col sm={{ span: 20 }}>
-                                    <Button
-                                        variant="outline-info"
-                                        size="sm"
-                                        onClick={() => setIsEditing(true)}
-                                    >
-                                        편집
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </Col>
+                        {isEditable && (
+                            <Col>
+                                <Row className="mt-3 text-info">
+                                    <Col sm={{ span: 20 }}>
+                                        <Button
+                                            variant="outline-info"
+                                            size="sm"
+                                            onClick={() => setIsEditing(true)}
+                                        >
+                                            편집
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        )}
                     </Row>
-
-                    <Col>
-                        <Button
-                            variant="primary"
-                            onClick={() => setIsAdding(true)}
-                        >
-                            +
-                        </Button>{' '}
-                    </Col>
-                    {isAdding && (
-                        <CertificateAddForm
-                            setIsAdding={setIsAdding}
-                        />
-                    )}
                 </Card.Body>
             </Card>
         </>
