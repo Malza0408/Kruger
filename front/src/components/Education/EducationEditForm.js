@@ -41,7 +41,7 @@ const EducationEditForm = ({ education, setIsEditing, setEducations }) => {
             major={majorInput}
             handleCheckOnClick={handleCheckOnClick}
             handleSubmit={handleSubmit}
-            handleFunction={handleSubmit}
+            handleFunction={setIsEditing}
         />
     );
 };

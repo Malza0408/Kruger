@@ -16,7 +16,7 @@ const Education = ({ education, setEducations }) => {
             {isEditing ? (
                 <EducationEditForm
                     education={education}
-                    handleEditing={setIsEditing}
+                    setIsEditing={setIsEditing}
                     setEducations={setEducations}
                 />
             ) : (
