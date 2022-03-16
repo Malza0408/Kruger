@@ -42,7 +42,7 @@ class projectAuthService {
     }
 
     static async setProject({ project_id, toUpdate }) {
-        // 우선 해당 id 의 수상내역이 db에 존재하는지 여부 확인
+        // 우선 해당 id 의 프로젝트내역이 db에 존재하는지 여부 확인
         let project = await Project.findById({ project_id });
 
         // db에서 찾지 못한 경우, 에러 메시지 반환

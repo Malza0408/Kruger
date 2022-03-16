@@ -68,9 +68,9 @@ projectAuthRouter.put(
     login_required,
     async function (req, res, next) {
         try {
-            // URI로부터 사용자 id를 추출함.
+            // URI로부터 프로젝트 id를 추출함.
             const project_id = req.params.id;
-            // body data 로부터 업데이트할 사용자 정보를 추출함.
+            // body data 로부터 업데이트할 프로젝트 정보를 추출함.
             const title = req.body.title ?? null;
             const description = req.body.description ?? null;
             const from_date = req.body.from_date ?? null;
@@ -78,7 +78,7 @@ projectAuthRouter.put(
 
             const toUpdate = { title, description, from_date, to_date };
 
-            // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
+            // 해당 프로젝트 아이디로 프로젝트 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedProject = await projectAuthService.setProject({
                 project_id,
                 toUpdate
@@ -100,7 +100,7 @@ projectAuthRouter.get(
     login_required,
     async function (req, res, next) {
         try {
-            // 전체 사용자 목록을 얻음
+            // 전체 프로젝트 목록을 얻음
             const user_id = req.params.user_id;
             const projects = await projectAuthService.getProjects({ user_id });
             res.status(200).send(projects);
@@ -115,7 +115,7 @@ projectAuthRouter.delete(
     login_required,
     async function (req, res, next) {
         try {
-            // URI로부터 사용자 id를 추출함.
+            // URI로부터 프로젝트 id를 추출함.
             const project_id = req.params.id;
             await projectAuthService.deleteProject({ project_id });
             console.log(project_id);

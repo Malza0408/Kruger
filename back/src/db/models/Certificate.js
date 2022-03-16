@@ -9,6 +9,7 @@ class Certificate {
         return createdNewCertificate;
     }
 
+    // id를 통해 해당 자격증 요소를 가져옴
     static async findById({ certificate_id }) {
         const certificate = await CertificateModel.findOne({
             id: certificate_id
@@ -16,6 +17,7 @@ class Certificate {
         return certificate;
     }
 
+    // id를 통해 해당 자격증 요소를 수정함
     static async update({ certificate_id, fieldToUpdate, newValue }) {
         const filter = { id: certificate_id };
         const update = { [fieldToUpdate]: newValue };
@@ -29,11 +31,13 @@ class Certificate {
         return updatedCertificate;
     }
 
+    // 같은 user_id를 가진 모든 자격증 요소들을 불러옴
     static async findAllById({ user_id }) {
         const certificates = await CertificateModel.find({ user_id });
         return certificates;
     }
 
+    // id를 통해 해당 자격증 요소를 삭제함
     static async deleteById({ certificate_id }) {
         await CertificateModel.deleteOne({ id: certificate_id });
         return;
