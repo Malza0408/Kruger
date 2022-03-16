@@ -1,21 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Form, Row, Col, Button } from 'react-bootstrap';
+import * as Api from '../../api';
 
-const EducationForm = ({
-    handleSchoolOnChange,
-    handleMajorOnChange,
-    schoolInput,
-    majorInput,
-    handleCheckOnClick,
-    handleSubmit,
-    handleEditing,
-    portfolioOwnerId,
-}) => {
+const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
+    const [school, setSchool] = useState('');
+    const [major, setMajor] = useState('');
+    const [position, setPosition] = useState('');
+
+    const handleSchoolOnChange = (e) => {
+        setSchool(e.target.value);
+    };
+
+    const handleMajorOnChange = (e) => {
+        setMajor(e.target.value);
+    };
+
+    const handleCheckOnClick = (e) => {
+        setPosition(e.target.value);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await Api.post('education/create', {
+            user_id: portfolioOwnerId,
+            school,
+            major,
+            position,
+        });
+        const educations = await Api.get(`educationlist/${portfolioOwnerId}`);
+        setEducations([...educations.data]);
+        setAddState(false);
+    };
+
+    const handleOnClick = () => {
+        setAddState(false);
+    };
+
     return (
         <Card>
             <Card.Body>
                 <Card.Title>학력</Card.Title>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <Form.Group
                         className='mb-3'
                         controlId='school.ControlInput'
@@ -26,7 +51,7 @@ const EducationForm = ({
                             placeholder='OO대학교'
                             onChange={handleSchoolOnChange}
                         />
-                        {!schoolInput && (
+                        {!school && (
                             <Form.Text className='text-danget'>
                                 학교를 작성 해 주세요.
                             </Form.Text>
@@ -39,7 +64,7 @@ const EducationForm = ({
                             placeholder='OO전공'
                             onChange={handleMajorOnChange}
                         />
-                        {!majorInput && (
+                        {!major && (
                             <Form.Text className='text-danget'>
                                 전공을 작성 해 주세요.
                             </Form.Text>
@@ -84,17 +109,16 @@ const EducationForm = ({
                             />
                         </div>
                     </Form.Group>
-                    <Row className='justify-content-center'>
-                        <Col lg='3'>
+                    <Row className='text-center'>
+                        <Col>
                             <Button
                                 variant='primary'
                                 type='submit'
                                 className='me-3'
-                                onClick={handleSubmit}
                             >
                                 확인
                             </Button>
-                            <Button variant='secondary' onClick={handleEditing}>
+                            <Button variant='secondary' onClick={handleOnClick}>
                                 취소
                             </Button>
                         </Col>
@@ -105,4 +129,4 @@ const EducationForm = ({
     );
 };
 
-export default EducationForm;
+export default EducationAddForm;
