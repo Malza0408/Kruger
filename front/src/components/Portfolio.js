@@ -1,10 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Container, Col, Row } from "react-bootstrap";
+import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Container, Col, Row } from 'react-bootstrap';
 
-import { UserStateContext } from "../App";
-import * as Api from "../api";
-import User from "./user/User";
+import { UserStateContext } from '../App';
+import * as Api from '../api';
+import User from './user/User';
+import Awards from './award/Awards';
 
 function Portfolio() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function Portfolio() {
 
   const fetchPorfolioOwner = async (ownerId) => {
     // 유저 id를 가지고 "/users/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
-    const res = await Api.get("users", ownerId);
+    const res = await Api.get('users', ownerId);
     // 사용자 정보는 response의 data임.
     const ownerData = res.data;
     // portfolioOwner을 해당 사용자 정보로 세팅함.
@@ -30,7 +31,7 @@ function Portfolio() {
   useEffect(() => {
     // 전역 상태의 user가 null이라면 로그인이 안 된 상태이므로, 로그인 페이지로 돌림.
     if (!userState.user) {
-      navigate("/login", { replace: true });
+      navigate('/login', { replace: true });
       return;
     }
 
@@ -48,24 +49,22 @@ function Portfolio() {
   }, [params, userState, navigate]);
 
   if (!isFetchCompleted) {
-    return "loading...";
+    return 'loading...';
   }
 
   return (
     <Container fluid>
       <Row>
-        <Col md="3" lg="3">
+        <Col md='3' lg='3'>
           <User
             portfolioOwnerId={portfolioOwner.id}
             isEditable={portfolioOwner.id === userState.user?.id}
           />
         </Col>
         <Col>
-
-          <div style={{ textAlign: "center" }}>
-            학력 목록, 수상이력 목록, 프로젝트 목록, 자격증 목록 만들기
+          <div className='mb-2'>
+            <Awards portfolioOwnerId={portfolioOwner.id} />
           </div>
-
         </Col>
       </Row>
     </Container>
