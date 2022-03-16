@@ -1,35 +1,33 @@
 import React, { useState } from 'react';
-import { Card, Button } from 'react-bootstrap';
-import EducationBody from './EducationBody';
 
-const Education = ({ portfolioOwnerId, isEditable }) => {
-    const [educationBody, setEducationBody] = useState([]);
+import EducationEditForm from './EducationEditForm';
+import EducationCard from './EducationCard';
 
-    // + 버튼으로 추가하면 EducationBody 추가해준다.
-    const addEducation = () => {
-        setEducationBody([
-            ...educationBody,
-            <EducationBody key={educationBody.length} />,
-        ]);
+const Education = ({ education, setEducations }) => {
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleEditing = (e) => {
+        setIsEditing(!isEditing);
     };
+
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>학력</Card.Title>
-                {/* + 버튼으로 추가하면 educationBody 배열로 들어간다. 배열을 돌면서 렌더링 */}
-                {educationBody?.map((body) => {
-                    return body;
-                })}
-                {/* Education을 추가하는 버튼 */}
-                <div className='mt-3 text-center mb-1'>
-                    <div className='col-sm-12'>
-                        <Button variant='primary' onClick={addEducation}>
-                            +
-                        </Button>
-                    </div>
-                </div>
-            </Card.Body>
-        </Card>
+        <>
+            {/* 편집중이라면 Form을, 그렇지 않다면 학력창을 보여준다. */}
+            {isEditing ? (
+                <EducationEditForm
+                    education={education}
+                    setIsEditing={setIsEditing}
+                    setEducations={setEducations}
+                />
+            ) : (
+                <EducationCard
+                    handleEditing={handleEditing}
+                    school={education.school}
+                    major={education.major}
+                    position={education.position}
+                />
+            )}
+        </>
     );
 };
 

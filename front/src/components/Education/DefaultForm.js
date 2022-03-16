@@ -1,21 +1,20 @@
 import React from 'react';
 import { Card, Form, Row, Col, Button } from 'react-bootstrap';
 
-const EducationForm = ({
+const DefaultForm = ({
     handleSchoolOnChange,
     handleMajorOnChange,
-    schoolInput,
-    majorInput,
+    school,
+    major,
     handleCheckOnClick,
     handleSubmit,
-    handleEditing,
-    portfolioOwnerId,
+    handleFunction,
 }) => {
     return (
         <Card>
             <Card.Body>
                 <Card.Title>학력</Card.Title>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <Form.Group
                         className='mb-3'
                         controlId='school.ControlInput'
@@ -26,7 +25,7 @@ const EducationForm = ({
                             placeholder='OO대학교'
                             onChange={handleSchoolOnChange}
                         />
-                        {!schoolInput && (
+                        {!school && (
                             <Form.Text className='text-danget'>
                                 학교를 작성 해 주세요.
                             </Form.Text>
@@ -39,7 +38,7 @@ const EducationForm = ({
                             placeholder='OO전공'
                             onChange={handleMajorOnChange}
                         />
-                        {!majorInput && (
+                        {!major && (
                             <Form.Text className='text-danget'>
                                 전공을 작성 해 주세요.
                             </Form.Text>
@@ -84,17 +83,19 @@ const EducationForm = ({
                             />
                         </div>
                     </Form.Group>
-                    <Row className='justify-content-center'>
-                        <Col lg='3'>
+                    <Row className='text-center'>
+                        <Col>
                             <Button
                                 variant='primary'
                                 type='submit'
                                 className='me-3'
-                                onClick={handleSubmit}
                             >
                                 확인
                             </Button>
-                            <Button variant='secondary' onClick={handleEditing}>
+                            <Button
+                                variant='secondary'
+                                onClick={handleFunction}
+                            >
                                 취소
                             </Button>
                         </Col>
@@ -105,4 +106,4 @@ const EducationForm = ({
     );
 };
 
-export default EducationForm;
+export default DefaultForm;
