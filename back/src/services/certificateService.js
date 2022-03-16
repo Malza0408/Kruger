@@ -78,6 +78,11 @@ class certificateAuthService {
         const certificates = await Certificate.findAllById({ user_id });
         return certificates;
     }
+
+    static async deleteCertificate({ certificate_id }) {
+        await Certificate.deleteById({ certificate_id });
+        return;
+    }
 }
 
 export { certificateAuthService };

@@ -111,4 +111,20 @@ certificateAuthRouter.get(
     }
 );
 
+certificateAuthRouter.delete(
+    '/certificates/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            // URI로부터 사용자 id를 추출함.
+            const certificate_id = req.params.id;
+            await certificateAuthService.deleteCertificate({ certificate_id });
+            console.log(certificate_id);
+            res.status(200).send('삭제되었습니다.');
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 export { certificateAuthRouter };
