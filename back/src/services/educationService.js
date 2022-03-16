@@ -13,6 +13,11 @@ class educationAuthService {
         createdEducation.errorMessage = null;
         return createdEducation;
     }
+    static async getEducation({ education_id }) {
+        const education = await Education.getEducation({ education_id });
+        education.errorMessage = null;
+        return education;
+    }
 }
 
 export { educationAuthService };
