@@ -1,27 +1,22 @@
 import { Schema, model } from 'mongoose';
 
-const UserSchema = new Schema(
+const AwardSchema = new Schema(
     {
         id: {
             type: String,
             required: true
         },
-        email: {
+        user_id: {
             type: String,
             required: true
         },
-        name: {
-            type: String,
-            required: true
-        },
-        password: {
+        title: {
             type: String,
             required: true
         },
         description: {
             type: String,
-            required: false,
-            default: '설명이 아직 없습니다. 추가해 주세요.'
+            required: true
         }
     },
     {
@@ -29,6 +24,6 @@ const UserSchema = new Schema(
     }
 );
 
-const UserModel = model('User', UserSchema);
+const AwardModel = model('Award', AwardSchema);
 
-export { UserModel };
+export { AwardModel };
