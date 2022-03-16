@@ -52,49 +52,44 @@ const EducationBody = ({ portfolioOwnerId }) => {
                     portfolioOwnerId={portfolioOwnerId}
                 />
             ) : (
+                // 여기서 경고가 뜨고 있음
                 <>
-                    <Card.Title>학력</Card.Title>
-                    <Card.Text className='mb-0'>
-                        <Row className='align-items-center'>
-                            <Col>
-                                {schoolName ? (
-                                    <span>{schoolName}</span>
-                                ) : (
-                                    <span>OO학교</span>
-                                )}
-                                <br />
-                                {majorName ? (
-                                    <>
-                                        <span className='text-muted'>
-                                            {majorName}{' '}
-                                        </span>
-                                        <span className='text-muted'>
-                                            ({schoolState})
-                                        </span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span className='text-muted'>
-                                            OO전공{' '}
-                                        </span>
-                                        <span className='text-muted'>
-                                            (재학중)
-                                        </span>
-                                    </>
-                                )}
-                            </Col>
-                            <Col className='col-lg-1'>
-                                <Button
-                                    className=''
-                                    variant='outline-info'
-                                    size='sm'
-                                    onClick={handleEditing}
-                                >
-                                    편집
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Card.Text>
+                    <Row className='align-items-center'>
+                        <Col>
+                            {/* 학교이름 변경했다면 해당학교 이름으로 렌더링 */}
+                            {schoolName ? (
+                                <span>{schoolName}</span>
+                            ) : (
+                                <span>OO학교</span>
+                            )}
+                            <br />
+                            {/* 전공 이름 변경했다면 해당전공 이름으로 렌더링 */}
+                            {majorName ? (
+                                <span className='text-muted'>{majorName} </span>
+                            ) : (
+                                <span className='text-muted'>OO전공</span>
+                            )}
+                            {/* 졸업여부 변경했다면 렌더링 */}
+                            {schoolState ? (
+                                <span className='text-muted'>
+                                    {schoolState}
+                                </span>
+                            ) : (
+                                <span className='text-muted sm'>(OO졸업)</span>
+                            )}
+                        </Col>
+                        <Col className='col-lg-1'>
+                            <Button
+                                className=''
+                                variant='outline-info'
+                                size='sm'
+                                onClick={handleEditing}
+                            >
+                                편집
+                            </Button>
+                        </Col>
+                    </Row>
+
                     <hr></hr>
                 </>
             )}

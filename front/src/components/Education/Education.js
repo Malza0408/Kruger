@@ -15,9 +15,9 @@ const Education = ({ portfolioOwnerId, isEditable }) => {
     return (
         <Card>
             <Card.Body>
-                <EducationBody portfolioOwnerId={portfolioOwnerId} />
+                <Card.Title>학력</Card.Title>
                 {/* + 버튼으로 추가하면 educationBody 배열로 들어간다. 배열을 돌면서 렌더링 */}
-                {educationBody?.map((body, index) => {
+                {educationBody?.map((body) => {
                     return body;
                 })}
                 {/* Education을 추가하는 버튼 */}
