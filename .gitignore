@@ -1,4 +1,7 @@
 # dependencies
+<<<<<<< .gitignore
+node_modules
+=======
 node_modules
 .env
-.prettierrc
+>>>>>>> .gitignore
