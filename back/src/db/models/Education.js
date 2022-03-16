@@ -23,6 +23,11 @@ class Education {
         });
         return education;
     }
+    static async getEducations({ user_id }) {
+        const educationList = await EducationModel.find({ user_id });
+        console.log(educationList);
+        return educationList;
+    }
 }
 
 export { Education };

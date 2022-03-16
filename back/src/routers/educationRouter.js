@@ -82,5 +82,20 @@ educationRouter.put(
         }
     }
 );
+educationRouter.get(
+    '/educationlist/:user_id',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const user_id = req.params.user_id;
+            const educationList = await educationAuthService.getEducationList({
+                user_id
+            });
+            res.status(200).send(educationList);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
 export { educationRouter };

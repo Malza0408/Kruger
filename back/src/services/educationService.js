@@ -53,6 +53,12 @@ class educationAuthService {
         }
         return education;
     }
+    static async getEducationList({ user_id }) {
+        console.log({ user_id });
+        const educationList = await Education.getEducations({ user_id });
+
+        return educationList;
+    }
 }
 
 export { educationAuthService };
