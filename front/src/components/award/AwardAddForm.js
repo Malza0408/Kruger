@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
+import * as Api from '../../api';
 
 const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
     const [title, setTitle] = useState('');
@@ -10,15 +10,13 @@ const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
         // 데이터를 추가하기
         e.preventDefault();
         const user_id = portfolioOwnerId;
-        await axios.post(`award/create}`, {
+        await Api.post(`award/create`, {
             user_id: portfolioOwnerId,
             title,
             description,
         });
 
-        await axios
-            .get(`awardlist`, user_id)
-            .then((res) => setAwards(res.data));
+        await Api.get(`awardlist`, user_id).then((res) => setAwards(res.data));
         setIsAdding(false);
     };
 
@@ -42,7 +40,6 @@ const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
                     }}
                 />
             </Form.Group>
-
             <Form.Group as={Row} className='text-center mt-3'>
                 <Col sm={{ span: 20 }}>
                     <Button className='me-3' variant='primary' type='submit'>

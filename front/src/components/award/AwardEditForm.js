@@ -1,4 +1,4 @@
-import axios from 'axios';
+import * as Api from '../../api';
 import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 
@@ -9,19 +9,17 @@ const AwardEditForm = ({ setIsEditing, award, setAwards }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const user_id = award.user_id;
-        await axios.put(`awards/${award.id}`, {
+        await Api.put(`awards/${award.id}`, {
             user_id,
             title,
             description,
         });
-        await axios
-            .get('awardlist', user_id)
-            .then((res) => setAwards(res.data));
+        await Api.get('awardlist', user_id).then((res) => setAwards(res.data));
         setIsEditing(false);
     };
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <Form.Group controlId='awardEditTitle'>
                 <Form.Control
                     type='text'

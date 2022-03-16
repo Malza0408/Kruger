@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
-import axios from 'axios';
+import * as Api from '../../api';
 
 import Award from './Award';
 import AwardAddForm from './AwardAddForm';
 
 const Awards = ({ portfolioOwnerId, isEditable }) => {
-    // useState 훅을 통해 awards 상태를 생성함.
     const [awards, setAwards] = useState([]);
-    // useState 훅을 통해 isAdding 상태를 생성함.
     const [isAdding, setIsAdding] = useState(false);
     // 처음 실행 후 ID가 바뀔때마다 렌더링
-    useEffect(async () => {
-        await axios
-            .get('awardlist', portfolioOwnerId)
-            .then((res) => setAwards(res.data));
+    useEffect(() => {
+        Api.get('awardlist', portfolioOwnerId).then((res) =>
+            setAwards(res.data)
+        );
     }, [portfolioOwnerId]);
 
     return (
