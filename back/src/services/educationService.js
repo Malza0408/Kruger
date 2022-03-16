@@ -35,6 +35,42 @@ class educationService {
         const educationList = await Education.findAll();
         return educationList;
     }
+    static async setEducation({ education_id, toUpdate }) {
+        let education = await Education.findByEducationId({ education_id });
+        if (!education) {
+            const errorMessage =
+                '학력을 등록한 내역이 없습니다. 다시 한 번 확인해주세요.';
+            return { errorMessage };
+        }
+        if (toUpdate.school) {
+            const fieldToUpdate = 'school';
+            const newValue = toUpdate.school;
+            education = await Education.update({
+                education_id,
+                fieldToUpdate,
+                newValue
+            });
+        }
+        if (toUpdate.major) {
+            const fieldToUpdate = 'major';
+            const newValue = toUpdate.major;
+            education = await Education.update({
+                education_id,
+                fieldToUpdate,
+                newValue
+            });
+        }
+        if (toUpdate.position) {
+            const fieldToUpdate = 'position';
+            const newValue = toUpdate.position;
+            education = await Education.update({
+                education_id,
+                fieldToUpdate,
+                newValue
+            });
+        }
+        return education;
+    }
 }
 
 export { educationService };

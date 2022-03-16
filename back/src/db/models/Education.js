@@ -17,6 +17,17 @@ class Education {
         const educationList = await EducationModel.find({});
         return educationList;
     }
+    static async update({ education_id, fieldToUpdate, newValue }) {
+        const filter = { id: education_id };
+        const update = { [fieldToUpdate]: newValue };
+        const option = { returnOriginal: false };
+        const updatedEducation = await EducationModel.findOneAndUpdate(
+            filter,
+            update,
+            option
+        );
+        return updatedEducation;
+    }
 }
 
 export { Education };
