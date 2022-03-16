@@ -3,7 +3,6 @@ import { UserModel } from '../schemas/user';
 
 class Education {
     static async create({ newEducation }) {
-        console.log(newEducation);
         let createdNewEducation = await EducationModel.create(newEducation);
         return createdNewEducation;
     }

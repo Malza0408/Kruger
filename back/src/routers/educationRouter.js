@@ -16,12 +16,7 @@ educationRouter.post('/education/create', async (req, res, next) => {
         const school = req.body.school;
         const major = req.body.major;
         const position = req.body.position;
-        // const position_option = ['재학중', '학사졸업', '석사졸업', '박사졸업']
-        // if(!position_option.includes(position)){
-        //     res.status(400).send('옵션 선택을 잘못했습니다. 다시 확인해주세요.')
-        // }
-        // const user = req.currentUserId
-        // console.log(user)
+
         const newEducation = await educationService.createEducation({
             user_id,
             school,
@@ -31,6 +26,7 @@ educationRouter.post('/education/create', async (req, res, next) => {
         if (newEducation.errorMessage) {
             throw new Error(newEducation.errorMessage);
         }
+        console.log('education 생성되었습니다.');
         res.status(201).json(newEducation);
     } catch (error) {
         next(error);
