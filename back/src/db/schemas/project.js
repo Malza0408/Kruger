@@ -7,9 +7,8 @@ const ProjectSchema = new Schema(
       required: true,
     },
     user: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
-      ref:'User',
     },
     title: {
       type: String,
@@ -33,6 +32,6 @@ const ProjectSchema = new Schema(
   }
 );
 
-const ProjectModel = model("User", ProjectSchema);
+const ProjectModel = model("Project", ProjectSchema);
 
 export { ProjectModel };

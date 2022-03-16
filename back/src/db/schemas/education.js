@@ -6,10 +6,9 @@ const EducationSchema = new Schema(
       type: String,
       required: true,
     },
-    user: {
-      type: Schema.Types.ObjectId,
+    user_id: {
+      type: String,
       required: true,
-      ref:'User',
     },
     school: {
       type: String,
@@ -21,7 +20,8 @@ const EducationSchema = new Schema(
     },
     graduation: {
       type: String,
-      required: true,
+      enum:['재학중', '학사졸업', '석사졸업', '박사졸업'],
+      required: false,
     },
   },
   {
@@ -29,6 +29,6 @@ const EducationSchema = new Schema(
   }
 );
 
-const EducationModel = model("User", EducationSchema);
+const EducationModel = model("Education", EducationSchema);
 
 export { EducationModel };
