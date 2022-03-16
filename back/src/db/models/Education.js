@@ -12,8 +12,8 @@ class Education {
         return education;
     }
 
-    static async findAll() {
-        const educationList = await EducationModel.find({});
+    static async findAll({ user_id }) {
+        const educationList = await EducationModel.find({ user_id });
         return educationList;
     }
     static async update({ education_id, fieldToUpdate, newValue }) {
