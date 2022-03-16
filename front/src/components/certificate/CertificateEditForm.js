@@ -2,15 +2,33 @@ import React, { useState } from 'react';
 import { Button, Form, Card, Col, Row } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 
-const CertificateEditForm = ({ certificate, setIsEditing }) => { 
-    const [title, setTitle] = useState(certificate.title); 
-    const [description, setDescription] = useState(certificate.description); 
+import * as Api from '../../api';
+
+const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
+    const user_id = certificate.user_id;
+    const [title, setTitle] = useState(certificate.title);
+    const [description, setDescription] = useState(certificate.description);
     const [date, setDate] = useState(new Date());
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // "certificates/certificate.id" 엔드포인트로 PUT 요청함.
+        await Api.put(`certificates/${certificate.id}`, {
+            user_id,
+            title,
+            description,
+            date
+        });
+
+        await Api.get('certificatelist', user_id).then((res) =>
+            setCertificate(res)
+        );
+
+        // isEditing을 false로 세팅하여 편집창 close
         setIsEditing(false);
     };
+
     return (
         <>
             <Card>
