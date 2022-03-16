@@ -2,20 +2,18 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 
-const AwardEditForm = ({ setIsEditing, award, awards, setAwards, key }) => {
+const AwardEditForm = ({ setIsEditing, award, setAwards }) => {
   const [title, setTitle] = useState(award.title);
   const [description, setDescription] = useState(award.description);
 
-  // const handleSubmit = async (e) => {
-  //   await axios.put('url', {
-  //     title,
-  //     description,
-  //   });
-
-  //   await axios.get('url')
-  //   .then((res) => setAwards(res.data));
-  //   setIsEditing(false)
-  // };
+  const handleSubmit = async (e) => {
+    await axios.put('url', {
+      title,
+      description,
+    });
+    await axios.get('url').then((res) => setAwards(res.data));
+    setIsEditing(false);
+  };
 
   return (
     <Form>

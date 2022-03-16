@@ -2,38 +2,31 @@ import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-const AwardAddForm = ({ setIsAdding, awards, setAwards }) => {
-  // const handleClick = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     await axios.post('', {
-
-  //     });
-  //   } catch (err) {
-  //     console.log('내역 추가에 실패하였습니다.', err);
-  //   }
-  // };
+const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   await axios.post('url', {
-  //     title,
-  //     description,
-  //   });
-  //   await axios.get('url')
-  //   .then((res) => setAwards(res.data));
-  //   setIsAdding(false)
-  // };
-  // };
-
-  //더미 데이터로 테스트
+  const handleClick = async (e) => {
+    // 데이터를 추가하기
+    e.preventDefault();
+    try {
+      await axios.post('', {});
+    } catch (err) {
+      console.log('내역 추가에 실패하였습니다.', err);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setAwards([...awards, { title, description }]);
+    // 데이터를 추가하기
+    await axios.post('url', {
+      title,
+      description,
+    });
+    // 데이터를 다시 불러오고 추가 상태 false로 변환
+    await axios.get('url').then((res) => setAwards(res.data));
     setIsAdding(false);
   };
+
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId='awardAddTitle'>
