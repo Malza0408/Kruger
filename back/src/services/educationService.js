@@ -18,6 +18,41 @@ class educationAuthService {
         education.errorMessage = null;
         return education;
     }
+    static async edit({ education_id, toUpdate }) {
+        let education = await Education.getEducation({ education_id });
+        if (!education) {
+            education.errorMessage =
+                '등록된 학력이 없습니다. 다시 확인해주세요';
+        }
+        if (toUpdate.school) {
+            const fieldToEdit = 'school';
+            const newValue = toUpdate.school;
+            education = await Education.edit({
+                education_id,
+                fieldToEdit,
+                newValue
+            });
+        }
+        if (toUpdate.major) {
+            const fieldToEdit = 'major';
+            const newValue = toUpdate.major;
+            education = await Education.edit({
+                education_id,
+                fieldToEdit,
+                newValue
+            });
+        }
+        if (toUpdate.position) {
+            const fieldToEdit = 'position';
+            const newValue = toUpdate.position;
+            education = await Education.edit({
+                education_id,
+                fieldToEdit,
+                newValue
+            });
+        }
+        return education;
+    }
 }
 
 export { educationAuthService };

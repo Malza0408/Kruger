@@ -55,5 +55,32 @@ educationRouter.get(
         }
     }
 );
+educationRouter.put(
+    '/educations/:id',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const education_id = req.params.id;
+            console.log(education_id);
+            const school = req.body.school;
+            const major = req.body.major;
+            const position = req.body.position;
+            console.log(school);
+            console.log(major);
+            console.log(position);
+            const toUpdate = { school, major, position };
+            const updatedEducation = await educationAuthService.edit({
+                education_id,
+                toUpdate
+            });
+            if (updatedEducation.errorMessage) {
+                throw new Error(updatedEducation.errorMessage);
+            }
+            res.status(200).json(updatedEducation);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
 export { educationRouter };
