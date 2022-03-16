@@ -22,8 +22,8 @@ class educationService {
         }
         return education;
     }
-    static async getEducations() {
-        const educationList = await Education.findAll();
+    static async getEducations({ user_id }) {
+        const educationList = await Education.findAll({ user_id });
         return educationList;
     }
     static async setEducation({ education_id, toUpdate }) {
