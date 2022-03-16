@@ -24,6 +24,11 @@ class Project {
         );
         return updatedProject;
     }
+
+    static async findAllById({ user_id }) {
+        const projects = await ProjectModel.find({ user_id });
+        return projects;
+    }
 }
 
 export { Project };

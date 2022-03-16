@@ -81,6 +81,11 @@ class projectAuthService {
 
         return project;
     }
+
+    static async getProjects({ user_id }) {
+        const projects = await Project.findAllById({ user_id });
+        return projects;
+    }
 }
 
 export { projectAuthService };
