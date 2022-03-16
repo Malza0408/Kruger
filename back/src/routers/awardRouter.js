@@ -100,4 +100,20 @@ awardAuthRouter.get(
     }
 );
 
+awardAuthRouter.delete(
+    '/awards/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            // URI로부터 사용자 id를 추출함.
+            const award_id = req.params.id;
+            await awardAuthService.deleteAward({ award_id });
+            console.log(award_id);
+            res.status(200).send('삭제되었습니다.');
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 export { awardAuthRouter };

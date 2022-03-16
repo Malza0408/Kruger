@@ -29,6 +29,11 @@ class Award {
         const awards = await AwardModel.find({ user_id });
         return awards;
     }
+
+    static async deleteById({ award_id }) {
+        await AwardModel.deleteOne({ id: award_id });
+        return;
+    }
 }
 
 export { Award };
