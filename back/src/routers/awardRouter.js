@@ -60,15 +60,15 @@ awardAuthRouter.put(
     login_required,
     async function (req, res, next) {
         try {
-            // URI로부터 사용자 id를 추출함.
+            // URI로부터 수상 요소 id를 추출함.
             const award_id = req.params.id;
-            // body data 로부터 업데이트할 사용자 정보를 추출함.
+            // body data 로부터 업데이트할 수상 요소 정보를 추출함.
             const title = req.body.title ?? null;
             const description = req.body.description ?? null;
 
             const toUpdate = { title, description };
 
-            // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
+            // 해당 수상 요소 아이디로 수상 요소 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedAward = await awardAuthService.setAward({
                 award_id,
                 toUpdate
@@ -90,10 +90,26 @@ awardAuthRouter.get(
     login_required,
     async function (req, res, next) {
         try {
-            // 전체 사용자 목록을 얻음
+            // 전체 수상 목록을 얻음
             const user_id = req.params.user_id;
             const awards = await awardAuthService.getAwards({ user_id });
             res.status(200).send(awards);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+awardAuthRouter.delete(
+    '/awards/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            // URI로부터 수상 요소 id를 추출함.
+            const award_id = req.params.id;
+            await awardAuthService.deleteAward({ award_id });
+            console.log(award_id);
+            res.status(200).send('삭제되었습니다.');
         } catch (error) {
             next(error);
         }

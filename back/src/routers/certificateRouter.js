@@ -67,16 +67,16 @@ certificateAuthRouter.put(
     login_required,
     async function (req, res, next) {
         try {
-            // URI로부터 사용자 id를 추출함.
+            // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
-            // body data 로부터 업데이트할 사용자 정보를 추출함.
+            // body data 로부터 업데이트할 자격증 정보를 추출함.
             const title = req.body.title ?? null;
             const description = req.body.description ?? null;
             const date = req.body.date ?? null;
 
             const toUpdate = { title, description, date };
 
-            // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
+            // 해당 자격증 아이디로 자격증 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedCertificate =
                 await certificateAuthService.setCertificate({
                     certificate_id,
@@ -99,12 +99,28 @@ certificateAuthRouter.get(
     login_required,
     async function (req, res, next) {
         try {
-            // 전체 사용자 목록을 얻음
+            // 전체 자격증 목록을 얻음
             const user_id = req.params.user_id;
             const certificates = await certificateAuthService.getCertificates({
                 user_id
             });
             res.status(200).send(certificates);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+certificateAuthRouter.delete(
+    '/certificates/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            // URI로부터 자격증 id를 추출함.
+            const certificate_id = req.params.id;
+            await certificateAuthService.deleteCertificate({ certificate_id });
+            console.log(certificate_id);
+            res.status(200).send('삭제되었습니다.');
         } catch (error) {
             next(error);
         }

@@ -58,6 +58,11 @@ class awardAuthService {
         const awards = await Award.findAllById({ user_id });
         return awards;
     }
+
+    static async deleteAward({ award_id }) {
+        await Award.deleteById({ award_id });
+        return;
+    }
 }
 
 export { awardAuthService };
