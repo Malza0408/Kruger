@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "react-bootstrap-date-picker": "^5.1.0"
+  }
+}
