@@ -20,7 +20,6 @@ educationRouter.post('/education/create', async (req, res, next) => {
         // if(!position_option.includes(position)){
         //     res.status(400).send('옵션 선택을 잘못했습니다. 다시 확인해주세요.')
         // }
-        console.log('data 받아옴');
         // const user = req.currentUserId
         // console.log(user)
         const newEducation = await educationService.createEducation({
@@ -47,20 +46,17 @@ educationRouter.get('/educationlist/:user_id', async (req, res, next) => {
     }
 });
 
-// educationRouter.get('/educations/:id', async (req, res, next) => {
-//     console.log('working');
-//     try {
-//         const education_id = req.params.id;
-//         console.log(req.currentUserId);
-//         console.log('에듀케이션 아이디', education_id);
-//         const education = await educationService.getEducation({ education_id });
-//         if (education.errorMessage) {
-//             throw new Error(education.errorMessage);
-//         }
-//         res.status(200).send(education);
-//     } catch (error) {
-//         next(error);
-//     }
-// });
+educationRouter.get('/educations/:id', async (req, res, next) => {
+    try {
+        const education_id = req.params.id;
+        const education = await educationService.getEducation({ education_id });
+        if (education.errorMessage) {
+            throw new Error(education.errorMessage);
+        }
+        res.status(200).send(education);
+    } catch (error) {
+        next(error);
+    }
+});
 
 export { educationRouter };

@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 class educationService {
     static async createEducation({ user_id, school, major, position }) {
-        console.log('서비스 연결');
-
         // const education = await Education.findByUserId({ user_id })
         // console.log(education)
         // console.log('service data 받음.')
@@ -17,17 +15,13 @@ class educationService {
         const id = uuidv4();
         // const user = await User.findById(user_id)
         // console.log(user._id)
-
-        console.log('학력등록');
         const newEducation = { id, user_id, school, major, position };
         const createdNewEducation = await Education.create({ newEducation });
-        console.log('education 생성');
         createdNewEducation.errorMessage = null;
 
         return createdNewEducation;
     }
     static async getEducation({ education_id }) {
-        console.log('서비스 연결');
         const education = await Education.findByEducationId({ education_id });
         console.log(education);
         if (!education) {
