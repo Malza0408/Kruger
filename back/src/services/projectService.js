@@ -15,6 +15,18 @@ class projectAuthService {
 
         return createdNewProject;
     }
+
+    static async getProjectInfo({ project_id }) {
+        const project = await Project.findById({ project_id });
+
+        // db에서 찾지 못한 경우, 에러 메시지 반환
+        if (!project) {
+            const errorMessage = '삭제되었거나 등록되지 않은 프로젝트입니다.';
+            return { errorMessage };
+        }
+
+        return project;
+    }
 }
 
 export { projectAuthService };
