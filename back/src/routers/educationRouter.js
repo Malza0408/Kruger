@@ -32,10 +32,11 @@ educationRouter.post('/education/create', async (req, res, next) => {
         next(error);
     }
 });
-
+// user의 전체 education 목록 가져오기
 educationRouter.get('/educationlist/:user_id', async (req, res, next) => {
     try {
-        const educationList = await educationService.getEducations();
+        const user_id = req.params.user_id;
+        const educationList = await educationService.getEducations({ user_id });
         res.status(200).send(educationList);
     } catch (error) {
         next(error);
