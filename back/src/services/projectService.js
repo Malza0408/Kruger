@@ -99,6 +99,11 @@ class projectAuthService {
         const projects = await Project.findAllById({ user_id });
         return projects;
     }
+
+    static async deleteProject({ project_id }) {
+        await Project.deleteById({ project_id });
+        return;
+    }
 }
 
 export { projectAuthService };
