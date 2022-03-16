@@ -2,7 +2,7 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { userAuthService } from '../services/userService';
-import { educationService } from '../services/educationService';
+import { educationAuthService } from '../services/educationService';
 
 const educationRouter = Router();
 educationRouter.post('/education/create', async (req, res, next) => {
@@ -16,61 +16,18 @@ educationRouter.post('/education/create', async (req, res, next) => {
         const school = req.body.school;
         const major = req.body.major;
         const position = req.body.position;
+        console.log(user_id, school, major, position);
 
-        const newEducation = await educationService.createEducation({
+        const createdEducation = await educationAuthService.addEducation({
             user_id,
             school,
             major,
             position
         });
-        if (newEducation.errorMessage) {
-            throw new Error(newEducation.errorMessage);
+        if (createdEducation.errorMessage) {
+            throw new Error(createdEducation.errorMessage);
         }
-        console.log('education 생성되었습니다.');
-        res.status(201).json(newEducation);
-    } catch (error) {
-        next(error);
-    }
-});
-
-educationRouter.get('/educationlist/:user_id', async (req, res, next) => {
-    try {
-        const educationList = await educationService.getEducations();
-        res.status(200).send(educationList);
-    } catch (error) {
-        next(error);
-    }
-});
-
-educationRouter.get('/educations/:id', async (req, res, next) => {
-    try {
-        const education_id = req.params.id;
-        const education = await educationService.getEducation({ education_id });
-        if (education.errorMessage) {
-            throw new Error(education.errorMessage);
-        }
-        res.status(200).send(education);
-    } catch (error) {
-        next(error);
-    }
-});
-
-educationRouter.put('/educations/:id', async (req, res, next) => {
-    try {
-        const education_id = req.params.id;
-        const school = req.body.school ?? null;
-        const major = req.body.major ?? null;
-        const position = req.body.position ?? null;
-        const toUpdate = { school, major, position };
-        const updatedEducation = await educationService.setEducation({
-            education_id,
-            toUpdate
-        });
-        if (updatedEducation.errorMessage) {
-            throw new Error(errorMessage);
-        }
-        console.log('수정되었습니다.');
-        res.status(200).json(updatedEducation);
+        res.status(201).json(createdEducation);
     } catch (error) {
         next(error);
     }
