@@ -13,8 +13,8 @@ class User {
         const userList = await UserModel.find({});
         return userList;
     }
-    static async getUserInfo({ currentUserId }) {
-        const user = await UserModel.findOne({ id: currentUserId });
+    static async findById({ user_id }) {
+        const user = await UserModel.findOne({ id: user_id });
         return user;
     }
 }

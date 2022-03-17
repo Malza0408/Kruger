@@ -60,8 +60,8 @@ class newUserService {
         const userList = await User.getAllUsers();
         return userList;
     }
-    static async getUser({ currentUserId }) {
-        const user = await User.getUserInfo({ currentUserId });
+    static async getUser({ user_id }) {
+        const user = await User.findById({ user_id });
         if (!user) {
             const errorMessage = '해당하는 유저가 없습니다.';
             return { errorMessage };

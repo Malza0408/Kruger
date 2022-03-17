@@ -53,12 +53,13 @@ userAuthRouter.get('/userlist', login_required, async (req, res, next) => {
         if (userList.errorMessage) {
             throw new Error(userList.errorMessage);
         }
-        res.status(200).json(userList);
+        res.status(200).send(userList);
     } catch (error) {
         next(error);
     }
 });
 
+// 현재 로그인한 유저의 정보를 가져오기
 userAuthRouter.get('/user/current', login_required, async (req, res, next) => {
     try {
         const currentUserId = req.currentUserId;
@@ -66,7 +67,21 @@ userAuthRouter.get('/user/current', login_required, async (req, res, next) => {
         if (user.errorMessage) {
             throw newError(user.errorMessage);
         }
-        res.status(201).json(user);
+        res.status(200).send(user);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// 클릭한 유저의 정보를 가져오기
+userAuthRouter.get('/users/:id', login_required, async (req, res, next) => {
+    try {
+        const user_id = req.params.id;
+        const user = await newUserService.getUser({ user_id });
+        if (user.errorMessage) {
+            throw new Error(user.errorMessage);
+        }
+        res.status(200).send(user);
     } catch (error) {
         next(error);
     }
