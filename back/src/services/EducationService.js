@@ -2,7 +2,7 @@ import { Education } from '../db';
 import { User } from '../db';
 import { v4 as uuidv4 } from 'uuid';
 
-class educationService {
+class EducationService {
     static async createEducation({ user_id, school, major, position }) {
         const id = uuidv4();
         const newEducation = { id, user_id, school, major, position };
@@ -64,4 +64,4 @@ class educationService {
     }
 }
 
-export { educationService };
+export { EducationService };

@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 
-class userAuthService {
+class UserService {
     static async addUser({ name, email, password }) {
         // 이메일 중복 확인
         const user = await User.findByEmail({ email });
@@ -100,7 +100,9 @@ class userAuthService {
 
         if (toUpdate.password) {
             const fieldToUpdate = 'password';
-            const newValue = toUpdate.password;
+            // 새로운 비밀번호 해쉬화
+            const newHashedPassword = await bcrypt.hash(toUpdate.password, 10);
+            const newValue = newHashedPassword;
             user = await User.update({ user_id, fieldToUpdate, newValue });
         }
 
@@ -127,4 +129,4 @@ class userAuthService {
     }
 }
 
-export { userAuthService };
+export { UserService };
