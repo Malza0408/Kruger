@@ -12,6 +12,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
         const getEducationList = async () => {
             const list = await Api.get(`educationlist/${portfolioOwnerId}`);
             setEducations([...list.data]);
+            console.log(list)
         };
         getEducationList();
     }, [portfolioOwnerId]);
