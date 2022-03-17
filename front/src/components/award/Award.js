@@ -4,7 +4,7 @@ import AwardCard from './AwardCard';
 import AwardEditForm from './AwardEditForm';
 
 const Award = ({ award, setAwards, isEditable }) => {
-    // useState 훅을 통해 isEditing 상태를 생성함.
+    // useState 훅을 통해 isEditing 상태를 생성
     const [isEditing, setIsEditing] = useState(false);
 
     return (
