@@ -32,4 +32,19 @@ userAuthRouter.post('/user/register', async (req, res, next) => {
     }
 });
 
+userAuthRouter.post('/user/login', async (req, res, next) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+        const user = await newUserService.getUser({ email, password });
+        if (user.errorMessage) {
+            throw new Error(user.errorMessage);
+        }
+        console.log('로그인 함');
+        res.status(200).send(user);
+    } catch (error) {
+        next(error);
+    }
+});
+
 export { userAuthRouter };
