@@ -17,8 +17,7 @@ awardAuthRouter.post(
             }
             // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
             const user_id = req.currentUserId;
-            const title = req.body.title;
-            const description = req.body.description;
+            const { title, description } = req.body;
             console.log(user_id, title, description);
 
             const newAward = await AwardService.addAward({
@@ -63,8 +62,7 @@ awardAuthRouter.put(
             // URI로부터 수상 요소 id를 추출함.
             const award_id = req.params.id;
             // body data 로부터 업데이트할 수상 요소 정보를 추출함.
-            const title = req.body.title ?? null;
-            const description = req.body.description ?? null;
+            const { title, description } = req.body ?? null;
 
             const toUpdate = { title, description };
 

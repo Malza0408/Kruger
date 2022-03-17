@@ -17,10 +17,7 @@ projectAuthRouter.post(
             }
             // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
             const user_id = req.currentUserId;
-            const title = req.body.title;
-            const description = req.body.description;
-            const from_date = req.body.from_date;
-            const to_date = req.body.to_date;
+            const { title, description, from_date, to_date } = req.body;
             console.log(user_id, title, description, from_date, to_date);
 
             const newProject = await ProjectService.addProject({
@@ -71,11 +68,7 @@ projectAuthRouter.put(
             // URI로부터 프로젝트 id를 추출함.
             const project_id = req.params.id;
             // body data 로부터 업데이트할 프로젝트 정보를 추출함.
-            const title = req.body.title ?? null;
-            const description = req.body.description ?? null;
-            const from_date = req.body.from_date ?? null;
-            const to_date = req.body.to_date ?? null;
-
+            const { title, description, from_date, to_date } = req.body ?? null;
             const toUpdate = { title, description, from_date, to_date };
 
             // 해당 프로젝트 아이디로 프로젝트 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함

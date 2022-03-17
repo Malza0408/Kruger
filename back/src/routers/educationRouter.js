@@ -12,10 +12,7 @@ educationRouter.post('/education/create', async (req, res, next) => {
                 'headers의 Content-Type을 application/json으로 설정해주세요'
             );
         }
-        const user_id = req.body.user_id;
-        const school = req.body.school;
-        const major = req.body.major;
-        const position = req.body.position;
+        const { user_id, school, major, position } = req.body;
 
         const newEducation = await EducationService.createEducation({
             user_id,
@@ -59,9 +56,7 @@ educationRouter.get('/educations/:id', async (req, res, next) => {
 educationRouter.put('/educations/:id', async (req, res, next) => {
     try {
         const education_id = req.params.id;
-        const school = req.body.school ?? null;
-        const major = req.body.major ?? null;
-        const position = req.body.position ?? null;
+        const { school, major, position } = req.body ?? null;
         const toUpdate = { school, major, position };
         const updatedEducation = await EducationService.setEducation({
             education_id,

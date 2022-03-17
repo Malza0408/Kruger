@@ -17,9 +17,7 @@ certificateAuthRouter.post(
             }
             // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
             const user_id = req.currentUserId;
-            const title = req.body.title;
-            const description = req.body.description;
-            const date = req.body.date;
+            const { title, description, date } = req.body;
             console.log(user_id, title, description, date);
 
             const newCertificate = await CertificateService.addCertificate({
@@ -70,9 +68,7 @@ certificateAuthRouter.put(
             // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
             // body data 로부터 업데이트할 자격증 정보를 추출함.
-            const title = req.body.title ?? null;
-            const description = req.body.description ?? null;
-            const date = req.body.date ?? null;
+            const { title, description, date } = req.body ?? null;
 
             const toUpdate = { title, description, date };
 
