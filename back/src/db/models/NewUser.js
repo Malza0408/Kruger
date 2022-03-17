@@ -9,5 +9,9 @@ class User {
         const foundUser = await UserModel.findOne({ email });
         return foundUser;
     }
+    static async getAllUsers() {
+        const userList = await UserModel.find({});
+        return userList;
+    }
 }
 export { User };

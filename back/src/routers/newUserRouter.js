@@ -1,5 +1,6 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
+import { login_required } from '../middlewares/login_required';
 import { newUserService } from '../services/newUserService';
 
 const userAuthRouter = Router();
@@ -42,6 +43,17 @@ userAuthRouter.post('/user/login', async (req, res, next) => {
         }
         console.log('로그인 함');
         res.status(200).send(user);
+    } catch (error) {
+        next(error);
+    }
+});
+userAuthRouter.get('/userlist', login_required, async (req, res, next) => {
+    try {
+        const userList = await newUserService.getUsers();
+        if (userList.errorMessage) {
+            throw new Error(userList.errorMessage);
+        }
+        res.status(200).json(userList);
     } catch (error) {
         next(error);
     }

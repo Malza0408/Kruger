@@ -56,5 +56,9 @@ class newUserService {
         };
         return loginUser;
     }
+    static async getUsers() {
+        const userList = await User.getAllUsers();
+        return userList;
+    }
 }
 export { newUserService };
