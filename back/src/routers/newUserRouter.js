@@ -86,5 +86,26 @@ userAuthRouter.get('/users/:id', login_required, async (req, res, next) => {
         next(error);
     }
 });
+userAuthRouter.put('/users/:id', login_required, async (req, res, next) => {
+    try {
+        const user_id = req.params.id;
+        const currentUser_id = req.currentUserId;
+        if (currentUser_id !== user_id) {
+            const errorMessage = '권한이 없습니다.';
+            throw new Error(errorMessage);
+        }
+        const name = req.body.name;
+        const email = req.body.email;
+        const description = req.body.description;
+        const toUpdate = { name, email, description };
+        const newUser = await newUserService.setUser({ user_id, toUpdate });
+        if (newUser.errorMessage) {
+            throw new Error(newUser.errorMessage);
+        }
+        res.status(200).json(newUser);
+    } catch (error) {
+        next(error);
+    }
+});
 
 export { userAuthRouter };

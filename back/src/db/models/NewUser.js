@@ -17,5 +17,16 @@ class User {
         const user = await UserModel.findOne({ id: user_id });
         return user;
     }
+    static async update({ user_id, fieldToUpdate, newValue }) {
+        const filter = { id: user_id };
+        const value = { [fieldToUpdate]: newValue };
+        const option = { returnOriginal: false };
+        const updatedUser = await UserModel.findOneAndUpdate(
+            filter,
+            value,
+            option
+        );
+        return updatedUser;
+    }
 }
 export { User };
