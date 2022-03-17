@@ -1,6 +1,8 @@
 import cors from 'cors';
 import express from 'express';
-import { userAuthRouter } from './routers/userRouter';
+
+// 연습용 변경
+import { userAuthRouter } from './routers/newUserRouter';
 import { educationRouter } from './routers/educationRouter';
 import { awardAuthRouter } from './routers/awardRouter';
 import { certificateAuthRouter } from './routers/certificateRouter';
