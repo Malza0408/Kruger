@@ -22,7 +22,6 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
             <Card>
                 <Card.Body>
                     <Card.Title>자격증</Card.Title>
-                    {/* 대거 수정함 */}
                     {
                         certificate.map((certificate) => {
                             return (

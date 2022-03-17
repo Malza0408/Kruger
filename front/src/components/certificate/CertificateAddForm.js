@@ -14,7 +14,7 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 수정함, date format을 'yyyy-MM-dd'로 변경
+        // date format을 'yyyy-MM-dd'로 변경
         const year = date.getFullYear()
         const month = (date.getMonth()+1).toString().padStart(2, '0')
         const day = (date.getDate()).toString().padStart(2, '0')
@@ -29,7 +29,6 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                 date: newDate
             });
 
-            // 수정함
             await Api.get('certificatelist', user_id).then((res) =>
             setCertificate(res.data)
             );
@@ -37,7 +36,7 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
             console.log(res.data)
 
         } catch (err) {
-            console.log('등록 실패', err); // 테스트용. 추후 삭제
+            console.log('등록 실패', err); 
         }
 
         setIsAdding(false);

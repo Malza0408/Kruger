@@ -13,7 +13,7 @@ const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 수정함, date format을 'yyyy-MM-dd'로 변경
+        // date format을 'yyyy-MM-dd'로 변경
         const year = date.getFullYear()
         const month = (date.getMonth()+1).toString().padStart(2, '0')
         const day = (date.getDate()).toString().padStart(2, '0')
@@ -27,7 +27,6 @@ const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
             date: newDate
         });
         
-        // 수정함
         await Api.get('certificatelist', user_id).then((res) =>
             setCertificate(res.data)
         );
