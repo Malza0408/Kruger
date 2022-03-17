@@ -60,5 +60,13 @@ class newUserService {
         const userList = await User.getAllUsers();
         return userList;
     }
+    static async getUser({ currentUserId }) {
+        const user = await User.getUserInfo({ currentUserId });
+        if (!user) {
+            const errorMessage = '해당하는 유저가 없습니다.';
+            return { errorMessage };
+        }
+        return user;
+    }
 }
 export { newUserService };

@@ -59,4 +59,17 @@ userAuthRouter.get('/userlist', login_required, async (req, res, next) => {
     }
 });
 
+userAuthRouter.get('/user/current', login_required, async (req, res, next) => {
+    try {
+        const currentUserId = req.currentUserId;
+        const user = await newUserService.getUser({ currentUserId });
+        if (user.errorMessage) {
+            throw newError(user.errorMessage);
+        }
+        res.status(201).json(user);
+    } catch (error) {
+        next(error);
+    }
+});
+
 export { userAuthRouter };
