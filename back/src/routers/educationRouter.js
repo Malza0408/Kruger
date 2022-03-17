@@ -2,7 +2,7 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { userAuthService } from '../services/userService';
-import { educationService } from '../services/educationService';
+import { EducationService } from '../services/EducationService';
 
 const educationRouter = Router();
 educationRouter.post('/education/create', async (req, res, next) => {
@@ -17,7 +17,7 @@ educationRouter.post('/education/create', async (req, res, next) => {
         const major = req.body.major;
         const position = req.body.position;
 
-        const newEducation = await educationService.createEducation({
+        const newEducation = await EducationService.createEducation({
             user_id,
             school,
             major,
@@ -35,7 +35,8 @@ educationRouter.post('/education/create', async (req, res, next) => {
 
 educationRouter.get('/educationlist/:user_id', async (req, res, next) => {
     try {
-        const educationList = await educationService.getEducations();
+        const user_id = req.params.user_id;
+        const educationList = await EducationService.getEducations({ user_id });
         res.status(200).send(educationList);
     } catch (error) {
         next(error);
@@ -45,7 +46,7 @@ educationRouter.get('/educationlist/:user_id', async (req, res, next) => {
 educationRouter.get('/educations/:id', async (req, res, next) => {
     try {
         const education_id = req.params.id;
-        const education = await educationService.getEducation({ education_id });
+        const education = await EducationService.getEducation({ education_id });
         if (education.errorMessage) {
             throw new Error(education.errorMessage);
         }
@@ -62,7 +63,7 @@ educationRouter.put('/educations/:id', async (req, res, next) => {
         const major = req.body.major ?? null;
         const position = req.body.position ?? null;
         const toUpdate = { school, major, position };
-        const updatedEducation = await educationService.setEducation({
+        const updatedEducation = await EducationService.setEducation({
             education_id,
             toUpdate
         });

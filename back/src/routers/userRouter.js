@@ -1,7 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
-import { userAuthService } from '../services/userService';
+import { UserService } from '../services/UserService';
 
 const userAuthRouter = Router();
 
@@ -19,7 +19,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
         const password = req.body.password;
         console.log(name, email, password);
         // 위 데이터를 유저 db에 추가하기
-        const newUser = await userAuthService.addUser({
+        const newUser = await UserService.addUser({
             name,
             email,
             password
@@ -42,7 +42,7 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
         const password = req.body.password;
 
         // 위 데이터를 이용하여 유저 db에서 유저 찾기
-        const user = await userAuthService.getUser({ email, password });
+        const user = await UserService.getUser({ email, password });
 
         if (user.errorMessage) {
             throw new Error(user.errorMessage);
@@ -60,7 +60,7 @@ userAuthRouter.get(
     async function (req, res, next) {
         try {
             // 전체 사용자 목록을 얻음
-            const users = await userAuthService.getUsers();
+            const users = await UserService.getUsers();
             res.status(200).send(users);
         } catch (error) {
             next(error);
@@ -75,7 +75,7 @@ userAuthRouter.get(
         try {
             // jwt토큰에서 추출된 사용자 id를 가지고 db에서 사용자 정보를 찾음.
             const user_id = req.currentUserId;
-            const currentUserInfo = await userAuthService.getUserInfo({
+            const currentUserInfo = await UserService.getUserInfo({
                 user_id
             });
 
@@ -106,7 +106,7 @@ userAuthRouter.put(
             const toUpdate = { name, email, password, description };
 
             // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
-            const updatedUser = await userAuthService.setUser({
+            const updatedUser = await UserService.setUser({
                 user_id,
                 toUpdate
             });
@@ -128,7 +128,7 @@ userAuthRouter.get(
     async function (req, res, next) {
         try {
             const user_id = req.params.id;
-            const currentUserInfo = await userAuthService.getUserInfo({
+            const currentUserInfo = await UserService.getUserInfo({
                 user_id
             });
 

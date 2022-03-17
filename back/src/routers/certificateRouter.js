@@ -1,7 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
-import { certificateAuthService } from '../services/certificateService';
+import { CertificateService } from '../services/CertificateService';
 
 const certificateAuthRouter = Router();
 
@@ -22,7 +22,7 @@ certificateAuthRouter.post(
             const date = req.body.date;
             console.log(user_id, title, description, date);
 
-            const newCertificate = await certificateAuthService.addCertificate({
+            const newCertificate = await CertificateService.addCertificate({
                 user_id,
                 title,
                 description,
@@ -47,7 +47,7 @@ certificateAuthRouter.get(
         try {
             const certificate_id = req.params.id;
             const currentCertificateInfo =
-                await certificateAuthService.getCertificateInfo({
+                await CertificateService.getCertificateInfo({
                     certificate_id
                 });
 
@@ -77,11 +77,10 @@ certificateAuthRouter.put(
             const toUpdate = { title, description, date };
 
             // 해당 자격증 아이디로 자격증 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
-            const updatedCertificate =
-                await certificateAuthService.setCertificate({
-                    certificate_id,
-                    toUpdate
-                });
+            const updatedCertificate = await CertificateService.setCertificate({
+                certificate_id,
+                toUpdate
+            });
 
             if (updatedCertificate.errorMessage) {
                 throw new Error(updatedCertificate.errorMessage);
@@ -101,7 +100,7 @@ certificateAuthRouter.get(
         try {
             // 전체 자격증 목록을 얻음
             const user_id = req.params.user_id;
-            const certificates = await certificateAuthService.getCertificates({
+            const certificates = await CertificateService.getCertificates({
                 user_id
             });
             res.status(200).send(certificates);
@@ -118,7 +117,7 @@ certificateAuthRouter.delete(
         try {
             // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
-            await certificateAuthService.deleteCertificate({ certificate_id });
+            await CertificateService.deleteCertificate({ certificate_id });
             console.log(certificate_id);
             res.status(200).send('삭제되었습니다.');
         } catch (error) {
