@@ -1,27 +1,27 @@
 import { Schema, model } from 'mongoose';
 
-const UserSchema = new Schema(
+const EducationSchema = new Schema(
     {
         id: {
             type: String,
             required: true
         },
-        email: {
+        user_id: {
             type: String,
             required: true
         },
-        name: {
+        school: {
             type: String,
             required: true
         },
-        password: {
+        major: {
             type: String,
             required: true
         },
-        description: {
+        position: {
             type: String,
-            required: false,
-            default: '설명이 아직 없습니다. 추가해 주세요.'
+            enum: ['재학중', '학사졸업', '석사졸업', '박사졸업'],
+            required: false
         }
     },
     {
@@ -29,6 +29,6 @@ const UserSchema = new Schema(
     }
 );
 
-const UserModel = model('User', UserSchema);
+const EducationModel = model('Education', EducationSchema);
 
-export { UserModel };
+export { EducationModel };
