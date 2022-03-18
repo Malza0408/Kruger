@@ -49,7 +49,7 @@ const Projects = ({ portfolioOwnerId, isEditable }) => {
                 {isAdding && (
                     <ProjectAddForm
                         setIsAdding={setIsAdding}
-                        setAwards={setProjects}
+                        setProjects={setProjects}
                         portfolioOwnerId={portfolioOwnerId}
                     />
                 )}
