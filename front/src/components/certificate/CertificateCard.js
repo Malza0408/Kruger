@@ -18,7 +18,7 @@ const CertificateCard = ({ certificate, setIsEditing, isEditable, setCertificate
     
     return (
         <>
-            <Card.Text>
+            <Card.Body>
                 <Row className='align-items-center'>
                 <Col>
                     {certificate.title}
@@ -48,7 +48,7 @@ const CertificateCard = ({ certificate, setIsEditing, isEditable, setCertificate
                         </Col>
                     )}
                 </Row>
-            </Card.Text>
+            </Card.Body>
         </>
     );
 };
