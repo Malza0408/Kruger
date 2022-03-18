@@ -6,9 +6,9 @@ class User {
         return createdNewUser;
     }
 
-    static async findByEmail({ email }) {
-        const user = await UserModel.findOne({ email });
-        return user;
+    static async findAll() {
+        const users = await UserModel.find({});
+        return users;
     }
 
     static async findById({ user_id }) {
@@ -16,9 +16,9 @@ class User {
         return user;
     }
 
-    static async findAll() {
-        const users = await UserModel.find({});
-        return users;
+    static async findByEmail({ email }) {
+        const user = await UserModel.findOne({ email });
+        return user;
     }
 
     static async updateById({ user_id, fieldToUpdate, newValue }) {

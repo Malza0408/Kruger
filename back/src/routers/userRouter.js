@@ -75,6 +75,23 @@ userAuthRouter.get(
     }
 );
 
+userAuthRouter.get(
+    '/users/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const user_id = req.params.id;
+            const currentUserInfo = await UserService.getUserInfo({
+                user_id
+            });
+
+            res.status(200).send(currentUserInfo);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 userAuthRouter.put(
     '/users/:id',
     login_required,
@@ -109,23 +126,6 @@ userAuthRouter.put('/user/resetPassword', async function (req, res, next) {
         next(error);
     }
 });
-
-userAuthRouter.get(
-    '/users/:id',
-    login_required,
-    async function (req, res, next) {
-        try {
-            const user_id = req.params.id;
-            const currentUserInfo = await UserService.getUserInfo({
-                user_id
-            });
-
-            res.status(200).send(currentUserInfo);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
 
 userAuthRouter.delete(
     '/users/:id',

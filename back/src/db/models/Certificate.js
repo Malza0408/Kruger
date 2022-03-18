@@ -9,6 +9,12 @@ class Certificate {
         return createdNewCertificate;
     }
 
+    // 같은 user_id를 가진 모든 자격증 요소들을 불러옴
+    static async findAllById({ user_id }) {
+        const certificates = await CertificateModel.find({ user_id });
+        return certificates;
+    }
+
     // id를 통해 해당 자격증 요소를 가져옴
     static async findById({ certificate_id }) {
         const certificate = await CertificateModel.findOne({
@@ -29,12 +35,6 @@ class Certificate {
             option
         );
         return updatedCertificate;
-    }
-
-    // 같은 user_id를 가진 모든 자격증 요소들을 불러옴
-    static async findAllById({ user_id }) {
-        const certificates = await CertificateModel.find({ user_id });
-        return certificates;
     }
 
     // id를 통해 해당 자격증 요소를 삭제함

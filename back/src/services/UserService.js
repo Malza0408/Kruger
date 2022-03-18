@@ -27,6 +27,11 @@ class UserService {
         return createdNewUser;
     }
 
+    static async getUsers() {
+        const users = await User.findAll();
+        return users;
+    }
+
     static async getUser({ email, password }) {
         // 이메일 db에 존재 여부 확인
         const user = await User.findByEmail({ email });
@@ -69,9 +74,17 @@ class UserService {
         return loginUser;
     }
 
-    static async getUsers() {
-        const users = await User.findAll();
-        return users;
+    static async getUserInfo({ user_id }) {
+        const user = await User.findById({ user_id });
+
+        // db에서 찾지 못한 경우, 에러 메시지 반환
+        if (!user) {
+            const errorMessage =
+                '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+            throw new Error(errorMessage);
+        }
+
+        return user;
     }
 
     static async setUser({ user_id, toUpdate }) {
@@ -115,24 +128,6 @@ class UserService {
         return user;
     }
 
-    static async getUserInfo({ user_id }) {
-        const user = await User.findById({ user_id });
-
-        // db에서 찾지 못한 경우, 에러 메시지 반환
-        if (!user) {
-            const errorMessage =
-                '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
-            throw new Error(errorMessage);
-        }
-
-        return user;
-    }
-
-    static async deleteUser({ user_id }) {
-        await User.deleteById({ user_id });
-        return;
-    }
-
     static async resetPassword({ email }) {
         let user = await User.findByEmail({ email });
         console.log(email);
@@ -158,6 +153,11 @@ class UserService {
         // 등록된 회원일 경우 이메일 내용
         const text = `귀하의 새로운 비밀번호는 ${newPassword} 입니다. 로그인 후 비밀번호를 변경해주세요.`;
         await sendMail(email, subject, text);
+        return;
+    }
+
+    static async deleteUser({ user_id }) {
+        await User.deleteById({ user_id });
         return;
     }
 }

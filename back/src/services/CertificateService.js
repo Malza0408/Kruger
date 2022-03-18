@@ -17,6 +17,11 @@ class CertificateService {
         return createdNewCertificate;
     }
 
+    static async getCertificates({ user_id }) {
+        const certificates = await Certificate.findAllById({ user_id });
+        return certificates;
+    }
+
     static async getCertificateInfo({ certificate_id }) {
         const certificate = await Certificate.findById({ certificate_id });
 
@@ -71,11 +76,6 @@ class CertificateService {
         }
 
         return certificate;
-    }
-
-    static async getCertificates({ user_id }) {
-        const certificates = await Certificate.findAllById({ user_id });
-        return certificates;
     }
 
     static async deleteCertificate({ certificate_id }) {

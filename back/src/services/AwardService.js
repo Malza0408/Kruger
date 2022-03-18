@@ -15,6 +15,11 @@ class AwardService {
         return createdNewAward;
     }
 
+    static async getAwards({ user_id }) {
+        const awards = await Award.findAllById({ user_id });
+        return awards;
+    }
+
     static async getAwardInfo({ award_id }) {
         const award = await Award.findById({ award_id });
 
@@ -51,11 +56,6 @@ class AwardService {
         }
 
         return award;
-    }
-
-    static async getAwards({ user_id }) {
-        const awards = await Award.findAllById({ user_id });
-        return awards;
     }
 
     static async deleteAward({ award_id }) {

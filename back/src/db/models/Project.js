@@ -7,6 +7,12 @@ class Project {
         return createdNewProject;
     }
 
+    // 같은 user_id를 가진 모든 프로젝트 요소들을 불러옴
+    static async findAllById({ user_id }) {
+        const projects = await ProjectModel.find({ user_id });
+        return projects;
+    }
+
     // id를 통해 해당 프로젝트 요소를 가져옴
     static async findById({ project_id }) {
         const project = await ProjectModel.findOne({ id: project_id });
@@ -25,12 +31,6 @@ class Project {
             option
         );
         return updatedProject;
-    }
-
-    // 같은 user_id를 가진 모든 프로젝트 요소들을 불러옴
-    static async findAllById({ user_id }) {
-        const projects = await ProjectModel.find({ user_id });
-        return projects;
     }
 
     // id를 통해 해당 프로젝트 요소를 삭제함

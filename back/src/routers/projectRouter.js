@@ -36,6 +36,21 @@ projectAuthRouter.post(
 );
 
 projectAuthRouter.get(
+    '/projectlist/:user_id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            // 전체 프로젝트 목록을 얻음
+            const user_id = req.params.user_id;
+            const projects = await ProjectService.getProjects({ user_id });
+            res.status(200).send(projects);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+projectAuthRouter.get(
     '/projects/:id',
     login_required,
     async (req, res, next) => {
@@ -70,21 +85,6 @@ projectAuthRouter.put(
             });
 
             res.status(200).json(updatedProject);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-projectAuthRouter.get(
-    '/projectlist/:user_id',
-    login_required,
-    async function (req, res, next) {
-        try {
-            // 전체 프로젝트 목록을 얻음
-            const user_id = req.params.user_id;
-            const projects = await ProjectService.getProjects({ user_id });
-            res.status(200).send(projects);
         } catch (error) {
             next(error);
         }
