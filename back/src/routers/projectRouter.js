@@ -28,10 +28,6 @@ projectAuthRouter.post(
                 to_date
             });
 
-            if (newProject.errorMessage) {
-                throw new Error(newProject.errorMessage);
-            }
-
             res.status(201).json(newProject);
         } catch (error) {
             next(error);
@@ -48,10 +44,6 @@ projectAuthRouter.get(
             const currentProjectInfo = await ProjectService.getProjectInfo({
                 project_id
             });
-
-            if (currentProjectInfo.errorMessage) {
-                throw new Error(currentProjectInfo.errorMessage);
-            }
 
             res.status(200).send(currentProjectInfo);
         } catch (error) {
@@ -76,10 +68,6 @@ projectAuthRouter.put(
                 project_id,
                 toUpdate
             });
-
-            if (updatedProject.errorMessage) {
-                throw new Error(updatedProject.errorMessage);
-            }
 
             res.status(200).json(updatedProject);
         } catch (error) {

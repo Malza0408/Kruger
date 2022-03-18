@@ -26,10 +26,6 @@ awardAuthRouter.post(
                 description
             });
 
-            if (newAward.errorMessage) {
-                throw new Error(newAward.errorMessage);
-            }
-
             res.status(201).json(newAward);
         } catch (error) {
             next(error);
@@ -43,10 +39,6 @@ awardAuthRouter.get('/awards/:id', login_required, async (req, res, next) => {
         const currentAwardInfo = await AwardService.getAwardInfo({
             award_id
         });
-
-        if (currentAwardInfo.errorMessage) {
-            throw new Error(currentAwardInfo.errorMessage);
-        }
 
         res.status(200).send(currentAwardInfo);
     } catch (error) {
@@ -71,10 +63,6 @@ awardAuthRouter.put(
                 award_id,
                 toUpdate
             });
-
-            if (updatedAward.errorMessage) {
-                throw new Error(updatedAward.errorMessage);
-            }
 
             res.status(200).json(updatedAward);
         } catch (error) {

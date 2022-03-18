@@ -20,9 +20,6 @@ educationRouter.post('/education/create', async (req, res, next) => {
             major,
             position
         });
-        if (newEducation.errorMessage) {
-            throw new Error(newEducation.errorMessage);
-        }
         console.log('education 생성되었습니다.');
         res.status(201).json(newEducation);
     } catch (error) {
@@ -44,9 +41,6 @@ educationRouter.get('/educations/:id', async (req, res, next) => {
     try {
         const education_id = req.params.id;
         const education = await EducationService.getEducation({ education_id });
-        if (education.errorMessage) {
-            throw new Error(education.errorMessage);
-        }
         res.status(200).send(education);
     } catch (error) {
         next(error);
@@ -62,9 +56,6 @@ educationRouter.put('/educations/:id', async (req, res, next) => {
             education_id,
             toUpdate
         });
-        if (updatedEducation.errorMessage) {
-            throw new Error(errorMessage);
-        }
         console.log('수정되었습니다.');
         res.status(200).json(updatedEducation);
     } catch (error) {

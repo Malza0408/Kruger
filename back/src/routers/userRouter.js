@@ -23,10 +23,6 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
             password
         });
 
-        if (newUser.errorMessage) {
-            throw new Error(newUser.errorMessage);
-        }
-
         res.status(201).json(newUser);
     } catch (error) {
         next(error);
@@ -40,10 +36,6 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
 
         // 위 데이터를 이용하여 유저 db에서 유저 찾기
         const user = await UserService.getUser({ email, password });
-
-        if (user.errorMessage) {
-            throw new Error(user.errorMessage);
-        }
 
         res.status(200).send(user);
     } catch (error) {
@@ -76,10 +68,6 @@ userAuthRouter.get(
                 user_id
             });
 
-            if (currentUserInfo.errorMessage) {
-                throw new Error(currentUserInfo.errorMessage);
-            }
-
             res.status(200).send(currentUserInfo);
         } catch (error) {
             next(error);
@@ -105,10 +93,6 @@ userAuthRouter.put(
                 toUpdate
             });
 
-            if (updatedUser.errorMessage) {
-                throw new Error(updatedUser.errorMessage);
-            }
-
             res.status(200).json(updatedUser);
         } catch (error) {
             next(error);
@@ -125,10 +109,6 @@ userAuthRouter.get(
             const currentUserInfo = await UserService.getUserInfo({
                 user_id
             });
-
-            if (currentUserInfo.errorMessage) {
-                throw new Error(currentUserInfo.errorMessage);
-            }
 
             res.status(200).send(currentUserInfo);
         } catch (error) {
