@@ -11,7 +11,7 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
         await Api.get('awardlist', user_id).then((res) => setAwards(res.data));
     };
     return (
-        <Card.Text>
+        <Card.Body>
             <Row className='align-items-center'>
                 <Col>
                     <span>{award.title}</span>
@@ -41,7 +41,7 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                     </Col>
                 )}
             </Row>
-        </Card.Text>
+        </Card.Body>
     );
 };
 

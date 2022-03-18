@@ -11,7 +11,7 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
         );
     };
     return (
-        <Card.Text>
+        <Card.Body>
             <Row className='align-items-center'>
                 <Col>
                     <span>{project.title}</span>
@@ -45,7 +45,7 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
                     </Col>
                 )}
             </Row>
-        </Card.Text>
+        </Card.Body>
     );
 };
 
