@@ -5,7 +5,10 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { UserStateContext } from '../App';
 import * as Api from '../api';
 import User from './user/User';
+import Educations from './education/Educations';
 import Awards from './award/Awards';
+import Projects from './project/Projects';
+import Certificates from './certificate/Certificates';
 
 function Portfolio() {
     const navigate = useNavigate();
@@ -63,7 +66,31 @@ function Portfolio() {
                 </Col>
                 <Col>
                     <div className='mb-2'>
+                        <Educations
+                            portfolioOwnerId={portfolioOwner.id}
+                            isEditable={
+                                portfolioOwner.id === userState.user?.id
+                            }
+                        />
+                    </div>
+                    <div className='mb-2'>
                         <Awards
+                            portfolioOwnerId={portfolioOwner.id}
+                            isEditable={
+                                portfolioOwner.id === userState.user?.id
+                            }
+                        />
+                    </div>
+                    <div className='mb-2'>
+                        <Projects
+                            portfolioOwnerId={portfolioOwner.id}
+                            isEditable={
+                                portfolioOwner.id === userState.user?.id
+                            }
+                        />
+                    </div>
+                    <div className='mb-2'>
+                        <Certificates
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={
                                 portfolioOwner.id === userState.user?.id

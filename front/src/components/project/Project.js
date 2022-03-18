@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import AwardCard from './AwardCard';
-import AwardEditForm from './AwardEditForm';
+import ProjectCard from './ProjectCard';
+import ProjectEditForm from './ProjectEditForm';
 
-const Award = ({ award, setAwards, isEditable }) => {
+const Project = ({ project, setProjects, isEditable }) => {
     // useState 훅을 통해 isEditing 상태를 생성함.
     const [isEditing, setIsEditing] = useState(false);
 
@@ -11,16 +11,16 @@ const Award = ({ award, setAwards, isEditable }) => {
         <>
             {/* 편집 상태일때는 AwardEditForm을 렌더링 아닐때는 AwardCard를 렌더링 */}
             {isEditing ? (
-                <AwardEditForm
+                <ProjectEditForm
                     setIsEditing={setIsEditing}
-                    award={award}
-                    setAwards={setAwards}
+                    project={project}
+                    setProjects={setProjects}
                 />
             ) : (
-                <AwardCard
+                <ProjectCard
                     setIsEditing={setIsEditing}
-                    award={award}
-                    setAwards={setAwards}
+                    project={project}
+                    setProjects={setProjects}
                     isEditable={isEditable}
                 />
             )}
@@ -28,4 +28,4 @@ const Award = ({ award, setAwards, isEditable }) => {
     );
 };
 
-export default Award;
+export default Project;
