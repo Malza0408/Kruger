@@ -33,6 +33,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
                     return (
                         <Education
                             key={education.id}
+                            portfolioOwnerId={portfolioOwnerId}
                             education={education}
                             setEducations={setEducations}
                             isEditable={isEditable}

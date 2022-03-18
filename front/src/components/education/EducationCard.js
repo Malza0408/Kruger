@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Button, Card } from 'react-bootstrap';
 const EducationCard = ({
     handleEditing,
+    handleDeleting,
     school,
     major,
     position,
@@ -34,6 +35,7 @@ const EducationCard = ({
                                 className="mb-1"
                                 variant="outline-danger"
                                 size="sm"
+                                onClick={handleDeleting}
                             >
                                 삭제
                             </Button>
