@@ -25,7 +25,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
         <Card>
             <Card.Body>
                 <Card.Title>학력</Card.Title>
-                {/* + 버튼으로 추가하면 educationBody 배열로 들어간다. 배열을 돌면서 렌더링 */}
+                {/* + 버튼으로 추가하면 educationBody 배열로 들어간다. 배열을 돌면서 렌더링 한다. */}
                 {educations?.map((education) => {
                     return (
                         <Education
@@ -36,6 +36,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
                         />
                     );
                 })}
+                {/* 학력을 추가하는 상태일때 렌더링 시킨다. */}
                 {isAddState && (
                     <EducationAddForm
                         setAddState={setAddState}
@@ -43,7 +44,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
                         portfolioOwnerId={portfolioOwnerId}
                     />
                 )}
-                {/* Add Form 보여주기 */}
+                {/* 권한이 있을 경우에만 add 버튼을 활성화 시킨다. */}
                 {isEditable && (
                     <div className='mt-3 text-center mb-1'>
                         <div className='col-sm-12'>

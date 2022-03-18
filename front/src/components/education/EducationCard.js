@@ -18,6 +18,7 @@ const EducationCard = ({
 
                     <span className='text-muted'>{position}</span>
                 </Col>
+                {/* 편집 권한이 있다면 보여준다. */}
                 {isEditable && school && (
                     <Col className='col-lg-1'>
                         <Button
