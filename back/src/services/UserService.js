@@ -32,7 +32,7 @@ class UserService {
         const user = await User.findByEmail({ email });
         if (!user) {
             const errorMessage =
-                '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+                '등록되지 않은 아이디이거나 아이디 또는 비밀번호를 잘못 입력했습니다.';
             return { errorMessage };
         }
 
@@ -44,7 +44,7 @@ class UserService {
         );
         if (!isPasswordCorrect) {
             const errorMessage =
-                '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.';
+                '등록되지 않은 아이디이거나 아이디 또는 비밀번호를 잘못 입력했습니다.';
             return { errorMessage };
         }
 
