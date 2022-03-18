@@ -1,6 +1,7 @@
 import { Education } from '../db';
 import { User } from '../db';
 import { v4 as uuidv4 } from 'uuid';
+import { EducationModel } from '../db/schemas/education';
 
 class EducationService {
     static async createEducation({ user_id, school, major, position }) {
@@ -18,7 +19,7 @@ class EducationService {
         if (!education) {
             const errorMessage =
                 '해당하는 학력이 없습니다. 다시 한 번 확인해 주세요.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
         return education;
     }
@@ -31,7 +32,7 @@ class EducationService {
         if (!education) {
             const errorMessage =
                 '학력을 등록한 내역이 없습니다. 다시 한 번 확인해주세요.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
         if (toUpdate.school) {
             const fieldToUpdate = 'school';
@@ -61,6 +62,17 @@ class EducationService {
             });
         }
         return education;
+    }
+    static async deleteEducation({ education_id }) {
+        const targetEducatoin = await Education.findByEducationId({
+            education_id
+        });
+        if (!targetEducatoin) {
+            const errorMessage = '해당하는 학력이 없습니다. 다시 확인해주세요.';
+            throw new Error(errorMessage);
+        }
+        await Education.delete({ education_id });
+        return;
     }
 }
 
