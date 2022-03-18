@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import EducationEditForm from './EducationEditForm';
 import EducationCard from './EducationCard';
 

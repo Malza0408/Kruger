@@ -10,10 +10,13 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
 
     useEffect(() => {
         const getEducationList = async () => {
-            const list = await Api.get(`educationlist/${portfolioOwnerId}`);
-            setEducations([...list.data]);
+            try {
+                const list = await Api.get('educationlist', portfolioOwnerId);
+                setEducations([...list.data]);
+            } catch (error) {
+                throw new Error(error);
+            }
         };
-        console.log('테스트');
         getEducationList();
     }, [portfolioOwnerId]);
 
@@ -46,9 +49,9 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
                 )}
                 {/* 권한이 있을 경우에만 add 버튼을 활성화 시킨다. */}
                 {isEditable && (
-                    <div className='mt-3 text-center mb-1'>
-                        <div className='col-sm-12'>
-                            <Button variant='primary' onClick={handleOnClick}>
+                    <div className="mt-3 text-center mb-1">
+                        <div className="col-sm-12">
+                            <Button variant="primary" onClick={handleOnClick}>
                                 +
                             </Button>
                         </div>

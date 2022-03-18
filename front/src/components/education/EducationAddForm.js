@@ -21,15 +21,21 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await Api.post('education/create', {
-            user_id: portfolioOwnerId,
-            school,
-            major,
-            position,
-        });
-        const educations = await Api.get(`educationlist/${portfolioOwnerId}`);
-        setEducations([...educations.data]);
-        setAddState(false);
+        try {
+            await Api.post('education/create', {
+                user_id: portfolioOwnerId,
+                school,
+                major,
+                position
+            });
+            const educations = await Api.get(
+                `educationlist/${portfolioOwnerId}`
+            );
+            setEducations([...educations.data]);
+            setAddState(false);
+        } catch (error) {
+            throw new Error(error);
+        }
     };
 
     const handleOnClick = () => {
