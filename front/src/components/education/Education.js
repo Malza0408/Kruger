@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import EducationEditForm from './EducationEditForm';
 import EducationCard from './EducationCard';
 
-const Education = ({ education, setEducations }) => {
+const Education = ({ education, setEducations, isEditable }) => {
     const [isEditing, setIsEditing] = useState(false);
 
     const handleEditing = (e) => {
@@ -16,7 +16,7 @@ const Education = ({ education, setEducations }) => {
             {isEditing ? (
                 <EducationEditForm
                     education={education}
-                    setIsEditing={setIsEditing}
+                    setIsEditing={handleEditing}
                     setEducations={setEducations}
                 />
             ) : (
@@ -25,6 +25,7 @@ const Education = ({ education, setEducations }) => {
                     school={education.school}
                     major={education.major}
                     position={education.position}
+                    isEditable={isEditable}
                 />
             )}
         </>

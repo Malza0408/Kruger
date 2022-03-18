@@ -1,6 +1,12 @@
 import React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
-const EducationCard = ({ handleEditing, school, major, position }) => {
+const EducationCard = ({
+    handleEditing,
+    school,
+    major,
+    position,
+    isEditable,
+}) => {
     return (
         <>
             <Row className='align-items-center'>
@@ -12,7 +18,7 @@ const EducationCard = ({ handleEditing, school, major, position }) => {
 
                     <span className='text-muted'>{position}</span>
                 </Col>
-                {school && (
+                {isEditable && school && (
                     <Col className='col-lg-1'>
                         <Button
                             className=''

@@ -32,7 +32,8 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
                             key={education.id}
                             education={education}
                             setEducations={setEducations}
-                        ></Education>
+                            isEditable={isEditable}
+                        />
                     );
                 })}
                 {isAddState && (
@@ -40,16 +41,18 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
                         setAddState={setAddState}
                         setEducations={setEducations}
                         portfolioOwnerId={portfolioOwnerId}
-                    ></EducationAddForm>
+                    />
                 )}
                 {/* Add Form 보여주기 */}
-                <div className='mt-3 text-center mb-1'>
-                    <div className='col-sm-12'>
-                        <Button variant='primary' onClick={handleOnClick}>
-                            +
-                        </Button>
+                {isEditable && (
+                    <div className='mt-3 text-center mb-1'>
+                        <div className='col-sm-12'>
+                            <Button variant='primary' onClick={handleOnClick}>
+                                +
+                            </Button>
+                        </div>
                     </div>
-                </div>
+                )}
             </Card.Body>
         </Card>
     );
