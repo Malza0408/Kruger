@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Col, Button } from 'react-bootstrap';
+import { Card, Col, Row, Button } from 'react-bootstrap';
 
 import Certificate from './Certificate';
 import CertificateAddForm from './CertificateAddForm';
@@ -22,19 +22,16 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
             <Card>
                 <Card.Body>
                     <Card.Title>자격증</Card.Title>
-                    {
-                        certificate.map((certificate) => {
-                            return (
-                                <Certificate
-                                    certificate={certificate}
-                                    setCertificate={setCertificate}
-                                    portfolioOwnerId={portfolioOwnerId}
-                                    isEditable={isEditable}
-                                />
+                    {certificate.map((certificate) => {
+                        return (
+                            <Certificate
+                                certificate={certificate}
+                                setCertificate={setCertificate}
+                                portfolioOwnerId={portfolioOwnerId}
+                                isEditable={isEditable}
+                            />
                             );
-                        })
-                    }
-
+                    })}
                     <Col>
                         <Button
                             variant="primary"
@@ -50,6 +47,7 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
                             portfolioOwnerId={portfolioOwnerId}
                         />
                     ) }
+                    
                 </Card.Body>
             </Card>
         </>
