@@ -2,6 +2,7 @@ import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
+import { sendMail } from './MailService';
 
 class UserService {
     static async addUser({ name, email, password }) {
@@ -88,13 +89,13 @@ class UserService {
         if (toUpdate.name) {
             const fieldToUpdate = 'name';
             const newValue = toUpdate.name;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
         if (toUpdate.email) {
             const fieldToUpdate = 'email';
             const newValue = toUpdate.email;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
         if (toUpdate.password) {
@@ -102,13 +103,13 @@ class UserService {
             // 새로운 비밀번호 해쉬화
             const newHashedPassword = await bcrypt.hash(toUpdate.password, 10);
             const newValue = newHashedPassword;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
         if (toUpdate.description) {
             const fieldToUpdate = 'description';
             const newValue = toUpdate.description;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
         return user;
@@ -129,6 +130,34 @@ class UserService {
 
     static async deleteUser({ user_id }) {
         await User.deleteById({ user_id });
+        return;
+    }
+
+    static async resetPassword({ email }) {
+        let user = await User.findByEmail({ email });
+        console.log(email);
+        const subject = '포트폴리오 공유 웹 서비스';
+        // 등록되지 않은 회원일 경우 이메일 내용
+        if (!user) {
+            const text = `귀하의 이메일은 저희 서비스에 등록되어 있지 않습니다. 회원가입을 해주세요 :)`;
+            await sendMail(email, subject, text);
+            return;
+        }
+
+        const fieldToUpdate = 'password';
+
+        // uuidv4로 랜덤한 문자열을 가져오고 너무 길지 않게 10글자로만 새로운 비밀번호를 보내줌
+        const randomPassword = uuidv4();
+        const newPassword = randomPassword.slice(0, 10);
+        const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+        const newValue = newHashedPassword;
+
+        await User.updateByEmail({ email, fieldToUpdate, newValue });
+
+        // 등록된 회원일 경우 이메일 내용
+        const text = `귀하의 새로운 비밀번호는 ${newPassword} 입니다. 로그인 후 비밀번호를 변경해주세요.`;
+        await sendMail(email, subject, text);
         return;
     }
 }

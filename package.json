@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "nodemailer": "^6.7.2",
     "react-bootstrap-date-picker": "^5.1.0"
   }
 }

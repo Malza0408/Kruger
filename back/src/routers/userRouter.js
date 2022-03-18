@@ -100,6 +100,16 @@ userAuthRouter.put(
     }
 );
 
+userAuthRouter.put('/user/resetPassword', async function (req, res, next) {
+    try {
+        const { email } = req.body;
+        await UserService.resetPassword({ email });
+        res.status(200).json('메일이 발송되었습니다.');
+    } catch (error) {
+        next(error);
+    }
+});
+
 userAuthRouter.get(
     '/users/:id',
     login_required,
