@@ -8,7 +8,7 @@ class Project {
     }
 
     // 같은 user_id를 가진 모든 프로젝트 요소들을 불러옴
-    static async findAllById({ user_id }) {
+    static async findAll({ user_id }) {
         const projects = await ProjectModel.find({ user_id });
         return projects;
     }

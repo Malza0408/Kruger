@@ -29,7 +29,7 @@ class ProjectService {
     }
 
     static async getProjects({ user_id }) {
-        const projects = await Project.findAllById({ user_id });
+        const projects = await Project.findAll({ user_id });
         return projects;
     }
 

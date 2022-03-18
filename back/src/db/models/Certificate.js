@@ -10,7 +10,7 @@ class Certificate {
     }
 
     // 같은 user_id를 가진 모든 자격증 요소들을 불러옴
-    static async findAllById({ user_id }) {
+    static async findAll({ user_id }) {
         const certificates = await CertificateModel.find({ user_id });
         return certificates;
     }

@@ -16,7 +16,7 @@ class AwardService {
     }
 
     static async getAwards({ user_id }) {
-        const awards = await Award.findAllById({ user_id });
+        const awards = await Award.findAll({ user_id });
         return awards;
     }
 

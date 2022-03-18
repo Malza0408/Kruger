@@ -18,7 +18,7 @@ class CertificateService {
     }
 
     static async getCertificates({ user_id }) {
-        const certificates = await Certificate.findAllById({ user_id });
+        const certificates = await Certificate.findAll({ user_id });
         return certificates;
     }
 
