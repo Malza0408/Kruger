@@ -1,7 +1,7 @@
 import { Award } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import { v4 as uuidv4 } from 'uuid';
 
-class awardAuthService {
+class AwardService {
     static async addAward({ user_id, title, description }) {
         // id 는 유니크 값 부여
         const id = uuidv4();
@@ -11,7 +11,6 @@ class awardAuthService {
 
         // db에 저장
         const createdNewAward = await Award.create({ newAward });
-        createdNewAward.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
 
         return createdNewAward;
     }
@@ -22,7 +21,7 @@ class awardAuthService {
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!award) {
             const errorMessage = '삭제되었거나 등록되지 않은 수상내역입니다.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         return award;
@@ -35,7 +34,7 @@ class awardAuthService {
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!award) {
             const errorMessage = '삭제되었거나 등록되지 않은 수상 내역입니다.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         // 업데이트 대상에 title이 있다면, 즉 title 값이 null 이 아니라면 업데이트 진행
@@ -65,4 +64,4 @@ class awardAuthService {
     }
 }
 
-export { awardAuthService };
+export { AwardService };

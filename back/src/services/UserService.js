@@ -3,14 +3,14 @@ import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 
-class userAuthService {
+class UserService {
     static async addUser({ name, email, password }) {
         // 이메일 중복 확인
         const user = await User.findByEmail({ email });
         if (user) {
             const errorMessage =
                 '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         // 비밀번호 해쉬화
@@ -22,7 +22,6 @@ class userAuthService {
 
         // db에 저장
         const createdNewUser = await User.create({ newUser });
-        createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음
 
         return createdNewUser;
     }
@@ -32,8 +31,8 @@ class userAuthService {
         const user = await User.findByEmail({ email });
         if (!user) {
             const errorMessage =
-                '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
-            return { errorMessage };
+                '등록되지 않은 아이디이거나 아이디 또는 비밀번호를 잘못 입력했습니다.';
+            throw new Error(errorMessage);
         }
 
         // 비밀번호 일치 여부 확인
@@ -44,8 +43,8 @@ class userAuthService {
         );
         if (!isPasswordCorrect) {
             const errorMessage =
-                '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.';
-            return { errorMessage };
+                '등록되지 않은 아이디이거나 아이디 또는 비밀번호를 잘못 입력했습니다.';
+            throw new Error(errorMessage);
         }
 
         // 로그인 성공 -> JWT 웹 토큰 생성
@@ -82,7 +81,7 @@ class userAuthService {
         if (!user) {
             const errorMessage =
                 '가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         // 업데이트 대상에 name이 있다면, 즉 name 값이 null 이 아니라면 업데이트 진행
@@ -100,7 +99,9 @@ class userAuthService {
 
         if (toUpdate.password) {
             const fieldToUpdate = 'password';
-            const newValue = toUpdate.password;
+            // 새로운 비밀번호 해쉬화
+            const newHashedPassword = await bcrypt.hash(toUpdate.password, 10);
+            const newValue = newHashedPassword;
             user = await User.update({ user_id, fieldToUpdate, newValue });
         }
 
@@ -120,11 +121,16 @@ class userAuthService {
         if (!user) {
             const errorMessage =
                 '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         return user;
     }
+
+    static async deleteUser({ user_id }) {
+        await User.deleteById({ user_id });
+        return;
+    }
 }
 
-export { userAuthService };
+export { UserService };
