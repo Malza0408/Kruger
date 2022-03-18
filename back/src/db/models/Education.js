@@ -27,6 +27,10 @@ class Education {
         );
         return updatedEducation;
     }
+    static async delete({ education_id }) {
+        await EducationModel.deleteOne({ id: education_id });
+        return;
+    }
 }
 
 export { Education };

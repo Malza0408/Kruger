@@ -1,6 +1,7 @@
 import { Education } from '../db';
 import { User } from '../db';
 import { v4 as uuidv4 } from 'uuid';
+import { EducationModel } from '../db/schemas/education';
 
 class EducationService {
     static async createEducation({ user_id, school, major, position }) {
@@ -61,6 +62,17 @@ class EducationService {
             });
         }
         return education;
+    }
+    static async deleteEducation({ education_id }) {
+        const targetEducatoin = await Education.findByEducationId({
+            education_id
+        });
+        if (!targetEducatoin) {
+            const errorMessage = '해당하는 학력이 없습니다. 다시 확인해주세요.';
+            throw new Error(errorMessage);
+        }
+        await Education.delete({ education_id });
+        return;
     }
 }
 
