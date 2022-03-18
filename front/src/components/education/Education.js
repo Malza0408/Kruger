@@ -10,8 +10,25 @@ const Education = ({
     isEditable
 }) => {
     const [isEditing, setIsEditing] = useState(false);
+    const [inputInfo, setInputInfo] = useState(null);
 
-    const handleEditing = (e) => {
+    const handleEditing = async (e) => {
+        setIsEditing(!isEditing);
+
+        try {
+            const result = await Api.get('educations', education.id);
+            const { school, major, position } = result.data;
+            setInputInfo({
+                school,
+                major,
+                position
+            });
+        } catch (error) {
+            throw new Error(error);
+        }
+    };
+
+    const handleEditCancel = () => {
         setIsEditing(!isEditing);
     };
 
@@ -32,8 +49,10 @@ const Education = ({
             {isEditing ? (
                 <EducationEditForm
                     education={education}
-                    setIsEditing={handleEditing}
+                    handleEditCancel={handleEditCancel}
                     setEducations={setEducations}
+                    inputInfo={inputInfo}
+                    setInputInfo={setInputInfo}
                 />
             ) : (
                 <EducationCard

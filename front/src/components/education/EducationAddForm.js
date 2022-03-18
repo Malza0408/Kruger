@@ -5,7 +5,7 @@ import DefaultForm from './DefaultForm';
 const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
     const [school, setSchool] = useState('');
     const [major, setMajor] = useState('');
-    const [position, setPosition] = useState('');
+    const [position, setPosition] = useState('재학중');
 
     const handleSchoolOnChange = (e) => {
         setSchool(e.target.value);
@@ -51,6 +51,11 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
             handleCheckOnClick={handleCheckOnClick}
             handleSubmit={handleSubmit}
             handleFunction={handleOnClick}
+            inputInfo={{
+                school,
+                major,
+                position
+            }}
         />
     );
 };
