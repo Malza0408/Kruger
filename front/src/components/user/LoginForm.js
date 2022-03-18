@@ -99,7 +99,7 @@ function LoginForm() {
                         <Form.Group as={Row} className="mt-3 text-center">
                             {isLoginFail && (
                                 <Form.Text className="text-danger">
-                                     아이디 또는 비밀번호를 잘못 입력했습니다.
+                                     이메일 또는 비밀번호를 잘못 입력했습니다.
                                 </Form.Text>
                             )}
                             <Col sm={{ span: 20 }}>
