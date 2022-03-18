@@ -20,6 +20,7 @@ const Award = ({ award, setAwards, isEditable }) => {
                 <AwardCard
                     setIsEditing={setIsEditing}
                     award={award}
+                    setAwards={setAwards}
                     isEditable={isEditable}
                 />
             )}

@@ -1,7 +1,15 @@
 import React from 'react';
 import { Card, Col, Row, Button } from 'react-bootstrap';
-
-const ProjectCard = ({ setIsEditing, project, isEditable }) => {
+import * as Api from '../../api';
+const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
+    const handleDelete = async (e) => {
+        e.preventDefault();
+        const user_id = project.user_id;
+        await Api.delete(`projects/${project.id}`);
+        await Api.get('projectlist', user_id).then((res) =>
+            setProjects(res.data)
+        );
+    };
     return (
         <Card.Text>
             <Row className='align-items-center'>
@@ -20,12 +28,19 @@ const ProjectCard = ({ setIsEditing, project, isEditable }) => {
                         <Button
                             variant='outline-info'
                             size='sm'
-                            className='mr-3'
+                            className='mr-3 mb-1'
                             onClick={() => {
                                 setIsEditing((prev) => !prev);
                             }}
                         >
                             편집
+                        </Button>
+                        <Button
+                            variant='outline-danger'
+                            size='sm'
+                            onClick={handleDelete}
+                        >
+                            삭제
                         </Button>
                     </Col>
                 )}
