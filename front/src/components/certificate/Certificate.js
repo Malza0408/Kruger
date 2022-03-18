@@ -19,6 +19,7 @@ const Certificate = ({ certificate, setCertificate, portfolioOwnerId, isEditable
                     certificate={certificate}
                     setIsEditing={setIsEditing}
                     isEditable={isEditable}
+                    setCertificate={setCertificate}
                 />
             )}
         </>

@@ -1,7 +1,21 @@
 import React from 'react';
 import { Card, Button, Col, Row } from 'react-bootstrap';
 
-const CertificateCard = ({ certificate, setIsEditing, isEditable }) => {
+import * as Api from '../../api';
+
+const CertificateCard = ({ certificate, setIsEditing, isEditable, setCertificate }) => {
+    const user_id = certificate.user_id;
+
+    const handleDelete = async (e) => {
+        e.preventDefault();
+
+        await Api.delete(`certificates/${certificate.id}`)
+
+        await Api.get('certificatelist', user_id).then((res) =>
+            setCertificate(res.data)
+        )
+    }
+    
     return (
         <>
             <Card.Text>
@@ -23,6 +37,14 @@ const CertificateCard = ({ certificate, setIsEditing, isEditable }) => {
                             >
                                 편집
                             </Button>
+                            <Button 
+                                variant="outline-danger"
+                                size="sm"
+                                className='mr-3'
+                                onClick={handleDelete}
+                            >
+                                삭제
+                            </Button>{' '}
                         </Col>
                     )}
                 </Row>
