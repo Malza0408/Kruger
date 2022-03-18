@@ -27,10 +27,6 @@ certificateAuthRouter.post(
                 date
             });
 
-            if (newCertificate.errorMessage) {
-                throw new Error(newCertificate.errorMessage);
-            }
-
             res.status(201).json(newCertificate);
         } catch (error) {
             next(error);
@@ -48,10 +44,6 @@ certificateAuthRouter.get(
                 await CertificateService.getCertificateInfo({
                     certificate_id
                 });
-
-            if (currentCertificateInfo.errorMessage) {
-                throw new Error(currentCertificateInfo.errorMessage);
-            }
 
             res.status(200).send(currentCertificateInfo);
         } catch (error) {
@@ -77,10 +69,6 @@ certificateAuthRouter.put(
                 certificate_id,
                 toUpdate
             });
-
-            if (updatedCertificate.errorMessage) {
-                throw new Error(updatedCertificate.errorMessage);
-            }
 
             res.status(200).json(updatedCertificate);
         } catch (error) {

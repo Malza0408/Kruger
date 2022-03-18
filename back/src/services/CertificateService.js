@@ -13,7 +13,6 @@ class CertificateService {
         const createdNewCertificate = await Certificate.create({
             newCertificate
         });
-        createdNewCertificate.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
 
         return createdNewCertificate;
     }
@@ -24,7 +23,7 @@ class CertificateService {
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!certificate) {
             const errorMessage = '삭제되었거나 등록되지 않은 자격증입니다.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         return certificate;
@@ -37,7 +36,7 @@ class CertificateService {
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!certificate) {
             const errorMessage = '삭제되었거나 등록되지 않은 자격증입니다.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         // 업데이트 대상에 title이 있다면, 즉 title 값이 null 이 아니라면 업데이트 진행

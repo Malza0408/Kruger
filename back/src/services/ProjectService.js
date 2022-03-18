@@ -24,7 +24,6 @@ class ProjectService {
 
         // db에 저장
         const createdNewProject = await Project.create({ newProject });
-        createdNewProject.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
 
         return createdNewProject;
     }
@@ -35,7 +34,7 @@ class ProjectService {
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!project) {
             const errorMessage = '삭제되었거나 등록되지 않은 프로젝트입니다.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         return project;
@@ -48,7 +47,7 @@ class ProjectService {
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!project) {
             const errorMessage = '삭제되었거나 등록되지 않은 프로젝트입니다.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
 
         // 업데이트 대상에 title이 있다면, 즉 title 값이 null 이 아니라면 업데이트 진행

@@ -18,7 +18,7 @@ class EducationService {
         if (!education) {
             const errorMessage =
                 '해당하는 학력이 없습니다. 다시 한 번 확인해 주세요.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
         return education;
     }
@@ -31,7 +31,7 @@ class EducationService {
         if (!education) {
             const errorMessage =
                 '학력을 등록한 내역이 없습니다. 다시 한 번 확인해주세요.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
         if (toUpdate.school) {
             const fieldToUpdate = 'school';
