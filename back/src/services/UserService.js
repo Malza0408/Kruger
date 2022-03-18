@@ -126,6 +126,11 @@ class UserService {
 
         return user;
     }
+
+    static async deleteUser({ user_id }) {
+        await User.deleteById({ user_id });
+        return;
+    }
 }
 
 export { UserService };
