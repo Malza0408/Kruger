@@ -32,14 +32,18 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
                             />
                             );
                     })}
-                    <Col>
-                        <Button
-                            variant="primary"
-                            onClick={() => setIsAdding(true)}
-                        >
-                            +
-                        </Button>{' '}
-                    </Col>
+                    {isEditable && (
+                        <Row className='text-center mt-3 mb-4'>
+                            <Col>
+                                <Button
+                                    variant="primary"
+                                    onClick={() => setIsAdding(true)}
+                                >
+                                    +
+                                </Button>
+                            </Col>
+                        </Row>
+                    )}
                     {isAdding && (
                         <CertificateAddForm
                             setIsAdding={setIsAdding}
