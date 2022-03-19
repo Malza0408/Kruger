@@ -25,7 +25,8 @@ const UserSchema = new Schema(
         },
         picture: {
             type: String,
-            required: false
+            required: false,
+            default: 'http://placekitten.com/200/200'
         }
     },
     {
