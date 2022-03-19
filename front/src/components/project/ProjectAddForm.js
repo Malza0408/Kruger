@@ -4,11 +4,15 @@ import Datepicker from 'react-datepicker';
 
 import * as Api from '../../api';
 
+import InputEmpty from '../InputEmpty'
+
 const ProjectAddForm = ({ setIsAdding, portfolioOwnerId, setProjects }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
+
+    const [isInputEmpty, setIsInputEmpty] = useState(false);
 
     const handleSubmit = async (e) => {
         // 데이터를 추가하기
@@ -16,6 +20,11 @@ const ProjectAddForm = ({ setIsAdding, portfolioOwnerId, setProjects }) => {
         const user_id = portfolioOwnerId;
         const from_date = fromDate.toISOString().split('T')[0];
         const to_date = toDate.toISOString().split('T')[0];
+
+        // 빈 인풋 제출 검사
+        setIsInputEmpty(
+            InputEmpty({ title, description})
+        );
 
         await Api.post(`project/create`, {
             user_id: portfolioOwnerId,
@@ -41,6 +50,11 @@ const ProjectAddForm = ({ setIsAdding, portfolioOwnerId, setProjects }) => {
                         setTitle(e.target.value);
                     }}
                 />
+                {isInputEmpty.isTitleEmpty && (
+                    <Form.Text className="text-success">
+                        프로젝트 제목을 입력해주세요
+                    </Form.Text>
+                )}
             </Form.Group>
             <Form.Group className='mt-3' controlId='projectAddDescription'>
                 <Form.Control
@@ -50,6 +64,11 @@ const ProjectAddForm = ({ setIsAdding, portfolioOwnerId, setProjects }) => {
                         setDescription(e.target.value);
                     }}
                 />
+                {isInputEmpty.isDescriptionEmpty && (
+                    <Form.Text className="text-success">
+                        상세내역을 입력해주세요
+                    </Form.Text>
+                )}
             </Form.Group>
             <Form.Group as={Row} className='mt-3'>
                 <Col xs='auto'>
