@@ -68,7 +68,7 @@ noteAuthRouter.put('/notes/:id', login_required, async (req, res, next) => {
         const noteId = req.params.id;
         console.log(noteId);
         await NoteService.checkNote({ noteId });
-        return;
+        res.status(200).json('읽음처리되었습니다.');
     } catch (error) {
         next(error);
     }
