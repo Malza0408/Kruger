@@ -11,24 +11,24 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
         );
     };
     return (
-        <Card.Body>
-            <Row className='align-items-center'>
+        <Card.Text as={Row}>
+            <Row className="align-items-center">
                 <Col>
                     <span>{project.title}</span>
                     <br />
-                    <span className='text-muted'>{project.description}</span>
+                    <span className="text-muted">{project.description}</span>
                     <br />
-                    <span className='text-muted'>
+                    <span className="text-muted">
                         {`${project.from_date} ~ ${project.to_date}`}
                     </span>
                 </Col>
                 {/* 권한을 가졌을때만 편집 버튼 표시 */}
                 {isEditable && (
-                    <Col xs lg='1'>
+                    <Col xs lg="1">
                         <Button
-                            variant='outline-info'
-                            size='sm'
-                            className='mr-3 mb-1'
+                            variant="outline-info"
+                            size="sm"
+                            className="mr-3 mb-1"
                             onClick={() => {
                                 setIsEditing((prev) => !prev);
                             }}
@@ -36,8 +36,8 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
                             편집
                         </Button>
                         <Button
-                            variant='outline-danger'
-                            size='sm'
+                            variant="outline-danger"
+                            size="sm"
                             onClick={handleDelete}
                         >
                             삭제
@@ -45,7 +45,7 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
                     </Col>
                 )}
             </Row>
-        </Card.Body>
+        </Card.Text>
     );
 };
 

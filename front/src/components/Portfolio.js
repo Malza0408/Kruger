@@ -58,14 +58,14 @@ function Portfolio() {
     return (
         <Container fluid>
             <Row>
-                <Col md='3' lg='3'>
+                <Col md="3" lg="3">
                     <User
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
                 </Col>
                 <Col>
-                    <div className='mb-2'>
+                    <div className="mb-2">
                         <Educations
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={
@@ -73,7 +73,7 @@ function Portfolio() {
                             }
                         />
                     </div>
-                    <div className='mb-2'>
+                    <div className="mb-2">
                         <Awards
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={
@@ -81,7 +81,7 @@ function Portfolio() {
                             }
                         />
                     </div>
-                    <div className='mb-2'>
+                    <div className="mb-2">
                         <Projects
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={
@@ -89,7 +89,7 @@ function Portfolio() {
                             }
                         />
                     </div>
-                    <div className='mb-2'>
+                    <div className="mb-2">
                         <Certificates
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={

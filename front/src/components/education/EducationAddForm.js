@@ -6,7 +6,7 @@ import InputEmpty from '../InputEmpty'
 const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
     const [school, setSchool] = useState('');
     const [major, setMajor] = useState('');
-    const [position, setPosition] = useState('');
+    const [position, setPosition] = useState('재학중');
 
     const [isInputEmpty, setIsInputEmpty] = useState(false);
 
@@ -25,20 +25,26 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 빈 인풋 제출 검사
-        setIsInputEmpty(
-            InputEmpty({ school, major, position})
-        );
+        try {
+            // 빈 인풋 제출 검사
+            setIsInputEmpty(
+                InputEmpty({ school, major, position})
+            );
 
-        await Api.post('education/create', {
-            user_id: portfolioOwnerId,
-            school,
-            major,
-            position,
-        });
-        const educations = await Api.get(`educationlist/${portfolioOwnerId}`);
-        setEducations([...educations.data]);
-        setAddState(false);
+            await Api.post('education/create', {
+                user_id: portfolioOwnerId,
+                school,
+                major,
+                position
+            });
+            const educations = await Api.get(
+                `educationlist/${portfolioOwnerId}`
+            );
+            setEducations([...educations.data]);
+            setAddState(false);
+        } catch (error) {
+            throw new Error(error);
+        }
     };
 
     const handleOnClick = () => {
@@ -55,6 +61,11 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
             handleSubmit={handleSubmit}
             handleFunction={handleOnClick}
             isInputEmpty={isInputEmpty}
+            inputInfo={{
+                school,
+                major,
+                position
+            }}
         />
     );
 };
