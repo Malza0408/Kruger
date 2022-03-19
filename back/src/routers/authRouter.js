@@ -44,18 +44,13 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             client_id: process.env.GITHUB_CLIENT_ID,
             client_secret: process.env.GITHUB_CLIENT_SECRET
         };
-        // console.log(config);
-
         const params = new URLSearchParams(config).toString();
-        // console.log(params);
         const finalUrl = `${uri}?${params}`;
-        // console.log('실행 테스트', finalUrl);
         const tokenRequest = await axios.post(finalUrl, config, {
             headers: {
                 Accept: 'application/json'
             }
         });
-        console.log(tokenRequest);
 
         if (tokenRequest.data.error) {
             res.redirect('/user/login');
@@ -76,7 +71,6 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         const login = userData.data.login;
         const avatar = userData.data.avatar_url;
         const repositoryUrl = `https://github.com/${login}`;
-        console.log(repositoryUrl);
         const bio = userData.data.bio;
         const userInfo = {
             name,
@@ -87,6 +81,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             repositoryUrl
         };
         const newUser = await UserService.addUser(userInfo);
+        res.status(201).json(newUser);
     } catch (error) {
         next(error);
     }
