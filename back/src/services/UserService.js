@@ -54,7 +54,6 @@ class UserService {
                 '등록되지 않은 아이디이거나 아이디 또는 비밀번호를 잘못 입력했습니다.';
             return { errorMessage };
         }
-
         // 비밀번호 일치 여부 확인
         const correctPasswordHash = user.password;
         const isPasswordCorrect = await bcrypt.compare(
