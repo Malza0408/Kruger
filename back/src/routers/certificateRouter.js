@@ -35,6 +35,23 @@ certificateAuthRouter.post(
 );
 
 certificateAuthRouter.get(
+    '/certificatelist/:user_id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            // 전체 자격증 목록을 얻음
+            const user_id = req.params.user_id;
+            const certificates = await CertificateService.getCertificates({
+                user_id
+            });
+            res.status(200).send(certificates);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+certificateAuthRouter.get(
     '/certificates/:id',
     login_required,
     async (req, res, next) => {
@@ -71,23 +88,6 @@ certificateAuthRouter.put(
             });
 
             res.status(200).json(updatedCertificate);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-certificateAuthRouter.get(
-    '/certificatelist/:user_id',
-    login_required,
-    async function (req, res, next) {
-        try {
-            // 전체 자격증 목록을 얻음
-            const user_id = req.params.user_id;
-            const certificates = await CertificateService.getCertificates({
-                user_id
-            });
-            res.status(200).send(certificates);
         } catch (error) {
             next(error);
         }

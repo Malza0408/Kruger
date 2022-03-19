@@ -2,28 +2,59 @@ import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
+import { sendMail } from './MailService';
 
 class UserService {
-    static async addUser({ name, email, password }) {
+    static async addUser(userData) {
         // 이메일 중복 확인
+        const email = userData.email;
         const user = await User.findByEmail({ email });
         if (user) {
             const errorMessage =
                 '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
             throw new Error(errorMessage);
         }
+        const userById = await User.findById(userData.id);
+        if (userById) {
+            const errorMessage = '이미 등록된 회원입니다.';
+            throw new Error(errorMessage);
+        }
 
-        // 비밀번호 해쉬화
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // id 는 유니크 값 부여
-        const id = uuidv4();
-        const newUser = { id, name, email, password: hashedPassword };
+        let newUser = '';
+        if (userData.loginMethod === 'github') {
+            console.log('깃허브 사용자생성');
+            newUser = {
+                id: userData.id,
+                email: userData.email,
+                name: userData.name,
+                description: userData.description,
+                loginMethod: userData.loginMethod,
+                repositoryUrl: userData.repositoryUrl
+            };
+            console.log(newUser);
+        } else {
+            // id 는 유니크 값 부여
+            const id = uuidv4();
+            // 비밀번호 해쉬화
+            const hashedPassword = await bcrypt.hash(userData.password, 10);
+            newUser = {
+                id,
+                email: userData.email,
+                name: userData.name,
+                password: hashedPassword,
+                loginMethod: 'email'
+            };
+        }
 
         // db에 저장
         const createdNewUser = await User.create({ newUser });
 
         return createdNewUser;
+    }
+
+    static async getUsers() {
+        const users = await User.findAll();
+        return users;
     }
 
     static async getUser({ email, password }) {
@@ -34,7 +65,6 @@ class UserService {
                 '등록되지 않은 아이디이거나 아이디 또는 비밀번호를 잘못 입력했습니다.';
             throw new Error(errorMessage);
         }
-
         // 비밀번호 일치 여부 확인
         const correctPasswordHash = user.password;
         const isPasswordCorrect = await bcrypt.compare(
@@ -68,9 +98,17 @@ class UserService {
         return loginUser;
     }
 
-    static async getUsers() {
-        const users = await User.findAll();
-        return users;
+    static async getUserInfo({ user_id }) {
+        const user = await User.findById({ user_id });
+
+        // db에서 찾지 못한 경우, 에러 메시지 반환
+        if (!user) {
+            const errorMessage =
+                '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+            throw new Error(errorMessage);
+        }
+
+        return user;
     }
 
     static async setUser({ user_id, toUpdate }) {
@@ -88,13 +126,13 @@ class UserService {
         if (toUpdate.name) {
             const fieldToUpdate = 'name';
             const newValue = toUpdate.name;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
         if (toUpdate.email) {
             const fieldToUpdate = 'email';
             const newValue = toUpdate.email;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
         if (toUpdate.password) {
@@ -102,29 +140,50 @@ class UserService {
             // 새로운 비밀번호 해쉬화
             const newHashedPassword = await bcrypt.hash(toUpdate.password, 10);
             const newValue = newHashedPassword;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
         if (toUpdate.description) {
             const fieldToUpdate = 'description';
             const newValue = toUpdate.description;
-            user = await User.update({ user_id, fieldToUpdate, newValue });
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
+        }
+
+        if (toUpdate.picture) {
+            const fieldToUpdate = 'picture';
+            const newValue = toUpdate.picture;
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
         return user;
     }
 
-    static async getUserInfo({ user_id }) {
-        const user = await User.findById({ user_id });
-
-        // db에서 찾지 못한 경우, 에러 메시지 반환
+    static async resetPassword({ email }) {
+        let user = await User.findByEmail({ email });
+        console.log(email);
+        const subject = '포트폴리오 공유 웹 서비스';
+        // 등록되지 않은 회원일 경우 이메일 내용
         if (!user) {
-            const errorMessage =
-                '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
-            throw new Error(errorMessage);
+            const text = `귀하의 이메일은 저희 서비스에 등록되어 있지 않습니다. 회원가입을 해주세요 :)`;
+            await sendMail(email, subject, text);
+            return;
         }
 
-        return user;
+        const fieldToUpdate = 'password';
+
+        // uuidv4로 랜덤한 문자열을 가져오고 너무 길지 않게 10글자로만 새로운 비밀번호를 보내줌
+        const randomPassword = uuidv4();
+        const newPassword = randomPassword.slice(0, 10);
+        const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+        const newValue = newHashedPassword;
+
+        await User.updateByEmail({ email, fieldToUpdate, newValue });
+
+        // 등록된 회원일 경우 이메일 내용
+        const text = `귀하의 새로운 비밀번호는 ${newPassword} 입니다. 로그인 후 비밀번호를 변경해주세요.`;
+        await sendMail(email, subject, text);
+        return;
     }
 
     static async deleteUser({ user_id }) {

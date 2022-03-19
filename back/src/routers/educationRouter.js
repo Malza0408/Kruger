@@ -5,27 +5,31 @@ import { userAuthService } from '../services/userService';
 import { EducationService } from '../services/EducationService';
 
 const educationRouter = Router();
-educationRouter.post('/education/create', async (req, res, next) => {
-    try {
-        if (is.emptyObject(req.body)) {
-            throw new Error(
-                'headers의 Content-Type을 application/json으로 설정해주세요'
-            );
-        }
-        const { user_id, school, major, position } = req.body;
 
-        const newEducation = await EducationService.createEducation({
-            user_id,
-            school,
-            major,
-            position
-        });
-        console.log('education 생성되었습니다.');
-        res.status(201).json(newEducation);
-    } catch (error) {
-        next(error);
+educationRouter.post(
+    '/education/create',
+    login_required,
+    async (req, res, next) => {
+        try {
+            if (is.emptyObject(req.body)) {
+                throw new Error(
+                    'headers의 Content-Type을 application/json으로 설정해주세요'
+                );
+            }
+            const { user_id, school, major, position } = req.body;
+            const newEducation = await EducationService.createEducation({
+                user_id,
+                school,
+                major,
+                position
+            });
+            console.log('education 생성되었습니다.');
+            res.status(201).json(newEducation);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 // user의 전체 education 목록 가져오기
 educationRouter.get(
     '/educationlist/:user_id',

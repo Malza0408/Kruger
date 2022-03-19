@@ -17,11 +17,8 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
         const { name, email, password } = req.body;
         console.log(name, email, password);
         // 위 데이터를 유저 db에 추가하기
-        const newUser = await UserService.addUser({
-            name,
-            email,
-            password
-        });
+        const userData = { name, email, password };
+        const newUser = await UserService.addUser(userData);
 
         res.status(201).json(newUser);
     } catch (error) {
@@ -75,31 +72,6 @@ userAuthRouter.get(
     }
 );
 
-userAuthRouter.put(
-    '/users/:id',
-    login_required,
-    async function (req, res, next) {
-        try {
-            // URI로부터 사용자 id를 추출함.
-            const user_id = req.params.id;
-            // body data 로부터 업데이트할 사용자 정보를 추출함.
-            const { name, email, password, description } = req.body ?? null;
-
-            const toUpdate = { name, email, password, description };
-
-            // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
-            const updatedUser = await UserService.setUser({
-                user_id,
-                toUpdate
-            });
-
-            res.status(200).json(updatedUser);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
 userAuthRouter.get(
     '/users/:id',
     login_required,
@@ -116,6 +88,47 @@ userAuthRouter.get(
         }
     }
 );
+
+userAuthRouter.put(
+    '/users/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            // URI로부터 사용자 id를 추출함.
+            const user_id = req.params.id;
+            // body data 로부터 업데이트할 사용자 정보를 추출함.
+            const { name, email, password, description, picture } =
+                req.body ?? null;
+
+            const toUpdate = { name, email, password, description, picture };
+
+            // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
+            const updatedUser = await UserService.setUser({
+                user_id,
+                toUpdate
+            });
+
+            res.status(200).json(updatedUser);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+userAuthRouter.put('/user/resetPassword', async function (req, res, next) {
+    try {
+        const { email } = req.body;
+        await UserService.resetPassword({ email });
+        res.status(200).json('메일이 발송되었습니다.');
+    } catch (error) {
+        next(error);
+    }
+});
+
+// 친구추가
+userAuthRouter.put('/user/:id', login_required, async (req, res, next) => {
+    const friend_id = req.params.id;
+});
 
 userAuthRouter.delete(
     '/users/:id',
