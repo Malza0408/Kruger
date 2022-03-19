@@ -11,20 +11,20 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
         await Api.get('awardlist', user_id).then((res) => setAwards(res.data));
     };
     return (
-        <Card.Body>
-            <Row className='align-items-center'>
+        <Card.Text as={Col}>
+            <Row className="align-items-center">
                 <Col>
                     <span>{award.title}</span>
                     <br />
-                    <span className='text-muted'>{award.description}</span>
+                    <span className="text-muted">{award.description}</span>
                 </Col>
                 {/* 권한을 가졌을때만 편집 버튼 표시 */}
                 {isEditable && (
-                    <Col xs lg='1'>
+                    <Col xs lg="1">
                         <Button
-                            variant='outline-info'
-                            size='sm'
-                            className='mr-3 mb-1'
+                            variant="outline-info"
+                            size="sm"
+                            className="mr-3 mb-1"
                             onClick={() => {
                                 setIsEditing((prev) => !prev);
                             }}
@@ -32,8 +32,8 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                             편집
                         </Button>
                         <Button
-                            variant='outline-danger'
-                            size='sm'
+                            variant="outline-danger"
+                            size="sm"
                             onClick={handleDelete}
                         >
                             삭제
@@ -41,7 +41,7 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                     </Col>
                 )}
             </Row>
-        </Card.Body>
+        </Card.Text>
     );
 };
 
