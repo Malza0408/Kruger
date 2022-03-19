@@ -1,8 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
 
+import * as Api from '../../api';
+
 function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
   const navigate = useNavigate();
+
+  const userDelete = async (e) => {
+    e.preventDefault();
+
+    await Api.delete(`users/${user.id}`)
+
+    // 탈퇴 후 로그인 화면으로 이동
+    navigate('/login', { replace: true });
+  }
+
   return (
     <Card className="mb-2 ms-3 mr-5" style={{ width: "18rem" }}>
       <Card.Body>
@@ -28,6 +40,14 @@ function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
                   onClick={() => setIsEditing(true)}
                 >
                   편집
+                </Button>
+                {/* 탈퇴 임시 버튼 */}
+                <Button
+                  variant="outline-info"
+                  size="sm"
+                  onClick={userDelete}
+                >
+                  탈퇴
                 </Button>
               </Col>
             </Row>
