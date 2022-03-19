@@ -6,13 +6,15 @@ class Note {
         return createdNewNote;
     }
 
-    static async findAllTo({ toId }) {
-        const takenNotes = await NoteModel.find({ toId });
+    static async findAllTo({ user_id }) {
+        const notes = await NoteModel.find({}).populate('toUser');
+        const takenNotes = notes.filter((v) => v.toUser.id == user_id);
         return takenNotes;
     }
 
-    static async findAllFrom({ fromId }) {
-        const sentNotes = await NoteModel.find({ fromId });
+    static async findAllFrom({ user_id }) {
+        const notes = await NoteModel.find({}).populate('fromUser');
+        const sentNotes = notes.filter((v) => v.fromUser.id == user_id);
         return sentNotes;
     }
 
@@ -31,7 +33,7 @@ class Note {
     }
 
     static async deleteById({ noteId }) {
-        await NoteModel.deleteOne({ noteId });
+        await NoteModel.deleteOne({ id: noteId });
         return;
     }
 }

@@ -6,7 +6,6 @@ class NoteService {
         const id = uuidv4();
 
         const fromUser = await User.findById({ user_id });
-        const fromId = fromUser._id;
 
         const email = to;
         const toUser = await User.findByEmail({ email });
@@ -17,10 +16,8 @@ class NoteService {
             throw new Error(errorMessage);
         }
 
-        const toId = toUser._id;
-
-        const newNote = { id, fromId, toId, title, content };
-        console.log(id, fromId, toId, title, content);
+        const newNote = { id, fromUser, toUser, title, content };
+        console.log(id, fromUser, toUser, title, content);
 
         const createdNewNote = await Note.create({ newNote });
 
@@ -28,20 +25,12 @@ class NoteService {
     }
 
     static async getTakenNotes({ user_id }) {
-        const user = await User.findById({ user_id });
-
-        const toId = user._id;
-        const notes = await Note.findAllTo({ toId });
-
+        const notes = await Note.findAllTo({ user_id });
         return notes;
     }
 
     static async getSentNotes({ user_id }) {
-        const user = await User.findById({ user_id });
-
-        const fromId = user._id;
-        const notes = await Note.findAllFrom({ fromId });
-
+        const notes = await Note.findAllFrom({ user_id });
         return notes;
     }
 

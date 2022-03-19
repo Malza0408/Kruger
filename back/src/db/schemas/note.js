@@ -6,12 +6,12 @@ const NoteSchema = new Schema(
             type: String,
             required: true
         },
-        fromId: {
+        fromUser: {
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: true
         },
-        toId: {
+        toUser: {
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: true
