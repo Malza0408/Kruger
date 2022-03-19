@@ -17,11 +17,8 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
         const { name, email, password } = req.body;
         console.log(name, email, password);
         // 위 데이터를 유저 db에 추가하기
-        const newUser = await UserService.addUser({
-            name,
-            email,
-            password
-        });
+        const userData = { name, email, password };
+        const newUser = await UserService.addUser(userData);
 
         res.status(201).json(newUser);
     } catch (error) {
@@ -126,6 +123,11 @@ userAuthRouter.put('/user/resetPassword', async function (req, res, next) {
     } catch (error) {
         next(error);
     }
+});
+
+// 친구추가
+userAuthRouter.put('/user/:id', login_required, async (req, res, next) => {
+    const friend_id = req.params.id;
 });
 
 userAuthRouter.delete(

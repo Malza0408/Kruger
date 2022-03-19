@@ -5,21 +5,46 @@ import jwt from 'jsonwebtoken';
 import { sendMail } from './MailService';
 
 class UserService {
-    static async addUser({ name, email, password }) {
+    static async addUser(userData) {
         // 이메일 중복 확인
+        const email = userData.email;
         const user = await User.findByEmail({ email });
         if (user) {
             const errorMessage =
                 '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
             throw new Error(errorMessage);
         }
+        const userById = await User.findById(userData.id);
+        if (userById) {
+            const errorMessage = '이미 등록된 회원입니다.';
+            throw new Error(errorMessage);
+        }
 
-        // 비밀번호 해쉬화
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // id 는 유니크 값 부여
-        const id = uuidv4();
-        const newUser = { id, name, email, password: hashedPassword };
+        let newUser = '';
+        if (userData.loginMethod === 'github') {
+            console.log('깃허브 사용자생성');
+            newUser = {
+                id: userData.id,
+                email: userData.email,
+                name: userData.name,
+                description: userData.description,
+                loginMethod: userData.loginMethod,
+                repositoryUrl: userData.repositoryUrl
+            };
+            console.log(newUser);
+        } else {
+            // id 는 유니크 값 부여
+            const id = uuidv4();
+            // 비밀번호 해쉬화
+            const hashedPassword = await bcrypt.hash(userData.password, 10);
+            newUser = {
+                id,
+                email: userData.email,
+                name: userData.name,
+                password: hashedPassword,
+                loginMethod: 'email'
+            };
+        }
 
         // db에 저장
         const createdNewUser = await User.create({ newUser });
@@ -40,7 +65,6 @@ class UserService {
                 '등록되지 않은 아이디이거나 아이디 또는 비밀번호를 잘못 입력했습니다.';
             throw new Error(errorMessage);
         }
-
         // 비밀번호 일치 여부 확인
         const correctPasswordHash = user.password;
         const isPasswordCorrect = await bcrypt.compare(
