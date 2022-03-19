@@ -1,11 +1,13 @@
 import cors from 'cors';
 import express from 'express';
+import passport from 'passport';
 import { userAuthRouter } from './routers/userRouter';
 import { educationRouter } from './routers/educationRouter';
 import { awardAuthRouter } from './routers/awardRouter';
 import { certificateAuthRouter } from './routers/certificateRouter';
 import { projectAuthRouter } from './routers/projectRouter';
 import { errorMiddleware } from './middlewares/errorMiddleware';
+import { authRouter } from './routers/authRouter';
 
 const app = express();
 
@@ -17,7 +19,8 @@ app.use(cors());
 // express.urlencoded: 주로 Form submit 에 의해 만들어지는 URL-Encoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+//패스포트
+app.use(passport.initialize());
 // 기본 페이지
 app.get('/', (req, res) => {
     res.send('안녕하세요, 레이서 프로젝트 API 입니다.');
@@ -25,6 +28,7 @@ app.get('/', (req, res) => {
 
 // router, service 구현 (userAuthRouter는 맨 위에 있어야 함.)
 app.use(userAuthRouter);
+app.use(authRouter);
 app.use(educationRouter);
 app.use(awardAuthRouter);
 app.use(certificateAuthRouter);
