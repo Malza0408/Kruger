@@ -2,6 +2,8 @@ import { Router } from 'express';
 import passport from 'passport';
 import { login_required } from '../middlewares/login_required';
 import jwt from 'jsonwebtoken';
+// import fetch from 'node-fetch';
+import axios from 'axios';
 
 const authRouter = Router();
 //구글
@@ -38,26 +40,30 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         const uri = 'https://github.com/login/oauth/access_token';
         const config = {
             code: req.query.code,
-            clientId: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET
+            client_id: process.env.GITHUB_CLIENT_ID,
+            client_secret: process.env.GITHUB_CLIENT_SECRET
         };
         console.log(config);
 
         const params = new URLSearchParams(config).toString();
         console.log(params);
         const finalUrl = `${uri}?${params}`;
-        console.log(finalUrl);
-        const tokenRequest = await import('node-fetch')
-            .then(({ default: fetch }) => {
-                fetch(finalUrl, {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json'
-                    }
-                });
-            })
-            .json();
-        console.log(tokenRequest);
+        console.log('실행 테스트', finalUrl);
+        // const tokenRequest = await fetch(finalUrl, {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json'
+        //     }
+        // });
+
+        // console.log(tokenRequest.json());
+        const token = await axios.post(finalUrl, config, {
+            headers: {
+                Accept: 'application/json'
+            }
+        });
+        const response = token.data;
+        console.log(response);
     } catch (error) {
         next(error);
     }
