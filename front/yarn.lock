@@ -3794,6 +3794,11 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
+es6-viewpoint@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/es6-viewpoint/-/es6-viewpoint-0.1.4.tgz#8ac1801a114d753440f1101c102d6428354715ef"
+  integrity sha512-NFFaYjIy51+dMwPiv7sARtdUJ00n/VoZhGgXbiqcizRFOpApGZ2p9dlalPPTAdecBrhp5AlwUYmLQIUW0Hnjng==
+
 escalade@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/escalade/-/escalade-3.1.1.tgz"
@@ -7201,6 +7206,14 @@ react-onclickoutside@^6.12.0:
   resolved "https://registry.npmjs.org/react-onclickoutside/-/react-onclickoutside-6.12.1.tgz"
   integrity sha512-a5Q7CkWznBRUWPmocCvE8b6lEYw1s6+opp/60dCunhO+G6E4tDTO2Sd2jKE+leEnnrLAE2Wj5DlDHNqj5wPv1Q==
 
+react-picker@^1.2.17:
+  version "1.2.17"
+  resolved "https://registry.yarnpkg.com/react-picker/-/react-picker-1.2.17.tgz#0bd1c53ee278146717b1d2b21a10b8db463cdc83"
+  integrity sha512-Oxfm9iV/jjhGE7eJ3uqRn15Fi7VZv/rqMBaFPEaLU6XZ++xG1XdnkoWgPq7gb3fhvt5UlTLO51KvMnvGgHvVbQ==
+  dependencies:
+    es6-viewpoint "^0.1.4"
+    react-tapper "^0.1.23"
+
 react-popper@^2.2.5:
   version "2.2.5"
   resolved "https://registry.npmjs.org/react-popper/-/react-popper-2.2.5.tgz"
@@ -7283,6 +7296,11 @@ react-scripts@5.0.0:
     workbox-webpack-plugin "^6.4.1"
   optionalDependencies:
     fsevents "^2.3.2"
+
+react-tapper@^0.1.23:
+  version "0.1.23"
+  resolved "https://registry.yarnpkg.com/react-tapper/-/react-tapper-0.1.23.tgz#c3fba199e9b97cc2221467a42ce60cb722140138"
+  integrity sha512-BLV2zRnpTeLQdSf7tUbk9JQ6Og5DKK66kjjbEkhj2Y4wURlIq8YtibWNceKRzBWYiRGcEzJbUZYAcKic4HZLUA==
 
 react-transition-group@^4.4.2:
   version "4.4.2"
