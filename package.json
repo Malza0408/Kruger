@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "passport": "^0.5.2",
-    "passport-google-oauth20": "^2.0.0",
-    "react-bootstrap-date-picker": "^5.1.0"
-  }
-}
