@@ -125,6 +125,12 @@ class UserService {
             user = await User.updateById({ user_id, fieldToUpdate, newValue });
         }
 
+        if (toUpdate.picture) {
+            const fieldToUpdate = 'picture';
+            const newValue = toUpdate.picture;
+            user = await User.updateById({ user_id, fieldToUpdate, newValue });
+        }
+
         return user;
     }
 
