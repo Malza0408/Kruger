@@ -21,7 +21,7 @@ const ProjectEditForm = ({ setIsEditing, project, setProjects }) => {
             title,
             description,
             from_date,
-            to_date,
+            to_date
         });
         await Api.get('projectlist', user_id).then((res) =>
             setProjects(res.data)
@@ -31,48 +31,48 @@ const ProjectEditForm = ({ setIsEditing, project, setProjects }) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Group controlId='projectEditTitle'>
+            <Form.Group controlId="projectEditTitle">
                 <Form.Control
-                    type='text'
-                    placeholder='수상내역'
+                    type="text"
+                    placeholder="수상내역"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
             </Form.Group>
-            <Form.Group className='mt-3' controlId='projectEditDescription'>
+            <Form.Group className="mt-3" controlId="projectEditDescription">
                 <Form.Control
-                    type='text'
-                    placeholder='상세내역'
+                    type="text"
+                    placeholder="상세내역"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </Form.Group>
             <Form.Group
                 as={Row}
-                className='mt-3'
-                controlId='projectAddDescription'
+                className="mt-3"
+                controlId="projectAddDescription"
             >
-                <Col xs='auto'>
+                <Col xs="auto">
                     <Datepicker
                         selected={fromDate}
                         onChange={(date) => setFromDate(date)}
                     />
                 </Col>
-                <Col xs='auto'>
+                <Col xs="auto">
                     <Datepicker
                         selected={toDate}
                         onChange={(date) => setToDate(date)}
                     />
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className='text-center mt-3 mb-4'>
+            <Form.Group as={Row} className="text-center mt-3 mb-4">
                 <Col sm={{ span: 20 }}>
-                    <Button className='me-3' variant='primary' type='submit'>
+                    <Button className="me-3" variant="primary" type="submit">
                         확인
                     </Button>
                     <Button
-                        variant='secondary'
-                        type='button'
+                        variant="secondary"
+                        type="button"
                         onClick={() => {
                             setIsEditing(false);
                         }}
