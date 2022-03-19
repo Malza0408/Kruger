@@ -19,7 +19,7 @@ class NoteService {
 
         const toId = toUser._id;
 
-        const newNote = { id, fromId, toId, title, content, check: false };
+        const newNote = { id, fromId, toId, title, content };
         console.log(id, fromId, toId, title, content);
 
         const createdNewNote = await Note.create({ newNote });

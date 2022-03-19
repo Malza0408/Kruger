@@ -26,7 +26,8 @@ const NoteSchema = new Schema(
         },
         check: {
             type: Boolean,
-            required: true
+            required: true,
+            default: false
         }
     },
     {
