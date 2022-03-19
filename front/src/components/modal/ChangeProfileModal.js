@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import * as Api from '../../api';
-const ChangeProfileModal = ({ show, handleClose, user }) => {
-    const [img, setImg] = useState('');
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log('user', user);
-    //     await Api.put(`users/${user.id}`, {
-    //         picture: { img }
-    //     });
-    // };
+const ChangeProfileModal = ({ show, handleClose, user, setUser }) => {
+    const [url, setUrl] = useState('');
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const user_id = user.id;
+        await Api.put(`users/${user.id}`, {
+            user_id,
+            picture: url
+        }).then();
+        await Api.get('users', user_id).then((res) => setUser(res.data));
+        handleClose();
+    };
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>프로필 사진 변경</Modal.Title>
                 </Modal.Header>
-                <Form onSubmit={() => {}}>
+                <Form onSubmit={handleSubmit}>
                     <Modal.Body>
                         <Form.Group
                             className="mb-3"
@@ -26,7 +29,8 @@ const ChangeProfileModal = ({ show, handleClose, user }) => {
                             <Form.Control
                                 type="text"
                                 placeholder="http://placekitten.com/200/200"
-                                onChange={(e) => setImg(e.target.value)}
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
                             />
                         </Form.Group>
                     </Modal.Body>

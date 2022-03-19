@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-const WithdrawalModal = ({ show, handleClose }) => {
+const WithdrawalModal = ({ show, handleClose, userDelete }) => {
     return (
         <>
             <Modal show={show} onHide={handleClose}>
@@ -10,7 +10,9 @@ const WithdrawalModal = ({ show, handleClose }) => {
                 </Modal.Header>
                 <Modal.Body>회원을 탈퇴하시겠습니까?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary">확인</Button>
+                    <Button variant="primary" onClick={userDelete}>
+                        확인
+                    </Button>
                     <Button variant="secondary" onClick={handleClose}>
                         취소
                     </Button>

@@ -1,50 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Row, Button, Col } from 'react-bootstrap';
+import { Card, Row, Button, Col, Image } from 'react-bootstrap';
 import WithdrawalModal from '../modal/WithdrawalModal';
 import ChangeProfileModal from '../modal/ChangeProfileModal';
 
 import * as Api from '../../api';
 
-function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
+function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
     const navigate = useNavigate();
     //프로필 변경 모달
     const [showProfile, setShowProfile] = useState(false);
     const handleCloseProfile = () => setShowProfile(false);
     const handleShowProfile = () => setShowProfile(true);
-    const [imgUrl, setImgUrl] = useState('http://placekitten.com/200/200');
     // 회원 탈퇴 모달
     const [showWithdrawal, setShowWithdrawal] = useState(false);
     const handleCloseWithdrawal = () => setShowWithdrawal(false);
     const handleShowWithdrawal = () => setShowWithdrawal(true);
 
     const userDelete = async (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    await Api.delete(`users/${user.id}`)
+        await Api.delete(`users/${user.id}`);
 
-    // 탈퇴 후 로그인 화면으로 이동
-    navigate('/login', { replace: true });
-  }
+        // 탈퇴 후 로그인 화면으로 이동
+        navigate('/login', { replace: true });
+    };
 
     return (
         <Card className="mb-2 ms-3 mr-5" style={{ width: '18rem' }}>
             <Card.Body>
                 <Row className="justify-content-md-center">
-                    <Card.Img
+                    <Image
                         style={{
-                            width: '10rem',
-                            height: '8rem',
-                            cursor: 'pointer'
+                            borderRadius: '50%',
+                            width: '14rem',
+                            height: '12rem'
                         }}
                         className="mb-3"
-                        src={imgUrl}
-                        alt="랜덤 고양이 사진 (http://placekitten.com API 사용)"
+                        src={user?.picture}
+                        alt="프로필 사진"
                     />
                     <ChangeProfileModal
                         show={showProfile}
                         handleClose={handleCloseProfile}
-                        setImgUrl={setImgUrl}
+                        user={user}
+                        setUser={setUser}
                     />
                 </Row>
                 <Card.Title>{user?.name}</Card.Title>
@@ -82,15 +82,10 @@ function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
                                 <WithdrawalModal
                                     show={showWithdrawal}
                                     handleClose={handleCloseWithdrawal}
+                                    userDelete={userDelete}
                                 />
-                                       
-                                  // Button
-                                  //   variant="outline-info"
-                                  //   size="sm"
-                                  //   onClick={userDelete}
-                                  // 
-                                  //   탈퇴
-                                  // Button
+
+                                {/* onClick={userDelete} */}
                             </Col>
                         </Row>
                     </Col>
