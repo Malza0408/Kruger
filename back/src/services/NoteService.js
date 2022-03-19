@@ -53,6 +53,11 @@ class NoteService {
     }
 
     static async deleteNote({ noteId }) {
+        const targetNote = await Note.findById({ noteId });
+        if (targetNote.toUser.id !== noteId) {
+            const errorMessage = '삭제가 불가능한 쪽지입니다.';
+            throw new Error(errorMessage);
+        }
         await Note.deleteById({ noteId });
         return;
     }

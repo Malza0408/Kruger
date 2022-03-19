@@ -19,7 +19,9 @@ class Note {
     }
 
     static async findById({ noteId }) {
-        const note = await NoteModel.findOne({ id: noteId });
+        const note = await NoteModel.findOne({ id: noteId })
+            .populate('toUser')
+            .populate('fromUser');
         return note;
     }
 
