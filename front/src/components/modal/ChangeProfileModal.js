@@ -24,7 +24,9 @@ const ChangeProfileModal = ({ show, handleClose, setImgUrl }) => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary">변경</Button>
+                    <Button variant="primary" onClick={handleClose}>
+                        변경
+                    </Button>
                     <Button variant="secondary" onClick={handleClose}>
                         취소
                     </Button>
