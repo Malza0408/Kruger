@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
-
-const ChangeProfileModal = ({ show, handleClose, setImgUrl }) => {
+import * as Api from '../../api';
+const ChangeProfileModal = ({ show, handleClose, user }) => {
+    const [img, setImg] = useState('');
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const user_id = user.id;
+        await Api.put(`users/${user_id}`, {
+            user_id,
+            picture: { img }
+        });
+    };
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>프로필 사진 변경</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={() => {}}>
+                <Form onSubmit={handleSubmit}>
+                    <Modal.Body>
                         <Form.Group
                             className="mb-3"
                             controlId="school.ControlInput"
@@ -18,19 +27,19 @@ const ChangeProfileModal = ({ show, handleClose, setImgUrl }) => {
                             <Form.Control
                                 type="text"
                                 placeholder="http://placekitten.com/200/200"
-                                onChange={(e) => setImgUrl(e.target.value)}
+                                onChange={(e) => setImg(e.target.value)}
                             />
                         </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary" onClick={handleClose}>
-                        변경
-                    </Button>
-                    <Button variant="secondary" onClick={handleClose}>
-                        취소
-                    </Button>
-                </Modal.Footer>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" type="submit">
+                            변경
+                        </Button>
+                        <Button variant="secondary" onClick={handleClose}>
+                            취소
+                        </Button>
+                    </Modal.Footer>
+                </Form>
             </Modal>
         </>
     );
