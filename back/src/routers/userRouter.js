@@ -113,6 +113,11 @@ userAuthRouter.put(
     }
 );
 
+// 친구추가
+userAuthRouter.put('/user/:id', login_required, async (req, res, next) => {
+    const friend_id = req.params.id;
+});
+
 userAuthRouter.get(
     '/users/:id',
     login_required,

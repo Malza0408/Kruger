@@ -14,12 +14,12 @@ class UserService {
         }
         console.log(userData);
         // id 는 유니크 값 부여
-        const id = uuidv4();
+
         let newUser = '';
         if (userData.loginMethod === 'github') {
             console.log('깃허브 사용자생성');
             newUser = {
-                id,
+                id: userData.id,
                 email: userData.email,
                 name: userData.name,
                 description: userData.description,
@@ -29,6 +29,7 @@ class UserService {
             console.log(newUser);
         } else {
             // 비밀번호 해쉬화
+            const id = uuidv4();
             const hashedPassword = await bcrypt.hash(userData.password, 10);
             newUser = {
                 id,

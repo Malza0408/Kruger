@@ -65,7 +65,8 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         if (userData.data.error) {
             res.redirect('/user/login');
         }
-
+        console.log(userData.data);
+        const id = userData.data.id;
         const name = userData.data.name;
         const email = userData.data.email;
         const login = userData.data.login;
@@ -73,6 +74,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         const repositoryUrl = `https://github.com/${login}`;
         const bio = userData.data.bio;
         const userInfo = {
+            id,
             name,
             email,
             password: '',
