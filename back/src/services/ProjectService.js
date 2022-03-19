@@ -28,6 +28,11 @@ class ProjectService {
         return createdNewProject;
     }
 
+    static async getProjects({ user_id }) {
+        const projects = await Project.findAll({ user_id });
+        return projects;
+    }
+
     static async getProjectInfo({ project_id }) {
         const project = await Project.findById({ project_id });
 
@@ -92,11 +97,6 @@ class ProjectService {
         }
 
         return project;
-    }
-
-    static async getProjects({ user_id }) {
-        const projects = await Project.findAllById({ user_id });
-        return projects;
     }
 
     static async deleteProject({ project_id }) {

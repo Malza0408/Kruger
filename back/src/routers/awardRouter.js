@@ -33,6 +33,21 @@ awardAuthRouter.post(
     }
 );
 
+awardAuthRouter.get(
+    '/awardlist/:user_id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            // 전체 수상 목록을 얻음
+            const user_id = req.params.user_id;
+            const awards = await AwardService.getAwards({ user_id });
+            res.status(200).send(awards);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 awardAuthRouter.get('/awards/:id', login_required, async (req, res, next) => {
     try {
         const award_id = req.params.id;
@@ -65,21 +80,6 @@ awardAuthRouter.put(
             });
 
             res.status(200).json(updatedAward);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-awardAuthRouter.get(
-    '/awardlist/:user_id',
-    login_required,
-    async function (req, res, next) {
-        try {
-            // 전체 수상 목록을 얻음
-            const user_id = req.params.user_id;
-            const awards = await AwardService.getAwards({ user_id });
-            res.status(200).send(awards);
         } catch (error) {
             next(error);
         }
