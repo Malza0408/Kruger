@@ -10,7 +10,7 @@ const WithdrawalModal = ({ show, handleClose }) => {
                 </Modal.Header>
                 <Modal.Body>회원을 탈퇴하시겠습니까?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary">로그아웃</Button>
+                    <Button variant="primary">확인</Button>
                     <Button variant="secondary" onClick={handleClose}>
                         취소
                     </Button>

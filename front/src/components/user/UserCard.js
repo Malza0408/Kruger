@@ -2,23 +2,40 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Row, Button, Col } from 'react-bootstrap';
 import WithdrawalModal from '../modal/WithdrawalModal';
+import ChangeProfileModal from '../modal/ChangeProfileModal';
 
 function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
     const navigate = useNavigate();
-    const [show, setShow] = useState(false);
+    //프로필 변경 모달
+    const [showProfile, setShowProfile] = useState(false);
+    const handleCloseProfile = () => setShowProfile(false);
+    const handleShowProfile = () => setShowProfile(true);
+    const [imgUrl, setImgUrl] = useState('http://placekitten.com/200/200');
+    // 회원 탈퇴 모달
+    const [showWithdrawal, setShowWithdrawal] = useState(false);
+    const handleCloseWithdrawal = () => setShowWithdrawal(false);
+    const handleShowWithdrawal = () => setShowWithdrawal(true);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     return (
         <div>
             <Card className="mb-2 ms-3 mr-5" style={{ width: '18rem' }}>
                 <Card.Body>
                     <Row className="justify-content-md-center">
                         <Card.Img
-                            style={{ width: '10rem', height: '8rem' }}
+                            style={{
+                                width: '10rem',
+                                height: '8rem',
+                                cursor: 'pointer'
+                            }}
                             className="mb-3"
-                            src="http://placekitten.com/200/200"
+                            src={imgUrl}
                             alt="랜덤 고양이 사진 (http://placekitten.com API 사용)"
+                            onClick={handleShowProfile}
+                        />
+                        <ChangeProfileModal
+                            show={showProfile}
+                            handleClose={handleCloseProfile}
+                            setImgUrl={setImgUrl}
                         />
                     </Row>
                     <Card.Title>{user?.name}</Card.Title>
@@ -41,13 +58,13 @@ function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
                                     <Button
                                         variant="outline-danger"
                                         size="sm"
-                                        onClick={handleShow}
+                                        onClick={handleShowWithdrawal}
                                     >
                                         탈퇴
                                     </Button>
                                     <WithdrawalModal
-                                        show={show}
-                                        handleClose={handleClose}
+                                        show={showWithdrawal}
+                                        handleClose={handleCloseWithdrawal}
                                     />
                                 </Col>
                             </Row>
