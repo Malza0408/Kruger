@@ -6,14 +6,18 @@ import jwt from 'jsonwebtoken';
 class UserService {
     static async addUser(userData) {
         // 이메일 중복 확인
-        const user = await User.findByEmail(userData.email);
+        const email = userData.email;
+        const user = await User.findByEmail({ email });
         if (user) {
             const errorMessage =
                 '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
-            return { errorMessage };
+            throw new Error(errorMessage);
         }
-        console.log(userData);
-        // id 는 유니크 값 부여
+        const userById = await User.findById(userData.id);
+        if (userById) {
+            const errorMessage = '이미 등록된 회원입니다.';
+            throw new Error(errorMessage);
+        }
 
         let newUser = '';
         if (userData.loginMethod === 'github') {
@@ -28,8 +32,9 @@ class UserService {
             };
             console.log(newUser);
         } else {
-            // 비밀번호 해쉬화
+            // id 는 유니크 값 부여
             const id = uuidv4();
+            // 비밀번호 해쉬화
             const hashedPassword = await bcrypt.hash(userData.password, 10);
             newUser = {
                 id,
