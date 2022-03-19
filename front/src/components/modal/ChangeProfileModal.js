@@ -3,21 +3,20 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import * as Api from '../../api';
 const ChangeProfileModal = ({ show, handleClose, user }) => {
     const [img, setImg] = useState('');
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const user_id = user.id;
-        await Api.put(`users/${user_id}`, {
-            user_id,
-            picture: { img }
-        });
-    };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     console.log('user', user);
+    //     await Api.put(`users/${user.id}`, {
+    //         picture: { img }
+    //     });
+    // };
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>프로필 사진 변경</Modal.Title>
                 </Modal.Header>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={() => {}}>
                     <Modal.Body>
                         <Form.Group
                             className="mb-3"
