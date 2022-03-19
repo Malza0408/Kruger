@@ -9,6 +9,7 @@ const DefaultForm = ({
     handleCheckOnClick,
     handleSubmit,
     handleFunction,
+    isInputEmpty, 
     inputInfo
 }) => {
     return (
@@ -26,6 +27,11 @@ const DefaultForm = ({
                         학교를 작성 해 주세요.
                     </Form.Text>
                 )}
+                {isInputEmpty.isSchoolEmpty && (
+                    <Form.Text className="text-success">
+                        학교를 입력해주세요
+                    </Form.Text>
+                )}
             </Form.Group>
             <Form.Group className="mb-3" controlId="major.ControlInput">
                 <Form.Label>Major</Form.Label>
@@ -38,6 +44,11 @@ const DefaultForm = ({
                 {!inputInfo?.school && !major && (
                     <Form.Text className="text-danger">
                         전공을 작성 해 주세요.
+                    </Form.Text>
+                )}
+                {isInputEmpty.isMajorEmpty && (
+                    <Form.Text className="text-success">
+                        전공을 입력해주세요
                     </Form.Text>
                 )}
                 {/* name이 check 중복을 걸러줌 */}
@@ -85,6 +96,12 @@ const DefaultForm = ({
                         checked={inputInfo?.position === '박사졸업'}
                     />
                 </div>
+                {console.log(isInputEmpty.isPositionEmpty)}
+                {isInputEmpty.isPositionEmpty && (
+                    <Form.Text className="text-success">
+                        선택하세요
+                    </Form.Text>
+                )}
             </Form.Group>
             <Row className="text-center">
                 <Col>

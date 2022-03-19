@@ -17,39 +17,37 @@ const CertificateCard = ({ certificate, setIsEditing, isEditable, setCertificate
     }
     
     return (
-        <>
-            <Card.Text as={Col}>
-                <Row className='align-items-center'>
-                <Col>
-                    {certificate.title}
-                    <br />
-                    <span className="text-muted">{certificate.description}</span>
-                    <br />
-                    <span className="text-muted">{certificate.date}</span>
-                </Col>
-                    {isEditable && (
-                        <Col xs lg='1'>
-                            <Button
-                                variant="outline-info"
-                                size="sm"
-                                className='mr-3'
-                                onClick={() => setIsEditing(true)}
-                            >
-                                편집
-                            </Button>
-                            <Button 
-                                variant="outline-danger"
-                                size="sm"
-                                className='mr-3'
-                                onClick={handleDelete}
-                            >
-                                삭제
-                            </Button>{' '}
-                        </Col>
-                    )}
-                </Row>
-            </Card.Text>
-        </>
+        <Card.Text as={Col}>
+            <Row className='align-items-center'>
+            <Col>
+                {certificate.title}
+                <br />
+                <span className="text-muted">{certificate.description}</span>
+                <br />
+                <span className="text-muted">{certificate.date}</span>
+            </Col>
+                {isEditable && (
+                    <Col xs lg='1'>
+                        <Button
+                            variant="outline-info"
+                            size="sm"
+                            className='mr-3'
+                            onClick={() => setIsEditing(true)}
+                        >
+                            편집
+                        </Button>
+                        <Button 
+                            variant="outline-danger"
+                            size="sm"
+                            className='mr-3'
+                            onClick={handleDelete}
+                        >
+                            삭제
+                        </Button>{' '}
+                    </Col>
+                )}
+            </Row>
+        </Card.Text>
     );
 };
 

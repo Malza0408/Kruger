@@ -4,11 +4,15 @@ import DatePicker from 'react-datepicker';
 
 import * as Api from '../../api';
 
+import InputEmpty from '../InputEmpty'
+
 const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) => {
     const user_id = portfolioOwnerId;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date());
+
+    const [isInputEmpty, setIsInputEmpty] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,6 +22,11 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
         const month = (date.getMonth()+1).toString().padStart(2, '0')
         const day = (date.getDate()).toString().padStart(2, '0')
         const newDate = `${year}-${month}-${day}`
+
+        // 빈 인풋 제출 검사
+        setIsInputEmpty(
+            InputEmpty({ title, description})
+        );
 
         try {
             // "user/register" 엔드포인트로 post요청함.
@@ -33,12 +42,10 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
             );
 
             console.log(res.data)
-
+            setIsAdding(false);
         } catch (err) {
             console.log('등록 실패', err); 
         }
-
-        setIsAdding(false);
     };
 
     return (
@@ -51,6 +58,11 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
+                    {isInputEmpty.isTitleEmpty && (
+                        <Form.Text className="text-success">
+                            자격증 제목을 입력해주세요
+                        </Form.Text>
+                    )}
                 </Form.Group>
 
                 <Form.Group controlId="formCertificateDescription" className="mt-3">
@@ -60,6 +72,11 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
+                    {isInputEmpty.isDescriptionEmpty && (
+                        <Form.Text className="text-success">
+                            상세내역을 입력해주세요
+                        </Form.Text>
+                    )}
                 </Form.Group>
 
                 <Form.Group as={Row} className="mt-3">
@@ -72,6 +89,11 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                 </Form.Group>
 
                 <Form.Group as={Row} className="mt-3 text-center">
+                    {isInputEmpty && (
+                        <Form.Text className="text-success">
+                            빠짐 없이 입력해주세요
+                        </Form.Text>
+                    )}
                     <Col sm={{ span: 20 }}>
                         <Button
                             variant="primary"
