@@ -5,7 +5,7 @@ import DefaultForm from './DefaultForm';
 const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
     const [school, setSchool] = useState('');
     const [major, setMajor] = useState('');
-    const [position, setPosition] = useState('');
+    const [position, setPosition] = useState('재학중');
 
     const handleSchoolOnChange = (e) => {
         setSchool(e.target.value);
@@ -21,15 +21,21 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await Api.post('education/create', {
-            user_id: portfolioOwnerId,
-            school,
-            major,
-            position,
-        });
-        const educations = await Api.get(`educationlist/${portfolioOwnerId}`);
-        setEducations([...educations.data]);
-        setAddState(false);
+        try {
+            await Api.post('education/create', {
+                user_id: portfolioOwnerId,
+                school,
+                major,
+                position
+            });
+            const educations = await Api.get(
+                `educationlist/${portfolioOwnerId}`
+            );
+            setEducations([...educations.data]);
+            setAddState(false);
+        } catch (error) {
+            throw new Error(error);
+        }
     };
 
     const handleOnClick = () => {
@@ -45,6 +51,11 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
             handleCheckOnClick={handleCheckOnClick}
             handleSubmit={handleSubmit}
             handleFunction={handleOnClick}
+            inputInfo={{
+                school,
+                major,
+                position
+            }}
         />
     );
 };
