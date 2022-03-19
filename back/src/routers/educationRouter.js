@@ -72,5 +72,19 @@ educationRouter.put(
         }
     }
 );
+educationRouter.delete(
+    '/educations/:id',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const education_id = req.params.id;
+            await EducationService.deleteEducation({ education_id });
+            res.status(200).send('삭제되었습니다.');
+            console.log('삭제되었습니다.');
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
 export { educationRouter };

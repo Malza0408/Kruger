@@ -42,6 +42,7 @@ const AwardEditForm = ({ setIsEditing, award, setAwards }) => {
                         확인
                     </Button>
                     <Button
+                        className='me-3'
                         variant='secondary'
                         type='button'
                         onClick={() => {
