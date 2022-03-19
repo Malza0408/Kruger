@@ -1,4 +1,4 @@
 # dependencies
 node_modules
-.env
-.DS_Store
+**/.env
+**/.DS_Store
