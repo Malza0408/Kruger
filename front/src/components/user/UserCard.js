@@ -4,6 +4,8 @@ import { Card, Row, Button, Col } from 'react-bootstrap';
 import WithdrawalModal from '../modal/WithdrawalModal';
 import ChangeProfileModal from '../modal/ChangeProfileModal';
 
+import * as Api from '../../api';
+
 function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
     const navigate = useNavigate();
     //프로필 변경 모달
@@ -15,6 +17,15 @@ function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
     const [showWithdrawal, setShowWithdrawal] = useState(false);
     const handleCloseWithdrawal = () => setShowWithdrawal(false);
     const handleShowWithdrawal = () => setShowWithdrawal(true);
+
+    const userDelete = async (e) => {
+    e.preventDefault();
+
+    await Api.delete(`users/${user.id}`)
+
+    // 탈퇴 후 로그인 화면으로 이동
+    navigate('/login', { replace: true });
+  }
 
     return (
         <Card className="mb-2 ms-3 mr-5" style={{ width: '18rem' }}>
@@ -72,6 +83,14 @@ function UserCard({ user, setIsEditing, isEditable, isNetwork }) {
                                     show={showWithdrawal}
                                     handleClose={handleCloseWithdrawal}
                                 />
+                                       
+                                  // Button
+                                  //   variant="outline-info"
+                                  //   size="sm"
+                                  //   onClick={userDelete}
+                                  // 
+                                  //   탈퇴
+                                  // Button
                             </Col>
                         </Row>
                     </Col>

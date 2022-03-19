@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Form, Card, Col, Row } from 'react-bootstrap';
 import * as Api from '../../api';
 
+import UpdatePassword from './UpdatePassword';
+
 function UserEditForm({ user, setIsEditing, setUser }) {
     //useState로 name 상태를 생성함.
     const [name, setName] = useState(user.name);
@@ -9,6 +11,13 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     const [email, setEmail] = useState(user.email);
     //useState로 description 상태를 생성함.
     const [description, setDescription] = useState(user.description);
+
+    // useState로 mouse over 상태를 생성함.
+    const [isMouseOver, setIsMouseOver] = useState(false);
+    // 비밀번호 수정 modal
+    const [modalShow, setModalShow] = React.useState(false);
+
+    console.log(user);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,16 +49,59 @@ function UserEditForm({ user, setIsEditing, setUser }) {
                             onChange={(e) => setName(e.target.value)}
                         />
                     </Form.Group>
-
-                    <Form.Group controlId="userEditEmail" className="mb-3">
-                        <Form.Control
-                            type="email"
-                            placeholder="이메일"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </Form.Group>
-
+                    <Row>
+                        <Col>
+                            <Card.Subtitle
+                                className="mb-2 text-muted"
+                                onMouseOver={() => {
+                                    setIsMouseOver(true);
+                                }}
+                                onMouseOut={() => {
+                                    setIsMouseOver(false);
+                                }}
+                            >
+                                {user?.email}
+                            </Card.Subtitle>
+                        </Col>
+                        <Col>
+                            {isMouseOver && (
+                                <Card.Subtitle className="text-primary">
+                                    수정 불가 항목입니다.
+                                </Card.Subtitle>
+                            )}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Card.Subtitle
+                                className="mb-2 text-muted"
+                                onMouseOver={() => {
+                                    setIsMouseOver(true);
+                                }}
+                                onMouseOut={() => {
+                                    setIsMouseOver(false);
+                                }}
+                            >
+                                비밀번호
+                            </Card.Subtitle>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="primary"
+                                className="me-3"
+                                size="sm"
+                                onClick={() => setModalShow(true)}
+                            >
+                                변경
+                            </Button>
+                            <UpdatePassword
+                                show={modalShow}
+                                onHide={() => setModalShow(false)}
+                                setModalShow={setModalShow}
+                                user={user}
+                            />
+                        </Col>
+                    </Row>
                     <Form.Group controlId="userEditDescription">
                         <Form.Control
                             type="text"

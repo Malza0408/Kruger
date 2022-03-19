@@ -1,40 +1,50 @@
 import React from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Card } from 'react-bootstrap';
 const EducationCard = ({
     handleEditing,
+    handleDeleting,
     school,
     major,
     position,
-    isEditable,
+    isEditable
 }) => {
     return (
-        <>
-            <Row className='align-items-center'>
+        <Card.Text as={Row}>
+            <Row className="align-items-center">
                 <Col>
                     <span>{school}</span>
 
                     <br />
-                    <span className='text-muted'>{major} </span>
+                    <span className="text-muted">{major} </span>
 
-                    <span className='text-muted'>{position}</span>
+                    <span className="text-muted">{position}</span>
                 </Col>
                 {/* 편집 권한이 있다면 보여준다. */}
                 {isEditable && school && (
-                    <Col className='col-lg-1'>
-                        <Button
-                            className=''
-                            variant='outline-info'
-                            size='sm'
-                            onClick={handleEditing}
-                        >
-                            편집
-                        </Button>
-                    </Col>
+                    <>
+                        <Col className="col-lg-1">
+                            <Button
+                                className="mb-1"
+                                variant="outline-info"
+                                size="sm"
+                                onClick={handleEditing}
+                            >
+                                편집
+                            </Button>
+                            <Button
+                                className="mb-1"
+                                variant="outline-danger"
+                                size="sm"
+                                onClick={handleDeleting}
+                            >
+                                삭제
+                            </Button>
+                        </Col>
+                    </>
                 )}
             </Row>
-
-            <hr></hr>
-        </>
+            <hr />
+        </Card.Text>
     );
 };
 
