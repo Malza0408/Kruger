@@ -3,7 +3,7 @@ import { UserModel } from '../schemas/user';
 
 class Education {
     static async create({ newEducation }) {
-        let createdNewEducation = await EducationModel.create(newEducation);
+        const createdNewEducation = await EducationModel.create(newEducation);
         return createdNewEducation;
     }
 
@@ -16,9 +16,9 @@ class Education {
         const educations = await EducationModel.find({ user_id });
         return educations;
     }
-    static async update({ education_id, fieldToUpdate, newValue }) {
+    static async update(education_id, key, value) {
         const filter = { id: education_id };
-        const update = { [fieldToUpdate]: newValue };
+        const update = { [key]: value };
         const option = { returnOriginal: false };
         const updatedEducation = await EducationModel.findOneAndUpdate(
             filter,

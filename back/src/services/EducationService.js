@@ -33,38 +33,21 @@ class EducationService {
 
     static async setEducation({ education_id, toUpdate }) {
         let education = await Education.findById({ education_id });
-
+        const keys = Object.keys(toUpdate);
+        const values = Object.values(toUpdate);
         if (!education) {
             const errorMessage = '삭제되었거나 등록되지 않은 학력입니다.';
             throw new Error(errorMessage);
         }
-        if (toUpdate.school) {
-            const fieldToUpdate = 'school';
-            const newValue = toUpdate.school;
-            education = await Education.update({
+
+        for (let i = 0; i < keys.length; i++) {
+            education = await Education.update(
                 education_id,
-                fieldToUpdate,
-                newValue
-            });
+                keys[i],
+                values[i]
+            );
         }
-        if (toUpdate.major) {
-            const fieldToUpdate = 'major';
-            const newValue = toUpdate.major;
-            education = await Education.update({
-                education_id,
-                fieldToUpdate,
-                newValue
-            });
-        }
-        if (toUpdate.position) {
-            const fieldToUpdate = 'position';
-            const newValue = toUpdate.position;
-            education = await Education.update({
-                education_id,
-                fieldToUpdate,
-                newValue
-            });
-        }
+
         return education;
     }
     static async deleteEducation({ education_id }) {

@@ -1,6 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
+import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { AwardService } from '../services/AwardService';
 
 const awardAuthRouter = Router();
@@ -64,15 +65,13 @@ awardAuthRouter.get('/awards/:id', login_required, async (req, res, next) => {
 awardAuthRouter.put(
     '/awards/:id',
     login_required,
+    updateMiddleware,
     async function (req, res, next) {
         try {
             // URI로부터 수상 요소 id를 추출함.
             const award_id = req.params.id;
-            // body data 로부터 업데이트할 수상 요소 정보를 추출함.
-            const { title, description } = req.body ?? null;
-
-            const toUpdate = { title, description };
-
+            const toUpdate = req.toUpdate;
+            console.log(toUpdate);
             // 해당 수상 요소 아이디로 수상 요소 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedAward = await AwardService.setAward({
                 award_id,

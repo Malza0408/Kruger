@@ -1,6 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
+import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { userAuthService } from '../services/userService';
 import { EducationService } from '../services/EducationService';
 
@@ -16,7 +17,12 @@ educationRouter.post(
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-            const { user_id, school, major, position } = req.body;
+            const user_id = req.currentUserId;
+            const { school, major, position } = req.body;
+            if (major.length === 0) {
+                const errorMessage = '전공을 입력해주세요.';
+                return res.status(400).send(errorMessage);
+            }
             const newEducation = await EducationService.addEducation({
                 user_id,
                 school,
@@ -62,11 +68,16 @@ educationRouter.get('/educations/:id', async (req, res, next) => {
 educationRouter.put(
     '/educations/:id',
     login_required,
+    updateMiddleware,
     async (req, res, next) => {
         try {
             const education_id = req.params.id;
-            const { school, major, position } = req.body ?? null;
-            const toUpdate = { school, major, position };
+            const toUpdate = req.toUpdate;
+            console.log(toUpdate);
+            if (Object.keys(toUpdate).length === 0) {
+                const errorMessage = '수정할 내용이 없습니다.';
+                return res.status(400).send(errorMessage);
+            }
             const updatedEducation = await EducationService.setEducation({
                 education_id,
                 toUpdate

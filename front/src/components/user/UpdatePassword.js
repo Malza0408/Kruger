@@ -6,8 +6,6 @@ import * as Api from '../../api';
 import InputEmpty from '../InputEmpty';
 
 function UpdatePassword({ show, onHide, setModalShow, user }) {
-    console.log('dsfsdfsd');
-    console.log(show, onHide);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -28,7 +26,7 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
             password
         });
 
-        !(isPasswordValid && isPasswordSame) && setModalShow(true);
+        (isPasswordValid && isPasswordSame) ? setModalShow(false) : setModalShow(true);
     };
 
     return (

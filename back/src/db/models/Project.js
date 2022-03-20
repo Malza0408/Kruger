@@ -20,9 +20,9 @@ class Project {
     }
 
     // id를 통해 해당 프로젝트 요소를 수정함
-    static async update({ project_id, fieldToUpdate, newValue }) {
+    static async update(project_id, key, value) {
         const filter = { id: project_id };
-        const update = { [fieldToUpdate]: newValue };
+        const update = { [key]: value };
         const option = { returnOriginal: false };
 
         const updatedProject = await ProjectModel.findOneAndUpdate(

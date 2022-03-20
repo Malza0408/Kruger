@@ -1,6 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
+import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { ProjectService } from '../services/ProjectService';
 
 const projectAuthRouter = Router();
@@ -70,13 +71,13 @@ projectAuthRouter.get(
 projectAuthRouter.put(
     '/projects/:id',
     login_required,
+    updateMiddleware,
     async function (req, res, next) {
         try {
             // URI로부터 프로젝트 id를 추출함.
             const project_id = req.params.id;
             // body data 로부터 업데이트할 프로젝트 정보를 추출함.
-            const { title, description, from_date, to_date } = req.body ?? null;
-            const toUpdate = { title, description, from_date, to_date };
+            const toUpdate = req.toUpdate;
 
             // 해당 프로젝트 아이디로 프로젝트 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedProject = await ProjectService.setProject({

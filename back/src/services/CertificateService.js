@@ -1,5 +1,6 @@
 import { Certificate } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import { v4 as uuidv4 } from 'uuid';
+import { format } from 'express/lib/response';
 
 class CertificateService {
     static async addCertificate({ user_id, title, description, date }) {
@@ -37,6 +38,8 @@ class CertificateService {
     static async setCertificate({ certificate_id, toUpdate }) {
         // 우선 해당 id 의 수상내역이 db에 존재하는지 여부 확인
         let certificate = await Certificate.findById({ certificate_id });
+        const keys = Object.keys(toUpdate);
+        const values = Object.values(toUpdate);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!certificate) {
@@ -45,34 +48,12 @@ class CertificateService {
         }
 
         // 업데이트 대상에 title이 있다면, 즉 title 값이 null 이 아니라면 업데이트 진행
-        if (toUpdate.title) {
-            const fieldToUpdate = 'title';
-            const newValue = toUpdate.title;
-            certificate = await Certificate.update({
+        for (let i = 0; i < keys.length; i++) {
+            certificate = await Certificate.update(
                 certificate_id,
-                fieldToUpdate,
-                newValue
-            });
-        }
-
-        if (toUpdate.description) {
-            const fieldToUpdate = 'description';
-            const newValue = toUpdate.description;
-            certificate = await Certificate.update({
-                certificate_id,
-                fieldToUpdate,
-                newValue
-            });
-        }
-
-        if (toUpdate.date) {
-            const fieldToUpdate = 'date';
-            const newValue = toUpdate.date;
-            certificate = await Certificate.update({
-                certificate_id,
-                fieldToUpdate,
-                newValue
-            });
+                keys[i],
+                values[i]
+            );
         }
 
         return certificate;

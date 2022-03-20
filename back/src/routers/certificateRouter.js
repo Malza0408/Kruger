@@ -1,6 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
+import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { CertificateService } from '../services/CertificateService';
 
 const certificateAuthRouter = Router();
@@ -72,14 +73,12 @@ certificateAuthRouter.get(
 certificateAuthRouter.put(
     '/certificates/:id',
     login_required,
+    updateMiddleware,
     async function (req, res, next) {
         try {
             // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
-            // body data 로부터 업데이트할 자격증 정보를 추출함.
-            const { title, description, date } = req.body ?? null;
-
-            const toUpdate = { title, description, date };
+            const toUpdate = req.toUpdate;
 
             // 해당 자격증 아이디로 자격증 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedCertificate = await CertificateService.setCertificate({

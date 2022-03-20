@@ -115,6 +115,8 @@ class UserService {
     static async setUser({ user_id, toUpdate }) {
         // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
         let user = await User.findById({ user_id });
+        const keys = Object.keys(toUpdate);
+        const values = Object.values(toUpdate);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
@@ -123,39 +125,9 @@ class UserService {
             throw new Error(errorMessage);
         }
 
-        // 업데이트 대상에 name이 있다면, 즉 name 값이 null 이 아니라면 업데이트 진행
-        if (toUpdate.name) {
-            const fieldToUpdate = 'name';
-            const newValue = toUpdate.name;
-            user = await User.updateById({ user_id, fieldToUpdate, newValue });
+        for (let i = 0; i < keys.length; i++) {
+            user = await User.updateById(user_id, keys[i], values[i]);
         }
-
-        if (toUpdate.email) {
-            const fieldToUpdate = 'email';
-            const newValue = toUpdate.email;
-            user = await User.updateById({ user_id, fieldToUpdate, newValue });
-        }
-
-        if (toUpdate.password) {
-            const fieldToUpdate = 'password';
-            // 새로운 비밀번호 해쉬화
-            const newHashedPassword = await bcrypt.hash(toUpdate.password, 10);
-            const newValue = newHashedPassword;
-            user = await User.updateById({ user_id, fieldToUpdate, newValue });
-        }
-
-        if (toUpdate.description) {
-            const fieldToUpdate = 'description';
-            const newValue = toUpdate.description;
-            user = await User.updateById({ user_id, fieldToUpdate, newValue });
-        }
-
-        if (toUpdate.picture) {
-            const fieldToUpdate = 'picture';
-            const newValue = toUpdate.picture;
-            user = await User.updateById({ user_id, fieldToUpdate, newValue });
-        }
-
         return user;
     }
 
