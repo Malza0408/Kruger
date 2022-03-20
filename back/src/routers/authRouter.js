@@ -28,12 +28,16 @@ authRouter.get(
 );
 // 깃허브
 authRouter.get('/auth/github', async (req, res, next) => {
-    const clientId = process.env.GITHUB_CLIENT_ID;
-    const redirectUri = 'http://localhost:5000/auth/github/callback';
-    const uri = 'https://github.com/login/oauth/authorize';
-    res.redirect(
-        `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
-    );
+    try {
+        const clientId = process.env.GITHUB_CLIENT_ID;
+        const redirectUri = 'http://localhost:5000/auth/github/callback';
+        const uri = 'https://github.com/login/oauth/authorize';
+        res.redirect(
+            `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
+        );
+    } catch (error) {
+        next(error);
+    }
 });
 
 authRouter.get('/auth/github/callback', async (req, res, next) => {
@@ -82,7 +86,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             loginMethod: 'github',
             repositoryUrl
         };
-        const newUser = await UserService.addUser(userInfo);
+        const newUser = await UserService.addGithubUser(userInfo);
         res.status(201).json(newUser);
     } catch (error) {
         next(error);

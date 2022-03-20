@@ -46,6 +46,12 @@ class UserService {
 
         return createdNewUser;
     }
+    static async addGithubUser(userData) {
+        const email = userData.email;
+        const user = await User.findByEmail({ email });
+        if (user) {
+        }
+    }
 
     static async getUsers() {
         const users = await User.findAll();
