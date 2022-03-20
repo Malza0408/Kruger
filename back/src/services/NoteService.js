@@ -25,13 +25,16 @@ class NoteService {
     }
 
     static async getTakenNotes({ user_id }) {
-        const notes = await Note.findAllTo({ user_id });
-        return notes;
+        const notes = await Note.findAll();
+        const takenNotes = notes.filter((v) => v.toUser.id == user_id);
+
+        return takenNotes;
     }
 
     static async getSentNotes({ user_id }) {
-        const notes = await Note.findAllFrom({ user_id });
-        return notes;
+        const notes = await Note.findAll();
+        const sentNotes = notes.filter((v) => v.fromUser.id == user_id);
+        return sentNotes;
     }
 
     static async getNoteInfo({ noteId }) {

@@ -33,9 +33,9 @@ noteAuthRouter.post('/note/create', login_required, async (req, res, next) => {
 noteAuthRouter.get('/takenNotelist', login_required, async (req, res, next) => {
     try {
         const user_id = req.currentUserId;
-        const notes = await NoteService.getTakenNotes({ user_id });
+        const takenNotes = await NoteService.getTakenNotes({ user_id });
 
-        res.status(200).json(notes);
+        res.status(200).json(takenNotes);
     } catch (error) {
         next(error);
     }
@@ -44,9 +44,9 @@ noteAuthRouter.get('/takenNotelist', login_required, async (req, res, next) => {
 noteAuthRouter.get('/sentNotelist', login_required, async (req, res, next) => {
     try {
         const user_id = req.currentUserId;
-        const notes = await NoteService.getSentNotes({ user_id });
+        const sentNotes = await NoteService.getSentNotes({ user_id });
 
-        res.status(200).json(notes);
+        res.status(200).json(sentNotes);
     } catch (error) {
         next(error);
     }

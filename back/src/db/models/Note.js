@@ -6,16 +6,11 @@ class Note {
         return createdNewNote;
     }
 
-    static async findAllTo({ user_id }) {
-        const notes = await NoteModel.find({}).populate('toUser');
-        const takenNotes = notes.filter((v) => v.toUser.id == user_id);
-        return takenNotes;
-    }
-
-    static async findAllFrom({ user_id }) {
-        const notes = await NoteModel.find({}).populate('fromUser');
-        const sentNotes = notes.filter((v) => v.fromUser.id == user_id);
-        return sentNotes;
+    static async findAll() {
+        const notes = await NoteModel.find({})
+            .populate('toUser')
+            .populate('fromUser');
+        return notes;
     }
 
     static async findById({ noteId }) {
