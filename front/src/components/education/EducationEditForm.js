@@ -13,7 +13,8 @@ const EducationEditForm = ({
     const [majorInput, setMajorInput] = useState('');
     const [positionValue, setPositionValue] = useState('');
 
-    const [isInputEmpty, setIsInputEmpty] = useState(false);
+    const [isSchoolEmpty, setIsSchoolEmpty] = useState(false) 
+    const [isMajorEmpty, setIsMajorEmpty] = useState(false) 
 
     const handleSchoolOnChange = (e) => {
         setSchoolInput(e.target.value);
@@ -47,6 +48,11 @@ const EducationEditForm = ({
         e.preventDefault();
         // 칸을 비워놨다면 값을 받지 않는다.
         try {
+            // school 공란이면 true 
+            setIsSchoolEmpty(!schoolInput) 
+            // major 공란이면 true 
+            setIsMajorEmpty(!majorInput) 
+
             await Api.put(`educations/${education.id}`, {
                 user_id: education.user_id,
                 school: schoolInput,
@@ -72,7 +78,8 @@ const EducationEditForm = ({
             handleSubmit={handleSubmit}
             handleFunction={handleEditCancel}
             inputInfo={inputInfo}
-            isInputEmpty={isInputEmpty}
+            isSchoolEmpty={isSchoolEmpty}
+            isMajorEmpty={isMajorEmpty}
         />
     );
 };
