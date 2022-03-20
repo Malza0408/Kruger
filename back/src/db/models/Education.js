@@ -1,5 +1,4 @@
 import { EducationModel } from '../schemas/education';
-import { UserModel } from '../schemas/user';
 
 class Education {
     static async create({ newEducation }) {

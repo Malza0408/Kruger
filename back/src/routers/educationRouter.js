@@ -17,7 +17,8 @@ educationRouter.post(
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-            const { user_id, school, major, position } = req.body;
+            const user_id = req.currentUserId;
+            const { school, major, position } = req.body;
             const newEducation = await EducationService.createEducation({
                 user_id,
                 school,
