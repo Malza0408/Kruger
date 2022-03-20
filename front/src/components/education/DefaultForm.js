@@ -9,7 +9,7 @@ const DefaultForm = ({
     handleCheckOnClick,
     handleSubmit,
     handleFunction,
-    isInputEmpty, 
+    isInputEmpty,
     inputInfo
 }) => {
     return (
@@ -98,9 +98,7 @@ const DefaultForm = ({
                 </div>
                 {console.log(isInputEmpty.isPositionEmpty)}
                 {isInputEmpty.isPositionEmpty && (
-                    <Form.Text className="text-success">
-                        선택하세요
-                    </Form.Text>
+                    <Form.Text className="text-success">선택하세요</Form.Text>
                 )}
             </Form.Group>
             <Row className="text-center">
