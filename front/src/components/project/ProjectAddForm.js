@@ -85,6 +85,11 @@ const ProjectAddForm = ({ setIsAdding, portfolioOwnerId, setProjects }) => {
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className='text-center mt-3'>
+                {isInputEmpty && (
+                        <Form.Text className="text-success">
+                            빠짐 없이 입력해주세요
+                        </Form.Text>
+                    )}
                 <Col sm={{ span: 20 }}>
                     <Button className='me-3' variant='primary' type='submit'>
                         확인

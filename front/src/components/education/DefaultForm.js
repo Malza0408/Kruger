@@ -102,6 +102,11 @@ const DefaultForm = ({
                 )}
             </Form.Group>
             <Row className="text-center">
+                    {isInputEmpty && (
+                        <Form.Text className="text-success">
+                            빠짐 없이 입력해주세요
+                        </Form.Text>
+                    )}
                 <Col>
                     <Button variant="primary" type="submit" className="me-3">
                         확인

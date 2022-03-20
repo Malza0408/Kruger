@@ -18,6 +18,10 @@ educationRouter.post(
                 );
             }
             const { user_id, school, major, position } = req.body;
+            if (major.length === 0) {
+                const errorMessage = '전공을 입력해주세요.';
+                res.status(400).send(errorMessage);
+            }
             const newEducation = await EducationService.addEducation({
                 user_id,
                 school,

@@ -13,6 +13,8 @@ const EducationEditForm = ({
     const [majorInput, setMajorInput] = useState('');
     const [positionValue, setPositionValue] = useState('');
 
+    const [isInputEmpty, setIsInputEmpty] = useState(false);
+
     const handleSchoolOnChange = (e) => {
         setSchoolInput(e.target.value);
         setInputInfo((current) => {
@@ -70,6 +72,7 @@ const EducationEditForm = ({
             handleSubmit={handleSubmit}
             handleFunction={handleEditCancel}
             inputInfo={inputInfo}
+            isInputEmpty={isInputEmpty}
         />
     );
 };
