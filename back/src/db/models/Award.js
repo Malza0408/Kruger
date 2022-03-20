@@ -20,9 +20,9 @@ class Award {
     }
 
     // id를 통해 해당 수상 요소를 수정함
-    static async update({ award_id, fieldToUpdate, newValue }) {
+    static async update(award_id, key, value) {
         const filter = { id: award_id };
-        const update = { [fieldToUpdate]: newValue };
+        const update = { [key]: value };
         const option = { returnOriginal: false };
 
         const updatedAward = await AwardModel.findOneAndUpdate(
