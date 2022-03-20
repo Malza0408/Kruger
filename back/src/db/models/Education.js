@@ -16,9 +16,9 @@ class Education {
         const educationList = await EducationModel.find({ user_id });
         return educationList;
     }
-    static async update({ education_id, fieldToUpdate, newValue }) {
+    static async update(education_id, key, value) {
         const filter = { id: education_id };
-        const update = { [fieldToUpdate]: newValue };
+        const update = { [key]: value };
         const option = { returnOriginal: false };
         const updatedEducation = await EducationModel.findOneAndUpdate(
             filter,

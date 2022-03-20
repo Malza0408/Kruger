@@ -1,6 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
+import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { userAuthService } from '../services/userService';
 import { EducationService } from '../services/EducationService';
 
@@ -60,11 +61,11 @@ educationRouter.get('/educations/:id', async (req, res, next) => {
 educationRouter.put(
     '/educations/:id',
     login_required,
+    updateMiddleware,
     async (req, res, next) => {
         try {
             const education_id = req.params.id;
-            const { school, major, position } = req.body ?? null;
-            const toUpdate = { school, major, position };
+            const toUpdate = req.toUpdate;
             const updatedEducation = await EducationService.setEducation({
                 education_id,
                 toUpdate
