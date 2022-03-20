@@ -2,7 +2,6 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { updateMiddleware } from '../middlewares/updateMiddleware';
-import { userAuthService } from '../services/userService';
 import { EducationService } from '../services/EducationService';
 
 const educationRouter = Router();
@@ -17,7 +16,8 @@ educationRouter.post(
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-            const { user_id, school, major, position } = req.body;
+            const user_id = req.currentUserId;
+            const { school, major, position } = req.body;
             const newEducation = await EducationService.addEducation({
                 user_id,
                 school,
