@@ -45,8 +45,8 @@ class UserService {
         const createdNewUser = await User.create(newUser);
 
         // createdNewUser의 _doc안에 값들의 객체가 있음
-        const UserKeys = Object.keys(createdNewUser._doc);
-        if (UserKeys.indexOf('password') !== -1) {
+        const createdUserKeys = Object.keys(createdNewUser._doc);
+        if (createdUserKeys.indexOf('password') !== -1) {
             const { password, ...refinedNewUser } = createdNewUser._doc;
             createdNewUser._doc = refinedNewUser;
         }
@@ -56,6 +56,14 @@ class UserService {
 
     static async getUsers() {
         const users = await User.findAll();
+        console.log(users.length);
+        for (let i = 0; i < users.length; i++) {
+            let UserKeys = Object.keys(users[i]._doc);
+            if (UserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = users[i]._doc;
+                users[i]._doc = refinedUser;
+            }
+        }
         return users;
     }
 
