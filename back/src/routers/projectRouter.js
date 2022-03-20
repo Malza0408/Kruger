@@ -4,9 +4,9 @@ import { login_required } from '../middlewares/login_required';
 import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { ProjectService } from '../services/ProjectService';
 
-const projectAuthRouter = Router();
+const projectRouter = Router();
 
-projectAuthRouter.post(
+projectRouter.post(
     '/project/create',
     login_required,
     async (req, res, next) => {
@@ -36,7 +36,7 @@ projectAuthRouter.post(
     }
 );
 
-projectAuthRouter.get(
+projectRouter.get(
     '/projectlist/:user_id',
     login_required,
     async function (req, res, next) {
@@ -51,24 +51,20 @@ projectAuthRouter.get(
     }
 );
 
-projectAuthRouter.get(
-    '/projects/:id',
-    login_required,
-    async (req, res, next) => {
-        try {
-            const project_id = req.params.id;
-            const currentProjectInfo = await ProjectService.getProjectInfo({
-                project_id
-            });
+projectRouter.get('/projects/:id', login_required, async (req, res, next) => {
+    try {
+        const project_id = req.params.id;
+        const currentProjectInfo = await ProjectService.getProjectInfo({
+            project_id
+        });
 
-            res.status(200).send(currentProjectInfo);
-        } catch (error) {
-            next(error);
-        }
+        res.status(200).send(currentProjectInfo);
+    } catch (error) {
+        next(error);
     }
-);
+});
 
-projectAuthRouter.put(
+projectRouter.put(
     '/projects/:id',
     login_required,
     updateMiddleware,
@@ -92,7 +88,7 @@ projectAuthRouter.put(
     }
 );
 
-projectAuthRouter.delete(
+projectRouter.delete(
     '/projects/:id',
     login_required,
     async function (req, res, next) {
@@ -108,4 +104,4 @@ projectAuthRouter.delete(
     }
 );
 
-export { projectAuthRouter };
+export { projectRouter };

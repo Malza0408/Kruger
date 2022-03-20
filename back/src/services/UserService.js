@@ -44,11 +44,26 @@ class UserService {
         // db에 저장
         const createdNewUser = await User.create(newUser);
 
+        // createdNewUser의 _doc안에 값들의 객체가 있음
+        const createdUserKeys = Object.keys(createdNewUser._doc);
+        if (createdUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedNewUser } = createdNewUser._doc;
+            createdNewUser._doc = refinedNewUser;
+        }
+
         return createdNewUser;
     }
 
     static async getUsers() {
         const users = await User.findAll();
+        console.log(users.length);
+        for (let i = 0; i < users.length; i++) {
+            let userKeys = Object.keys(users[i]._doc);
+            if (userKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = users[i]._doc;
+                users[i]._doc = refinedUser;
+            }
+        }
         return users;
     }
 
@@ -86,8 +101,7 @@ class UserService {
             id,
             email,
             name,
-            description,
-            errorMessage: null
+            description
         };
 
         return loginUser;
@@ -101,6 +115,12 @@ class UserService {
             const errorMessage =
                 '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
             throw new Error(errorMessage);
+        }
+
+        const userKeys = Object.keys(user._doc);
+        if (userKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = user._doc;
+            user._doc = refinedUser;
         }
 
         return user;
@@ -119,9 +139,22 @@ class UserService {
             throw new Error(errorMessage);
         }
 
+        if (keys.indexOf('password') !== -1) {
+            const index = keys.indexOf('password');
+            const hashedPassword = await bcrypt.hash(values[index], 10);
+            values[index] = hashedPassword;
+        }
+
         for (let i = 0; i < keys.length; i++) {
             user = await User.updateById(user_id, keys[i], values[i]);
         }
+
+        const updatedUserKeys = Object.keys(user._doc);
+        if (updatedUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = user._doc;
+            user._doc = refinedUser;
+        }
+
         return user;
     }
 
