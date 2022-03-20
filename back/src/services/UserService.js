@@ -58,8 +58,8 @@ class UserService {
         const users = await User.findAll();
         console.log(users.length);
         for (let i = 0; i < users.length; i++) {
-            let UserKeys = Object.keys(users[i]._doc);
-            if (UserKeys.indexOf('password') !== -1) {
+            let userKeys = Object.keys(users[i]._doc);
+            if (userKeys.indexOf('password') !== -1) {
                 const { password, ...refinedUser } = users[i]._doc;
                 users[i]._doc = refinedUser;
             }
@@ -115,6 +115,12 @@ class UserService {
             const errorMessage =
                 '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
             throw new Error(errorMessage);
+        }
+
+        const userKeys = Object.keys(user._doc);
+        if (userKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = user._doc;
+            user._doc = refinedUser;
         }
 
         return user;
