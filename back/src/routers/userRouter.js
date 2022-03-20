@@ -4,9 +4,9 @@ import { login_required } from '../middlewares/login_required';
 import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { UserService } from '../services/UserService';
 
-const userAuthRouter = Router();
+const userRouter = Router();
 
-userAuthRouter.post('/user/register', async function (req, res, next) {
+userRouter.post('/user/register', async function (req, res, next) {
     try {
         if (is.emptyObject(req.body)) {
             throw new Error(
@@ -27,7 +27,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
     }
 });
 
-userAuthRouter.post('/user/login', async function (req, res, next) {
+userRouter.post('/user/login', async function (req, res, next) {
     try {
         // req (request) 에서 데이터 가져오기
         const { email, password } = req.body;
@@ -41,21 +41,17 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
     }
 });
 
-userAuthRouter.get(
-    '/userlist',
-    login_required,
-    async function (req, res, next) {
-        try {
-            // 전체 사용자 목록을 얻음
-            const users = await UserService.getUsers();
-            res.status(200).send(users);
-        } catch (error) {
-            next(error);
-        }
+userRouter.get('/userlist', login_required, async function (req, res, next) {
+    try {
+        // 전체 사용자 목록을 얻음
+        const users = await UserService.getUsers();
+        res.status(200).send(users);
+    } catch (error) {
+        next(error);
     }
-);
+});
 
-userAuthRouter.get(
+userRouter.get(
     '/user/current',
     login_required,
     async function (req, res, next) {
@@ -73,24 +69,20 @@ userAuthRouter.get(
     }
 );
 
-userAuthRouter.get(
-    '/users/:id',
-    login_required,
-    async function (req, res, next) {
-        try {
-            const user_id = req.params.id;
-            const currentUserInfo = await UserService.getUserInfo({
-                user_id
-            });
+userRouter.get('/users/:id', login_required, async function (req, res, next) {
+    try {
+        const user_id = req.params.id;
+        const currentUserInfo = await UserService.getUserInfo({
+            user_id
+        });
 
-            res.status(200).send(currentUserInfo);
-        } catch (error) {
-            next(error);
-        }
+        res.status(200).send(currentUserInfo);
+    } catch (error) {
+        next(error);
     }
-);
+});
 
-userAuthRouter.put(
+userRouter.put(
     '/users/:id',
     login_required,
     updateMiddleware,
@@ -114,7 +106,7 @@ userAuthRouter.put(
     }
 );
 
-userAuthRouter.put('/user/resetPassword', async function (req, res, next) {
+userRouter.put('/user/resetPassword', async function (req, res, next) {
     try {
         const { email } = req.body;
         await UserService.resetPassword({ email });
@@ -125,11 +117,11 @@ userAuthRouter.put('/user/resetPassword', async function (req, res, next) {
 });
 
 // 친구추가
-userAuthRouter.put('/user/:id', login_required, async (req, res, next) => {
+userRouter.put('/user/:id', login_required, async (req, res, next) => {
     const friend_id = req.params.id;
 });
 
-userAuthRouter.delete(
+userRouter.delete(
     '/users/:id',
     login_required,
     async function (req, res, next) {
@@ -144,10 +136,10 @@ userAuthRouter.delete(
 );
 
 // jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
+userRouter.get('/afterlogin', login_required, function (req, res, next) {
     res.status(200).send(
         `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
     );
 });
 
-export { userAuthRouter };
+export { userRouter };
