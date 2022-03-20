@@ -18,13 +18,23 @@ class UserService {
         let newUser = '';
         if (userData.loginMethod === 'github') {
             console.log('깃허브 사용자생성');
+            const {
+                id,
+                email,
+                name,
+                password,
+                description,
+                loginMethod,
+                repositoryUrl
+            } = userData;
             newUser = {
-                id: userData.id,
-                email: userData.email,
-                name: userData.name,
-                description: userData.description,
-                loginMethod: userData.loginMethod,
-                repositoryUrl: userData.repositoryUrl
+                id,
+                email,
+                name,
+                password,
+                description,
+                loginMethod,
+                repositoryUrl
             };
             console.log(newUser);
         } else {
@@ -46,11 +56,19 @@ class UserService {
 
         return createdNewUser;
     }
-    static async addGithubUser(userData) {
-        const email = userData.email;
+    static async checkUser(email) {
         const user = await User.findByEmail({ email });
         if (user) {
+            return user;
         }
+        return null;
+    }
+
+    static async getGithubUser(userId) {
+        // 로그인 성공 -> JWT 웹 토큰 생성
+        const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
+        const token = jwt.sign({ user_id: userId }, secretKey);
+        return token;
     }
 
     static async getUsers() {
@@ -95,6 +113,7 @@ class UserService {
             description,
             errorMessage: null
         };
+        console.log(loginUser);
 
         return loginUser;
     }
