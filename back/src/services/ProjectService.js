@@ -48,6 +48,8 @@ class ProjectService {
     static async setProject({ project_id, toUpdate }) {
         // 우선 해당 id 의 프로젝트내역이 db에 존재하는지 여부 확인
         let project = await Project.findById({ project_id });
+        const keys = Object.keys(toUpdate);
+        const values = Object.values(toUpdate);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!project) {
@@ -55,45 +57,8 @@ class ProjectService {
             throw new Error(errorMessage);
         }
 
-        // 업데이트 대상에 title이 있다면, 즉 title 값이 null 이 아니라면 업데이트 진행
-        if (toUpdate.title) {
-            const fieldToUpdate = 'title';
-            const newValue = toUpdate.title;
-            project = await Project.update({
-                project_id,
-                fieldToUpdate,
-                newValue
-            });
-        }
-
-        if (toUpdate.description) {
-            const fieldToUpdate = 'description';
-            const newValue = toUpdate.description;
-            project = await Project.update({
-                project_id,
-                fieldToUpdate,
-                newValue
-            });
-        }
-
-        if (toUpdate.from_date) {
-            const fieldToUpdate = 'from_date';
-            const newValue = toUpdate.from_date;
-            project = await Project.update({
-                project_id,
-                fieldToUpdate,
-                newValue
-            });
-        }
-
-        if (toUpdate.to_date) {
-            const fieldToUpdate = 'to_date';
-            const newValue = toUpdate.to_date;
-            project = await Project.update({
-                project_id,
-                fieldToUpdate,
-                newValue
-            });
+        for (let i = 0; i < keys.length; i++) {
+            project = await Project.update(project_id, keys[i], values[i]);
         }
 
         return project;
