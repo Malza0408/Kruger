@@ -3,7 +3,7 @@ import express from 'express';
 import passport from 'passport';
 import { userAuthRouter } from './routers/userRouter';
 import { educationRouter } from './routers/educationRouter';
-import { awardAuthRouter } from './routers/awardRouter';
+import { awardRouter } from './routers/awardRouter';
 import { certificateAuthRouter } from './routers/certificateRouter';
 import { projectAuthRouter } from './routers/projectRouter';
 import { noteAuthRouter } from './routers/noteRouter';
@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 app.use(userAuthRouter);
 app.use(authRouter);
 app.use(educationRouter);
-app.use(awardAuthRouter);
+app.use(awardRouter);
 app.use(certificateAuthRouter);
 app.use(projectAuthRouter);
 app.use(noteAuthRouter);
