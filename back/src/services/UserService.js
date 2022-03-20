@@ -119,6 +119,12 @@ class UserService {
             throw new Error(errorMessage);
         }
 
+        if (keys.indexOf('password') !== -1) {
+            const index = keys.indexOf('password');
+            const hashedPassword = await bcrypt.hash(values[index], 10);
+            values[index] = hashedPassword;
+        }
+
         for (let i = 0; i < keys.length; i++) {
             user = await User.updateById(user_id, keys[i], values[i]);
         }
