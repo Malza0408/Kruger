@@ -7,14 +7,14 @@ class Education {
         return createdNewEducation;
     }
 
-    static async findByEducationId({ education_id }) {
+    static async findById({ education_id }) {
         const education = await EducationModel.findOne({ id: education_id });
         return education;
     }
 
     static async findAll({ user_id }) {
-        const educationList = await EducationModel.find({ user_id });
-        return educationList;
+        const educations = await EducationModel.find({ user_id });
+        return educations;
     }
     static async update(education_id, key, value) {
         const filter = { id: education_id };
@@ -27,7 +27,7 @@ class Education {
         );
         return updatedEducation;
     }
-    static async delete({ education_id }) {
+    static async deleteById({ education_id }) {
         await EducationModel.deleteOne({ id: education_id });
         return;
     }

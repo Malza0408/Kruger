@@ -18,7 +18,7 @@ educationRouter.post(
                 );
             }
             const { user_id, school, major, position } = req.body;
-            const newEducation = await EducationService.createEducation({
+            const newEducation = await EducationService.addEducation({
                 user_id,
                 school,
                 major,
@@ -38,10 +38,10 @@ educationRouter.get(
     async (req, res, next) => {
         try {
             const user_id = req.params.user_id;
-            const educationList = await EducationService.getEducations({
+            const educations = await EducationService.getEducations({
                 user_id
             });
-            res.status(200).send(educationList);
+            res.status(200).send(educations);
         } catch (error) {
             next(error);
         }
@@ -51,7 +51,9 @@ educationRouter.get(
 educationRouter.get('/educations/:id', async (req, res, next) => {
     try {
         const education_id = req.params.id;
-        const education = await EducationService.getEducation({ education_id });
+        const education = await EducationService.getEducationInfo({
+            education_id
+        });
         res.status(200).send(education);
     } catch (error) {
         next(error);
