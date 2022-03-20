@@ -49,8 +49,11 @@ class CertificateService {
 
         // 업데이트 대상에 title이 있다면, 즉 title 값이 null 이 아니라면 업데이트 진행
         for (let i = 0; i < keys.length; i++) {
-            award = await Certificate.update(award_id, keys[i], values[i]);
-            console.log(keys[i], values[i], award);
+            certificate = await Certificate.update(
+                certificate_id,
+                keys[i],
+                values[i]
+            );
         }
 
         return certificate;
