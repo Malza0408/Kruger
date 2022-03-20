@@ -91,20 +91,16 @@ class UserService {
         const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
         const token = jwt.sign({ user_id: user.id }, secretKey);
 
-        // 반환할 loginuser 객체를 위한 변수 설정
-        const id = user.id;
-        const name = user.name;
-        const description = user.description;
+        const loginUserKeys = Object.keys(user._doc);
+        if (loginUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = user._doc;
+            user._doc = { ...refinedUser, token };
+            return user;
+        }
 
-        const loginUser = {
-            token,
-            id,
-            email,
-            name,
-            description
-        };
+        user._doc.token = token;
 
-        return loginUser;
+        return user;
     }
 
     static async getUserInfo({ user_id }) {
