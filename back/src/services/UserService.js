@@ -14,11 +14,6 @@ class UserService {
                 '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
             throw new Error(errorMessage);
         }
-        const userById = await User.findById(userData.id);
-        if (userById) {
-            const errorMessage = '이미 등록된 회원입니다.';
-            throw new Error(errorMessage);
-        }
 
         let newUser = '';
         if (userData.loginMethod === 'github') {
@@ -47,7 +42,7 @@ class UserService {
         }
 
         // db에 저장
-        const createdNewUser = await User.create({ newUser });
+        const createdNewUser = await User.create(newUser);
 
         return createdNewUser;
     }
