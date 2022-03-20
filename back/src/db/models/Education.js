@@ -2,7 +2,7 @@ import { EducationModel } from '../schemas/education';
 
 class Education {
     static async create({ newEducation }) {
-        let createdNewEducation = await EducationModel.create(newEducation);
+        const createdNewEducation = await EducationModel.create(newEducation);
         return createdNewEducation;
     }
 

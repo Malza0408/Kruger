@@ -3,15 +3,12 @@ import { Button, Form, Modal, Col, Row } from 'react-bootstrap';
 
 import * as Api from '../../api';
 
-import InputEmpty from '../InputEmpty';
-
 function UpdatePassword({ show, onHide, setModalShow, user }) {
-    console.log('dsfsdfsd');
-    console.log(show, onHide);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const [isInputEmpty, setIsInputEmpty] = useState(false);
+    const [isPasswordEmpty, setIsPasswordEmpty] = useState(false) 
+    const [isConfirmPasswordEmpty, setIsconfirmPasswordEmpty] = useState(false) 
 
     // 비밀번호가 4글자 이상인지 여부를 확인함.
     const isPasswordValid = password.length >= 4;
@@ -21,14 +18,17 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setIsInputEmpty(InputEmpty({ password, confirmPassword }));
+        // password 공란이면 true 
+        setIsPasswordEmpty(!password) 
+        // confirmPassword 공란이면 true 
+        setIsconfirmPasswordEmpty(!confirmPassword) 
 
         // "users/유저id" 엔드포인트로 PUT 요청함.
         await Api.put(`users/${user.id}`, {
             password
         });
 
-        !(isPasswordValid && isPasswordSame) && setModalShow(true);
+        (isPasswordValid && isPasswordSame) ? setModalShow(false) : setModalShow(true);
     };
 
     return (
@@ -62,7 +62,7 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
                             )}
                         </Row>
                         <Row>
-                            {isInputEmpty.isPasswordEmpty && (
+                            {isPasswordEmpty && (
                                 <Form.Text className="text-success">
                                     비밀번호를 입력해주세요
                                 </Form.Text>
@@ -88,7 +88,7 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
                             )}
                         </Row>
                         <Row>
-                            {isInputEmpty.isConfirmPasswordEmpty && (
+                            {isConfirmPasswordEmpty && (
                                 <Form.Text className="text-success">
                                     비밀번호를 입력해주세요
                                 </Form.Text>
@@ -96,6 +96,11 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
                         </Row>
                     </Form.Group>
                     <Form.Group as={Row} className="mt-5 mb-3 text-center">
+                        {(isPasswordEmpty || isConfirmPasswordEmpty) && (
+                            <Form.Text className="text-success">
+                                빠짐 없이 입력해주세요
+                            </Form.Text>
+                        )}
                         <Col>
                             <Button variant="primary" onClick={handleSubmit}>
                                 비밀번호 변경

@@ -5,23 +5,41 @@ function updateMiddleware(req, res, next) {
     const toUpdate = {};
 
     try {
-        if (name !== null && name !== undefined) toUpdate.name = name;
-        if (email !== null && email !== undefined) toUpdate.email = email;
-        if (password !== null && password !== undefined)
+        if (name !== null && name !== undefined && name.length !== 0)
+            toUpdate.name = name;
+        if (email !== null && email !== undefined && email.length !== 0)
+            toUpdate.email = email;
+        if (
+            password !== null &&
+            password !== undefined &&
+            password.length !== 0
+        )
             toUpdate.password = password;
-        if (description !== null && description !== undefined)
+        if (
+            description !== null &&
+            description !== undefined &&
+            description.length !== 0
+        )
             toUpdate.description = description;
-        if (picture !== null && picture !== undefined)
+        if (picture !== null && picture !== undefined && picture.length !== 0)
             toUpdate.picture = picture;
-        if (title !== null && title !== undefined) toUpdate.title = title;
-        if (date !== null && date !== undefined) toUpdate.date = date;
-        if (from_date !== null && from_date !== undefined)
+        if (title !== null && title !== undefined && title.length !== 0)
+            toUpdate.title = title;
+        if (date !== null && date !== undefined && date.length !== 0)
+            toUpdate.date = date;
+        if (
+            from_date !== null &&
+            from_date !== undefined &&
+            from_date.length !== 0
+        )
             toUpdate.from_date = from_date;
-        if (to_date !== null && to_date !== undefined)
+        if (to_date !== null && to_date !== undefined && to_date.length !== 0)
             toUpdate.to_date = to_date;
-        if (school !== null && school !== undefined) toUpdate.school = school;
-        if (major !== null && major !== undefined) toUpdate.major = major;
-        if (position !== null && position !== undefined)
+        if (school !== null && school !== undefined && school.length !== 0)
+            toUpdate.school = school;
+        if (major !== null && major !== undefined && major.length !== 0)
+            toUpdate.major = major;
+        if (position !== null && position !== undefined && school.length !== 0)
             toUpdate.position = position;
 
         req.toUpdate = toUpdate;

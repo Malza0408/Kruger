@@ -18,6 +18,10 @@ educationRouter.post(
             }
             const user_id = req.currentUserId;
             const { school, major, position } = req.body;
+            if (major.length === 0) {
+                const errorMessage = '전공을 입력해주세요.';
+                return res.status(400).send(errorMessage);
+            }
             const newEducation = await EducationService.addEducation({
                 user_id,
                 school,
@@ -68,6 +72,11 @@ educationRouter.put(
         try {
             const education_id = req.params.id;
             const toUpdate = req.toUpdate;
+            console.log(toUpdate);
+            if (Object.keys(toUpdate).length === 0) {
+                const errorMessage = '수정할 내용이 없습니다.';
+                return res.status(400).send(errorMessage);
+            }
             const updatedEducation = await EducationService.setEducation({
                 education_id,
                 toUpdate
