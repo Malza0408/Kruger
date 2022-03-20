@@ -42,6 +42,13 @@ function updateMiddleware(req, res, next) {
         if (position !== null && position !== undefined && school.length !== 0)
             toUpdate.position = position;
 
+        const keys = Object.keys(toUpdate);
+        if (keys.length === 0) {
+            const errorMessage = '수정할 내용이 없습니다.';
+            res.status(400).json(errorMessage);
+            return;
+        }
+
         req.toUpdate = toUpdate;
 
         next();
