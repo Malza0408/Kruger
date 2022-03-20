@@ -17,11 +17,14 @@ educationRouter.post(
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-            const { user_id, school, major, position } = req.body;
+            const user_id = req.currentUserId;
+            const { school, major, position } = req.body;
             if (major.length === 0) {
+                console.log('전공 비워짐');
                 const errorMessage = '전공을 입력해주세요.';
-                res.status(400).send(errorMessage);
+                return res.status(400).send(errorMessage);
             }
+            console.log('전공 없는데 진행?');
             const newEducation = await EducationService.addEducation({
                 user_id,
                 school,
