@@ -24,9 +24,9 @@ class Certificate {
     }
 
     // id를 통해 해당 자격증 요소를 수정함
-    static async update({ certificate_id, fieldToUpdate, newValue }) {
+    static async update(certificate_id, key, value) {
         const filter = { id: certificate_id };
-        const update = { [fieldToUpdate]: newValue };
+        const update = { [key]: value };
         const option = { returnOriginal: false };
 
         const updatedCertificate = await CertificateModel.findOneAndUpdate(
