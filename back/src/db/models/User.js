@@ -21,9 +21,9 @@ class User {
         return user;
     }
 
-    static async updateById({ user_id, fieldToUpdate, newValue }) {
+    static async updateById({ user_id, key, value }) {
         const filter = { id: user_id };
-        const update = { [fieldToUpdate]: newValue };
+        const update = { [key]: value };
         const option = { returnOriginal: false };
 
         const updatedUser = await UserModel.findOneAndUpdate(
