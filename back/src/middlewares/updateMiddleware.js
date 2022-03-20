@@ -19,10 +19,11 @@ function updateMiddleware(req, res, next) {
             toUpdate.from_date = from_date;
         if (to_date !== null && to_date !== undefined)
             toUpdate.to_date = to_date;
-        if (school !== null && school !== undefined) toUpdate.school = school;
+        if (school !== null && school !== undefined && school.length !== 0)
+            toUpdate.school = school;
         if (major !== null && major !== undefined && major.length !== 0)
             toUpdate.major = major;
-        if (position !== null && position !== undefined)
+        if (position !== null && position !== undefined && school.length !== 0)
             toUpdate.position = position;
 
         req.toUpdate = toUpdate;
