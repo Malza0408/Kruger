@@ -4,7 +4,7 @@ import passport from 'passport';
 import { userAuthRouter } from './routers/userRouter';
 import { educationRouter } from './routers/educationRouter';
 import { awardRouter } from './routers/awardRouter';
-import { certificateAuthRouter } from './routers/certificateRouter';
+import { certificateRouter } from './routers/certificateRouter';
 import { projectAuthRouter } from './routers/projectRouter';
 import { noteAuthRouter } from './routers/noteRouter';
 import { errorMiddleware } from './middlewares/errorMiddleware';
@@ -32,7 +32,7 @@ app.use(userAuthRouter);
 app.use(authRouter);
 app.use(educationRouter);
 app.use(awardRouter);
-app.use(certificateAuthRouter);
+app.use(certificateRouter);
 app.use(projectAuthRouter);
 app.use(noteAuthRouter);
 

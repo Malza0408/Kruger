@@ -4,9 +4,9 @@ import { login_required } from '../middlewares/login_required';
 import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { CertificateService } from '../services/CertificateService';
 
-const certificateAuthRouter = Router();
+const certificateRouter = Router();
 
-certificateAuthRouter.post(
+certificateRouter.post(
     '/certificate/create',
     login_required,
     async (req, res, next) => {
@@ -35,7 +35,7 @@ certificateAuthRouter.post(
     }
 );
 
-certificateAuthRouter.get(
+certificateRouter.get(
     '/certificatelist/:user_id',
     login_required,
     async function (req, res, next) {
@@ -52,7 +52,7 @@ certificateAuthRouter.get(
     }
 );
 
-certificateAuthRouter.get(
+certificateRouter.get(
     '/certificates/:id',
     login_required,
     async (req, res, next) => {
@@ -70,7 +70,7 @@ certificateAuthRouter.get(
     }
 );
 
-certificateAuthRouter.put(
+certificateRouter.put(
     '/certificates/:id',
     login_required,
     updateMiddleware,
@@ -93,7 +93,7 @@ certificateAuthRouter.put(
     }
 );
 
-certificateAuthRouter.delete(
+certificateRouter.delete(
     '/certificates/:id',
     login_required,
     async function (req, res, next) {
@@ -109,4 +109,4 @@ certificateAuthRouter.delete(
     }
 );
 
-export { certificateAuthRouter };
+export { certificateRouter };
