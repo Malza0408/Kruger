@@ -44,6 +44,13 @@ class UserService {
         // db에 저장
         const createdNewUser = await User.create(newUser);
 
+        // createdNewUser의 _doc안에 값들의 객체가 있음
+        const UserKeys = Object.keys(createdNewUser._doc);
+        if (UserKeys.indexOf('password') !== -1) {
+            // 객체의 key 중에 password가 있으면 password를 null로 변경해줌
+            createdNewUser._doc.password = null;
+        }
+
         return createdNewUser;
     }
 
