@@ -148,6 +148,13 @@ class UserService {
         for (let i = 0; i < keys.length; i++) {
             user = await User.updateById(user_id, keys[i], values[i]);
         }
+
+        const updatedUserKeys = Object.keys(user._doc);
+        if (updatedUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = user._doc;
+            user._doc = refinedUser;
+        }
+
         return user;
     }
 
