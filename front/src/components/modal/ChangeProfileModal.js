@@ -15,7 +15,11 @@ const ChangeProfileModal = ({ show, handleClose, user, setUser }) => {
     };
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal
+                show={show}
+                onHide={handleClose}
+                className="changeProfileModal"
+            >
                 <Modal.Header closeButton>
                     <Modal.Title>프로필 사진 변경</Modal.Title>
                 </Modal.Header>
@@ -35,10 +39,18 @@ const ChangeProfileModal = ({ show, handleClose, user, setUser }) => {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" type="submit">
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            className="changeButton"
+                        >
                             변경
                         </Button>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button
+                            variant="secondary"
+                            onClick={handleClose}
+                            className="cancelButton"
+                        >
                             취소
                         </Button>
                     </Modal.Footer>

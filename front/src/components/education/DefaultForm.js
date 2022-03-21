@@ -17,6 +17,7 @@ const DefaultForm = ({
             <Form.Group className="mb-3" controlId="school">
                 <Form.Label>학교</Form.Label>
                 <Form.Control
+                    className="mvpCardInput"
                     type="text"
                     placeholder="OO대학교"
                     onChange={handleOnChange}
@@ -31,6 +32,7 @@ const DefaultForm = ({
             <Form.Group className="mb-3" controlId="major">
                 <Form.Label>Major</Form.Label>
                 <Form.Control
+                    className="mvpCardInput"
                     type="text"
                     placeholder="OO전공"
                     onChange={handleOnChange}
@@ -103,10 +105,18 @@ const DefaultForm = ({
                     </Form.Text>
                 )}
                 <Col>
-                    <Button variant="primary" type="submit" className="me-3">
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        className="me-3 mvpCardConfirmButton"
+                    >
                         확인
                     </Button>
-                    <Button variant="secondary" onClick={handleFunction}>
+                    <Button
+                        variant="secondary"
+                        onClick={handleFunction}
+                        className="mvpCardCancelButton"
+                    >
                         취소
                     </Button>
                 </Col>

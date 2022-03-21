@@ -90,10 +90,15 @@ const ProjectEditForm = ({ setIsEditing, project, setProjects }) => {
                     </Form.Text>
                 )}
                 <Col sm={{ span: 20 }}>
-                    <Button className="me-3" variant="primary" type="submit">
+                    <Button
+                        className="me-3"
+                        variant="primary mvpCardConfirmButton"
+                        type="submit"
+                    >
                         확인
                     </Button>
                     <Button
+                        className="mvpCardCancelButton"
                         variant="secondary"
                         type="button"
                         onClick={() => {

@@ -11,7 +11,7 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
         );
     };
     return (
-        <Card.Text as={Row}>
+        <Card.Text as={Col}>
             <Row className="align-items-center">
                 <Col>
                     <span>{project.title}</span>
@@ -26,9 +26,9 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
                 {isEditable && (
                     <Col xs lg="1">
                         <Button
-                            variant="outline-info"
+                            variant="primary"
                             size="sm"
-                            className="mr-3 mb-1"
+                            className="mr-3 mb-1 mvpCardConfirmButton"
                             onClick={() => {
                                 setIsEditing((prev) => !prev);
                             }}
@@ -36,7 +36,8 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
                             편집
                         </Button>
                         <Button
-                            variant="outline-danger"
+                            className="mvpCardCancelButton"
+                            variant="primary"
                             size="sm"
                             onClick={handleDelete}
                         >
@@ -45,6 +46,7 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
                     </Col>
                 )}
             </Row>
+            <hr />
         </Card.Text>
     );
 };

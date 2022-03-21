@@ -16,9 +16,9 @@ const Projects = ({ portfolioOwnerId, isEditable }) => {
     }, [portfolioOwnerId]);
 
     return (
-        <Card>
+        <Card className="mvpCard">
             <Card.Body>
-                <Card.Title>프로젝트</Card.Title>
+                <Card.Title className="mvpCardTitle">프로젝트</Card.Title>
                 {/* 개별 이력을 반복문을 통해 구현 */}
                 {projects.map((project) => {
                     return (
@@ -32,10 +32,11 @@ const Projects = ({ portfolioOwnerId, isEditable }) => {
                 })}
                 {/* 권한을 가졌을때만 + 버튼 표시 */}
                 {isEditable && (
-                    <Row className='text-center mt-3 mb-4'>
+                    <Row className="text-center mt-3 mb-4">
                         <Col>
                             <Button
-                                variant='primary'
+                                className="mvpCardAddButton"
+                                variant="primary"
                                 onClick={() => {
                                     setIsAdding(true);
                                 }}

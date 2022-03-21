@@ -19,9 +19,9 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
 
     return (
         <>
-            <Card>
+            <Card className="mvpCard">
                 <Card.Body>
-                    <Card.Title>자격증</Card.Title>
+                    <Card.Title className="mvpCardTitle">자격증</Card.Title>
                     {certificate.map((certificate) => {
                         return (
                             <Certificate
@@ -31,14 +31,15 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
                                 portfolioOwnerId={portfolioOwnerId}
                                 isEditable={isEditable}
                             />
-                            );
+                        );
                     })}
                     {isEditable && (
-                        <Row className='text-center mt-3 mb-4'>
+                        <Row className="text-center mt-3 mb-4">
                             <Col>
                                 <Button
                                     variant="primary"
                                     onClick={() => setIsAdding(true)}
+                                    className="mvpCardAddButton"
                                 >
                                     +
                                 </Button>
@@ -51,8 +52,7 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
                             setCertificate={setCertificate}
                             portfolioOwnerId={portfolioOwnerId}
                         />
-                    ) }
-                    
+                    )}
                 </Card.Body>
             </Card>
         </>
