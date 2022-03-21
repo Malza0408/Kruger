@@ -215,30 +215,58 @@ class UserService {
 
         let user = await User.findById(user_id);
 
-        // const followList = [...followedUser._doc.follower];
-        // console.log(followList);
+        console.log(followedUser._doc.follower.indexOf(user._doc._id) !== -1);
+        if (followedUser._doc.follower.includes(user._doc._id)) {
+            const errorMessage = '이미 팔로우 중입니다.';
+            throw new Error(errorMessage);
+        }
 
-        // const userObjectId = user._doc._id;
-        // console.log(user._doc._id);
-        // console.log(userObjectId == followList[0]);
+        const newFollowedValue = { $push: { follower: user } };
+        const newFollowValue = { $push: { follow: followedUser } };
 
-        // if (followList.includes(user._doc._id)) {
-        //     const errorMessage = '이미 팔로우 중입니다.';
-        //     throw new Error(errorMessage);
-        // }
+        followedUser = await User.updateFollow(
+            { id: followedId },
+            newFollowedValue
+        );
+        user = await User.updateFollow({ id: user_id }, newFollowValue);
 
-        // const newFollowedValue = [...followedUser._doc.follower];
-        // newFollowedValue.push(user);
+        return user;
+    }
 
-        // const newFollowValue = [...user._doc.follow];
-        // newFollowValue.push(followedUser);
+    static async unfollowUser({ unfollowedId, user_id }) {
+        let unfollowedUser = await User.findById(unfollowedId);
 
-        // followedUser = await User.update(
-        //     { id: followedId },
-        //     'follower',
-        //     newFollowedValue
-        // );
-        // user = await User.update({ id: user_id }, 'follow', newFollowValue);
+        if (!unfollowedUser) {
+            const errorMessage = '이미 탈퇴했거나 등록하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        let user = await User.findById(user_id);
+
+        console.log(user._doc.follow.indexOf(unfollowedUser._doc._id));
+        const unfollowedIndex = unfollowedUser._doc.follower.indexOf(
+            user._doc._id
+        );
+        const unfollowIndex = user._doc.follow.indexOf(unfollowedUser._doc._id);
+        if (unfollowIndex === -1) {
+            const errorMessage = '팔로우하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const follower = unfollowedUser._doc.follower;
+        follower.splice(unfollowedIndex, 1);
+        console.log(user._doc.follow);
+        const newUnfollowedValue = { follower };
+
+        const follow = user._doc.follow;
+        follow.splice(unfollowIndex, 1);
+        const newUnfollowValue = { follow };
+
+        unfollowedUser = await User.updateFollow(
+            { id: unfollowedId },
+            newUnfollowedValue
+        );
+        user = await User.updateFollow({ id: user_id }, newUnfollowValue);
 
         return user;
     }

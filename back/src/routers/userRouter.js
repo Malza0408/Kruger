@@ -131,6 +131,20 @@ userRouter.put('/followUser/:id', login_required, async (req, res, next) => {
     }
 });
 
+userRouter.put('/unfollowUser/:id', login_required, async (req, res, next) => {
+    try {
+        const unfollowedId = req.params.id;
+        const user_id = req.currentUserId;
+        const updatedUser = await UserService.unfollowUser({
+            unfollowedId,
+            user_id
+        });
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        next(error);
+    }
+});
+
 userRouter.delete(
     '/users/:id',
     login_required,

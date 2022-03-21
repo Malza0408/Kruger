@@ -34,7 +34,12 @@ class User {
     }
 
     static async updateFollow(filter, newValue) {
-        const updatedUser = await UserModel.updateOne(filter, newValue);
+        const option = { returnOriginal: false };
+        const updatedUser = await UserModel.findOneAndUpdate(
+            filter,
+            newValue,
+            option
+        );
         return updatedUser;
     }
 
