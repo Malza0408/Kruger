@@ -42,13 +42,13 @@ const ProjectEditForm = ({ setIsEditing, project, setProjects }) => {
             <Form.Group controlId="projectEditTitle">
                 <Form.Control
                     type="text"
-                    placeholder="수상내역"
+                    placeholder="프로젝트 제목"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
                 {isTitleEmpty && (
                     <Form.Text className="text-success">
-                        자격증 제목을 입력해주세요
+                        프로젝트 제목을 입력해주세요
                     </Form.Text>
                 )}
             </Form.Group>

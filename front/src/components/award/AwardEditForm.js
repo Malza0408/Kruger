@@ -38,7 +38,7 @@ const AwardEditForm = ({ setIsEditing, award, setAwards }) => {
                 />
                 {isTitleEmpty && (
                     <Form.Text className="text-success">
-                        자격증 제목을 입력해주세요
+                        수상내역을 입력해주세요
                     </Form.Text>
                 )}
             </Form.Group>
