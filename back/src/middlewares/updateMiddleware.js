@@ -1,5 +1,3 @@
-import is from '@sindresorhus/is';
-
 function updateMiddleware(req, res, next) {
     const { name, email, password, description, picture } = req.body ?? null;
     const { title, date, from_date, to_date } = req.body ?? null;
@@ -22,38 +20,31 @@ function updateMiddleware(req, res, next) {
         if (to_date !== null && to_date !== undefined)
             toUpdate.to_date = to_date;
         if (school !== null && school !== undefined) toUpdate.school = school;
-        if (major !== null && major !== undefined) {
-            if (major.first !== null && major.first !== undefined)
-                toUpdate.major = major;
-        }
-
+        if (major !== null && major !== undefined) toUpdate.major = major;
         if (position !== null && position !== undefined)
             toUpdate.position = position;
 
         const values = Object.values(toUpdate);
-
+        console.log('toUpdate : ', toUpdate);
         if (values.length === 0) {
             const errorMessage = '수정할 내용이 없습니다.';
             res.status(400).json(errorMessage);
             return;
         }
 
-        values.forEach((value) => {
-            if (is.string(value)) {
-                if (value === '') {
-                    const errorMessage = '빈칸은 ㄴㄴ.';
-                    res.status(400).json(errorMessage);
-                    return;
-                }
-            } else {
-                const { first } = value;
-                if (first === '') {
-                    const errorMessage = '빈칸은 ㄴㄴ.';
-                    res.status(400).json(errorMessage);
-                    return;
-                }
+        if (toUpdate.major) {
+            if (toUpdate.major.first === '') {
+                const errorMessage = '빈칸은 ㄴㄴ';
+                res.status(400).json(errorMessage);
+                return;
             }
-        });
+        }
+
+        if (values.includes('')) {
+            const errorMessage = '빈칸은 ㄴㄴ.';
+            res.status(400).json(errorMessage);
+            return;
+        }
 
         req.toUpdate = toUpdate;
         next();
