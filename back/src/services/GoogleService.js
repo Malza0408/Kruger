@@ -16,19 +16,15 @@ async function findOrCreateUser({ sub, name, email }) {
     const user = await User.findByEmail({
         email
     });
+    // 기존 유저가 있으면 그냥 리턴.
     if (user) {
         return user;
     }
-    // 로그인 성공 -> JWT 웹 토큰 생성
-    const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
-    const token = jwt.sign({ user_id: sub }, secretKey);
-    console.log(token);
     const newUser = {
-        token,
         id: sub,
         name,
         email,
-        password: 'GOOGLE_OAUTH',
+        password: '',
         loginMethod: 'google'
     };
     const created = await User.create(newUser);
@@ -39,16 +35,22 @@ async function findOrCreateUser({ sub, name, email }) {
 passport.use(
     new Strategy(config, async (accessToken, refreshToken, profile, done) => {
         //profile에 구글에서 넘겨주는 유저정보 중 email, name을 사용 raw json으로 넣어줌.
-        console.log('어세스토큰', accessToken);
-        console.log('리프레쉬', refreshToken);
+        // console.log('어세스토큰', accessToken);
+        // console.log('리프레쉬', refreshToken);
 
         const { sub, email, name } = profile._json;
         try {
             const user = await findOrCreateUser({ sub, email, name });
+            // 로그인 성공 -> JWT 웹 토큰 생성
+            const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
+            const token = jwt.sign({ user_id: user.id }, secretKey);
+            //done에 넘겨준 데이터가 라우터의 req로 들어간다.
             done(null, {
+                token: token,
                 id: user.id,
+                name: user.name,
                 email: user.email,
-                name: user.name
+                loginMethod: user.loginMethod
             });
         } catch (error) {
             done(error, null);

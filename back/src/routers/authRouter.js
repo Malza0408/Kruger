@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { login_required } from '../middlewares/login_required';
-import jwt from 'jsonwebtoken';
+
 // import fetch from 'node-fetch';
 import axios from 'axios';
 import { UserService } from '../services/UserService';
@@ -15,22 +15,19 @@ authRouter.get(
 );
 authRouter.get(
     '/auth/google/callback',
-    passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/user/login'
-    }),
+    passport.authenticate('google', { session: false }),
     (req, res, next) => {
         try {
-            // 로그인 성공 -> JWT 웹 토큰 생성
-            const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
-            const token = jwt.sign({ user_id: userId }, secretKey);
-            console.log(token);
-            res.redirect('/');
+            const user = req.user;
+            console.log('google user signed in.');
+            // console.log(req);
+            res.status(201).send(user);
         } catch (error) {
             next(error);
         }
     }
 );
+
 // 깃허브
 authRouter.get('/auth/github', async (req, res, next) => {
     try {
