@@ -13,19 +13,24 @@ const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
     const [isTitleEmpty, setIsTitleEmpty] = useState(false);
     const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const changeDateFormat = () => {
         // date format을 'yyyy-MM-dd'로 변경
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
-        const newDate = `${year}-${month}-${day}`;
+
+        return `${year}-${month}-${day}`;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
         // title 공란이면 true
         setIsTitleEmpty(!title);
         // description 공란이면 true
         setIsDescriptionEmpty(!description);
+
+        const newDate = changeDateFormat();
 
         // "certificates/certificate.id" 엔드포인트로 PUT 요청함.
         await Api.put(`certificates/${certificate.id}`, {
