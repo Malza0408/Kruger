@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as Api from '../../api';
 import DefaultForm from './DefaultForm';
 

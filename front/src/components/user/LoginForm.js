@@ -65,6 +65,8 @@ function LoginForm() {
         }
     };
 
+    const handleOnClickGithub = (e) => {};
+
     return (
         <div className="login">
             <Carousel variant="dark" style={{ width: '30vw', margin: 'auto' }}>
@@ -169,6 +171,13 @@ function LoginForm() {
                                     </Button>
                                 </Col>
                             </Form.Group>
+                            <div as={Row} className="mt-3 text-center">
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/img/github.png`}
+                                    alt=""
+                                    onClick={handleOnClickGithub}
+                                />
+                            </div>
                         </Form>
                     </Col>
                 </Row>

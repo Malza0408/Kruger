@@ -47,6 +47,15 @@ function Header() {
                         <Nav.Item>
                             <Nav.Link
                                 className="navbarButton"
+                                onClick={() => navigate('/gatherRoom')}
+                            >
+                                프로젝트
+                            </Nav.Link>
+                        </Nav.Item>
+                        <NavDropdown.Divider />
+                        <Nav.Item>
+                            <Nav.Link
+                                className="navbarButton"
                                 onClick={() => navigate('/note')}
                             >
                                 쪽지
