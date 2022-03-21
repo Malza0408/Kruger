@@ -68,6 +68,11 @@ class CertificateService {
     static async deleteCertificate({ certificate_id, user_id }) {
         const certificate = await Certificate.findById({ certificate_id });
 
+        if (!certificate) {
+            const errorMessage = '삭제되었거나 등록되지 않은 자격증입니다.';
+            throw new Error(errorMessage);
+        }
+
         if (certificate.user_id !== user_id) {
             const errorMessage = '삭제할 수 없습니다.';
             throw new Error(errorMessage);

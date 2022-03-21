@@ -63,6 +63,11 @@ class AwardService {
     static async deleteAward({ award_id, user_id }) {
         const award = await Award.findById({ award_id });
 
+        if (!award) {
+            const errorMessage = '삭제되었거나 등록되지 않은 수상 내역입니다.';
+            throw new Error(errorMessage);
+        }
+
         if (award.user_id !== user_id) {
             const errorMessage = '삭제할 수 없습니다.';
             throw new Error(errorMessage);

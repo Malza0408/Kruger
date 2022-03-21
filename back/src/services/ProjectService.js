@@ -73,6 +73,11 @@ class ProjectService {
     static async deleteProject({ project_id }) {
         const project = await Project.findById({ project_id });
 
+        if (!project) {
+            const errorMessage = '삭제되었거나 등록되지 않은 프로젝트입니다.';
+            throw new Error(errorMessage);
+        }
+
         if (project.user_id !== user_id) {
             const errorMessage = '삭제할 수 없습니다.';
             throw new Error(errorMessage);
