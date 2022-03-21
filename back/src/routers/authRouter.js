@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { login_required } from '../middlewares/login_required';
-import jwt from 'jsonwebtoken';
+
 // import fetch from 'node-fetch';
 import axios from 'axios';
 import { UserService } from '../services/UserService';
+import { GoogleService } from '../services/GoogleService';
 
 const authRouter = Router();
 //구글
@@ -14,18 +15,19 @@ authRouter.get(
 );
 authRouter.get(
     '/auth/google/callback',
-    passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/user/login'
-    })
-
-    // (req, res, next) => {
-    //     console.log(req);
-    //     const token = jwt.sign(req, process.env.JWT_SECRET_KEY);
-    //     console.log(token);
-    //     res.redirect('/');
-    // }
+    passport.authenticate('google', { session: false }),
+    (req, res, next) => {
+        try {
+            const user = req.user;
+            console.log('google user signed in.');
+            // console.log(req);
+            res.status(201).send(user);
+        } catch (error) {
+            next(error);
+        }
+    }
 );
+
 // 깃허브
 authRouter.get('/auth/github', async (req, res, next) => {
     try {
@@ -94,6 +96,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             return res.status(200).send(refinedUser);
             console.log('여기로 넘어감?');
         }
+        // 없으면 유저 회원가입시키기
         const userInfo = {
             id,
             name,
