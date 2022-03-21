@@ -10,7 +10,14 @@ const Education = ({
     isEditable
 }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [inputInfo, setInputInfo] = useState(null);
+    const [inputInfo, setInputInfo] = useState({
+        school: '',
+        major: {
+            first: '',
+            second: ''
+        },
+        position: ''
+    });
 
     const handleEditing = async (e) => {
         setIsEditing(!isEditing);

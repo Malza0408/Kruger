@@ -32,10 +32,24 @@ const EducationEditForm = ({
             }
             case 'major': {
                 setMajorInput(e.target.value);
+                const major = { ...inputInfo.major };
+                major.first = e.target.value;
                 setInputInfo((current) => {
                     return {
                         ...current,
-                        major: e.target.value
+                        major
+                    };
+                });
+                break;
+            }
+            case 'subMajor': {
+                setSubMajorInput(e.target.value);
+                const major = { ...inputInfo.major };
+                major.second = e.target.value;
+                setInputInfo((current) => {
+                    return {
+                        ...current,
+                        major
                     };
                 });
                 break;
@@ -58,21 +72,27 @@ const EducationEditForm = ({
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // 칸을 비워놨다면 값을 받지 않는다.
         try {
             // school 공란이면 true
-            setIsSchoolEmpty(!schoolInput);
+            setIsSchoolEmpty(!schoolInput && !inputInfo.school);
             // major 공란이면 true
-            setIsMajorEmpty(!majorInput);
+            setIsMajorEmpty(!majorInput && !inputInfo.major.first);
+
             await Api.put(`educations/${education.id}`, {
                 user_id: education.user_id,
                 school: schoolInput ? schoolInput : inputInfo.school,
-                major: majorInput ? majorInput : inputInfo.major,
+                major: {
+                    first: majorInput ? majorInput : inputInfo.major.first,
+                    second: subMajorInput
+                        ? subMajorInput
+                        : inputInfo.major.second
+                },
                 position: positionValue ? positionValue : inputInfo.position
             });
             handleEditCancel(false);
             const educationlist = await Api.get(
-                `educationlist/${education.user_id}`
+                `educationlist`,
+                education.user_id
             );
             setEducations([...educationlist.data]);
         } catch (error) {
