@@ -72,6 +72,8 @@ educationRouter.put(
         try {
             const education_id = req.params.id;
             const toUpdate = req.toUpdate;
+            console.log('toUpdate : ', toUpdate);
+
             const updatedEducation = await EducationService.setEducation({
                 education_id,
                 toUpdate
