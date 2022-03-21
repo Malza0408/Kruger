@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 // import fetch from 'node-fetch';
 import axios from 'axios';
 import { UserService } from '../services/UserService';
+import { GoogleService } from '../services/GoogleService';
 
 const authRouter = Router();
 //구글
@@ -17,14 +18,18 @@ authRouter.get(
     passport.authenticate('google', {
         successRedirect: '/',
         failureRedirect: '/user/login'
-    })
-
-    // (req, res, next) => {
-    //     console.log(req);
-    //     const token = jwt.sign(req, process.env.JWT_SECRET_KEY);
-    //     console.log(token);
-    //     res.redirect('/');
-    // }
+    }),
+    (req, res, next) => {
+        try {
+            // 로그인 성공 -> JWT 웹 토큰 생성
+            const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
+            const token = jwt.sign({ user_id: userId }, secretKey);
+            console.log(token);
+            res.redirect('/');
+        } catch (error) {
+            next(error);
+        }
+    }
 );
 // 깃허브
 authRouter.get('/auth/github', async (req, res, next) => {
@@ -94,6 +99,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             return res.status(200).send(refinedUser);
             console.log('여기로 넘어감?');
         }
+        // 없으면 유저 회원가입시키기
         const userInfo = {
             id,
             name,
