@@ -1,10 +1,17 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, {
+    useEffect,
+    useContext,
+    useState,
+    useMemo,
+    useCallback
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import { getRegExp } from 'korean-regexp';
 import * as Api from '../../api';
 import UserCard from './UserCard';
 import { UserStateContext } from '../../App';
+import { debounce } from 'lodash';
 
 function Network() {
     const navigate = useNavigate();
@@ -25,27 +32,29 @@ function Network() {
         Api.get('userlist').then((res) => setUsers(res.data));
     }, [userState, navigate]);
 
-    /**
-     *
-     * @param {코치님 여기에여!코치님 여기에여!코치님 여기에여!코치님 여기에여!코치님 여기에여!
-     * 입력창에 입력 할 때마다 네트워크 창에서 name을 매치시켜 찾는 로직입니다!
-     * 외부 라이브러리 korean-regexp 활용했습니다.
-     * 좀 더 좋은 방법으로 개선할 방향이 있을까요! 라이브러리를 쓰지 않고 하거나요!
-     * 라이브러리를 사용해서 해결해서 오케이라면 이 질문은 넘어가 주셔도 괜찮습니다!
-     * }
-     */
-    const handleOnChange = (e) => {
-        setInputValue(e.target.value);
-        const regexp = getRegExp(e.target.value, {
-            initialSearch: true,
-            fuzzy: true
-        });
+    const debounceSearch = useMemo(
+        () =>
+            debounce((e) => {
+                const regexp = getRegExp(e.target.value, {
+                    initialSearch: true,
+                    fuzzy: true
+                });
 
-        const searchList = users.filter((user) => {
-            return user.name.match(regexp) || user.email.match(regexp);
-        });
-        setSearchUsers([...searchList]);
-    };
+                const searchList = users.filter((user) => {
+                    return user.name.match(regexp) || user.email.match(regexp);
+                });
+                setSearchUsers([...searchList]);
+            }, 300),
+        [users]
+    );
+
+    const handleOnChange = useCallback(
+        (e) => {
+            setInputValue(e.target.value);
+            debounceSearch(e);
+        },
+        [debounceSearch]
+    );
 
     const handleOnClickAscUser = () => {
         const ascUsers = [...users];

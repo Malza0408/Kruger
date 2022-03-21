@@ -33,7 +33,6 @@ const Education = ({
     };
 
     const handleDeleting = async (e) => {
-        e.preventDefault();
         try {
             await Api.delete('educations', education.id);
             const list = await Api.get('educationlist', portfolioOwnerId);
