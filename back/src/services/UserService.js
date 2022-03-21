@@ -151,6 +151,8 @@ class UserService {
         let user = await User.findById({ user_id });
         const keys = Object.keys(toUpdate);
         const values = Object.values(toUpdate);
+        const filter = { id: user_id };
+        console.log(filter);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
@@ -166,7 +168,7 @@ class UserService {
         }
 
         for (let i = 0; i < keys.length; i++) {
-            user = await User.updateById(user_id, keys[i], values[i]);
+            user = await User.update(filter, keys[i], values[i]);
         }
 
         const updatedUserKeys = Object.keys(user._doc);
@@ -189,16 +191,13 @@ class UserService {
             return;
         }
 
-        const fieldToUpdate = 'password';
-
         // uuidv4로 랜덤한 문자열을 가져오고 너무 길지 않게 10글자로만 새로운 비밀번호를 보내줌
         const randomPassword = uuidv4();
         const newPassword = randomPassword.slice(0, 10);
         const newHashedPassword = await bcrypt.hash(newPassword, 10);
+        const filter = { email: email };
 
-        const newValue = newHashedPassword;
-
-        await User.updateByEmail({ email, fieldToUpdate, newValue });
+        await User.update(filter, 'password', newHashedPassword);
 
         // 등록된 회원일 경우 이메일 내용
         const text = `귀하의 새로운 비밀번호는 ${newPassword} 입니다. 로그인 후 비밀번호를 변경해주세요.`;
