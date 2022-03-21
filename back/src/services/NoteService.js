@@ -23,12 +23,40 @@ class NoteService {
         const createdNewTakenNote = await TakenNote.create({ newNote });
         console.log(createdNewTakenNote);
 
+        const toUserKeys = Object.keys(createdNewSentNote.toUser._doc);
+        if (toUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = createdNewSentNote.toUser._doc;
+            createdNewSentNote.toUser._doc = refinedUser;
+        }
+
+        const fromUserKeys = Object.keys(createdNewSentNote.fromUser._doc);
+        if (fromUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } =
+                createdNewSentNote.fromUser._doc;
+            createdNewSentNote.fromUser._doc = refinedUser;
+        }
+
         return createdNewSentNote;
     }
 
     static async getTakenNotes({ user_id }) {
         const notes = await TakenNote.findAll();
         const takenNotes = notes.filter((v) => v.toUser.id == user_id);
+        console.log(takenNotes.length);
+        for (let i = 0; i < takenNotes.length; i++) {
+            const toUserKeys = Object.keys(takenNotes[i].toUser._doc);
+            if (toUserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = takenNotes[i].toUser._doc;
+                takenNotes[i].toUser._doc = refinedUser;
+            }
+
+            const fromUserKeys = Object.keys(takenNotes[i].fromUser._doc);
+            if (fromUserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } =
+                    takenNotes[i].fromUser._doc;
+                takenNotes[i].fromUser._doc = refinedUser;
+            }
+        }
 
         return takenNotes;
     }
@@ -36,6 +64,22 @@ class NoteService {
     static async getSentNotes({ user_id }) {
         const notes = await SentNote.findAll();
         const sentNotes = notes.filter((v) => v.fromUser.id == user_id);
+        console.log(sentNotes.length);
+
+        for (let i = 0; i < sentNotes.length; i++) {
+            const toUserKeys = Object.keys(sentNotes[i].toUser._doc);
+            if (toUserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = sentNotes[i].toUser._doc;
+                sentNotes[i].toUser._doc = refinedUser;
+            }
+
+            const fromUserKeys = Object.keys(sentNotes[i].fromUser._doc);
+            if (fromUserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = sentNotes[i].fromUser._doc;
+                sentNotes[i].fromUser._doc = refinedUser;
+            }
+        }
+
         return sentNotes;
     }
 
@@ -53,6 +97,18 @@ class NoteService {
             throw new Error(errorMessage);
         }
 
+        const toUserKeys = Object.keys(note.toUser._doc);
+        if (toUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = note.toUser._doc;
+            note.toUser._doc = refinedUser;
+        }
+
+        const fromUserKeys = Object.keys(note.fromUser._doc);
+        if (fromUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = note.fromUser._doc;
+            note.fromUser._doc = refinedUser;
+        }
+
         return note;
     }
 
@@ -68,6 +124,18 @@ class NoteService {
         if (note.fromUser.id !== user_id) {
             const errorMessage = '접근 권한이 없는 쪽지입니다.';
             throw new Error(errorMessage);
+        }
+
+        const toUserKeys = Object.keys(note.toUser._doc);
+        if (toUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = note.toUser._doc;
+            note.toUser._doc = refinedUser;
+        }
+
+        const fromUserKeys = Object.keys(note.fromUser._doc);
+        if (fromUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = note.fromUser._doc;
+            note.fromUser._doc = refinedUser;
         }
 
         return note;
