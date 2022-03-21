@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Col, Row, Form, Button } from 'react-bootstrap';
-import OriginalModal from '../modal/OriginalModal';
+import EmailCheckModal from '../modal/EmailCheckModal';
 import * as Api from '../../api';
 
 function RegisterForm() {
@@ -63,8 +63,8 @@ function RegisterForm() {
     };
 
     return (
-        <Container>
-            <OriginalModal
+        <Container className="register">
+            <EmailCheckModal
                 show={show}
                 setShow={setShow}
                 errMsg={errMsg}
@@ -144,6 +144,7 @@ function RegisterForm() {
                         <Form.Group as={Row} className="mt-3 text-center">
                             <Col sm={{ span: 20 }}>
                                 <Button
+                                    className="registerButton"
                                     variant="primary"
                                     type="submit"
                                     disabled={!isFormValid}
@@ -156,6 +157,7 @@ function RegisterForm() {
                         <Form.Group as={Row} className="mt-3 text-center">
                             <Col sm={{ span: 20 }}>
                                 <Button
+                                    className="loginButton"
                                     variant="light"
                                     onClick={() => navigate('/login')}
                                 >

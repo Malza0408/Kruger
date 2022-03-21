@@ -4,14 +4,18 @@ import DatePicker from 'react-datepicker';
 
 import * as Api from '../../api';
 
-const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) => {
+const CertificateAddForm = ({
+    setIsAdding,
+    setCertificate,
+    portfolioOwnerId
+}) => {
     const user_id = portfolioOwnerId;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date());
 
-    const [isTitleEmpty, setIsTitleEmpty] = useState(false) 
-    const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(false) 
+    const [isTitleEmpty, setIsTitleEmpty] = useState(false);
+    const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(false);
 
     const changeDateFormat = () => {
         // date format을 'yyyy-MM-dd'로 변경
@@ -25,10 +29,10 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // title 공란이면 true 
-        setIsTitleEmpty(!title) 
-        // description 공란이면 true 
-        setIsDescriptionEmpty(!description) 
+        // title 공란이면 true
+        setIsTitleEmpty(!title);
+        // description 공란이면 true
+        setIsDescriptionEmpty(!description);
 
         const newDate = changeDateFormat();
 
@@ -42,13 +46,13 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
             });
 
             await Api.get('certificatelist', user_id).then((res) =>
-            setCertificate(res.data)
+                setCertificate(res.data)
             );
 
-            console.log(res.data)
+            console.log(res.data);
             setIsAdding(false);
         } catch (err) {
-            console.log('등록 실패', err); 
+            console.log('등록 실패', err);
         }
     };
 
@@ -57,6 +61,7 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formCertificateTitle">
                     <Form.Control
+                        className="mvpCardInput"
                         type="text"
                         placeholder="자격증 제목"
                         value={title}
@@ -69,8 +74,12 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                     )}
                 </Form.Group>
 
-                <Form.Group controlId="formCertificateDescription" className="mt-3">
+                <Form.Group
+                    controlId="formCertificateDescription"
+                    className="mt-3"
+                >
                     <Form.Control
+                        className="mvpCardInput"
                         type="text"
                         placeholder="상세내역"
                         value={description}
@@ -80,11 +89,11 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                         <Form.Text className="text-success">
                             상세내역을 입력해주세요
                         </Form.Text>
-                    )} 
+                    )}
                 </Form.Group>
 
                 <Form.Group as={Row} className="mt-3">
-                    <Col xs='auto'>
+                    <Col xs="auto">
                         <DatePicker
                             selected={date}
                             onChange={(date) => setDate(date)}
@@ -102,11 +111,12 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                         <Button
                             variant="primary"
                             type="submit"
-                            className="me-3"
+                            className="me-3 mvpCardConfirmButton"
                         >
                             확인
                         </Button>
                         <Button
+                            className="mvpCardCancelButton"
                             variant="secondary"
                             onClick={() => setIsAdding(false)}
                         >

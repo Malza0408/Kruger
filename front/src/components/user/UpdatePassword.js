@@ -7,8 +7,8 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const [isPasswordEmpty, setIsPasswordEmpty] = useState(false) 
-    const [isConfirmPasswordEmpty, setIsconfirmPasswordEmpty] = useState(false) 
+    const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
+    const [isConfirmPasswordEmpty, setIsconfirmPasswordEmpty] = useState(false);
 
     // 비밀번호가 4글자 이상인지 여부를 확인함.
     const isPasswordValid = password.length >= 4;
@@ -18,17 +18,19 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // password 공란이면 true 
-        setIsPasswordEmpty(!password) 
-        // confirmPassword 공란이면 true 
-        setIsconfirmPasswordEmpty(!confirmPassword) 
+        // password 공란이면 true
+        setIsPasswordEmpty(!password);
+        // confirmPassword 공란이면 true
+        setIsconfirmPasswordEmpty(!confirmPassword);
 
         // "users/유저id" 엔드포인트로 PUT 요청함.
         await Api.put(`users/${user.id}`, {
             password
         });
 
-        (isPasswordValid && isPasswordSame) ? setModalShow(false) : setModalShow(true);
+        isPasswordValid && isPasswordSame
+            ? setModalShow(false)
+            : setModalShow(true);
     };
 
     return (
@@ -37,9 +39,10 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
             onhide={onHide}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
+            className="passwordModal"
             centered
         >
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
                     비밀번호 변경
                 </Modal.Title>
@@ -102,12 +105,19 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
                             </Form.Text>
                         )}
                         <Col>
-                            <Button variant="primary" onClick={handleSubmit}>
+                            <Button
+                                variant="primary"
+                                onClick={handleSubmit}
+                                className="changePasswordButton"
+                            >
                                 비밀번호 변경
                             </Button>
                         </Col>
                         <Col>
-                            <Button onClick={{ show, onHide }.onHide}>
+                            <Button
+                                onClick={{ show, onHide }.onHide}
+                                className="cancelButton"
+                            >
                                 취소
                             </Button>
                         </Col>

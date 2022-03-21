@@ -27,16 +27,11 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
     };
 
     return (
-        <Card className="mb-2 ms-3 mr-5" style={{ width: '18rem' }}>
+        <Card style={{ width: '18rem' }} className="mb-2 ms-3 mr-5 UserCard">
             <Card.Body>
                 <Row className="justify-content-md-center">
-                    <Image
-                        style={{
-                            borderRadius: '50%',
-                            width: '14rem',
-                            height: '12rem'
-                        }}
-                        className="mb-3"
+                    <img
+                        className="mb-3 mt-3 profileImage"
                         src={user?.picture}
                         alt="프로필 사진"
                     />
@@ -56,29 +51,24 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                     <Col>
                         <Row className="mt-3 text-center text-info">
                             <Col sm={{ span: 20 }}>
-                                <Button
-                                    className="me-4"
-                                    variant="outline-primary"
-                                    size="sm"
+                                <button
+                                    className="me-4 editButton"
                                     onClick={handleShowProfile}
                                 >
                                     프로필 변경
-                                </Button>
-                                <Button
-                                    className="me-4"
-                                    variant="outline-info"
-                                    size="sm"
+                                </button>
+                                <button
+                                    className="me-4 editButton"
                                     onClick={() => setIsEditing(true)}
                                 >
                                     편집
-                                </Button>
-                                <Button
-                                    variant="outline-danger"
-                                    size="sm"
+                                </button>
+                                <button
+                                    className="withdrawalButton"
                                     onClick={handleShowWithdrawal}
                                 >
                                     탈퇴
-                                </Button>
+                                </button>
                                 <WithdrawalModal
                                     show={showWithdrawal}
                                     handleClose={handleCloseWithdrawal}

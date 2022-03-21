@@ -33,6 +33,7 @@ const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="awardAddTitle">
                 <Form.Control
+                    className="mvpCardInput"
                     type="text"
                     placeholder="수상내역"
                     onChange={(e) => {
@@ -47,6 +48,7 @@ const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
             </Form.Group>
             <Form.Group className="mt-3" controlId="awardAddDescription">
                 <Form.Control
+                    className="mvpCardInput"
                     type="text"
                     placeholder="상세내역"
                     onChange={(e) => {
@@ -66,10 +68,15 @@ const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
                     </Form.Text>
                 )}
                 <Col sm={{ span: 20 }}>
-                    <Button className="me-3" variant="primary" type="submit">
+                    <Button
+                        className="me-3 mvpCardConfirmButton"
+                        variant="primary"
+                        type="submit"
+                    >
                         확인
                     </Button>
                     <Button
+                        className="mvpCardCancelButton"
                         variant="secondary"
                         type="button"
                         onClick={() => {

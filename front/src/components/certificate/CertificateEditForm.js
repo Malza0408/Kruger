@@ -53,6 +53,7 @@ const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formCertificateTitle">
                     <Form.Control
+                        className="mvpCardInput"
                         type="text"
                         placeholder="자격증 제목"
                         value={title}
@@ -70,6 +71,7 @@ const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
                     className="mt-3"
                 >
                     <Form.Control
+                        className="mvpCardInput"
                         type="text"
                         placeholder="상세내역"
                         value={description}
@@ -101,11 +103,12 @@ const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
                         <Button
                             variant="primary"
                             type="submit"
-                            className="me-3"
+                            className="me-3 mvpCardConfirmButton"
                         >
                             확인
                         </Button>
                         <Button
+                            className="mvpCardCancelButton"
                             variant="secondary"
                             onClick={() => setIsEditing(false)}
                         >

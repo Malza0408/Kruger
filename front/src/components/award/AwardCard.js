@@ -4,8 +4,7 @@ import { Card, Col, Row, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 
 const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
-    const handleDelete = async (e) => {
-        e.preventDefault();
+    const handleDelete = async () => {
         const user_id = award.user_id;
         await Api.delete(`awards/${award.id}`);
         await Api.get('awardlist', user_id).then((res) => setAwards(res.data));
@@ -41,6 +40,7 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                     </Col>
                 )}
             </Row>
+            <hr />
         </Card.Text>
     );
 };

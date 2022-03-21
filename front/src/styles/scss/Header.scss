@@ -1,0 +1,12 @@
+$mainColor: #edf2ff;
+$buttonColor: #bac8ff;
+
+.navbarWrap {
+    background-color: $mainColor;
+    .navbarButton {
+        margin-left: 10px;
+    }
+    .navbarButton:hover {
+        background-color: $buttonColor;
+    }
+}

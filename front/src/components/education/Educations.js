@@ -25,7 +25,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
     };
 
     return (
-        <Card>
+        <Card className="mvpCard">
             <Card.Body>
                 <Card.Title>학력</Card.Title>
                 {/* + 버튼으로 추가하면 educationBody 배열로 들어간다. 배열을 돌면서 렌더링 한다. */}
@@ -52,7 +52,11 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
                 {isEditable && (
                     <div className="mt-3 text-center mb-1">
                         <div className="col-sm-12">
-                            <Button variant="primary" onClick={handleOnClick}>
+                            <Button
+                                variant="primary"
+                                onClick={handleOnClick}
+                                className="mvpCardAddButton"
+                            >
                                 +
                             </Button>
                         </div>

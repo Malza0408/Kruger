@@ -57,14 +57,14 @@ function Portfolio() {
 
     return (
         <Container fluid>
-            <Row>
-                <Col md="3" lg="3">
+            <Row className="portfolio">
+                <Col md="6" lg="4">
                     <User
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
                 </Col>
-                <Col>
+                <Col md="12" lg="8">
                     <div className="mb-2">
                         <Educations
                             portfolioOwnerId={portfolioOwner.id}
