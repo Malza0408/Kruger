@@ -6,7 +6,14 @@ import React, {
     useCallback
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Form, Row, Col, Button } from 'react-bootstrap';
+import {
+    Container,
+    Form,
+    Row,
+    Col,
+    Dropdown,
+    ButtonGroup
+} from 'react-bootstrap';
 import { getRegExp } from 'korean-regexp';
 import * as Api from '../../api';
 import UserCard from './UserCard';
@@ -21,6 +28,7 @@ function Network() {
     const [users, setUsers] = useState([]);
     const [searchUsers, setSearchUsers] = useState([]);
     const [inputValue, setInputValue] = useState('');
+    const [order, setOrder] = useState('정렬기준');
 
     useEffect(() => {
         // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
@@ -57,6 +65,7 @@ function Network() {
     );
 
     const handleOnClickAscUser = () => {
+        setOrder('이름 오름차순');
         const ascUsers = [...users];
         ascUsers.sort((userA, userB) => {
             return userA.name < userB.name
@@ -69,6 +78,7 @@ function Network() {
     };
 
     const handleOnClickDescUser = () => {
+        setOrder('이름 내림차순');
         const ascUsers = [...users];
         ascUsers.sort((userA, userB) => {
             return userA.name < userB.name
@@ -81,6 +91,7 @@ function Network() {
     };
 
     const handleOnClickAscCreatedAt = () => {
+        setOrder('포스팅 오름차순');
         const ascUsers = [...users];
         ascUsers.sort((userA, userB) => {
             return userA.createdAt < userB.createdAt
@@ -93,6 +104,7 @@ function Network() {
     };
 
     const handleOnClickDescCreatedAt = () => {
+        setOrder('포스팅 내림차순');
         const ascUsers = [...users];
         ascUsers.sort((userA, userB) => {
             return userA.createdAt < userB.createdAt
@@ -105,49 +117,55 @@ function Network() {
     };
 
     return (
-        <Container fluid>
+        <Container fluid className="network">
             <Row className="justify-content-md-center mb-4">
-                <Col md="auto" style={{ width: '400px' }}>
+                <Col lg="3" style={{ width: '400px' }}>
                     <Form onSubmit={(e) => e.preventDefault()}>
                         <Form.Control
+                            className="ms-2 filterInput"
                             type="text"
                             placeholder="입력해주세요..."
                             onChange={handleOnChange}
                             style={{ display: 'inline' }}
                         />
                     </Form>
-                    <Button
-                        variant="primary"
-                        onClick={handleOnClickAscUser}
-                        value="이름오름차순"
-                        className="me-3"
-                    >
-                        이름 오름차순
-                    </Button>
-                    <Button
-                        variant="primary"
-                        onClick={handleOnClickDescUser}
-                        value="이름내름차순"
-                        className="me-3"
-                    >
-                        이름 내름차순
-                    </Button>
-                    <Button
-                        variant="primary"
-                        onClick={handleOnClickAscCreatedAt}
-                        value="포스팅 오름차순"
-                        className="me-3"
-                    >
-                        포스팅 오름차순
-                    </Button>
-                    <Button
-                        variant="primary"
-                        onClick={handleOnClickDescCreatedAt}
-                        value="포스팅 내름차순"
-                        className="me-3"
-                    >
-                        포스팅 내림차순
-                    </Button>
+                </Col>
+                <Col>
+                    <Dropdown className="ms-2" as={ButtonGroup}>
+                        <button className="orderState">{order}</button>
+
+                        <Dropdown.Toggle
+                            className="orderListButton"
+                            id="dropdown-basic"
+                        />
+
+                        <Dropdown.Menu>
+                            <Dropdown.Item
+                                onClick={handleOnClickAscUser}
+                                value="이름오름차순"
+                            >
+                                이름 오름차순
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                                onClick={handleOnClickDescUser}
+                                value="이름내름차순"
+                            >
+                                이름 내름차순
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                                onClick={handleOnClickAscCreatedAt}
+                                value="포스팅 오름차순"
+                            >
+                                포스팅 오름차순
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                                onClick={handleOnClickDescCreatedAt}
+                                value="포스팅 내름차순"
+                            >
+                                포스팅 내림차순
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Col>
             </Row>
             <Row xs="auto" className="jusify-content-center">

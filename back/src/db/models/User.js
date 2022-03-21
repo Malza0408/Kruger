@@ -11,8 +11,8 @@ class User {
         return users;
     }
 
-    static async findById({ user_id }) {
-        const user = await UserModel.findOne({ id: user_id });
+    static async findById(id) {
+        const user = await UserModel.findOne({ id });
         return user;
     }
 
@@ -30,6 +30,11 @@ class User {
             update,
             option
         );
+        return updatedUser;
+    }
+
+    static async updateFollow(filter, newValue) {
+        const updatedUser = await UserModel.updateOne(filter, newValue);
         return updatedUser;
     }
 

@@ -4,8 +4,7 @@ import { Card, Col, Row, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 
 const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
-    const handleDelete = async (e) => {
-        e.preventDefault();
+    const handleDelete = async () => {
         const user_id = award.user_id;
         await Api.delete(`awards/${award.id}`);
         await Api.get('awardlist', user_id).then((res) => setAwards(res.data));
@@ -22,9 +21,9 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                 {isEditable && (
                     <Col xs lg="1">
                         <Button
-                            variant="outline-info"
+                            variant="primary"
                             size="sm"
-                            className="mr-3 mb-1"
+                            className="mr-3 mb-1 mvpCardConfirmButton"
                             onClick={() => {
                                 setIsEditing((prev) => !prev);
                             }}
@@ -32,7 +31,8 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                             편집
                         </Button>
                         <Button
-                            variant="outline-danger"
+                            className="mr-3 mvpCardCancelButton"
+                            variant="primary"
                             size="sm"
                             onClick={handleDelete}
                         >
@@ -41,6 +41,7 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                     </Col>
                 )}
             </Row>
+            <hr />
         </Card.Text>
     );
 };

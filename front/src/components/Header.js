@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Nav } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { UserStateContext, DispatchContext } from '../App';
 import LogoutModal from './modal/LogoutModal';
+import '../styles/scss/Header.scss';
 
 function Header() {
     const navigate = useNavigate();
@@ -32,32 +33,73 @@ function Header() {
     };
 
     return (
-        <Nav activeKey={location.pathname}>
-            <Nav.Item className="me-auto mb-5">
-                <Nav.Link disabled>
-                    안녕하세요, 포트폴리오 공유 서비스입니다.
-                </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link onClick={() => navigate('/')}>나의 페이지</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link onClick={() => navigate('/network')}>
-                    네트워크
-                </Nav.Link>
-            </Nav.Item>
-            {isLogin && (
-                <Nav.Item>
-                    <Nav.Link onClick={logout}>로그아웃</Nav.Link>
-                </Nav.Item>
-            )}
-            <LogoutModal
-                show={show}
-                handleClose={handleClose}
-                msg={msg}
-                logoutConfirm={logoutConfirm}
-            />
-        </Nav>
+        <Navbar className="navbarWrap" expand="lg">
+            <Container>
+                <Navbar.Brand onClick={() => navigate('/')}>
+                    우매함의 봉우리^ㅡ^
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse
+                    id="basic-navbar-nav"
+                    className="justify-content-end"
+                >
+                    <Nav activeKey={location.pathname}>
+                        <Nav.Item>
+                            <Nav.Link
+                                className="navbarButton"
+                                onClick={() => navigate('/gatherRoom')}
+                            >
+                                프로젝트
+                            </Nav.Link>
+                        </Nav.Item>
+                        <NavDropdown.Divider />
+                        <Nav.Item>
+                            <Nav.Link
+                                className="navbarButton"
+                                onClick={() => navigate('/note')}
+                            >
+                                쪽지
+                            </Nav.Link>
+                        </Nav.Item>
+                        <NavDropdown.Divider />
+                        <Nav.Item>
+                            <Nav.Link
+                                className="navbarButton"
+                                onClick={() => navigate('/')}
+                            >
+                                나의 페이지
+                            </Nav.Link>
+                        </Nav.Item>
+                        <NavDropdown.Divider />
+                        <Nav.Item>
+                            <Nav.Link
+                                className="navbarButton"
+                                onClick={() => navigate('/network')}
+                            >
+                                네트워크
+                            </Nav.Link>
+                        </Nav.Item>
+                        <NavDropdown.Divider />
+                        {isLogin && (
+                            <Nav.Item>
+                                <Nav.Link
+                                    className="navbarButton"
+                                    onClick={logout}
+                                >
+                                    로그아웃
+                                </Nav.Link>
+                            </Nav.Item>
+                        )}
+                        <LogoutModal
+                            show={show}
+                            handleClose={handleClose}
+                            msg={msg}
+                            logoutConfirm={logoutConfirm}
+                        />
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
 }
 

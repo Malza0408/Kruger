@@ -5,7 +5,7 @@ class NoteService {
     static async addNote({ user_id, to, title, content }) {
         const id = uuidv4();
 
-        const fromUser = await User.findById({ user_id });
+        const fromUser = await User.findById(user_id);
 
         const email = to;
         const toUser = await User.findByEmail({ email });

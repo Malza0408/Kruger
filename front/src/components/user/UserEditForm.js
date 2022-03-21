@@ -38,10 +38,31 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     };
 
     return (
-        <Card className="mb-2">
+        <Card className="mb-2 userEditForm">
             <Card.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="useEditName" className="mb-3">
+                    <Form.Group>
+                        <Form.Control
+                            className="mb-2 text-muted"
+                            onMouseOver={() => {
+                                setIsMouseOver(true);
+                            }}
+                            onMouseOut={() => {
+                                setIsMouseOver(false);
+                            }}
+                            placeholder={user?.email}
+                            disabled
+                        />
+
+                        <Row>
+                            {isMouseOver && (
+                                <Card.Subtitle className="text-primary">
+                                    수정 불가 항목입니다.
+                                </Card.Subtitle>
+                            )}
+                        </Row>
+                    </Form.Group>
+                    <Form.Group controlId="useEditName" className="mb-2">
                         <Form.Control
                             type="text"
                             placeholder="이름"
@@ -49,59 +70,6 @@ function UserEditForm({ user, setIsEditing, setUser }) {
                             onChange={(e) => setName(e.target.value)}
                         />
                     </Form.Group>
-                    <Row>
-                        <Col>
-                            <Card.Subtitle
-                                className="mb-2 text-muted"
-                                onMouseOver={() => {
-                                    setIsMouseOver(true);
-                                }}
-                                onMouseOut={() => {
-                                    setIsMouseOver(false);
-                                }}
-                            >
-                                {user?.email}
-                            </Card.Subtitle>
-                        </Col>
-                        <Col>
-                            {isMouseOver && (
-                                <Card.Subtitle className="text-primary">
-                                    수정 불가 항목입니다.
-                                </Card.Subtitle>
-                            )}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Card.Subtitle
-                                className="mb-2 text-muted"
-                                onMouseOver={() => {
-                                    setIsMouseOver(true);
-                                }}
-                                onMouseOut={() => {
-                                    setIsMouseOver(false);
-                                }}
-                            >
-                                비밀번호
-                            </Card.Subtitle>
-                        </Col>
-                        <Col>
-                            <Button
-                                variant="primary"
-                                className="me-3"
-                                size="sm"
-                                onClick={() => setModalShow(true)}
-                            >
-                                변경
-                            </Button>
-                            <UpdatePassword
-                                show={modalShow}
-                                onHide={() => setModalShow(false)}
-                                setModalShow={setModalShow}
-                                user={user}
-                            />
-                        </Col>
-                    </Row>
                     <Form.Group controlId="userEditDescription">
                         <Form.Control
                             type="text"
@@ -115,12 +83,26 @@ function UserEditForm({ user, setIsEditing, setUser }) {
                         <Col sm={{ span: 20 }}>
                             <Button
                                 variant="primary"
+                                className="me-3 changePasswordButton"
+                                onClick={() => setModalShow(true)}
+                            >
+                                비밀번호 변경
+                            </Button>
+                            <UpdatePassword
+                                show={modalShow}
+                                onHide={() => setModalShow(false)}
+                                setModalShow={setModalShow}
+                                user={user}
+                            />
+                            <Button
+                                variant="primary"
                                 type="submit"
-                                className="me-3"
+                                className="me-3 confirmButton"
                             >
                                 확인
                             </Button>
                             <Button
+                                className="cancelButton"
                                 variant="secondary"
                                 onClick={() => setIsEditing(false)}
                             >

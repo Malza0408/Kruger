@@ -31,6 +31,7 @@ const AwardEditForm = ({ setIsEditing, award, setAwards }) => {
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="awardEditTitle">
                 <Form.Control
+                    className="mvpCardInput"
                     type="text"
                     placeholder="수상내역"
                     value={title}
@@ -44,6 +45,7 @@ const AwardEditForm = ({ setIsEditing, award, setAwards }) => {
             </Form.Group>
             <Form.Group className="mt-3" controlId="awardEditDescription">
                 <Form.Control
+                    className="mvpCardInput"
                     type="text"
                     placeholder="상세내역"
                     value={description}
@@ -62,11 +64,15 @@ const AwardEditForm = ({ setIsEditing, award, setAwards }) => {
                     </Form.Text>
                 )}
                 <Col sm={{ span: 20 }}>
-                    <Button className="me-3" variant="primary" type="submit">
+                    <Button
+                        className="me-3 mvpCardConfirmButton"
+                        variant="primary"
+                        type="submit"
+                    >
                         확인
                     </Button>
                     <Button
-                        className="me-3"
+                        className="me-3 mvpCardCancelButton"
                         variant="secondary"
                         type="button"
                         onClick={() => {

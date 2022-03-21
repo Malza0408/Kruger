@@ -128,7 +128,7 @@ class UserService {
     }
 
     static async getUserInfo({ user_id }) {
-        const user = await User.findById({ user_id });
+        const user = await User.findById(user_id);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
@@ -148,7 +148,7 @@ class UserService {
 
     static async setUser({ user_id, toUpdate }) {
         // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
-        let user = await User.findById({ user_id });
+        let user = await User.findById(user_id);
         const keys = Object.keys(toUpdate);
         const values = Object.values(toUpdate);
         const filter = { id: user_id };
@@ -203,6 +203,44 @@ class UserService {
         const text = `귀하의 새로운 비밀번호는 ${newPassword} 입니다. 로그인 후 비밀번호를 변경해주세요.`;
         await sendMail(email, subject, text);
         return;
+    }
+
+    static async followUser({ followedId, user_id }) {
+        let followedUser = await User.findById(followedId);
+
+        if (!followedUser) {
+            const errorMessage = '이미 탈퇴했거나 등록하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        let user = await User.findById(user_id);
+
+        // const followList = [...followedUser._doc.follower];
+        // console.log(followList);
+
+        // const userObjectId = user._doc._id;
+        // console.log(user._doc._id);
+        // console.log(userObjectId == followList[0]);
+
+        // if (followList.includes(user._doc._id)) {
+        //     const errorMessage = '이미 팔로우 중입니다.';
+        //     throw new Error(errorMessage);
+        // }
+
+        // const newFollowedValue = [...followedUser._doc.follower];
+        // newFollowedValue.push(user);
+
+        // const newFollowValue = [...user._doc.follow];
+        // newFollowValue.push(followedUser);
+
+        // followedUser = await User.update(
+        //     { id: followedId },
+        //     'follower',
+        //     newFollowedValue
+        // );
+        // user = await User.update({ id: user_id }, 'follow', newFollowValue);
+
+        return user;
     }
 
     static async deleteUser({ user_id }) {

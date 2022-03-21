@@ -117,8 +117,18 @@ userRouter.put('/user/resetPassword', async function (req, res, next) {
 });
 
 // 친구추가
-userRouter.put('/user/:id', login_required, async (req, res, next) => {
-    const friend_id = req.params.id;
+userRouter.put('/followUser/:id', login_required, async (req, res, next) => {
+    try {
+        const followedId = req.params.id;
+        const user_id = req.currentUserId;
+        const updatedUser = await UserService.followUser({
+            followedId,
+            user_id
+        });
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        next(error);
+    }
 });
 
 userRouter.delete(

@@ -38,7 +38,7 @@ const UserSchema = new Schema(
         follower: {
             type: [Schema.Types.ObjectId],
             ref: 'User',
-            default: {}
+            default: []
         },
         loginMethod: {
             type: String,
