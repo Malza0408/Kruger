@@ -16,7 +16,7 @@ const Awards = ({ portfolioOwnerId, isEditable }) => {
     }, [portfolioOwnerId]);
 
     return (
-        <Card>
+        <Card className="mvpCard">
             <Card.Body>
                 <Card.Title>수상이력</Card.Title>
                 {/* 개별 이력을 반복문을 통해 구현 */}
@@ -32,13 +32,14 @@ const Awards = ({ portfolioOwnerId, isEditable }) => {
                 })}
                 {/* 권한을 가졌을때만 + 버튼 표시 */}
                 {isEditable && (
-                    <Row className='text-center mt-3 mb-4'>
+                    <Row className="text-center mt-3 mb-4">
                         <Col>
                             <Button
-                                variant='primary'
+                                variant="primary"
                                 onClick={() => {
                                     setIsAdding(true);
                                 }}
+                                className="mvpCardAddButton"
                             >
                                 +
                             </Button>

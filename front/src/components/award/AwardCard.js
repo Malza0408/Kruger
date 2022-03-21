@@ -41,6 +41,7 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                     </Col>
                 )}
             </Row>
+            <hr />
         </Card.Text>
     );
 };

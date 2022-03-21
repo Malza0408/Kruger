@@ -1,0 +1,26 @@
+$mainColor: #edf2ff;
+$buttonColor: #bac8ff;
+
+.login {
+    background-color: $mainColor;
+    height: 100vh;
+    .loginButton {
+        background-color: $buttonColor;
+        border: 0;
+    }
+    .registerButton {
+        background-color: $buttonColor;
+        border: 0;
+    }
+}
+
+.register {
+    .registerButton {
+        background-color: $buttonColor;
+        border: 0;
+    }
+    .loginButton {
+        background-color: $buttonColor;
+        border: 0;
+    }
+}

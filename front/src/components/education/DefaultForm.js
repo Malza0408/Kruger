@@ -2,111 +2,121 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 
 const DefaultForm = ({
-    handleOnChange,
+    handleSchoolOnChange,
+    handleMajorOnChange,
     school,
     major,
-    subMajor,
+    handleCheckOnClick,
     handleSubmit,
     handleFunction,
-    inputInfo,
-    isSchoolEmpty,
-    isMajorEmpty
+    isInputEmpty,
+    inputInfo
 }) => {
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="school">
+            <Form.Group className="mb-3" controlId="school.ControlInput">
                 <Form.Label>학교</Form.Label>
                 <Form.Control
+                    className="mvpCardInput"
                     type="text"
                     placeholder="OO대학교"
-                    onChange={handleOnChange}
+                    onChange={handleSchoolOnChange}
                     value={inputInfo?.school ?? school}
                 />
-                {isSchoolEmpty && (
+                {!inputInfo?.school && !school && (
+                    <Form.Text className="text-danger">
+                        학교를 작성 해 주세요.
+                    </Form.Text>
+                )}
+                {isInputEmpty.isSchoolEmpty && (
                     <Form.Text className="text-success">
                         학교를 입력해주세요
                     </Form.Text>
                 )}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="major">
+            <Form.Group className="mb-3" controlId="major.ControlInput">
                 <Form.Label>Major</Form.Label>
                 <Form.Control
+                    className="mvpCardInput"
                     type="text"
                     placeholder="OO전공"
-                    onChange={handleOnChange}
-                    value={inputInfo?.major.first ?? major}
+                    onChange={handleMajorOnChange}
+                    value={inputInfo?.major ?? major}
                 />
-                {isMajorEmpty && (
+                {!inputInfo?.school && !major && (
+                    <Form.Text className="text-danger">
+                        전공을 작성 해 주세요.
+                    </Form.Text>
+                )}
+                {isInputEmpty.isMajorEmpty && (
                     <Form.Text className="text-success">
                         전공을 입력해주세요
                     </Form.Text>
                 )}
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="subMajor">
-                <Form.Label>subMajor</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="OO부전공"
-                    onChange={handleOnChange}
-                    value={inputInfo?.major.second ?? subMajor}
-                />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="radio">
                 {/* name이 check 중복을 걸러줌 */}
                 <div key="inline-radio" className="mt-2">
-                    <Form.Check
-                        inline
-                        type="radio"
-                        label="재학중"
-                        id="radio"
-                        name="group1"
-                        value="재학중"
-                        onChange={handleOnChange}
-                        checked={inputInfo?.position === '재학중'}
-                    />
+                    {
+                        <Form.Check
+                            inline
+                            type="radio"
+                            label="재학중"
+                            id="radio-edit-1"
+                            name="group1"
+                            value="재학중"
+                            onChange={handleCheckOnClick}
+                            checked={inputInfo?.position === '재학중'}
+                        />
+                    }
                     <Form.Check
                         inline
                         type="radio"
                         label="학사졸업"
-                        id="radio"
+                        id="radio-edit-2"
                         name="group1"
                         value="학사졸업"
-                        onChange={handleOnChange}
+                        onChange={handleCheckOnClick}
                         checked={inputInfo?.position === '학사졸업'}
                     />
                     <Form.Check
                         inline
                         type="radio"
                         label="석사졸업"
-                        id="radio"
+                        id="radio-edit-3"
                         name="group1"
                         value="석사졸업"
-                        onChange={handleOnChange}
+                        onChange={handleCheckOnClick}
                         checked={inputInfo?.position === '석사졸업'}
                     />
                     <Form.Check
                         inline
                         type="radio"
                         label="박사졸업"
-                        id="radio"
+                        id="radio-edit-4"
                         name="group1"
                         value="박사졸업"
-                        onChange={handleOnChange}
+                        onChange={handleCheckOnClick}
                         checked={inputInfo?.position === '박사졸업'}
                     />
                 </div>
+                {console.log(isInputEmpty.isPositionEmpty)}
+                {isInputEmpty.isPositionEmpty && (
+                    <Form.Text className="text-success">선택하세요</Form.Text>
+                )}
             </Form.Group>
             <Row className="text-center">
-                {(isSchoolEmpty || isMajorEmpty) && (
-                    <Form.Text className="text-success">
-                        빠짐 없이 입력해주세요
-                    </Form.Text>
-                )}
                 <Col>
-                    <Button variant="primary" type="submit" className="me-3">
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        className="me-3 mvpCardConfirmButton"
+                    >
                         확인
                     </Button>
-                    <Button variant="secondary" onClick={handleFunction}>
+                    <Button
+                        variant="secondary"
+                        onClick={handleFunction}
+                        className="mvpCardCancelButton"
+                    >
                         취소
                     </Button>
                 </Col>

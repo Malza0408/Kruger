@@ -10,14 +10,7 @@ const Education = ({
     isEditable
 }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [inputInfo, setInputInfo] = useState({
-        school: '',
-        major: {
-            first: '',
-            second: ''
-        },
-        position: ''
-    });
+    const [inputInfo, setInputInfo] = useState(null);
 
     const handleEditing = async (e) => {
         setIsEditing(!isEditing);
@@ -40,6 +33,7 @@ const Education = ({
     };
 
     const handleDeleting = async (e) => {
+        e.preventDefault();
         try {
             await Api.delete('educations', education.id);
             const list = await Api.get('educationlist', portfolioOwnerId);

@@ -1,0 +1,16 @@
+$mainColor: #edf2ff;
+
+.network {
+    background-color: $mainColor;
+    .orderState {
+        background-color: #bac8ff;
+        border: 0;
+    }
+    .orderListButton {
+        background-color: hsl(228, 100%, 86%);
+        border: 0;
+    }
+    .filterInput {
+        box-shadow: none;
+    }
+}

@@ -1,0 +1,74 @@
+$mainColor: #edf2ff;
+$buttonColor: #bac8ff;
+$cardColor: white;
+
+.portfolio {
+    background-color: $mainColor;
+    height: 100vh;
+}
+.mvpCard {
+    background-color: $cardColor;
+    border: 2px solid #bac8ff;
+    .mvpCardInput {
+        background-color: white;
+    }
+    .mvpCardAddButton {
+        background-color: $buttonColor;
+        border: 0px;
+    }
+    .mvpCardAddButton:hover {
+        border: 2px solid #edf2ff;
+    }
+    .mvpCardConfirmButton {
+        background-color: lightblue;
+        border: 0;
+    }
+    .mvpCardCancelButton {
+        background-color: lightcoral;
+        border: 0;
+    }
+    hr {
+        border: 2px #91a7ff solid;
+    }
+}
+
+.UserCard {
+    background-color: $cardColor;
+    border-radius: 30px;
+    border: 2px solid #bac8ff;
+
+    .profileImage {
+        border-radius: 70%;
+        width: 14rem;
+        height: 12rem;
+    }
+    .editButton {
+        background-color: $buttonColor;
+        border: 0px;
+    }
+    .withdrawalButton {
+        background-color: lightcoral;
+        border: 0px;
+    }
+    .editButton:hover {
+        border: 2px solid black;
+    }
+    .withdrawalButton:hover {
+        border: 2px solid black;
+    }
+}
+
+.userEditForm {
+    .changePasswordButton {
+        background-color: lightblue;
+        border: 0;
+    }
+    .confirmButton {
+        background-color: lightblue;
+        border: 0;
+    }
+    .cancelButton {
+        background-color: lightcoral;
+        border: 0;
+    }
+}

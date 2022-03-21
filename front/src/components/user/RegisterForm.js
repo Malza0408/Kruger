@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Col, Row, Form, Button } from 'react-bootstrap';
-import OriginalModal from '../modal/OriginalModal';
+import EmailCheckModal from '../modal/EmailCheckModal';
 import * as Api from '../../api';
 
 function RegisterForm() {
@@ -54,7 +54,7 @@ function RegisterForm() {
             // 로그인 페이지로 이동함.
             navigate('/login');
         } catch (err) {
-            if (err.response.status == 400) {
+            if (err.response.status === 400) {
                 setErrMsg(err.response.data);
                 handleShow();
             }
@@ -63,8 +63,8 @@ function RegisterForm() {
     };
 
     return (
-        <Container>
-            <OriginalModal
+        <Container className="register">
+            <EmailCheckModal
                 show={show}
                 setShow={setShow}
                 errMsg={errMsg}
@@ -144,7 +144,8 @@ function RegisterForm() {
                         <Form.Group as={Row} className="mt-3 text-center">
                             <Col sm={{ span: 20 }}>
                                 <Button
-                                    variant="primary"
+                                    className="registerButton"
+                                    variant="light"
                                     type="submit"
                                     disabled={!isFormValid}
                                 >
@@ -156,6 +157,7 @@ function RegisterForm() {
                         <Form.Group as={Row} className="mt-3 text-center">
                             <Col sm={{ span: 20 }}>
                                 <Button
+                                    className="loginButton"
                                     variant="light"
                                     onClick={() => navigate('/login')}
                                 >

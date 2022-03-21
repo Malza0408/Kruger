@@ -4,33 +4,31 @@ import DatePicker from 'react-datepicker';
 
 import * as Api from '../../api';
 
-const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) => {
+import InputEmpty from '../InputEmpty';
+
+const CertificateAddForm = ({
+    setIsAdding,
+    setCertificate,
+    portfolioOwnerId
+}) => {
     const user_id = portfolioOwnerId;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date());
 
-    const [isTitleEmpty, setIsTitleEmpty] = useState(false) 
-    const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(false) 
-
-    const changeDateFormat = () => {
-        // date format을 'yyyy-MM-dd'로 변경
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
-    };
+    const [isInputEmpty, setIsInputEmpty] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // title 공란이면 true 
-        setIsTitleEmpty(!title) 
-        // description 공란이면 true 
-        setIsDescriptionEmpty(!description) 
+        // date format을 'yyyy-MM-dd'로 변경
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const newDate = `${year}-${month}-${day}`;
 
-        const newDate = changeDateFormat();
+        // 빈 인풋 제출 검사
+        setIsInputEmpty(InputEmpty({ title, description }));
 
         try {
             // "user/register" 엔드포인트로 post요청함.
@@ -42,13 +40,13 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
             });
 
             await Api.get('certificatelist', user_id).then((res) =>
-            setCertificate(res.data)
+                setCertificate(res.data)
             );
 
-            console.log(res.data)
+            console.log(res.data);
             setIsAdding(false);
         } catch (err) {
-            console.log('등록 실패', err); 
+            console.log('등록 실패', err);
         }
     };
 
@@ -57,34 +55,39 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formCertificateTitle">
                     <Form.Control
+                        className="mvpCardInput"
                         type="text"
                         placeholder="자격증 제목"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
-                    {isTitleEmpty && (
+                    {isInputEmpty.isTitleEmpty && (
                         <Form.Text className="text-success">
                             자격증 제목을 입력해주세요
                         </Form.Text>
                     )}
                 </Form.Group>
 
-                <Form.Group controlId="formCertificateDescription" className="mt-3">
+                <Form.Group
+                    controlId="formCertificateDescription"
+                    className="mt-3"
+                >
                     <Form.Control
+                        className="mvpCardInput"
                         type="text"
                         placeholder="상세내역"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
-                    {isDescriptionEmpty && (
+                    {isInputEmpty.isDescriptionEmpty && (
                         <Form.Text className="text-success">
                             상세내역을 입력해주세요
                         </Form.Text>
-                    )} 
+                    )}
                 </Form.Group>
 
                 <Form.Group as={Row} className="mt-3">
-                    <Col xs='auto'>
+                    <Col xs="auto">
                         <DatePicker
                             selected={date}
                             onChange={(date) => setDate(date)}
@@ -93,7 +96,7 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                 </Form.Group>
 
                 <Form.Group as={Row} className="mt-3 text-center">
-                    {(isTitleEmpty || isDescriptionEmpty) && (
+                    {isInputEmpty && (
                         <Form.Text className="text-success">
                             빠짐 없이 입력해주세요
                         </Form.Text>
@@ -102,11 +105,12 @@ const CertificateAddForm = ({ setIsAdding, setCertificate, portfolioOwnerId }) =
                         <Button
                             variant="primary"
                             type="submit"
-                            className="me-3"
+                            className="me-3 mvpCardConfirmButton"
                         >
                             확인
                         </Button>
                         <Button
+                            className="mvpCardCancelButton"
                             variant="secondary"
                             onClick={() => setIsAdding(false)}
                         >

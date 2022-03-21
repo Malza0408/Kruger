@@ -9,23 +9,22 @@ const EducationCard = ({
     isEditable
 }) => {
     return (
-        <Card.Text as={Row}>
+        <Card.Text as={Col}>
             <Row className="align-items-center">
                 <Col>
                     <span>{school}</span>
+
                     <br />
-                    <span className="text-muted">전공: {major.first} </span>
-                    <br />
-                    <span className="text-muted">부전공: {major.second} </span>
-                    <br />
-                    <span className="text-muted">졸업: {position}</span>
+                    <span className="text-muted">{major} </span>
+
+                    <span className="text-muted">{position}</span>
                 </Col>
                 {/* 편집 권한이 있다면 보여준다. */}
                 {isEditable && school && (
                     <>
                         <Col className="col-lg-1">
                             <Button
-                                className="mb-1"
+                                className="mr-3 mb-1"
                                 variant="outline-info"
                                 size="sm"
                                 onClick={handleEditing}
@@ -33,7 +32,6 @@ const EducationCard = ({
                                 편집
                             </Button>
                             <Button
-                                className="mb-1"
                                 variant="outline-danger"
                                 size="sm"
                                 onClick={handleDeleting}
