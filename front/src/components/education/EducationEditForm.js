@@ -11,39 +11,51 @@ const EducationEditForm = ({
 }) => {
     const [schoolInput, setSchoolInput] = useState('');
     const [majorInput, setMajorInput] = useState('');
+    const [subMajorInput, setSubMajorInput] = useState('');
     const [positionValue, setPositionValue] = useState('');
 
     const [isSchoolEmpty, setIsSchoolEmpty] = useState(false);
     const [isMajorEmpty, setIsMajorEmpty] = useState(false);
 
-    const handleSchoolOnChange = (e) => {
-        setSchoolInput(e.target.value);
-        setInputInfo((current) => {
-            return {
-                ...current,
-                school: e.target.value
-            };
-        });
+    const handleOnChange = (e) => {
+        const id = e.target.id;
+        switch (id) {
+            case 'school': {
+                setSchoolInput(e.target.value);
+                setInputInfo((current) => {
+                    return {
+                        ...current,
+                        school: e.target.value
+                    };
+                });
+                break;
+            }
+            case 'major': {
+                setMajorInput(e.target.value);
+                setInputInfo((current) => {
+                    return {
+                        ...current,
+                        major: e.target.value
+                    };
+                });
+                break;
+            }
+            case 'radio': {
+                setPositionValue(e.target.value);
+                setInputInfo((current) => {
+                    return {
+                        ...current,
+                        position: e.target.value
+                    };
+                });
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     };
-    const handleMajorOnChange = (e) => {
-        setMajorInput(e.target.value);
-        setInputInfo((current) => {
-            return {
-                ...current,
-                major: e.target.value
-            };
-        });
-    };
-    const handleCheckOnClick = (e) => {
-        setPositionValue(e.target.value);
-        setInputInfo((current) => {
-            return {
-                ...current,
-                position: e.target.value
-            };
-        });
-        // console.log(e.target);
-    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         // 칸을 비워놨다면 값을 받지 않는다.
@@ -69,11 +81,9 @@ const EducationEditForm = ({
     };
     return (
         <DefaultForm
-            handleSchoolOnChange={handleSchoolOnChange}
-            handleMajorOnChange={handleMajorOnChange}
+            handleOnChange={handleOnChange}
             school={schoolInput}
             major={majorInput}
-            handleCheckOnClick={handleCheckOnClick}
             handleSubmit={handleSubmit}
             handleFunction={handleEditCancel}
             inputInfo={inputInfo}

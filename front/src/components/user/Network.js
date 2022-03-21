@@ -42,7 +42,6 @@ function Network() {
         });
 
         const searchList = users.filter((user) => {
-            console.log(user.name.match(regexp));
             return user.name.match(regexp) || user.email.match(regexp);
         });
         setSearchUsers([...searchList]);
@@ -50,7 +49,6 @@ function Network() {
 
     const handleOnClickAscUser = () => {
         const ascUsers = [...users];
-        console.log(ascUsers);
         ascUsers.sort((userA, userB) => {
             return userA.name < userB.name
                 ? -1
@@ -63,7 +61,6 @@ function Network() {
 
     const handleOnClickDescUser = () => {
         const ascUsers = [...users];
-        console.log(ascUsers);
         ascUsers.sort((userA, userB) => {
             return userA.name < userB.name
                 ? 1
@@ -84,10 +81,6 @@ function Network() {
                 : 0;
         });
         setUsers([...ascUsers]);
-        ascUsers.forEach((user) => {
-            console.log(user.createdAt);
-        });
-        console.log('-----------------------------');
     };
 
     const handleOnClickDescCreatedAt = () => {
@@ -100,10 +93,6 @@ function Network() {
                 : 0;
         });
         setUsers([...ascUsers]);
-        ascUsers.forEach((user) => {
-            console.log(user.createdAt);
-        });
-        console.log('-----------------------------');
     };
 
     return (

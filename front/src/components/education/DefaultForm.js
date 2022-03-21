@@ -2,11 +2,9 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 
 const DefaultForm = ({
-    handleSchoolOnChange,
-    handleMajorOnChange,
+    handleOnChange,
     school,
     major,
-    handleCheckOnClick,
     handleSubmit,
     handleFunction,
     inputInfo,
@@ -15,12 +13,12 @@ const DefaultForm = ({
 }) => {
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="school.ControlInput">
+            <Form.Group className="mb-3" controlId="school">
                 <Form.Label>학교</Form.Label>
                 <Form.Control
                     type="text"
                     placeholder="OO대학교"
-                    onChange={handleSchoolOnChange}
+                    onChange={handleOnChange}
                     value={inputInfo?.school ?? school}
                 />
                 {isSchoolEmpty && (
@@ -29,12 +27,12 @@ const DefaultForm = ({
                     </Form.Text>
                 )}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="major.ControlInput">
+            <Form.Group className="mb-3" controlId="major">
                 <Form.Label>Major</Form.Label>
                 <Form.Control
                     type="text"
                     placeholder="OO전공"
-                    onChange={handleMajorOnChange}
+                    onChange={handleOnChange}
                     value={inputInfo?.major ?? major}
                 />
                 {isMajorEmpty && (
@@ -44,46 +42,44 @@ const DefaultForm = ({
                 )}
                 {/* name이 check 중복을 걸러줌 */}
                 <div key="inline-radio" className="mt-2">
-                    {
-                        <Form.Check
-                            inline
-                            type="radio"
-                            label="재학중"
-                            id="radio-edit-1"
-                            name="group1"
-                            value="재학중"
-                            onChange={handleCheckOnClick}
-                            checked={inputInfo?.position === '재학중'}
-                        />
-                    }
+                    <Form.Check
+                        inline
+                        type="radio"
+                        label="재학중"
+                        id="radio"
+                        name="group1"
+                        value="재학중"
+                        onChange={handleOnChange}
+                        checked={inputInfo?.position === '재학중'}
+                    />
                     <Form.Check
                         inline
                         type="radio"
                         label="학사졸업"
-                        id="radio-edit-2"
+                        id="radio"
                         name="group1"
                         value="학사졸업"
-                        onChange={handleCheckOnClick}
+                        onChange={handleOnChange}
                         checked={inputInfo?.position === '학사졸업'}
                     />
                     <Form.Check
                         inline
                         type="radio"
                         label="석사졸업"
-                        id="radio-edit-3"
+                        id="radio"
                         name="group1"
                         value="석사졸업"
-                        onChange={handleCheckOnClick}
+                        onChange={handleOnChange}
                         checked={inputInfo?.position === '석사졸업'}
                     />
                     <Form.Check
                         inline
                         type="radio"
                         label="박사졸업"
-                        id="radio-edit-4"
+                        id="radio"
                         name="group1"
                         value="박사졸업"
-                        onChange={handleCheckOnClick}
+                        onChange={handleOnChange}
                         checked={inputInfo?.position === '박사졸업'}
                     />
                 </div>
