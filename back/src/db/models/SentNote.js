@@ -20,15 +20,6 @@ class SentNote {
         return note;
     }
 
-    static async updateCheck({ noteId }) {
-        await SentNoteModel.findOneAndUpdate(
-            { id: noteId },
-            { check: true },
-            { returnOriginal: false }
-        );
-        return;
-    }
-
     static async deleteById({ noteId }) {
         await SentNoteModel.deleteOne({ id: noteId });
         return;
