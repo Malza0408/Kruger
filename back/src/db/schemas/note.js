@@ -4,7 +4,8 @@ const NoteSchema = new Schema(
     {
         id: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
         fromUser: {
             type: Schema.Types.ObjectId,

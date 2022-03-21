@@ -4,7 +4,8 @@ const ProjectSchema = new Schema(
     {
         id: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
         user_id: {
             type: String,
