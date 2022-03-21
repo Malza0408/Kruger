@@ -24,11 +24,15 @@ function LoginForm() {
             );
     };
 
+    // 비밀번호가 4글자 이상인지 여부를 확인함.
+    const validatePassword = (password) => {
+        return password.length >= 4;
+    };
+
     //위 validateEmail 함수를 통해 이메일 형태 적합 여부를 확인함.
     const isEmailValid = validateEmail(email);
-    // 비밀번호가 4글자 이상인지 여부를 확인함.
-    const isPasswordValid = password.length >= 4;
-    //
+    //위 validateEmail 함수를 통해 패스워드 형태 적합 여부를 확인함.
+    const isPasswordValid = validatePassword(password);
     // 이메일과 비밀번호 조건이 동시에 만족되는지 확인함.
     const isFormValid = isEmailValid && isPasswordValid;
 
@@ -52,7 +56,7 @@ function LoginForm() {
                 type: 'LOGIN_SUCCESS',
                 payload: user
             });
-            
+
             // 기본 페이지로 이동함.
             navigate('/', { replace: true });
         } catch (err) {
@@ -99,7 +103,7 @@ function LoginForm() {
                         <Form.Group as={Row} className="mt-3 text-center">
                             {isLoginFail && (
                                 <Form.Text className="text-danger">
-                                     이메일 또는 비밀번호를 잘못 입력했습니다.
+                                    이메일 또는 비밀번호를 잘못 입력했습니다.
                                 </Form.Text>
                             )}
                             <Col sm={{ span: 20 }}>
