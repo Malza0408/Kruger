@@ -9,8 +9,8 @@ const DefaultForm = ({
     handleCheckOnClick,
     handleSubmit,
     handleFunction,
-    inputInfo, 
-    isSchoolEmpty, 
+    inputInfo,
+    isSchoolEmpty,
     isMajorEmpty
 }) => {
     return (
@@ -89,11 +89,11 @@ const DefaultForm = ({
                 </div>
             </Form.Group>
             <Row className="text-center">
-                    {(isSchoolEmpty || isMajorEmpty) && (
-                        <Form.Text className="text-success">
-                            빠짐 없이 입력해주세요
-                        </Form.Text>
-                    )}
+                {(isSchoolEmpty || isMajorEmpty) && (
+                    <Form.Text className="text-success">
+                        빠짐 없이 입력해주세요
+                    </Form.Text>
+                )}
                 <Col>
                     <Button variant="primary" type="submit" className="me-3">
                         확인
