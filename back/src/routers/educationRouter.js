@@ -18,7 +18,8 @@ educationRouter.post(
             }
             const user_id = req.currentUserId;
             const { school, major, position } = req.body;
-            if (major.length === 0) {
+
+            if (Object.values(major).length === 0) {
                 const errorMessage = '전공을 입력해주세요.';
                 return res.status(400).send(errorMessage);
             }
