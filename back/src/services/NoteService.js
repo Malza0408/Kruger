@@ -1,4 +1,4 @@
-import { Note, User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { TakenNote, SentNote, User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import { v4 as uuidv4 } from 'uuid';
 
 class NoteService {
@@ -19,26 +19,72 @@ class NoteService {
         const newNote = { id, fromUser, toUser, title, content };
         console.log(id, fromUser, toUser, title, content);
 
-        const createdNewNote = await Note.create({ newNote });
+        const createdNewSentNote = await SentNote.create({ newNote });
+        const createdNewTakenNote = await TakenNote.create({ newNote });
+        console.log(createdNewTakenNote);
 
-        return createdNewNote;
+        const toUserKeys = Object.keys(createdNewSentNote.toUser._doc);
+        if (toUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = createdNewSentNote.toUser._doc;
+            createdNewSentNote.toUser._doc = refinedUser;
+        }
+
+        const fromUserKeys = Object.keys(createdNewSentNote.fromUser._doc);
+        if (fromUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } =
+                createdNewSentNote.fromUser._doc;
+            createdNewSentNote.fromUser._doc = refinedUser;
+        }
+
+        return createdNewSentNote;
     }
 
     static async getTakenNotes({ user_id }) {
-        const notes = await Note.findAll();
+        const notes = await TakenNote.findAll();
         const takenNotes = notes.filter((v) => v.toUser.id == user_id);
+        console.log(takenNotes.length);
+        for (let i = 0; i < takenNotes.length; i++) {
+            const toUserKeys = Object.keys(takenNotes[i].toUser._doc);
+            if (toUserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = takenNotes[i].toUser._doc;
+                takenNotes[i].toUser._doc = refinedUser;
+            }
+
+            const fromUserKeys = Object.keys(takenNotes[i].fromUser._doc);
+            if (fromUserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } =
+                    takenNotes[i].fromUser._doc;
+                takenNotes[i].fromUser._doc = refinedUser;
+            }
+        }
 
         return takenNotes;
     }
 
     static async getSentNotes({ user_id }) {
-        const notes = await Note.findAll();
+        const notes = await SentNote.findAll();
         const sentNotes = notes.filter((v) => v.fromUser.id == user_id);
+        console.log(sentNotes.length);
+
+        for (let i = 0; i < sentNotes.length; i++) {
+            const toUserKeys = Object.keys(sentNotes[i].toUser._doc);
+            if (toUserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = sentNotes[i].toUser._doc;
+                sentNotes[i].toUser._doc = refinedUser;
+            }
+
+            const fromUserKeys = Object.keys(sentNotes[i].fromUser._doc);
+            if (fromUserKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = sentNotes[i].fromUser._doc;
+                sentNotes[i].fromUser._doc = refinedUser;
+            }
+        }
+
         return sentNotes;
     }
 
-    static async getNoteInfo({ noteId }) {
-        const note = await Note.findById({ noteId });
+    static async getTakenNoteInfo({ noteId, user_id }) {
+        const note = await TakenNote.findById({ noteId });
 
         if (!note) {
             const errorMessage =
@@ -46,22 +92,93 @@ class NoteService {
             throw new Error(errorMessage);
         }
         console.log(note);
+        if (note.toUser.id !== user_id) {
+            const errorMessage = '접근 권한이 없는 쪽지입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const toUserKeys = Object.keys(note.toUser._doc);
+        if (toUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = note.toUser._doc;
+            note.toUser._doc = refinedUser;
+        }
+
+        const fromUserKeys = Object.keys(note.fromUser._doc);
+        if (fromUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = note.fromUser._doc;
+            note.fromUser._doc = refinedUser;
+        }
+
+        return note;
+    }
+
+    static async getSentNoteInfo({ noteId, user_id }) {
+        const note = await SentNote.findById({ noteId });
+
+        if (!note) {
+            const errorMessage =
+                '해당 쪽지는 이미 삭제되었거나 전송된 적 없는 쪽지입니다.';
+            throw new Error(errorMessage);
+        }
+        console.log(note);
+        if (note.fromUser.id !== user_id) {
+            const errorMessage = '접근 권한이 없는 쪽지입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const toUserKeys = Object.keys(note.toUser._doc);
+        if (toUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = note.toUser._doc;
+            note.toUser._doc = refinedUser;
+        }
+
+        const fromUserKeys = Object.keys(note.fromUser._doc);
+        if (fromUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = note.fromUser._doc;
+            note.fromUser._doc = refinedUser;
+        }
 
         return note;
     }
 
     static async checkNote({ noteId }) {
-        await Note.updateCheck({ noteId });
+        await TakenNote.updateCheck({ noteId });
         return;
     }
 
-    static async deleteNote({ noteId }) {
-        const targetNote = await Note.findById({ noteId });
-        if (targetNote.toUser.id !== noteId) {
-            const errorMessage = '삭제가 불가능한 쪽지입니다.';
+    static async deleteTakenNote({ noteId, user_id }) {
+        const note = await TakenNote.findById({ noteId });
+
+        if (!note) {
+            const errorMessage =
+                '해당 쪽지는 이미 삭제되었거나 전송된 적 없는 쪽지입니다.';
             throw new Error(errorMessage);
         }
-        await Note.deleteById({ noteId });
+
+        if (note.toUser.id !== user_id) {
+            const errorMessage = '삭제할 수 없는 쪽지입니다.';
+            throw new Error(errorMessage);
+        }
+
+        await TakenNote.deleteById({ noteId });
+        return;
+    }
+
+    static async deleteSentNote({ noteId, user_id }) {
+        const note = await SentNote.findById({ noteId });
+
+        if (!note) {
+            const errorMessage =
+                '해당 쪽지는 이미 삭제되었거나 전송된 적 없는 쪽지입니다.';
+            throw new Error(errorMessage);
+        }
+
+        if (note.fromUser.id !== user_id) {
+            const errorMessage = '삭제할 수 없는 쪽지입니다.';
+            throw new Error(errorMessage);
+        }
+
+        await SentNote.deleteById({ noteId });
         return;
     }
 }
