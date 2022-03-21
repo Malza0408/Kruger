@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import WithdrawalModal from '../modal/WithdrawalModal';
 import ChangeProfileModal from '../modal/ChangeProfileModal';
-
 import * as Api from '../../api';
 
 function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
@@ -25,7 +24,6 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
         // 탈퇴 후 로그인 화면으로 이동
         navigate('/login', { replace: true });
     };
-
     return (
         <Card style={{ width: '18rem' }} className="mb-2 ms-3 mr-5 UserCard">
             <Card.Body>

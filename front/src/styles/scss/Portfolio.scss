@@ -45,6 +45,11 @@ $cardColor: white;
         width: 14rem;
         height: 12rem;
     }
+    .profileImage:hover {
+        width: 16rem;
+        height: 14rem;
+        transition: 1s;
+    }
     .editButton {
         background-color: $buttonColor;
         border: 0px;
