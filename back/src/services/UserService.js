@@ -18,13 +18,23 @@ class UserService {
         let newUser = '';
         if (userData.loginMethod === 'github') {
             console.log('깃허브 사용자생성');
+            const {
+                id,
+                email,
+                name,
+                password,
+                description,
+                loginMethod,
+                repositoryUrl
+            } = userData;
             newUser = {
-                id: userData.id,
-                email: userData.email,
-                name: userData.name,
-                description: userData.description,
-                loginMethod: userData.loginMethod,
-                repositoryUrl: userData.repositoryUrl
+                id,
+                email,
+                name,
+                password,
+                description,
+                loginMethod,
+                repositoryUrl
             };
             console.log(newUser);
         } else {
@@ -44,11 +54,40 @@ class UserService {
         // db에 저장
         const createdNewUser = await User.create(newUser);
 
+        // createdNewUser의 _doc안에 값들의 객체가 있음
+        const createdUserKeys = Object.keys(createdNewUser._doc);
+        if (createdUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedNewUser } = createdNewUser._doc;
+            createdNewUser._doc = refinedNewUser;
+        }
+
         return createdNewUser;
+    }
+    static async checkUser(email) {
+        const user = await User.findByEmail({ email });
+        if (user) {
+            return user;
+        }
+        return null;
+    }
+
+    static async getGithubUser(userId) {
+        // 로그인 성공 -> JWT 웹 토큰 생성
+        const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
+        const token = jwt.sign({ user_id: userId }, secretKey);
+        return token;
     }
 
     static async getUsers() {
         const users = await User.findAll();
+        console.log(users.length);
+        for (let i = 0; i < users.length; i++) {
+            let userKeys = Object.keys(users[i]._doc);
+            if (userKeys.indexOf('password') !== -1) {
+                const { password, ...refinedUser } = users[i]._doc;
+                users[i]._doc = refinedUser;
+            }
+        }
         return users;
     }
 
@@ -76,21 +115,16 @@ class UserService {
         const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
         const token = jwt.sign({ user_id: user.id }, secretKey);
 
-        // 반환할 loginuser 객체를 위한 변수 설정
-        const id = user.id;
-        const name = user.name;
-        const description = user.description;
+        const loginUserKeys = Object.keys(user._doc);
+        if (loginUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = user._doc;
+            user._doc = { ...refinedUser, token };
+            return user;
+        }
 
-        const loginUser = {
-            token,
-            id,
-            email,
-            name,
-            description,
-            errorMessage: null
-        };
+        user._doc.token = token;
 
-        return loginUser;
+        return user;
     }
 
     static async getUserInfo({ user_id }) {
@@ -101,6 +135,12 @@ class UserService {
             const errorMessage =
                 '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
             throw new Error(errorMessage);
+        }
+
+        const userKeys = Object.keys(user._doc);
+        if (userKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = user._doc;
+            user._doc = refinedUser;
         }
 
         return user;
@@ -119,9 +159,22 @@ class UserService {
             throw new Error(errorMessage);
         }
 
+        if (keys.indexOf('password') !== -1) {
+            const index = keys.indexOf('password');
+            const hashedPassword = await bcrypt.hash(values[index], 10);
+            values[index] = hashedPassword;
+        }
+
         for (let i = 0; i < keys.length; i++) {
             user = await User.updateById(user_id, keys[i], values[i]);
         }
+
+        const updatedUserKeys = Object.keys(user._doc);
+        if (updatedUserKeys.indexOf('password') !== -1) {
+            const { password, ...refinedUser } = user._doc;
+            user._doc = refinedUser;
+        }
+
         return user;
     }
 

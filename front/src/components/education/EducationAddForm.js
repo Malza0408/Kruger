@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import * as Api from '../../api';
 import DefaultForm from './DefaultForm';
-import InputEmpty from '../InputEmpty'
 
 const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
     const [school, setSchool] = useState('');
     const [major, setMajor] = useState('');
     const [position, setPosition] = useState('재학중');
 
-    const [isInputEmpty, setIsInputEmpty] = useState(false);
+    const [isSchoolEmpty, setIsSchoolEmpty] = useState(false) 
+    const [isMajorEmpty, setIsMajorEmpty] = useState(false) 
 
     const handleSchoolOnChange = (e) => {
         setSchool(e.target.value);
@@ -26,10 +26,10 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
         e.preventDefault();
 
         try {
-            // 빈 인풋 제출 검사
-            setIsInputEmpty(
-                InputEmpty({ school, major, position})
-            );
+            // school 공란이면 true 
+            setIsSchoolEmpty(!school) 
+            // major 공란이면 true 
+            setIsMajorEmpty(!major) 
 
             await Api.post('education/create', {
                 user_id: portfolioOwnerId,
@@ -60,12 +60,13 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
             handleCheckOnClick={handleCheckOnClick}
             handleSubmit={handleSubmit}
             handleFunction={handleOnClick}
-            isInputEmpty={isInputEmpty}
             inputInfo={{
                 school,
                 major,
                 position
             }}
+            isSchoolEmpty={isSchoolEmpty}
+            isMajorEmpty={isMajorEmpty}
         />
     );
 };

@@ -9,8 +9,9 @@ const DefaultForm = ({
     handleCheckOnClick,
     handleSubmit,
     handleFunction,
-    isInputEmpty,
-    inputInfo
+    inputInfo,
+    isSchoolEmpty,
+    isMajorEmpty
 }) => {
     return (
         <Form onSubmit={handleSubmit}>
@@ -22,12 +23,7 @@ const DefaultForm = ({
                     onChange={handleSchoolOnChange}
                     value={inputInfo?.school ?? school}
                 />
-                {!inputInfo?.school && !school && (
-                    <Form.Text className="text-danger">
-                        학교를 작성 해 주세요.
-                    </Form.Text>
-                )}
-                {isInputEmpty.isSchoolEmpty && (
+                {isSchoolEmpty && (
                     <Form.Text className="text-success">
                         학교를 입력해주세요
                     </Form.Text>
@@ -41,12 +37,7 @@ const DefaultForm = ({
                     onChange={handleMajorOnChange}
                     value={inputInfo?.major ?? major}
                 />
-                {!inputInfo?.school && !major && (
-                    <Form.Text className="text-danger">
-                        전공을 작성 해 주세요.
-                    </Form.Text>
-                )}
-                {isInputEmpty.isMajorEmpty && (
+                {isMajorEmpty && (
                     <Form.Text className="text-success">
                         전공을 입력해주세요
                     </Form.Text>
@@ -96,17 +87,13 @@ const DefaultForm = ({
                         checked={inputInfo?.position === '박사졸업'}
                     />
                 </div>
-                {console.log(isInputEmpty.isPositionEmpty)}
-                {isInputEmpty.isPositionEmpty && (
-                    <Form.Text className="text-success">선택하세요</Form.Text>
-                )}
             </Form.Group>
             <Row className="text-center">
-                    {isInputEmpty && (
-                        <Form.Text className="text-success">
-                            빠짐 없이 입력해주세요
-                        </Form.Text>
-                    )}
+                {(isSchoolEmpty || isMajorEmpty) && (
+                    <Form.Text className="text-success">
+                        빠짐 없이 입력해주세요
+                    </Form.Text>
+                )}
                 <Col>
                     <Button variant="primary" type="submit" className="me-3">
                         확인

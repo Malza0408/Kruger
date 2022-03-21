@@ -3,9 +3,9 @@ import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { NoteService } from '../services/NoteService';
 
-const noteAuthRouter = Router();
+const noteRouter = Router();
 
-noteAuthRouter.post('/note/create', login_required, async (req, res, next) => {
+noteRouter.post('/note/create', login_required, async (req, res, next) => {
     try {
         if (is.emptyObject(req.body)) {
             throw new Error(
@@ -30,7 +30,7 @@ noteAuthRouter.post('/note/create', login_required, async (req, res, next) => {
     }
 });
 
-noteAuthRouter.get('/takenNotelist', login_required, async (req, res, next) => {
+noteRouter.get('/takenNotelist', login_required, async (req, res, next) => {
     try {
         const user_id = req.currentUserId;
         const takenNotes = await NoteService.getTakenNotes({ user_id });
@@ -41,7 +41,7 @@ noteAuthRouter.get('/takenNotelist', login_required, async (req, res, next) => {
     }
 });
 
-noteAuthRouter.get('/sentNotelist', login_required, async (req, res, next) => {
+noteRouter.get('/sentNotelist', login_required, async (req, res, next) => {
     try {
         const user_id = req.currentUserId;
         const sentNotes = await NoteService.getSentNotes({ user_id });
@@ -52,7 +52,7 @@ noteAuthRouter.get('/sentNotelist', login_required, async (req, res, next) => {
     }
 });
 
-noteAuthRouter.get('/notes/:id', login_required, async (req, res, next) => {
+noteRouter.get('/notes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
         const currentNoteInfo = await NoteService.getNoteInfo({ noteId });
@@ -63,7 +63,7 @@ noteAuthRouter.get('/notes/:id', login_required, async (req, res, next) => {
     }
 });
 
-noteAuthRouter.put('/notes/:id', login_required, async (req, res, next) => {
+noteRouter.put('/notes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
         console.log(noteId);
@@ -74,7 +74,7 @@ noteAuthRouter.put('/notes/:id', login_required, async (req, res, next) => {
     }
 });
 
-noteAuthRouter.delete('/notes/:id', login_required, async (req, res, next) => {
+noteRouter.delete('/notes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
         await NoteService.deleteNote({ noteId });
@@ -85,4 +85,4 @@ noteAuthRouter.delete('/notes/:id', login_required, async (req, res, next) => {
     }
 });
 
-export { noteAuthRouter };
+export { noteRouter };

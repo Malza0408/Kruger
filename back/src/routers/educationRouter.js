@@ -2,7 +2,6 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { updateMiddleware } from '../middlewares/updateMiddleware';
-import { userAuthService } from '../services/userService';
 import { EducationService } from '../services/EducationService';
 
 const educationRouter = Router();
@@ -73,11 +72,6 @@ educationRouter.put(
         try {
             const education_id = req.params.id;
             const toUpdate = req.toUpdate;
-            console.log(toUpdate);
-            if (Object.keys(toUpdate).length === 0) {
-                const errorMessage = '수정할 내용이 없습니다.';
-                return res.status(400).send(errorMessage);
-            }
             const updatedEducation = await EducationService.setEducation({
                 education_id,
                 toUpdate

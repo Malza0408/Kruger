@@ -28,12 +28,16 @@ authRouter.get(
 );
 // 깃허브
 authRouter.get('/auth/github', async (req, res, next) => {
-    const clientId = process.env.GITHUB_CLIENT_ID;
-    const redirectUri = 'http://localhost:5000/auth/github/callback';
-    const uri = 'https://github.com/login/oauth/authorize';
-    res.redirect(
-        `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
-    );
+    try {
+        const clientId = process.env.GITHUB_CLIENT_ID;
+        const redirectUri = 'http://localhost:5000/auth/github/callback';
+        const uri = 'https://github.com/login/oauth/authorize';
+        res.redirect(
+            `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
+        );
+    } catch (error) {
+        next(error);
+    }
 });
 
 authRouter.get('/auth/github/callback', async (req, res, next) => {
@@ -53,7 +57,8 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         });
 
         if (tokenRequest.data.error) {
-            res.redirect('/user/login');
+            const errorMessage = 'github 인증 실패';
+            throw new Error(errorMessage);
         }
         const accessToken = tokenRequest.data.access_token;
         const userData = await axios.get('https://api.github.com/user', {
@@ -63,26 +68,43 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             }
         });
         if (userData.data.error) {
-            res.redirect('/user/login');
+            const errorMessage = 'github 데이터 전송 실패';
+            throw new Error(errorMessage);
         }
-        console.log(userData.data);
-        const id = userData.data.id;
-        const name = userData.data.name;
-        const email = userData.data.email;
-        const login = userData.data.login;
-        const avatar = userData.data.avatar_url;
+        // console.log(userData.data);
+        const { id, name, email, login, avatar } = userData.data;
         const repositoryUrl = `https://github.com/${login}`;
-        const bio = userData.data.bio;
+        const description = userData.data.bio;
+        // 깃허브로 회원가입한 유저가 이미 있는지 email로 확인
+        const user = await UserService.checkUser(email);
+        // 유저가 있으면 깃허브로 로그인시키기
+        if (user) {
+            const userId = user.id;
+            const token = await UserService.getGithubUser(userId);
+            const refinedUser = {
+                token,
+                id: userId,
+                email,
+                name,
+                description,
+                repositoryUrl,
+                errorMessage: null
+            };
+            console.log('github user logged in.');
+            return res.status(200).send(refinedUser);
+            console.log('여기로 넘어감?');
+        }
         const userInfo = {
             id,
             name,
             email,
             password: '',
-            description: bio,
+            description,
             loginMethod: 'github',
             repositoryUrl
         };
         const newUser = await UserService.addUser(userInfo);
+        console.log('github user signed in.');
         res.status(201).json(newUser);
     } catch (error) {
         next(error);

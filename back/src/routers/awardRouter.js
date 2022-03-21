@@ -4,37 +4,33 @@ import { login_required } from '../middlewares/login_required';
 import { updateMiddleware } from '../middlewares/updateMiddleware';
 import { AwardService } from '../services/AwardService';
 
-const awardAuthRouter = Router();
+const awardRouter = Router();
 
-awardAuthRouter.post(
-    '/award/create',
-    login_required,
-    async (req, res, next) => {
-        try {
-            if (is.emptyObject(req.body)) {
-                throw new Error(
-                    'headers의 Content-Type을 application/json으로 설정해주세요'
-                );
-            }
-            // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
-            const user_id = req.currentUserId;
-            const { title, description } = req.body;
-            console.log(user_id, title, description);
-
-            const newAward = await AwardService.addAward({
-                user_id,
-                title,
-                description
-            });
-
-            res.status(201).json(newAward);
-        } catch (error) {
-            next(error);
+awardRouter.post('/award/create', login_required, async (req, res, next) => {
+    try {
+        if (is.emptyObject(req.body)) {
+            throw new Error(
+                'headers의 Content-Type을 application/json으로 설정해주세요'
+            );
         }
-    }
-);
+        // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
+        const user_id = req.currentUserId;
+        const { title, description } = req.body;
+        console.log(user_id, title, description);
 
-awardAuthRouter.get(
+        const newAward = await AwardService.addAward({
+            user_id,
+            title,
+            description
+        });
+
+        res.status(201).json(newAward);
+    } catch (error) {
+        next(error);
+    }
+});
+
+awardRouter.get(
     '/awardlist/:user_id',
     login_required,
     async function (req, res, next) {
@@ -49,7 +45,7 @@ awardAuthRouter.get(
     }
 );
 
-awardAuthRouter.get('/awards/:id', login_required, async (req, res, next) => {
+awardRouter.get('/awards/:id', login_required, async (req, res, next) => {
     try {
         const award_id = req.params.id;
         const currentAwardInfo = await AwardService.getAwardInfo({
@@ -62,7 +58,7 @@ awardAuthRouter.get('/awards/:id', login_required, async (req, res, next) => {
     }
 });
 
-awardAuthRouter.put(
+awardRouter.put(
     '/awards/:id',
     login_required,
     updateMiddleware,
@@ -85,7 +81,7 @@ awardAuthRouter.put(
     }
 );
 
-awardAuthRouter.delete(
+awardRouter.delete(
     '/awards/:id',
     login_required,
     async function (req, res, next) {
@@ -101,4 +97,4 @@ awardAuthRouter.delete(
     }
 );
 
-export { awardAuthRouter };
+export { awardRouter };
