@@ -22,16 +22,12 @@ function updateMiddleware(req, res, next) {
         if (to_date !== null && to_date !== undefined)
             toUpdate.to_date = to_date;
         if (school !== null && school !== undefined) toUpdate.school = school;
-        if (major !== null && major !== undefined) toUpdate.major = major;
-        // if (major.first !== null && major.first !== undefined)
-        //     toUpdate.major = major;
-        // console.log('##### major: ', major);
+        if (major.first !== null && major.first !== undefined)
+            toUpdate.major = major;
         if (position !== null && position !== undefined)
             toUpdate.position = position;
 
         const values = Object.values(toUpdate);
-        // console.log('toUpdate : ', toUpdate);
-        // console.log('$$$$$ values : ', values);
 
         if (values.length === 0) {
             const errorMessage = '수정할 내용이 없습니다.';
@@ -39,30 +35,23 @@ function updateMiddleware(req, res, next) {
             return;
         }
 
-        // values.forEach((value) => {
-        //     if (is.string(value)) {
-        //         if (value.includes('')) {
-        //             const errorMessage = '빈칸은 ㄴㄴ.';
-        //             res.status(400).json(errorMessage);
-        //             return;
-        //         }
-        //     } else {
-        //         const { first, second } = value;
-        //         if (first === '') {
-        //             const errorMessage = '빈칸은 ㄴㄴ.';
-        //             res.status(400).json(errorMessage);
-        //             return;
-        //         }
-        //     }
-        // });
-        if (values.includes('')) {
-            const errorMessage = '빈칸은 ㄴㄴ.';
-            res.status(400).json(errorMessage);
-            return;
-        }
-
+        values.forEach((value) => {
+            if (is.string(value)) {
+                if (value === '') {
+                    const errorMessage = '빈칸은 ㄴㄴ.';
+                    res.status(400).json(errorMessage);
+                    return;
+                }
+            } else {
+                const { first } = value;
+                if (first === '') {
+                    const errorMessage = '빈칸은 ㄴㄴ.';
+                    res.status(400).json(errorMessage);
+                    return;
+                }
+            }
+        });
         req.toUpdate = toUpdate;
-        console.log('#### req: ', req);
         next();
     } catch (error) {
         res.status(400).send('이 방법이 아닌 듯');
