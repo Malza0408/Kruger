@@ -32,19 +32,25 @@ class AwardService {
         return award;
     }
 
-    static async setAward({ award_id, toUpdate }) {
+    static async setAward({ award_id, user_id, toUpdate }) {
         // 우선 해당 id 의 수상내역이 db에 존재하는지 여부 확인
         let award = await Award.findById({ award_id });
-        const keys = Object.keys(toUpdate);
-        const values = Object.values(toUpdate);
-        console.log(keys);
-        console.log(values);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!award) {
             const errorMessage = '삭제되었거나 등록되지 않은 수상 내역입니다.';
             throw new Error(errorMessage);
         }
+
+        if (award.user_id !== user_id) {
+            const errorMessage = '수정할 수 없습니다.';
+            throw new Error(errorMessage);
+        }
+
+        const keys = Object.keys(toUpdate);
+        const values = Object.values(toUpdate);
+        console.log(keys);
+        console.log(values);
 
         for (let i = 0; i < keys.length; i++) {
             award = await Award.update(award_id, keys[i], values[i]);
@@ -54,7 +60,14 @@ class AwardService {
         return award;
     }
 
-    static async deleteAward({ award_id }) {
+    static async deleteAward({ award_id, user_id }) {
+        const award = await Award.findById({ award_id });
+
+        if (award.user_id !== user_id) {
+            const errorMessage = '삭제할 수 없습니다.';
+            throw new Error(errorMessage);
+        }
+
         await Award.deleteById({ award_id });
         return;
     }
