@@ -33,12 +33,19 @@ class EducationService {
 
     static async setEducation({ education_id, toUpdate }) {
         let education = await Education.findById({ education_id });
-        const keys = Object.keys(toUpdate);
-        const values = Object.values(toUpdate);
+
         if (!education) {
             const errorMessage = '삭제되었거나 등록되지 않은 학력입니다.';
             throw new Error(errorMessage);
         }
+
+        if (education.user_id !== user_id) {
+            const errorMessage = '수정할 수 없습니다.';
+            throw new Error(errorMessage);
+        }
+
+        const keys = Object.keys(toUpdate);
+        const values = Object.values(toUpdate);
 
         for (let i = 0; i < keys.length; i++) {
             education = await Education.update(
@@ -50,12 +57,16 @@ class EducationService {
 
         return education;
     }
-    static async deleteEducation({ education_id }) {
+    static async deleteEducation({ education_id, user_id }) {
         const education = await Education.findById({
             education_id
         });
         if (!education) {
             const errorMessage = '해당하는 학력이 없습니다. 다시 확인해주세요.';
+            throw new Error(errorMessage);
+        }
+        if (education.user_id !== user_id) {
+            const errorMessage = '삭제할 수 없습니다.';
             throw new Error(errorMessage);
         }
         await Education.deleteById({ education_id });
