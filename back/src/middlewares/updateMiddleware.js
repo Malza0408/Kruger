@@ -39,7 +39,11 @@ function updateMiddleware(req, res, next) {
             toUpdate.school = school;
         if (major !== null && major !== undefined && major.length !== 0)
             toUpdate.major = major;
-        if (position !== null && position !== undefined && school.length !== 0)
+        if (
+            position !== null &&
+            position !== undefined &&
+            position.length !== 0
+        )
             toUpdate.position = position;
 
         const keys = Object.keys(toUpdate);
