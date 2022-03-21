@@ -1,5 +1,5 @@
-$mainColor: #edf2ff;
-$buttonColor: #bac8ff;
+$mainColor: white;
+$buttonColor: #748ffc;
 $cardColor: white;
 
 .portfolio {
@@ -8,7 +8,12 @@ $cardColor: white;
 }
 .mvpCard {
     background-color: $cardColor;
-    border: 2px solid #bac8ff;
+    box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
+    padding: 15px;
+    .mvpCardTitle {
+        color: #364fc7;
+        font-weight: bold;
+    }
     .mvpCardInput {
         background-color: white;
     }
@@ -35,8 +40,6 @@ $cardColor: white;
 .UserCard {
     background-color: $cardColor;
     border-radius: 30px;
-    border: 2px solid #bac8ff;
-
     .profileImage {
         border-radius: 70%;
         width: 14rem;
@@ -45,16 +48,26 @@ $cardColor: white;
     .editButton {
         background-color: $buttonColor;
         border: 0px;
+        border-radius: 5px;
+        color: white;
+        padding: 5px;
     }
     .withdrawalButton {
         background-color: lightcoral;
         border: 0px;
+        border-radius: 5px;
+        color: white;
+        padding: 5px;
     }
     .editButton:hover {
-        border: 2px solid black;
+        border: 2px solid #4c6ef5;
     }
     .withdrawalButton:hover {
-        border: 2px solid black;
+        border: 2px solid #ff6b6b;
+    }
+    .networkButton {
+        background-color: lightblue;
+        border: 0px;
     }
 }
 

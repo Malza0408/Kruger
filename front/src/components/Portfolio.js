@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, Card } from 'react-bootstrap';
 
 import { UserStateContext } from '../App';
 import * as Api from '../api';
@@ -56,16 +56,30 @@ function Portfolio() {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="mt-4">
             <Row className="portfolio">
                 <Col md="6" lg="4">
                     <User
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
+                    <Card
+                        style={{ width: '18rem' }}
+                        className="mb-2 ms-3 mr-5 UserCard"
+                    >
+                        <Card.Body>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                        </Card.Body>
+                    </Card>
                 </Col>
                 <Col md="12" lg="8">
-                    <div className="mb-2">
+                    <div className="mb-4">
                         <Educations
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={
@@ -73,7 +87,7 @@ function Portfolio() {
                             }
                         />
                     </div>
-                    <div className="mb-2">
+                    <div className="mb-4">
                         <Awards
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={
@@ -81,7 +95,7 @@ function Portfolio() {
                             }
                         />
                     </div>
-                    <div className="mb-2">
+                    <div className="mb-4">
                         <Projects
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={
@@ -89,7 +103,7 @@ function Portfolio() {
                             }
                         />
                     </div>
-                    <div className="mb-2">
+                    <div className="mb-4">
                         <Certificates
                             portfolioOwnerId={portfolioOwner.id}
                             isEditable={

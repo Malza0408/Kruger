@@ -21,7 +21,7 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
         <>
             <Card className="mvpCard">
                 <Card.Body>
-                    <Card.Title>자격증</Card.Title>
+                    <Card.Title className="mvpCardTitle">자격증</Card.Title>
                     {certificate.map((certificate) => {
                         return (
                             <Certificate

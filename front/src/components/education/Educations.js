@@ -27,7 +27,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
     return (
         <Card className="mvpCard">
             <Card.Body>
-                <Card.Title>학력</Card.Title>
+                <Card.Title className="mvpCardTitle">학력</Card.Title>
                 {/* + 버튼으로 추가하면 educationBody 배열로 들어간다. 배열을 돌면서 렌더링 한다. */}
                 {educations?.map((education) => {
                     return (

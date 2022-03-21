@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Row, Button, Col, Image } from 'react-bootstrap';
+import { Card, Row, Col, Button } from 'react-bootstrap';
 import WithdrawalModal from '../modal/WithdrawalModal';
 import ChangeProfileModal from '../modal/ChangeProfileModal';
 
@@ -52,19 +52,19 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                         <Row className="mt-3 text-center text-info">
                             <Col sm={{ span: 20 }}>
                                 <button
-                                    className="me-4 editButton"
+                                    className="me-4 px-2 editButton"
                                     onClick={handleShowProfile}
                                 >
                                     프로필 변경
                                 </button>
                                 <button
-                                    className="me-4 editButton"
+                                    className="me-4 px-2 editButton"
                                     onClick={() => setIsEditing(true)}
                                 >
                                     편집
                                 </button>
                                 <button
-                                    className="withdrawalButton"
+                                    className="withdrawalButton px-2"
                                     onClick={handleShowWithdrawal}
                                 >
                                     탈퇴
@@ -81,13 +81,14 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                     </Col>
                 )}
                 {isNetwork && (
-                    <Card.Link
-                        className="mt-3"
+                    <Button
+                        size="sm"
+                        className="mt-3 networkButton"
                         href="#"
                         onClick={() => navigate(`/users/${user.id}`)}
                     >
                         포트폴리오
-                    </Card.Link>
+                    </Button>
                 )}
             </Card.Body>
         </Card>

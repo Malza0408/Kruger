@@ -21,9 +21,9 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                 {isEditable && (
                     <Col xs lg="1">
                         <Button
-                            variant="outline-info"
+                            variant="primary"
                             size="sm"
-                            className="mr-3 mb-1"
+                            className="mr-3 mb-1 mvpCardConfirmButton"
                             onClick={() => {
                                 setIsEditing((prev) => !prev);
                             }}
@@ -31,7 +31,8 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                             편집
                         </Button>
                         <Button
-                            variant="outline-danger"
+                            className="mr-3 mvpCardCancelButton"
+                            variant="primary"
                             size="sm"
                             onClick={handleDelete}
                         >

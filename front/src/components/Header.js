@@ -36,13 +36,7 @@ function Header() {
         <Navbar className="navbarWrap" expand="lg">
             <Container>
                 <Navbar.Brand onClick={() => navigate('/')}>
-                    <img
-                        alt="logo"
-                        src="img/logo.png"
-                        width="80"
-                        height="80"
-                        className="d-inline-block align-top"
-                    />{' '}
+                    우매함의 봉우리^ㅡ^
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse
@@ -50,6 +44,15 @@ function Header() {
                     className="justify-content-end"
                 >
                     <Nav activeKey={location.pathname}>
+                        <Nav.Item>
+                            <Nav.Link
+                                className="navbarButton"
+                                onClick={() => navigate('/note')}
+                            >
+                                쪽지
+                            </Nav.Link>
+                        </Nav.Item>
+                        <NavDropdown.Divider />
                         <Nav.Item>
                             <Nav.Link
                                 className="navbarButton"

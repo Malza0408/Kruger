@@ -18,7 +18,7 @@ const Awards = ({ portfolioOwnerId, isEditable }) => {
     return (
         <Card className="mvpCard">
             <Card.Body>
-                <Card.Title>수상이력</Card.Title>
+                <Card.Title className="mvpCardTitle">수상이력</Card.Title>
                 {/* 개별 이력을 반복문을 통해 구현 */}
                 {awards.map((award) => {
                     return (

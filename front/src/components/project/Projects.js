@@ -18,7 +18,7 @@ const Projects = ({ portfolioOwnerId, isEditable }) => {
     return (
         <Card className="mvpCard">
             <Card.Body>
-                <Card.Title>프로젝트</Card.Title>
+                <Card.Title className="mvpCardTitle">프로젝트</Card.Title>
                 {/* 개별 이력을 반복문을 통해 구현 */}
                 {projects.map((project) => {
                     return (

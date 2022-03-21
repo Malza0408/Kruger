@@ -25,15 +25,16 @@ const EducationCard = ({
                     <>
                         <Col className="col-lg-1">
                             <Button
-                                className="mr-3 mb-1"
-                                variant="outline-info"
+                                className="mr-3 mb-1 mvpCardConfirmButton"
+                                variant="primary"
                                 size="sm"
                                 onClick={handleEditing}
                             >
                                 편집
                             </Button>
                             <Button
-                                variant="outline-danger"
+                                className="mvpCardCancelButton"
+                                variant="primary"
                                 size="sm"
                                 onClick={handleDeleting}
                             >
