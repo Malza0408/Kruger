@@ -13,8 +13,8 @@ class Recruitment {
         return recruitment;
     }
 
-    static async update(recruitmentId, key, value) {
-        const filter = { id: recruitmentId };
+    static async update(id, key, value) {
+        const filter = { id };
         const update = { [key]: value };
         const option = { returnOriginal: false };
 

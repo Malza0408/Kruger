@@ -12,12 +12,12 @@ recruitmentRouter.put(
     updateMiddleware,
     async function (req, res, next) {
         try {
-            const recruitment_id = req.params.id;
+            const recruitmentId = req.params.id;
             const user_id = req.currentUserId;
             const toUpdate = req.toUpdate;
 
             const updatedRecruitment = await RecruitmentService.setRecruitment({
-                recruitment_id,
+                recruitmentId,
                 user_id,
                 toUpdate
             });
@@ -66,7 +66,7 @@ recruitmentRouter.patch(
 );
 
 recruitmentRouter.put(
-    '/recruit/likes/:id',
+    '/likedRecruit/:id',
     login_required,
     async function (req, res, next) {
         try {
@@ -78,6 +78,24 @@ recruitmentRouter.put(
                     recruitmentId,
                     user_id
                 }
+            );
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+recruitmentRouter.put(
+    '/unlikedRecruit/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+
+            const updatedRecruitment = await RecruitmentService.likeRecruitment(
+                { recruitmentId, user_id }
             );
             res.status(200).json(updatedRecruitment);
         } catch (error) {

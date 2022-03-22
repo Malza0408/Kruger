@@ -2,8 +2,8 @@ import { Recruitment, User } from '../db'; // from을 폴더(db) 로 설정 시,
 import { v4 as uuidv4 } from 'uuid';
 
 class RecruitmentService {
-    static async setRecruitment({ recruitment_id, user_id, toUpdate }) {
-        let recruitment = await Recruitment.findById({ recruitment_id });
+    static async setRecruitment({ recruitmentId, user_id, toUpdate }) {
+        let recruitment = await Recruitment.findById({ recruitmentId });
 
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
@@ -38,10 +38,10 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        const user = await User.findbyId(user_id);
+        const user = await User.findById(user_id);
 
         console.log(likedRecruitment.like.indexOf(user._id));
-        if (likedRecruitment.like.indexOf(user._id) !== -1) {
+        if (likedRecruitment.like.includes(user._id)) {
             const errorMessage = '이미 좋아요를 누른 게시물입니다.';
             throw new Error(errorMessage);
         }
@@ -54,6 +54,35 @@ class RecruitmentService {
         );
 
         return likedRecruitment;
+    }
+
+    static async unlikeRecruitment({ recruitmentId, user_id }) {
+        let unlikedRecruitment = await Recruitment.findById({ recruitmentId });
+
+        if (!unlikedRecruitment) {
+            const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const user = await User.findById(user_id);
+
+        console.log(unlikedRecruitment.like.indexOf(user._id));
+        const unlikedIndex = unlikedRecruitment.like.indexOf(user._id);
+        if (unlikedIndex === -1) {
+            const errorMessage = '좋아요를 누르지 않은 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const like = unlikedRecruitment.like;
+        like.splice(unlikedIndex, 1);
+        const newUnlikeValue = { like };
+
+        unlikedRecruitment = await User.updateLike(
+            { id: recruitmentId },
+            newUnlikeValue
+        );
+
+        return unlikedRecruitment;
     }
 
     static async addRecruitment({ user_id, title, detail }) {
