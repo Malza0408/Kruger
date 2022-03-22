@@ -6,6 +6,10 @@ const NoticeSchema = new Schema(
             type: String,
             required: true
         },
+        captain: {
+            type: Schema.Types.ObjectId,
+            required: true
+        },
         title: {
             type: String,
             required: true
