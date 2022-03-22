@@ -12,6 +12,7 @@ import Portfolio from './components/Portfolio';
 import GatherRoom from './components/gather/GatherRoom';
 import Notes from './components/note/Notes';
 import NoteWriteForm from './components/note/NoteWriteForm';
+import NoteDescription from './components/note/NoteDescription'
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -69,6 +70,7 @@ function App() {
                         <Route path="/network" element={<Network />} />
                         <Route path="/note" element={<Notes />} />
                         <Route path="/note/write" element={<NoteWriteForm />} />
+                        <Route path="/note/:noteId" element={<NoteDescription />} />
                         <Route path="*" element={<Portfolio />} />
                     </Routes>
                 </Router>

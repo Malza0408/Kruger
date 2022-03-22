@@ -1,7 +1,11 @@
 import { Container, Form, Row, Col, Button, Card } from 'react-bootstrap';
 import * as Api from '../../api';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 const NoteListTake = ({ key, takeNote, setTakeNote }) => {
+    const navigate = useNavigate();
+
     const handleDelete = async (e) => {
         e.preventDefault();
 
@@ -19,7 +23,7 @@ const NoteListTake = ({ key, takeNote, setTakeNote }) => {
                 <Row>
                     <Col>
                         <Card.Title>
-                            {takeNote.toUser.name}에게 보낸 쪽지
+                            {takeNote.fromUser.name}가 보낸 쪽지
                         </Card.Title>
                     </Col>
                     <Col>
@@ -33,7 +37,20 @@ const NoteListTake = ({ key, takeNote, setTakeNote }) => {
                         </Button>{' '}
                     </Col>
                 </Row>
-                <Card.Text>{takeNote.title}</Card.Text>
+                <Row>
+                    <Col>
+                        <Card.Link onClick={() => navigate('/note/write')}>
+                            {takeNote.title}
+                        </Card.Link>
+                    </Col>
+                    <Col>
+                        <Card.Text>
+                            <span className="text-muted">
+                                {takeNote.createdAt}
+                            </span>
+                        </Card.Text>
+                    </Col>
+                </Row>
                 <Card.Text>
                     <span className="text-muted">{takeNote.content}</span>
                 </Card.Text>

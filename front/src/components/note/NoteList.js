@@ -8,7 +8,6 @@ import NoteListTake from './NoteListTake';
 import * as Api from '../../api';
 
 const NoteList = ({
-    portfolioOwnerId,
     isNoteListAll,
     setIsNoteListAll,
     isNoteListSendig,
@@ -18,29 +17,38 @@ const NoteList = ({
     const [sendNote, setSendNote] = useState([]);
     const [takeNote, setTakeNote] = useState([]);
 
+    const [user, setUser] = useState(null);
+
     useEffect(() => {
+        Api.get(`user/current`).then((res) => setUser(res.data));
         Api.get(`sentNotelist`).then((res) => {
             setSendNote(res.data);
         });
         Api.get(`takenNotelist`).then((res) => {
             setTakeNote(res.data);
         });
-    }, [portfolioOwnerId]);
+    }, []);
 
     return (
         <div>
             {/* 전체 */}
-            {/* 전체 쪽지함 리스트 타임스탬프, 리스트 수신자 및 발신자 구분 미완, 추후 수정 */}
+            {/* 전체 쪽지함 리스트 타임스탬프 정렬 기능 추후 구현 */}
             {[...sendNote, ...takeNote].map((note) => {
-                console.log(note);
                 return (
-                    isNoteListAll && (
-                        <NoteListAll
+                    isNoteListAll &&
+                    (user.name === note.fromUser.name ? (
+                        <NoteListSend
                             key={note.id}
-                            allNote={note}
-                            setAllNote={setAllNote}
+                            sendNote={note}
+                            setSendNote={setSendNote}
                         />
-                    )
+                    ) : (
+                        <NoteListTake
+                            key={note.id}
+                            takeNote={note}
+                            setTakeNote={setTakeNote}
+                        />
+                    ))
                 );
             })}
             {/* 발신 */}

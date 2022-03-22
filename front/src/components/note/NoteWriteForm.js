@@ -130,7 +130,7 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                             <Form.Label>내용</Form.Label>
                             <Form.Control
                                 as="textarea"
-                                rows={2}
+                                rows={9}
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                             />

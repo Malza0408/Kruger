@@ -1,7 +1,11 @@
 import { Container, Form, Row, Col, Button, Card } from 'react-bootstrap';
 import * as Api from '../../api';
+import { useNavigate, useParams } from 'react-router-dom';
+import NoteDescription from './NoteDescription';
 
-const NoteListSend = ({ key, sendNote, setSendNote }) => {
+const NoteListSend = ({ sendNote, setSendNote }) => {
+    const navigate = useNavigate();
+
     const handleDelete = async (e) => {
         e.preventDefault();
 
@@ -33,7 +37,24 @@ const NoteListSend = ({ key, sendNote, setSendNote }) => {
                         </Button>{' '}
                     </Col>
                 </Row>
-                <Card.Text>{sendNote.title}</Card.Text>
+                <Row>
+                    <Col>
+                        <Card.Link
+                            onClick={() => {
+                                navigate(`/note/${sendNote.id}`);
+                            }}
+                        >
+                            {sendNote.title}
+                        </Card.Link>
+                    </Col>
+                    <Col>
+                        <Card.Text>
+                            <span className="text-muted">
+                                {sendNote.createdAt}
+                            </span>
+                        </Card.Text>
+                    </Col>
+                </Row>
                 <Card.Text>
                     <span className="text-muted">{sendNote.content}</span>
                 </Card.Text>

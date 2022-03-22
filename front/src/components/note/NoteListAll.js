@@ -7,6 +7,7 @@ const NoteListAll = ({ key, allNote, setAllNotes }) => {
                 <Row>
                     <Col>
                         <Card.Title>
+                            {allNote.fromUser.name}가 보낸 쪽지
                             {allNote.toUser.name}에게 보낸 쪽지
                         </Card.Title>
                     </Col>
