@@ -9,7 +9,9 @@ class Recruitment {
     }
 
     static async findById({ recruitmentId }) {
-        const recruitment = await RecruitmentModel.find({ id: recruitmentId });
+        const recruitment = await RecruitmentModel.findOne({
+            id: recruitmentId
+        }).populate('captain');
         return recruitment;
     }
 
@@ -22,6 +24,27 @@ class Recruitment {
             filter,
             update,
             option
+        );
+        return updatedRecruitment;
+    }
+
+    static async close({ recruitmentId, nowEnrolling }) {
+        await RecruitmentModel.findOneAndUpdate(
+            { id: recruitmentId },
+            { nowEnrolling: !nowEnrolling }
+        );
+        return;
+    }
+
+    static async findApplicant(applicant) {
+        const isApplicant = await RecruitmentModel.findOne(applicant);
+        return isApplicant;
+    }
+
+    static async addApplicant({ recruitmentId, applicant }) {
+        const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
+            { id: recruitmentId },
+            { applicant }
         );
         return updatedRecruitment;
     }

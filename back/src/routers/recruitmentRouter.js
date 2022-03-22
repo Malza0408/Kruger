@@ -29,6 +29,15 @@ recruitmentRouter.put(
     }
 );
 
+// 게시글 하나 보기, 로그인 안해도 볼수있게.
+recruitmentRouter.get('/recruit/:id', async (req, res, next) => {
+    const recruitmentId = req.params.id;
+    const recruitment = await RecruitmentService.getRecruitment({
+        recruitmentId
+    });
+    res.status(200).json(recruitment);
+});
+
 recruitmentRouter.post(
     '/recruit/create',
     login_required,
@@ -59,9 +68,44 @@ recruitmentRouter.patch(
     login_required,
     async (req, res, next) => {
         try {
+            const recruitmentId = req.params.id;
+            const userId = req.currentUserId;
+            const updatedRecruitment =
+                await RecruitmentService.closeRecruitment({
+                    recruitmentId,
+                    userId
+                });
+            res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);
         }
+    }
+);
+
+recruitmentRouter.patch(
+    '/recruit/apply/:id',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const recruitmentId = req.params.id;
+            const applicantId = req.currentUserId;
+            const updatedRecruitment = await RecruitmentService.addApplicant({
+                recruitmentId,
+                applicantId
+            });
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+recruitmentRouter.patch(
+    '/recruit/comment/:id',
+    login_required,
+    async (req, res, next) => {
+        const recruitmentId = req.params.id;
+        const authorId = req.currentUserId;
     }
 );
 
