@@ -6,6 +6,10 @@ import NoteDescription from './NoteDescription';
 const NoteListSend = ({ sendNote, setSendNote }) => {
     const navigate = useNavigate();
 
+    const handleCheck = () => {
+        Api.get(``)
+    }
+
     const handleDelete = async (e) => {
         e.preventDefault();
 
@@ -23,8 +27,33 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                 <Row>
                     <Col>
                         <Card.Title>
-                            {sendNote.toUser.name}에게 보낸 쪽지
+                            <span>
+                                <strong>{sendNote.toUser.name}</strong>
+                            </span>
+
+                            <span className="text-muted">
+                                <small>에게 보낸 쪽지</small>
+                            </span>
                         </Card.Title>
+                    </Col>
+                    <Col>
+
+                    </Col>
+                </Row>
+                <Col>
+                    <Card.Link onClick={() => navigate(`/note/${sendNote.id}`)}>
+                        <span>
+                            <strong>{sendNote.title}</strong>
+                        </span>
+                    </Card.Link>
+                </Col>
+                <Row>
+                    <Col>
+                        <Card.Text>
+                            <span className="text-muted">
+                                {sendNote.createdAt}
+                            </span>
+                        </Card.Text>
                     </Col>
                     <Col>
                         <Button
@@ -37,27 +66,9 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                         </Button>{' '}
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <Card.Link
-                            onClick={() => {
-                                navigate(`/note/${sendNote.id}`);
-                            }}
-                        >
-                            {sendNote.title}
-                        </Card.Link>
-                    </Col>
-                    <Col>
-                        <Card.Text>
-                            <span className="text-muted">
-                                {sendNote.createdAt}
-                            </span>
-                        </Card.Text>
-                    </Col>
-                </Row>
-                <Card.Text>
+                {/* <Card.Text>
                     <span className="text-muted">{sendNote.content}</span>
-                </Card.Text>
+                </Card.Text> */}
             </Card.Body>
         </Card.Text>
     );
