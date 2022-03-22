@@ -10,6 +10,9 @@ import Network from './components/user/Network';
 import RegisterForm from './components/user/RegisterForm';
 import Portfolio from './components/Portfolio';
 import GatherRoom from './components/gather/GatherRoom';
+import Notes from './components/note/Notes';
+import NoteWriteForm from './components/note/NoteWriteForm';
+import NoteDescription from './components/note/NoteDescription'
 import Posting from './components/gather/Posting';
 
 export const UserStateContext = createContext(null);
@@ -66,6 +69,9 @@ function App() {
                         <Route path="/users/:userId" element={<Portfolio />} />
                         <Route path="/gatherRoom" element={<GatherRoom />} />
                         <Route path="/network" element={<Network />} />
+                        <Route path="/note" element={<Notes />} />
+                        <Route path="/note/write" element={<NoteWriteForm />} />
+                        <Route path="/note/:noteId" element={<NoteDescription />} />
                         <Route path="/posting" element={<Posting />} />
                         <Route path="*" element={<Portfolio />} />
                     </Routes>
