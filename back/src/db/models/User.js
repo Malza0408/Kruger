@@ -39,7 +39,9 @@ class User {
             filter,
             newValue,
             option
-        );
+        )
+            .populate('follow')
+            .populate('follower');
         return updatedUser;
     }
 
