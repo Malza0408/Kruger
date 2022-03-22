@@ -2,66 +2,82 @@ import React from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 const Gather = ({ project }) => {
     return (
-        <Card style={{ width: '18rem' }} className="mb-2 ms-3 mr-5 UserCard">
+        <Card style={{ width: '18rem' }} className="Gather">
             <Card.Body>
-                <Row className="justify-content-md-center">
-                    <img className="mb-3 mt-3 profileImage" alt="프로필 사진" />
+                <Row className="text-center">
+                    <Card.Title>팀원 모집중!</Card.Title>
                 </Row>
-                {/* <Card.Title>Gather</Card.Title> */}
-                <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
-                {project?.map((project) => {
-                    return (
-                        <>
-                            {project === 'js' ? (
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/gatherImg/js.png`}
-                                    alt="js"
-                                ></img>
-                            ) : project === 'node' ? (
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/gatherImg/node.png`}
-                                    alt="node"
-                                ></img>
-                            ) : project === 'react' ? (
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/gatherImg/react.png`}
-                                    alt="react"
-                                ></img>
-                            ) : project === 'ts' ? (
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/gatherImg/ts.png`}
-                                    alt="ts"
-                                ></img>
-                            ) : project === 'vue' ? (
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/gatherImg/vue.png`}
-                                    alt="vue"
-                                ></img>
-                            ) : (
-                                <></>
-                            )}
-                        </>
-                    );
-                })}
+                <div className="imageContainer">
+                    {project?.map((project) => {
+                        return (
+                            <>
+                                {project === 'js' ? (
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/gatherImg/js.png`}
+                                        alt="js"
+                                        width="45px"
+                                        height="45px"
+                                    ></img>
+                                ) : project === 'node' ? (
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/gatherImg/node.png`}
+                                        alt="node"
+                                        width="45px"
+                                        height="45px"
+                                    ></img>
+                                ) : project === 'react' ? (
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/gatherImg/react.png`}
+                                        alt="react"
+                                        width="45px"
+                                        height="45px"
+                                    ></img>
+                                ) : project === 'ts' ? (
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/gatherImg/ts.png`}
+                                        alt="ts"
+                                        width="45px"
+                                        height="45px"
+                                    ></img>
+                                ) : project === 'vue' ? (
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/gatherImg/vue.png`}
+                                        alt="vue"
+                                        width="45px"
+                                        height="45px"
+                                    ></img>
+                                ) : project === 'python' ? (
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/gatherImg/python.png`}
+                                        alt="pyton"
+                                        width="45px"
+                                        height="45px"
+                                    ></img>
+                                ) : project === 'django' ? (
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/gatherImg/django.png`}
+                                        alt="django"
+                                        width="45px"
+                                        height="45px"
+                                    ></img>
+                                ) : (
+                                    <></>
+                                )}
+                            </>
+                        );
+                    })}
+                </div>
 
                 <Col>
                     <Row className="mt-3 text-center text-info">
-                        <Col sm={{ span: 20 }}>
-                            <button className="me-4 px-2 editButton">
-                                프로필 변경
-                            </button>
-                            <button className="me-4 px-2 editButton">
-                                편집
-                            </button>
-                            <button className="withdrawalButton px-2">
-                                탈퇴
-                            </button>
-                        </Col>
+                        <Col sm={{ span: 20 }}></Col>
                     </Row>
                 </Col>
-                <Button size="sm" className="mt-3 networkButton" href="#">
-                    포트폴리오
-                </Button>
+                <Button
+                    size="sm"
+                    className="mt-3 networkButton"
+                    href="#"
+                ></Button>
             </Card.Body>
         </Card>
     );

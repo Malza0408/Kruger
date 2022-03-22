@@ -22,7 +22,13 @@ const Gathers = (props) => {
             projects: ['vue', 'node', 'js']
         },
         {
-            projects: ['vue']
+            projects: ['django', 'python']
+        },
+        {
+            projects: ['python']
+        },
+        {
+            projects: ['vue', 'ts']
         },
         {
             projects: ['node']
@@ -60,6 +66,16 @@ const Gathers = (props) => {
             src: `${process.env.PUBLIC_URL}/gatherImg/vue.png`,
             isFocusing: true,
             language: 'vue'
+        },
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/python.png`,
+            isFocusing: true,
+            language: 'python'
+        },
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/django.png`,
+            isFocusing: true,
+            language: 'django'
         }
     ]);
     // 포커싱 된게 몇개인지 추적한다.
@@ -79,23 +95,16 @@ const Gathers = (props) => {
                 ) {
                     const newFilteredLang = [...filteredLanguage];
                     newFilteredLang.push(language);
-                    const filterd = newFilteredLang.map((lang) => {
-                        const filteredP = projects.filter((project) => {
-                            const langArray = Object.values(project);
-                            // console.log(
-                            //     'lang : ',
-                            //     lang,
-                            //     ' ',
-                            //     'langArray : ',
-                            //     langArray
-                            // );
-                            console.log(langArray.includes(lang));
-                            return langArray.includes(lang);
-                        });
-                        // console.log('filteredP: ', filteredP);
-                        return filteredP;
-                    });
-                    // console.log(('filltered: ', filterd));
+                    const filterd = newFilteredLang
+                        .map((lang) => {
+                            const filteredP = projects.filter((project) => {
+                                return project.projects.includes(lang);
+                            });
+                            return filteredP;
+                        })
+                        .flat();
+                    console.log(filterd);
+
                     setFilteredProjects([...filterd]);
                     setFilteredLanguage(newFilteredLang);
                 }
@@ -104,7 +113,13 @@ const Gathers = (props) => {
                 const newFilteredLang = filteredLanguage.filter((lang) => {
                     return lang !== language;
                 });
+                const newFilteredProject = [...filteredProjects];
+                const filtered = newFilteredProject.filter((project) => {
+                    return !project.projects.includes(language);
+                });
+                // console.log(filtered);
                 setFilteredLanguage(newFilteredLang);
+                setFilteredProjects(filtered);
             }
         }
     };
