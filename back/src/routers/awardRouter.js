@@ -69,10 +69,6 @@ awardRouter.put(
             const user_id = req.currentUserId;
             const toUpdate = req.toUpdate;
             console.log('toUpdate : ', toUpdate);
-            if (Object.keys(toUpdate).length === 0) {
-                const errorMessage = '수정할 내용이 없습니다.';
-                return res.status(400).send(errorMessage);
-            }
             // 해당 수상 요소 아이디로 수상 요소 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedAward = await AwardService.setAward({
                 award_id,
