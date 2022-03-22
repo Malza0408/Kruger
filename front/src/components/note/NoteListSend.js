@@ -1,10 +1,13 @@
-const NoteListSend = () => {
+import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 
+const NoteListSend = ({ key, note, setNotes }) => {
     return (
-        <div>
-            발신
-        </div>
-    )
-}
+        <Row>
+            발신함
+            {note.title}
+            {note.content}
+        </Row>
+    );
+};
 
-export default NoteListSend
+export default NoteListSend;

@@ -1,9 +1,12 @@
-const NoteListAll = () => {
+import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 
+const NoteListAll = ({ key, note, setNotes }) => {
     return (
-        <div>
-            전체
-        </div>
+        <Row>
+            {note.title}
+            {note.content}
+        </Row>
+        
     )
 }
 

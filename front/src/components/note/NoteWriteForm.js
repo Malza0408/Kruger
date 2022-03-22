@@ -12,7 +12,7 @@ import {
 import * as Api from '../../api';
 
 const NoteWriteForm = ({ isWriting, setIsWriting }) => {
-    const [to, setTo] = useState('2222@gmail.com');
+    const [to, setTo] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
 
@@ -55,6 +55,19 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header>친구 목록</Accordion.Header>
                                 <Accordion.Body>
+                                    <Form.Group
+                                        className="mb-3"
+                                        controlId="formnoteTo"
+                                    >
+                                        <Form.Label>친구</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={to}
+                                            onChange={(e) =>
+                                                setTo(e.target.value)
+                                            }
+                                        />
+                                    </Form.Group>
                                     {/* 친구 목록 */}
                                     <Row
                                         xs="auto"

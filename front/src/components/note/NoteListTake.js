@@ -1,10 +1,13 @@
-const NoteListTake = () => {
+import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 
+const NoteListTake = ({ key, note, setNotes }) => {
     return (
-        <div>
-            수신
-        </div>
-    )
-}
+        <Row>
+            수신함
+            {/* {note.title}
+            {note.content} */}
+        </Row>
+    );
+};
 
-export default NoteListTake
+export default NoteListTake;
