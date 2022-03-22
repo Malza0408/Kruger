@@ -35,6 +35,7 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                         className="mb-3 mt-3 profileImage"
                         src={user?.picture}
                         alt="프로필 사진"
+                        onClick={() => navigate(`/users/${user.id}`)}
                     />
                     <ChangeProfileModal
                         show={showProfile}
