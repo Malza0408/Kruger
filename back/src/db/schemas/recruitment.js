@@ -52,7 +52,7 @@ const RecruitmentSchema = new Schema(
                     }
                 }
             ],
-            required: false
+            default: []
         }
     },
     {
