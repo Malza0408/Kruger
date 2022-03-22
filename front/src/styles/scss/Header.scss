@@ -3,6 +3,9 @@ $buttonColor: #bac8ff;
 
 .navbarWrap {
     background-color: $mainColor;
+    .navbarLogo {
+        cursor: pointer;
+    }
     .navbarButton {
         margin-left: 10px;
     }

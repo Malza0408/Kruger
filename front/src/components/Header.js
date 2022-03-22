@@ -41,6 +41,7 @@ function Header() {
                         alt="logo"
                         width="140"
                         height="50"
+                        className="navbarLogo"
                     />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

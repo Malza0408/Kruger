@@ -21,16 +21,20 @@ $buttonColor: #bac8ff;
     .githubLogin {
         height: 50px;
         background-color: #444343;
+        border-radius: 10px;
     }
     .githubLogin:hover {
         border: 2px black solid;
+        cursor: pointer;
     }
     .googleLogin {
         height: 50px;
         background-color: #4285f4;
+        border-radius: 10px;
     }
     .googleLogin:hover {
         border: 2px black solid;
+        cursor: pointer;
     }
 }
 
@@ -43,12 +47,4 @@ $buttonColor: #bac8ff;
         background-color: $buttonColor;
         border: 0;
     }
-}
-
-img {
-    border-radius: 10px;
-}
-
-img:hover {
-    cursor: pointer;
 }
