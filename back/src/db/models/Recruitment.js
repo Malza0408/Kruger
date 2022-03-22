@@ -9,7 +9,9 @@ class Recruitment {
     }
 
     static async findById({ recruitmentId }) {
-        const recruitment = await RecruitmentModel.find({ id: recruitmentId });
+        const recruitment = await RecruitmentModel.findOne({
+            id: recruitmentId
+        }).populate('captain');
         return recruitment;
     }
 
@@ -26,7 +28,7 @@ class Recruitment {
         return updatedRecruitment;
     }
 
-    static async updateArray(filter, newValue) {
+    static async updateArray(filter, update) {
         const option = { returnOriginal: false };
 
         const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(

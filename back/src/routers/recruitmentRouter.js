@@ -94,9 +94,11 @@ recruitmentRouter.patch(
             const recruitmentId = req.params.id;
             const user_id = req.currentUserId;
 
-            const updatedRecruitment = await RecruitmentService.likeRecruitment(
-                { recruitmentId, user_id }
-            );
+            const updatedRecruitment =
+                await RecruitmentService.unlikeRecruitment({
+                    recruitmentId,
+                    user_id
+                });
             res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);

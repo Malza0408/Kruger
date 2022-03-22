@@ -10,11 +10,13 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        if (recruitment.captain.id !== user_id) {
+        console.log(recruitment._doc);
+        if (recruitment._doc.captain.id !== user_id) {
             const errorMessage = '수정할 수 없습니다.';
             throw new Error(errorMessage);
         }
 
+        console.log(toUpdate);
         const keys = Object.keys(toUpdate);
         const values = Object.values(toUpdate);
 
