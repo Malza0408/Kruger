@@ -2,7 +2,7 @@ import { Recruitment, User } from '../db'; // from을 폴더(db) 로 설정 시,
 import { v4 as uuidv4 } from 'uuid';
 
 class RecruitmentService {
-    static async setRecruitment({ recruit_id, user_id, toUpdate }) {
+    static async setRecruitment({ recruitment_id, user_id, toUpdate }) {
         let recruitment = await Recruitment.findById({ recruit_id });
 
         if (!recruitment) {
@@ -41,6 +41,8 @@ class RecruitmentService {
 
         return createdNewRecruitment;
     }
+
+    static async closeRecruitment({}) {}
 }
 
 export { RecruitmentService };

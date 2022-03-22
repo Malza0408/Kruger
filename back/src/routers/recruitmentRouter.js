@@ -12,17 +12,17 @@ recruitmentRouter.put(
     updateMiddleware,
     async function (req, res, next) {
         try {
-            const recruit_id = req.params.id;
+            const recruitment_id = req.params.id;
             const user_id = req.currentUserId;
             const toUpdate = req.toUpdate;
 
-            const updatedRecruit = await RecruitmentService.setRecruitment({
-                recruit_id,
+            const updatedRecruitment = await RecruitmentService.setRecruitment({
+                recruitment_id,
                 user_id,
                 toUpdate
             });
 
-            res.status(200).json(updatedRecruit);
+            res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);
         }
@@ -42,12 +42,12 @@ recruitmentRouter.post(
             const { title, detail } = req.body;
             const user_id = req.currentUserId;
             console.log('여기', user_id, title, detail);
-            const newRecruit = await RecruitmentService.addRecruitment({
+            const newRecruitment = await RecruitmentService.addRecruitment({
                 user_id,
                 title,
                 detail
             });
-            res.status(201).json(newRecruit);
+            res.status(201).json(newRecruitment);
         } catch (error) {
             next(error);
         }
