@@ -33,7 +33,7 @@ authRouter.get(
 authRouter.get('/auth/github', async (req, res, next) => {
     try {
         const clientId = process.env.GITHUB_CLIENT_ID;
-        const redirectUri = 'http://localhost:3000/auth/github/callback';
+        const redirectUri = 'http://localhost:5000/auth/github/callback';
         const uri = 'https://github.com/login/oauth/authorize';
         res.redirect(
             `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
@@ -77,12 +77,18 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             const errorMessage = 'github 데이터 전송 실패';
             throw new Error(errorMessage);
         }
-        // console.log(userData.data);
+        console.log(userData.data);
 
         // 깃허브에서 데이터 가져와서 userInfo 객체로 만들기
         const { id, name, email, login, avatar } = userData.data;
         const repositoryUrl = `https://github.com/${login}`;
         const description = userData.data.bio;
+        if (!email) {
+            const errorMessage =
+                '깃허브에 이메일을 등록하거나 이메일을 public으로 설정해주세요.';
+            throw new Error(errorMessage);
+            res.redirect('/user/register');
+        }
         const userInfo = {
             id,
             name,
@@ -94,6 +100,8 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         };
         // 깃허브로 로그인 or 회원가입
         const user = await GithubService.checkUser(userInfo);
+        console.log(req.headers);
+        console.log(req.headers['authorization']);
 
         res.status(201).json(user);
     } catch (error) {
