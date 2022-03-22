@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { UserStateContext } from '../../App';
 import NoteWriteForm from './NoteWriteForm';
-import NoteWriteBar from './NoteWriteBar';
+import NoteBar from './NoteBar';
 
 import NoteList from './NoteList';
 import NoteListAll from './NoteListAll';
@@ -14,7 +14,10 @@ import NoteListTake from './NoteListTake';
 import * as Api from '../../api';
 
 const Note = () => {
-    const [isWriting, setIsWriting] = useState(false);
+    const [isNoteListAll, setIsNoteListAll] = useState(true);
+    const [isNoteListSendig, setIsNoteListSending] = useState(false);
+
+    // const [isWriting, setIsWriting] = useState(false);
 
     const navigate = useNavigate();
     const params = useParams();
@@ -65,18 +68,30 @@ const Note = () => {
             fetchPorfolioOwner(ownerId);
         }
     }, [params, userState, navigate]);
-    
-    console.log(portfolioOwner)
+
+    console.log(portfolioOwner);
     return (
         <Container fluid>
-            <NoteWriteBar isWriting={isWriting} setIsWriting={setIsWriting} />
-            {isWriting && (
+            <NoteBar
+                // isWriting={isWriting}
+                // setIsWriting={setIsWriting}
+                isNoteListAll={isNoteListAll}
+                setIsNoteListAll={setIsNoteListAll}
+                isNoteListSendig={isNoteListSendig}
+                setIsNoteListSending={setIsNoteListSending}
+            />
+            {/* {isWriting && (
                 <NoteWriteForm
                     isWriting={isWriting}
                     setIsWriting={setIsWriting}
                 />
-            )}
-            <NoteList />
+            )} */}
+            <NoteList
+                isNoteListAll={isNoteListAll}
+                setIsNoteListAll={setIsNoteListAll}
+                isNoteListSendig={isNoteListSendig}
+                setIsNoteListSending={setIsNoteListSending}
+            />
         </Container>
     );
 };
