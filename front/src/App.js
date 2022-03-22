@@ -13,6 +13,7 @@ import GatherRoom from './components/gather/GatherRoom';
 import Notes from './components/note/Notes';
 import NoteWriteForm from './components/note/NoteWriteForm';
 import NoteDescription from './components/note/NoteDescription'
+import Posting from './components/gather/Posting';
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -71,6 +72,7 @@ function App() {
                         <Route path="/note" element={<Notes />} />
                         <Route path="/note/write" element={<NoteWriteForm />} />
                         <Route path="/note/:noteId" element={<NoteDescription />} />
+                        <Route path="/posting" element={<Posting />} />
                         <Route path="*" element={<Portfolio />} />
                     </Routes>
                 </Router>
