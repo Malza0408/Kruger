@@ -198,6 +198,33 @@ class RecruitmentService {
         return updatedRecruitment;
     }
 
+    static async addComment({ recruitmentId, content, user_id }) {
+        if (content === null || content === undefined || content.length === 0) {
+            const errorMessage = '빈칸 ㄴㄴ';
+            throw new Error(errorMessage);
+        }
+
+        let recruitment = await Recruitment.findById({ recruitmentId });
+
+        if (!recruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const user = await User.findById(user_id);
+
+        const newCommentValue = {
+            $push: { Comment: { author: user, content } }
+        };
+
+        recruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            newCommentValue
+        );
+
+        return recruitment;
+    }
+
     static async deleteRecruitment({ recruitmentId, user_id }) {
         const recruitment = await Recruitment.findById({ recruitmentId });
 
