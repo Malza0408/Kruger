@@ -35,7 +35,7 @@ class CertificateService {
         return certificate;
     }
 
-    static async setCertificate({ certificate_id, toUpdate }) {
+    static async setCertificate({ certificate_id, user_id, toUpdate }) {
         // 우선 해당 id 의 수상내역이 db에 존재하는지 여부 확인
         let certificate = await Certificate.findById({ certificate_id });
 
