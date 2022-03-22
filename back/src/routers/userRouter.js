@@ -159,11 +159,4 @@ userRouter.delete(
     }
 );
 
-// jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userRouter.get('/afterlogin', login_required, function (req, res, next) {
-    res.status(200).send(
-        `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
-    );
-});
-
 export { userRouter };
