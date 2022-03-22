@@ -21,6 +21,11 @@ class User {
         return user;
     }
 
+    static async findByLoginMethod({ loginMethod }) {
+        const user = await UserModel.findOne({ loginMethod });
+        return user;
+    }
+
     static async update(filter, key, value) {
         const update = { [key]: value };
         const option = { returnOriginal: false };

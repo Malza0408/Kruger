@@ -6,6 +6,7 @@ import { login_required } from '../middlewares/login_required';
 import axios from 'axios';
 import { UserService } from '../services/UserService';
 import { GoogleService } from '../services/GoogleService';
+import { GithubService } from '../services/GithubService';
 
 const authRouter = Router();
 //구글
@@ -21,7 +22,7 @@ authRouter.get(
             const user = req.user;
             console.log('google user signed in.');
             // console.log(req);
-            res.status(201).send(user);
+            res.status(201).json(user);
         } catch (error) {
             next(error);
         }
@@ -32,7 +33,7 @@ authRouter.get(
 authRouter.get('/auth/github', async (req, res, next) => {
     try {
         const clientId = process.env.GITHUB_CLIENT_ID;
-        const redirectUri = 'http://localhost:5000/auth/github/callback';
+        const redirectUri = 'http://localhost:3000/auth/github/callback';
         const uri = 'https://github.com/login/oauth/authorize';
         res.redirect(
             `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
@@ -61,8 +62,11 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         if (tokenRequest.data.error) {
             const errorMessage = 'github 인증 실패';
             throw new Error(errorMessage);
+            return res.redirect('/user/login');
         }
         const accessToken = tokenRequest.data.access_token;
+
+        // userData 가져오기
         const userData = await axios.get('https://api.github.com/user', {
             headers: {
                 Authorization: `token ${accessToken}`,
@@ -74,29 +78,11 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             throw new Error(errorMessage);
         }
         // console.log(userData.data);
+
+        // 깃허브에서 데이터 가져와서 userInfo 객체로 만들기
         const { id, name, email, login, avatar } = userData.data;
         const repositoryUrl = `https://github.com/${login}`;
         const description = userData.data.bio;
-        // 깃허브로 회원가입한 유저가 이미 있는지 email로 확인
-        const user = await UserService.checkUser(email);
-        // 유저가 있으면 깃허브로 로그인시키기
-        if (user) {
-            const userId = user.id;
-            const token = await UserService.getGithubUser(userId);
-            const refinedUser = {
-                token,
-                id: userId,
-                email,
-                name,
-                description,
-                repositoryUrl,
-                errorMessage: null
-            };
-            console.log('github user logged in.');
-            return res.status(200).send(refinedUser);
-            console.log('여기로 넘어감?');
-        }
-        // 없으면 유저 회원가입시키기
         const userInfo = {
             id,
             name,
@@ -106,9 +92,10 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             loginMethod: 'github',
             repositoryUrl
         };
-        const newUser = await UserService.addUser(userInfo);
-        console.log('github user signed in.');
-        res.status(201).json(newUser);
+        // 깃허브로 로그인 or 회원가입
+        const user = await GithubService.checkUser(userInfo);
+
+        res.status(201).json(user);
     } catch (error) {
         next(error);
     }
