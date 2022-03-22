@@ -93,7 +93,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
                 errorMessage: null
             };
             console.log('github user logged in.');
-            return res.status(200).send(refinedUser);
+            return res.status(200).json(refinedUser);
             console.log('여기로 넘어감?');
         }
         // 없으면 유저 회원가입시키기
