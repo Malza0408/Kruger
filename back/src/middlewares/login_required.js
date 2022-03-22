@@ -15,7 +15,6 @@ function login_required(req, res, next) {
         return;
     }
 
-
     // 해당 token 이 정상적인 token인지 확인 -> 토큰에 담긴 user_id 정보 추출
     try {
         const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';

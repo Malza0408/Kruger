@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const GatherSchema = new Schema(
+const NoticeSchema = new Schema(
     {
         id: {
             type: String,
@@ -19,7 +19,7 @@ const GatherSchema = new Schema(
             ref: 'User',
             default: []
         },
-        nowErolling: {
+        nowEnrolling: {
             type: Boolean,
             default: true
         },
@@ -55,6 +55,6 @@ const GatherSchema = new Schema(
     }
 );
 
-const GatherModel = model('Gather', GatherSchema);
+const NoticeModel = model('Notice', NoticeSchema);
 
-export { GatherModel };
+export { NoticeModel };
