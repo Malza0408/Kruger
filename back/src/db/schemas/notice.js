@@ -8,6 +8,7 @@ const NoticeSchema = new Schema(
         },
         captain: {
             type: Schema.Types.ObjectId,
+            ref: 'User',
             required: true
         },
         title: {
