@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const TeamSchema = new Schema(
+const GatherSchema = new Schema(
     {
         id: {
             type: String,
@@ -55,6 +55,6 @@ const TeamSchema = new Schema(
     }
 );
 
-const TeamModel = model('Team', TeamSchema);
+const GatherModel = model('Gather', GatherSchema);
 
-export { TeamModel };
+export { GatherModel };
