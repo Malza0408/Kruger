@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Carousel, Container, Col, Row, Form, Button } from 'react-bootstrap';
+import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
@@ -65,53 +65,34 @@ function LoginForm() {
         }
     };
 
-    const handleOnClickGithub = (e) => {};
+    const handleOnClickGithub = async () => {
+        await Api.get('auth/github').then((res) => console.log(res));
+    };
+    const handleOnClickGoogle = async () => {
+        await Api.get('auth/google').then((res) => console.log(res));
+    };
 
     return (
         <div className="login">
-            <Carousel variant="dark" style={{ width: '30vw', margin: 'auto' }}>
-                <Carousel.Item>
-                    <img
-                        className="d-block w-100"
-                        src="https://img1.daumcdn.net/thumb/R720x0/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fliveboard%2Fholapet%2Fba38773948b44ddd807d7ff072d679df.jpg"
+            <Row>
+                <Col className="text-center">
+                    <Image
+                        className="mx-auto"
+                        src={`${process.env.PUBLIC_URL}/img/main.png`}
                         alt="First slide"
-                        height="250px"
+                        height="300px"
                     />
-                    <Carousel.Caption>
-                        <h3>첫번째 고양이</h3>
-                    </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                        className="d-block w-100"
-                        src="https://t1.daumcdn.net/cfile/tistory/192F1C464DD57EB614"
-                        alt="Second slide"
-                        height="250px"
-                    />
-                    <Carousel.Caption>
-                        <h3>두번째 고양이</h3>
-                    </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                        className="d-block w-100"
-                        src="https://i.ytimg.com/vi/FOQ0sDuuBSs/mqdefault.jpg"
-                        alt="Third slide"
-                        height="250px"
-                    />
-                    <Carousel.Caption>
-                        <h3>세번째 고양이</h3>
-                    </Carousel.Caption>
-                </Carousel.Item>
-            </Carousel>
+                </Col>
+            </Row>
 
             <Container>
                 <Row className="justify-content-md-center pt-5 pb-5">
-                    <Col lg={8}>
+                    <Col lg={4}>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="loginEmail">
                                 <Form.Label>이메일 주소</Form.Label>
                                 <Form.Control
+                                    className="loginInput"
                                     type="email"
                                     autoComplete="on"
                                     value={email}
@@ -129,6 +110,7 @@ function LoginForm() {
                             >
                                 <Form.Label>비밀번호</Form.Label>
                                 <Form.Control
+                                    className="passwordInput"
                                     type="password"
                                     autoComplete="on"
                                     value={password}
@@ -149,19 +131,27 @@ function LoginForm() {
                                         입력했습니다.
                                     </Form.Text>
                                 )}
-                                <Col sm={{ span: 20 }}>
-                                    <Button
-                                        variant="light"
-                                        type="submit"
-                                        disabled={!isFormValid}
-                                        className="loginButton"
-                                    >
-                                        로그인
-                                    </Button>
-                                </Col>
+
+                                <Button
+                                    variant="light"
+                                    type="submit"
+                                    disabled={!isFormValid}
+                                    className="loginButton mx-auto"
+                                >
+                                    로그인
+                                </Button>
                             </Form.Group>
                             <Form.Group as={Row} className="mt-3 text-center">
-                                <Col sm={{ span: 20 }}>
+                                <Col>
+                                    <Button
+                                        variant="light"
+                                        onClick={() => navigate('/register')}
+                                        className="registerButton"
+                                    >
+                                        비밀번호 찾기
+                                    </Button>
+                                </Col>
+                                <Col>
                                     <Button
                                         variant="light"
                                         onClick={() => navigate('/register')}
@@ -171,14 +161,27 @@ function LoginForm() {
                                     </Button>
                                 </Col>
                             </Form.Group>
-                            <div as={Row} className="mt-3 text-center">
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/img/github.png`}
-                                    alt=""
-                                    onClick={handleOnClickGithub}
-                                />
-                            </div>
+                            <Col sm={{ span: 20 }}></Col>
                         </Form>
+                    </Col>
+                    <Col md={0} lg={2}></Col>
+                    <Col sm={6} md={6} lg={4}>
+                        <Row className="mt-5 mb-4">
+                            <img
+                                src={`${process.env.PUBLIC_URL}/img/github.png`}
+                                alt=""
+                                onClick={handleOnClickGithub}
+                                className="githubLogin"
+                            />
+                        </Row>
+                        <Row>
+                            <img
+                                src={`${process.env.PUBLIC_URL}/img/google.png`}
+                                alt=""
+                                onClick={handleOnClickGoogle}
+                                className="googleLogin"
+                            />
+                        </Row>
                     </Col>
                 </Row>
             </Container>

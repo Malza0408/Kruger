@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Col, Row, Card } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 
 import { UserStateContext } from '../App';
 import * as Api from '../api';
@@ -9,7 +9,7 @@ import Educations from './education/Educations';
 import Awards from './award/Awards';
 import Projects from './project/Projects';
 import Certificates from './certificate/Certificates';
-
+import FriendsList from './user/FriendsList';
 function Portfolio() {
     const navigate = useNavigate();
     const params = useParams();
@@ -56,27 +56,14 @@ function Portfolio() {
     }
 
     return (
-        <Container fluid className="mt-4">
+        <Container fluid>
             <Row className="portfolio">
                 <Col md="6" lg="4">
                     <User
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
-                    <Card
-                        style={{ width: '18rem' }}
-                        className="mb-2 ms-3 mr-5 UserCard"
-                    >
-                        <Card.Body>
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                        </Card.Body>
-                    </Card>
+                    <FriendsList />
                 </Col>
                 <Col md="12" lg="8">
                     <div className="mb-4">

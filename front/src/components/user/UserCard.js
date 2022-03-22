@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import WithdrawalModal from '../modal/WithdrawalModal';
 import ChangeProfileModal from '../modal/ChangeProfileModal';
+import FriendsList from './FriendsList';
 
 import * as Api from '../../api';
 

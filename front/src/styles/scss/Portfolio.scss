@@ -37,9 +37,14 @@ $cardColor: white;
     }
 }
 
+.friendsCard {
+    box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
+}
+
 .UserCard {
     background-color: $cardColor;
     border-radius: 30px;
+    box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
     .profileImage {
         border-radius: 70%;
         width: 14rem;

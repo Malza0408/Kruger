@@ -1,16 +1,36 @@
-$mainColor: white;
 $buttonColor: #bac8ff;
 
 .login {
-    background-color: $mainColor;
     height: 100vh;
+    .loginInput {
+    }
+    .passwordInput {
+    }
     .loginButton {
-        background-color: $buttonColor;
-        border: 0;
+        width: 80%;
+    }
+    .loginButton:hover {
+        background-color: #bac8ff;
     }
     .registerButton {
-        background-color: $buttonColor;
-        border: 0;
+    }
+    .registerButton:hover {
+        background-color: #bac8ff;
+    }
+
+    .githubLogin {
+        height: 50px;
+        background-color: #444343;
+    }
+    .githubLogin:hover {
+        border: 2px black solid;
+    }
+    .googleLogin {
+        height: 50px;
+        background-color: #4285f4;
+    }
+    .googleLogin:hover {
+        border: 2px black solid;
     }
 }
 
