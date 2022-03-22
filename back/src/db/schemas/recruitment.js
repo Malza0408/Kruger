@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const NoticeSchema = new Schema(
+const RecruitmentSchema = new Schema(
     {
         id: {
             type: String,
@@ -60,6 +60,6 @@ const NoticeSchema = new Schema(
     }
 );
 
-const NoticeModel = model('Notice', NoticeSchema);
+const RecruitmentModel = model('Recruitment', RecruitmentSchema);
 
-export { NoticeModel };
+export { RecruitmentModel };
