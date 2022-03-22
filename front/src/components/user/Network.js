@@ -74,6 +74,7 @@ function Network() {
                 ? 1
                 : 0;
         });
+        console.log(ascUsers);
         setUsers([...ascUsers]);
     };
 
@@ -87,6 +88,7 @@ function Network() {
                 ? -1
                 : 0;
         });
+        console.log(ascUsers);
         setUsers([...ascUsers]);
     };
 
@@ -169,7 +171,7 @@ function Network() {
                 </Col>
             </Row>
             <Row xs="auto" className="jusify-content-center">
-                {searchUsers?.length === 0 && inputValue === ''
+                {inputValue === ''
                     ? users.map((user) => (
                           <UserCard key={user.id} user={user} isNetwork />
                       ))

@@ -1,70 +1,231 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Dropdown, Form } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import * as Api from '../../api';
 import Gather from './Gather';
 
 const Gathers = (props) => {
+    // 얘네가 무슨 프로젝트인지 가지고 있을꺼임. 아마 배열로
     const [projects, setProjects] = useState([
-        <Gather></Gather>,
-        <Gather></Gather>
+        {
+            projects: ['js']
+        },
+        {
+            projects: ['js', 'react']
+        },
+        {
+            projects: ['node', 'react']
+        },
+        {
+            projects: ['ts', 'react', 'node']
+        },
+        {
+            projects: ['vue', 'node', 'js']
+        },
+        {
+            projects: ['vue']
+        },
+        {
+            projects: ['node']
+        },
+        {
+            projects: ['ts', 'js']
+        },
+        {
+            projects: ['ts']
+        }
     ]);
+    // 언어 이미지의 경로 및 상태
+    const [imgs, setImgs] = useState([
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/js.png`,
+            isFocusing: true,
+            language: 'js'
+        },
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/node.png`,
+            isFocusing: true,
+            language: 'node'
+        },
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/react.png`,
+            isFocusing: true,
+            language: 'react'
+        },
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/ts.png`,
+            isFocusing: true,
+            language: 'ts'
+        },
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/vue.png`,
+            isFocusing: true,
+            language: 'vue'
+        }
+    ]);
+    // 포커싱 된게 몇개인지 추적한다.
+    const [traceFocusing, setTraceFocusing] = useState(0);
+    const [filteredLanguage, setFilteredLanguage] = useState([]);
+    const [filteredProjects, setFilteredProjects] = useState([]);
+    const filteringLanguage = (language, isAddLanguage = true) => {
+        if (language === 'none') {
+            setFilteredLanguage([]);
+            setFilteredProjects([]);
+        } else {
+            // 새로운 언어를 추가한다면
+            if (isAddLanguage) {
+                if (
+                    filteredLanguage.find((element) => element === language) ===
+                    undefined
+                ) {
+                    const newFilteredLang = [...filteredLanguage];
+                    newFilteredLang.push(language);
+                    const filterd = newFilteredLang.map((lang) => {
+                        const filteredP = projects.filter((project) => {
+                            const langArray = Object.values(project);
+                            // console.log(
+                            //     'lang : ',
+                            //     lang,
+                            //     ' ',
+                            //     'langArray : ',
+                            //     langArray
+                            // );
+                            console.log(langArray.includes(lang));
+                            return langArray.includes(lang);
+                        });
+                        // console.log('filteredP: ', filteredP);
+                        return filteredP;
+                    });
+                    // console.log(('filltered: ', filterd));
+                    setFilteredProjects([...filterd]);
+                    setFilteredLanguage(newFilteredLang);
+                }
+            } else {
+                // 기존의 언어를 뺀다면
+                const newFilteredLang = filteredLanguage.filter((lang) => {
+                    return lang !== language;
+                });
+                setFilteredLanguage(newFilteredLang);
+            }
+        }
+    };
 
     useEffect(() => {
         const getProjects = async () => {
             try {
-                // 여기어 Project 불러오는 로직
+                // 여기에 Project 불러오는 로직
                 // const projects = await Api.get()
                 // setProjects(projects);
             } catch (error) {
                 throw new Error(error);
             }
         };
-    });
+        // getProjects()
+    }, []);
     return (
-        <Container fluid className="">
-            <Row className="justify-content-md-center mb-4">
-                <Col lg="3" style={{ width: '400px' }}>
-                    <Form onSubmit={(e) => e.preventDefault()}>
-                        <Form.Control
-                            className="ms-2 filterInput"
-                            type="text"
-                            placeholder="입력해주세요..."
-                            style={{ display: 'inline' }}
-                        />
-                    </Form>
-                </Col>
-                <Col>
-                    <Dropdown className="ms-2">
-                        <button className="orderState">버튼</button>
-
-                        <Dropdown.Toggle
-                            className="orderListButton"
-                            id="dropdown-basic"
-                        />
-
-                        <Dropdown.Menu>
-                            <Dropdown.Item value="이름오름차순">
-                                이름 오름차순
-                            </Dropdown.Item>
-                            <Dropdown.Item value="이름내름차순">
-                                이름 내름차순
-                            </Dropdown.Item>
-                            <Dropdown.Item value="포스팅 오름차순">
-                                포스팅 오름차순
-                            </Dropdown.Item>
-                            <Dropdown.Item value="포스팅 내름차순">
-                                포스팅 내림차순
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Col>
-            </Row>
-            <Row xs="auto" className="jusify-content-center">
-                {projects?.map((project) => {
-                    return <Gather></Gather>;
+        <>
+            <Row className="m-5">
+                {imgs?.map((img, index) => {
+                    return (
+                        <Col key={index} className="text-center">
+                            <img
+                                src={img.src}
+                                alt="languageItem"
+                                width="66px"
+                                height="66px"
+                                className={`language-item${
+                                    imgs[index].isFocusing === true
+                                        ? ` onFocus`
+                                        : ''
+                                }`}
+                                onClick={() => {
+                                    const newItem = [...imgs];
+                                    // 한개도 선택되지 않은 경우 하나 선택된다.
+                                    if (traceFocusing === 0) {
+                                        newItem.forEach((item) => {
+                                            item.isFocusing = false;
+                                        });
+                                        newItem[index].isFocusing = true;
+                                        setTraceFocusing(1);
+                                        setImgs(newItem);
+                                        filteringLanguage(
+                                            newItem[index].language
+                                        );
+                                        // 하나가 선택된 경우에
+                                    } else if (traceFocusing === 1) {
+                                        // 이미 선택되어 있던 언어를 선택했다면 focusing을 없앤다.
+                                        if (
+                                            newItem[index].isFocusing === true
+                                        ) {
+                                            newItem.forEach((item) => {
+                                                item.isFocusing = true;
+                                            });
+                                            setTraceFocusing(0);
+                                            setImgs(newItem);
+                                            filteringLanguage('none');
+                                            // 새로운 언어를 선택했다면 focusing을 추가해 준다.
+                                        } else {
+                                            newItem[index].isFocusing = true;
+                                            setTraceFocusing(
+                                                (current) => current + 1
+                                            );
+                                            setImgs(newItem);
+                                            filteringLanguage(
+                                                newItem[index].language
+                                            );
+                                        }
+                                        // 두개 이상이 선택되어 있는 경우에
+                                    } else {
+                                        // 이미 선택되어 있던 언어였다면 focusing을 없앤다.
+                                        if (
+                                            newItem[index].isFocusing === true
+                                        ) {
+                                            newItem[index].isFocusing = false;
+                                            setTraceFocusing(
+                                                (current) => current - 1
+                                            );
+                                            setImgs(newItem);
+                                            filteringLanguage(
+                                                newItem[index].language,
+                                                false
+                                            );
+                                            // 새로운 언어를 선택했다면 focusing을 추가해 준다.
+                                        } else {
+                                            newItem[index].isFocusing = true;
+                                            setTraceFocusing(
+                                                (current) => current + 1
+                                            );
+                                            setImgs(newItem);
+                                            filteringLanguage(
+                                                newItem[index].language
+                                            );
+                                        }
+                                    }
+                                }}
+                            ></img>
+                        </Col>
+                    );
                 })}
             </Row>
-        </Container>
+            <Row xs="auto" className="jusify-content-center">
+                {filteredProjects.length === 0
+                    ? projects?.map((project, index) => {
+                          return (
+                              <Gather
+                                  key={index}
+                                  project={project.projects}
+                              ></Gather>
+                          );
+                      })
+                    : filteredProjects?.map((project, index) => {
+                          return (
+                              <Gather
+                                  key={index}
+                                  project={project.projects}
+                              ></Gather>
+                          );
+                      })}
+            </Row>
+        </>
     );
 };
 
