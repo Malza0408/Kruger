@@ -144,6 +144,23 @@ class RecruitmentService {
     }
 
     static async closeRecruitment({}) {}
+
+    static async deleteRecruitment({ recruitmentId, user_id }) {
+        const recruitment = await Recruitment.findById({ recruitmentId });
+
+        if (!recruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        if (recruitment._doc.captain.id !== user_id) {
+            const errorMessage = '삭제할 수 없습니다.';
+            throw new Error(errorMesaage);
+        }
+
+        await Recruitment.deleteById({ recruitmentId });
+        return;
+    }
 }
 
 export { RecruitmentService };

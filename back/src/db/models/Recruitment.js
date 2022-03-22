@@ -38,6 +38,11 @@ class Recruitment {
         );
         return updatedRecruitment;
     }
+
+    static async deleteById({ recruitmentId }) {
+        await RecruitmentModel.deleteOne({ id: recruitmentId });
+        return;
+    }
 }
 
 export { Recruitment };

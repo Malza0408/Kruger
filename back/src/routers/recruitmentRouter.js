@@ -127,4 +127,22 @@ recruitmentRouter.patch(
     }
 );
 
+recruitmentRouter.delete(
+    '/recruit/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+            await RecruitmentService.deleteRecruitment({
+                recruitmentId,
+                user_id
+            });
+            res.status(200).json('삭제되었습니다.');
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 export { recruitmentRouter };
