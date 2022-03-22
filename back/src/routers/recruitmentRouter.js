@@ -65,7 +65,7 @@ recruitmentRouter.patch(
     }
 );
 
-recruitmentRouter.put(
+recruitmentRouter.patch(
     '/likedRecruit/:id',
     login_required,
     async function (req, res, next) {
@@ -86,7 +86,7 @@ recruitmentRouter.put(
     }
 );
 
-recruitmentRouter.put(
+recruitmentRouter.patch(
     '/unlikedRecruit/:id',
     login_required,
     async function (req, res, next) {
@@ -97,6 +97,27 @@ recruitmentRouter.put(
             const updatedRecruitment = await RecruitmentService.likeRecruitment(
                 { recruitmentId, user_id }
             );
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+recruitmentRouter.patch(
+    '/recruit/approval/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const { applicantId } = req.body;
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+
+            const updatedRecruitment = await RecruitmentService.setMember({
+                recruitmentId,
+                applicantId,
+                user_id
+            });
             res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);

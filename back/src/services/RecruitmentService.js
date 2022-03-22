@@ -6,7 +6,7 @@ class RecruitmentService {
         let recruitment = await Recruitment.findById({ recruitmentId });
 
         if (!recruitment) {
-            const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
+            const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
@@ -34,7 +34,7 @@ class RecruitmentService {
         let likedRecruitment = await Recruitment.findById({ recruitmentId });
 
         if (!likedRecruitment) {
-            const errorMessage = '삭제되없거나 등록되지 않은 게시물입니다.';
+            const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
@@ -48,7 +48,7 @@ class RecruitmentService {
 
         const newLikeValue = { $push: { like: user } };
 
-        likedRecruitment = await Recruitment.updateLike(
+        likedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             newLikeValue
         );
@@ -60,7 +60,7 @@ class RecruitmentService {
         let unlikedRecruitment = await Recruitment.findById({ recruitmentId });
 
         if (!unlikedRecruitment) {
-            const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
+            const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
@@ -77,12 +77,56 @@ class RecruitmentService {
         like.splice(unlikedIndex, 1);
         const newUnlikeValue = { like };
 
-        unlikedRecruitment = await User.updateLike(
+        unlikedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             newUnlikeValue
         );
 
         return unlikedRecruitment;
+    }
+
+    static async setMember({ recruitmentId, applicantId, user_id }) {
+        let recruitment = await Recruitment.findById({ recruitmentId });
+        if (!recruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        if (recruitment.captain.id !== user_id) {
+            const errorMessage = '권한이 없는 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const applyUser = await User.findById(applicantId);
+        if (!applyUser) {
+            const errorMessage = '존재하지 않는 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const applyUserIndex = recruitment.applicant.indexOf(applyUser._id);
+
+        if (applyUserIndex === -1) {
+            const errorMessage = '지원하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const applicant = recruitment.applicant;
+        applicant.splice(applyUserIndex, 1);
+        const newApplicantValue = { applicant };
+
+        recruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            newApplicantValue
+        );
+
+        const newMemberValue = { $push: { member: applicant } };
+
+        recruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            newMemberValue
+        );
+
+        return recruitment;
     }
 
     static async addRecruitment({ user_id, title, detail }) {

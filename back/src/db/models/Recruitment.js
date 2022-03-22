@@ -26,7 +26,7 @@ class Recruitment {
         return updatedRecruitment;
     }
 
-    static async updateLike(filter, newValue) {
+    static async updateArray(filter, newValue) {
         const option = { returnOriginal: false };
 
         const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
