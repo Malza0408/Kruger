@@ -31,7 +31,7 @@ class EducationService {
         return education;
     }
 
-    static async setEducation({ education_id, toUpdate }) {
+    static async setEducation({ education_id, user_id, toUpdate }) {
         let education = await Education.findById({ education_id });
 
         if (!education) {

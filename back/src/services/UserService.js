@@ -16,40 +16,18 @@ class UserService {
         }
 
         let newUser = '';
-        if (userData.loginMethod === 'github') {
-            console.log('깃허브 사용자생성');
-            const {
-                id,
-                email,
-                name,
-                password,
-                description,
-                loginMethod,
-                repositoryUrl
-            } = userData;
-            newUser = {
-                id,
-                email,
-                name,
-                password,
-                description,
-                loginMethod,
-                repositoryUrl
-            };
-            console.log(newUser);
-        } else {
-            // id 는 유니크 값 부여
-            const id = uuidv4();
-            // 비밀번호 해쉬화
-            const hashedPassword = await bcrypt.hash(userData.password, 10);
-            newUser = {
-                id,
-                email: userData.email,
-                name: userData.name,
-                password: hashedPassword,
-                loginMethod: 'email'
-            };
-        }
+
+        // id 는 유니크 값 부여
+        const id = uuidv4();
+        // 비밀번호 해쉬화
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+        newUser = {
+            id,
+            email: userData.email,
+            name: userData.name,
+            password: hashedPassword,
+            loginMethod: 'email'
+        };
 
         // db에 저장
         const createdNewUser = await User.create(newUser);
@@ -62,20 +40,6 @@ class UserService {
         }
 
         return createdNewUser;
-    }
-    static async checkUser(email) {
-        const user = await User.findByEmail({ email });
-        if (user) {
-            return user;
-        }
-        return null;
-    }
-
-    static async getGithubUser(userId) {
-        // 로그인 성공 -> JWT 웹 토큰 생성
-        const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
-        const token = jwt.sign({ user_id: userId }, secretKey);
-        return token;
     }
 
     static async getUsers() {
