@@ -13,7 +13,7 @@ import {
 
 import * as Api from '../../api';
 
-const NoteWriteForm = ({ isWriting, setIsWriting }) => {
+const NoteWriteForm = () => {
     const navigate = useNavigate();
     const [to, setTo] = useState('');
     const [title, setTitle] = useState('');
@@ -44,14 +44,10 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                     title,
                     content
                 }));
-
-            // console.log(res.data);
-            setIsWriting(false);
+            navigate('/note');
         } catch (err) {
             console.log('전송 실패', err);
         }
-
-        navigate('/note');
     };
 
     return (
@@ -60,7 +56,11 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formNoteTo">
-                            <Form.Label>받는 사람</Form.Label>
+                            <Form.Label>
+                                <span>
+                                    <strong>받는 사람</strong>
+                                </span>
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 value={to}
@@ -73,7 +73,7 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                             <Accordion defaultActiveKey="0">
                                 <Accordion.Item eventKey="1">
                                     <Accordion.Header>
-                                        친구 목록
+                                        <strong>친구 목록</strong>
                                     </Accordion.Header>
                                     <Accordion.Body>
                                         <Form.Group
@@ -111,7 +111,9 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                         </Col>
 
                         <Form.Group className="mb-3" controlId="formNoteTitle">
-                            <Form.Label>제목</Form.Label>
+                            <Form.Label>
+                                <strong>제목</strong>
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 value={title}
@@ -127,7 +129,9 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                             className="mb-3"
                             controlId="formNoteDescription"
                         >
-                            <Form.Label>내용</Form.Label>
+                            <Form.Label>
+                                <strong>내용</strong>
+                            </Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={9}
