@@ -25,6 +25,17 @@ class Recruitment {
         );
         return updatedRecruitment;
     }
+
+    static async updateLike(filter, newValue) {
+        const option = { returnOriginal: false };
+
+        const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
+            filter,
+            update,
+            option
+        );
+        return updatedRecruitment;
+    }
 }
 
 export { Recruitment };

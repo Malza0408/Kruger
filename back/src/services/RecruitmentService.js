@@ -30,6 +30,32 @@ class RecruitmentService {
         return recruitment;
     }
 
+    static async likeRecruitment({ recruitmentId, user_id }) {
+        let likedRecruitment = await Recruitment.findById({ recruitmentId });
+
+        if (!likedRecruitment) {
+            const errorMessage = '삭제되없거나 등록되지 않은 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const user = await User.findbyId(user_id);
+
+        console.log(likedRecruitment.like.indexOf(user._id));
+        if (likedRecruitment.like.indexOf(user._id) !== -1) {
+            const errorMessage = '이미 좋아요를 누른 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const newLikeValue = { $push: { like: user } };
+
+        likedRecruitment = await Recruitment.updateLike(
+            { id: recruitmentId },
+            newLikeValue
+        );
+
+        return likedRecruitment;
+    }
+
     static async addRecruitment({ user_id, title, detail }) {
         const id = uuidv4();
         // title이나 detail 검증필요?

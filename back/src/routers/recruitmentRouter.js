@@ -65,4 +65,25 @@ recruitmentRouter.patch(
     }
 );
 
+recruitmentRouter.put(
+    '/recruit/likes/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+
+            const updatedRecruitment = await RecruitmentService.likeRecruitment(
+                {
+                    recruitmentId,
+                    user_id
+                }
+            );
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 export { recruitmentRouter };
