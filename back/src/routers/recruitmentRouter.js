@@ -59,6 +59,14 @@ recruitmentRouter.patch(
     login_required,
     async (req, res, next) => {
         try {
+            const recruitmentId = req.params.id;
+            const userId = req.currentUserId;
+            const updatedRecruitment =
+                await RecruitmentService.closeRecruitment({
+                    recruitmentId,
+                    userId
+                });
+            return updatedRecruitment;
         } catch (error) {
             next(error);
         }
