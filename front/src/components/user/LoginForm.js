@@ -77,10 +77,9 @@ function LoginForm() {
             <Row>
                 <Col className="text-center">
                     <Image
-                        className="mx-auto"
+                        className="mx-auto loginImage"
                         src={`${process.env.PUBLIC_URL}/img/main.png`}
                         alt="First slide"
-                        height="300px"
                     />
                 </Col>
             </Row>

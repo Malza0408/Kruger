@@ -2,6 +2,11 @@ $buttonColor: #bac8ff;
 
 .login {
     height: 100vh;
+    .loginImage {
+        border-radius: 50%;
+        height: 250px;
+        width: 250px;
+    }
     .loginInput {
     }
     .passwordInput {
