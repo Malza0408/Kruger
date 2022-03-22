@@ -117,8 +117,32 @@ userRouter.put('/user/resetPassword', async function (req, res, next) {
 });
 
 // 친구추가
-userRouter.put('/user/:id', login_required, async (req, res, next) => {
-    const friend_id = req.params.id;
+userRouter.put('/followUser/:id', login_required, async (req, res, next) => {
+    try {
+        const followedId = req.params.id;
+        const user_id = req.currentUserId;
+        const updatedUser = await UserService.followUser({
+            followedId,
+            user_id
+        });
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        next(error);
+    }
+});
+
+userRouter.put('/unfollowUser/:id', login_required, async (req, res, next) => {
+    try {
+        const unfollowedId = req.params.id;
+        const user_id = req.currentUserId;
+        const updatedUser = await UserService.unfollowUser({
+            unfollowedId,
+            user_id
+        });
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        next(error);
+    }
 });
 
 userRouter.delete(
@@ -134,12 +158,5 @@ userRouter.delete(
         }
     }
 );
-
-// jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userRouter.get('/afterlogin', login_required, function (req, res, next) {
-    res.status(200).send(
-        `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
-    );
-});
 
 export { userRouter };

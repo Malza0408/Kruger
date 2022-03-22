@@ -52,18 +52,39 @@ noteRouter.get('/sentNotelist', login_required, async (req, res, next) => {
     }
 });
 
-noteRouter.get('/notes/:id', login_required, async (req, res, next) => {
+noteRouter.get('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
-        const currentNoteInfo = await NoteService.getNoteInfo({ noteId });
+        const user_id = req.currentUserId;
+        console.log(noteId);
+        const currentTakenNoteInfo = await NoteService.getTakenNoteInfo({
+            noteId,
+            user_id
+        });
+        console.log(currentTakenNoteInfo);
 
-        res.status(200).json(currentNoteInfo);
+        res.status(200).json(currentTakenNoteInfo);
     } catch (error) {
         next(error);
     }
 });
 
-noteRouter.put('/notes/:id', login_required, async (req, res, next) => {
+noteRouter.get('/sentNotes/:id', login_required, async (req, res, next) => {
+    try {
+        const noteId = req.params.id;
+        const user_id = req.currentUserId;
+        const currentSentNoteInfo = await NoteService.getSentNoteInfo({
+            noteId,
+            user_id
+        });
+
+        res.status(200).json(currentSentNoteInfo);
+    } catch (error) {
+        next(error);
+    }
+});
+
+noteRouter.put('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
         console.log(noteId);
@@ -74,10 +95,23 @@ noteRouter.put('/notes/:id', login_required, async (req, res, next) => {
     }
 });
 
-noteRouter.delete('/notes/:id', login_required, async (req, res, next) => {
+noteRouter.delete('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
-        await NoteService.deleteNote({ noteId });
+        const user_id = req.currentUserId;
+        await NoteService.deleteTakenNote({ noteId, user_id });
+
+        res.status(200).json('삭제되었습니다.');
+    } catch (error) {
+        next(error);
+    }
+});
+
+noteRouter.delete('/sentNotes/:id', login_required, async (req, res, next) => {
+    try {
+        const noteId = req.params.id;
+        const user_id = req.currentUserId;
+        await NoteService.deleteSentNote({ noteId, user_id });
 
         res.status(200).json('삭제되었습니다.');
     } catch (error) {

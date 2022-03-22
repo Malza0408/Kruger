@@ -78,11 +78,13 @@ certificateRouter.put(
         try {
             // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
+            const user_id = req.currentUserId;
             const toUpdate = req.toUpdate;
 
             // 해당 자격증 아이디로 자격증 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedCertificate = await CertificateService.setCertificate({
                 certificate_id,
+                user_id,
                 toUpdate
             });
 
@@ -100,7 +102,11 @@ certificateRouter.delete(
         try {
             // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
-            await CertificateService.deleteCertificate({ certificate_id });
+            const user_id = req.currentUserId;
+            await CertificateService.deleteCertificate({
+                certificate_id,
+                user_id
+            });
             console.log(certificate_id);
             res.status(200).send('삭제되었습니다.');
         } catch (error) {

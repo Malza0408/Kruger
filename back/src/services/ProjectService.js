@@ -48,14 +48,20 @@ class ProjectService {
     static async setProject({ project_id, toUpdate }) {
         // 우선 해당 id 의 프로젝트내역이 db에 존재하는지 여부 확인
         let project = await Project.findById({ project_id });
-        const keys = Object.keys(toUpdate);
-        const values = Object.values(toUpdate);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!project) {
             const errorMessage = '삭제되었거나 등록되지 않은 프로젝트입니다.';
             throw new Error(errorMessage);
         }
+
+        if (project.user_id !== user_id) {
+            const errorMessage = '수정할 수 없습니다.';
+            throw new Error(errorMessage);
+        }
+
+        const keys = Object.keys(toUpdate);
+        const values = Object.values(toUpdate);
 
         for (let i = 0; i < keys.length; i++) {
             project = await Project.update(project_id, keys[i], values[i]);
@@ -65,6 +71,17 @@ class ProjectService {
     }
 
     static async deleteProject({ project_id }) {
+        const project = await Project.findById({ project_id });
+
+        if (!project) {
+            const errorMessage = '삭제되었거나 등록되지 않은 프로젝트입니다.';
+            throw new Error(errorMessage);
+        }
+
+        if (project.user_id !== user_id) {
+            const errorMessage = '삭제할 수 없습니다.';
+            throw new Error(errorMessage);
+        }
         await Project.deleteById({ project_id });
         return;
     }

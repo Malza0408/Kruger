@@ -1,27 +1,27 @@
-import { NoteModel } from '../schemas/note';
+import { TakenNoteModel } from '../schemas/takenNote';
 
-class Note {
+class TakenNote {
     static async create({ newNote }) {
-        const createdNewNote = await NoteModel.create(newNote);
+        const createdNewNote = await TakenNoteModel.create(newNote);
         return createdNewNote;
     }
 
     static async findAll() {
-        const notes = await NoteModel.find({})
+        const notes = await TakenNoteModel.find({})
             .populate('toUser')
             .populate('fromUser');
         return notes;
     }
 
     static async findById({ noteId }) {
-        const note = await NoteModel.findOne({ id: noteId })
+        const note = await TakenNoteModel.findOne({ id: noteId })
             .populate('toUser')
             .populate('fromUser');
         return note;
     }
 
     static async updateCheck({ noteId }) {
-        await NoteModel.findOneAndUpdate(
+        await TakenNoteModel.findOneAndUpdate(
             { id: noteId },
             { check: true },
             { returnOriginal: false }
@@ -30,9 +30,9 @@ class Note {
     }
 
     static async deleteById({ noteId }) {
-        await NoteModel.deleteOne({ id: noteId });
+        await TakenNoteModel.deleteOne({ id: noteId });
         return;
     }
 }
 
-export { Note };
+export { TakenNote };

@@ -128,7 +128,7 @@ class UserService {
     }
 
     static async getUserInfo({ user_id }) {
-        const user = await User.findById({ user_id });
+        const user = await User.findById(user_id);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
@@ -148,9 +148,11 @@ class UserService {
 
     static async setUser({ user_id, toUpdate }) {
         // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
-        let user = await User.findById({ user_id });
+        let user = await User.findById(user_id);
         const keys = Object.keys(toUpdate);
         const values = Object.values(toUpdate);
+        const filter = { id: user_id };
+        console.log(filter);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
@@ -166,7 +168,7 @@ class UserService {
         }
 
         for (let i = 0; i < keys.length; i++) {
-            user = await User.updateById(user_id, keys[i], values[i]);
+            user = await User.update(filter, keys[i], values[i]);
         }
 
         const updatedUserKeys = Object.keys(user._doc);
@@ -189,21 +191,84 @@ class UserService {
             return;
         }
 
-        const fieldToUpdate = 'password';
-
         // uuidv4로 랜덤한 문자열을 가져오고 너무 길지 않게 10글자로만 새로운 비밀번호를 보내줌
         const randomPassword = uuidv4();
         const newPassword = randomPassword.slice(0, 10);
         const newHashedPassword = await bcrypt.hash(newPassword, 10);
+        const filter = { email: email };
 
-        const newValue = newHashedPassword;
-
-        await User.updateByEmail({ email, fieldToUpdate, newValue });
+        await User.update(filter, 'password', newHashedPassword);
 
         // 등록된 회원일 경우 이메일 내용
         const text = `귀하의 새로운 비밀번호는 ${newPassword} 입니다. 로그인 후 비밀번호를 변경해주세요.`;
         await sendMail(email, subject, text);
         return;
+    }
+
+    static async followUser({ followedId, user_id }) {
+        let followedUser = await User.findById(followedId);
+
+        if (!followedUser) {
+            const errorMessage = '이미 탈퇴했거나 등록하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        let user = await User.findById(user_id);
+
+        console.log(followedUser._doc.follower.indexOf(user._doc._id) !== -1);
+        if (followedUser._doc.follower.includes(user._doc._id)) {
+            const errorMessage = '이미 팔로우 중입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const newFollowedValue = { $push: { follower: user } };
+        const newFollowValue = { $push: { follow: followedUser } };
+
+        followedUser = await User.updateFollow(
+            { id: followedId },
+            newFollowedValue
+        );
+        user = await User.updateFollow({ id: user_id }, newFollowValue);
+
+        return user;
+    }
+
+    static async unfollowUser({ unfollowedId, user_id }) {
+        let unfollowedUser = await User.findById(unfollowedId);
+
+        if (!unfollowedUser) {
+            const errorMessage = '이미 탈퇴했거나 등록하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        let user = await User.findById(user_id);
+
+        console.log(user._doc.follow.indexOf(unfollowedUser._doc._id));
+        const unfollowedIndex = unfollowedUser._doc.follower.indexOf(
+            user._doc._id
+        );
+        const unfollowIndex = user._doc.follow.indexOf(unfollowedUser._doc._id);
+        if (unfollowIndex === -1) {
+            const errorMessage = '팔로우하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const follower = unfollowedUser._doc.follower;
+        follower.splice(unfollowedIndex, 1);
+        console.log(user._doc.follow);
+        const newUnfollowedValue = { follower };
+
+        const follow = user._doc.follow;
+        follow.splice(unfollowIndex, 1);
+        const newUnfollowValue = { follow };
+
+        unfollowedUser = await User.updateFollow(
+            { id: unfollowedId },
+            newUnfollowedValue
+        );
+        user = await User.updateFollow({ id: user_id }, newUnfollowValue);
+
+        return user;
     }
 
     static async deleteUser({ user_id }) {
