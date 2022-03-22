@@ -11,8 +11,8 @@ class User {
         return users;
     }
 
-    static async findById({ user_id }) {
-        const user = await UserModel.findOne({ id: user_id });
+    static async findById(id) {
+        const user = await UserModel.findOne({ id });
         return user;
     }
 
@@ -21,8 +21,7 @@ class User {
         return user;
     }
 
-    static async updateById(user_id, key, value) {
-        const filter = { id: user_id };
+    static async update(filter, key, value) {
         const update = { [key]: value };
         const option = { returnOriginal: false };
 
@@ -34,16 +33,15 @@ class User {
         return updatedUser;
     }
 
-    static async updateByEmail({ email, fieldToUpdate, newValue }) {
-        const filter = { email };
-        const update = { [fieldToUpdate]: newValue };
+    static async updateFollow(filter, newValue) {
         const option = { returnOriginal: false };
-
         const updatedUser = await UserModel.findOneAndUpdate(
             filter,
-            update,
+            newValue,
             option
-        );
+        )
+            .populate('follow')
+            .populate('follower');
         return updatedUser;
     }
 

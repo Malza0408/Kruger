@@ -30,8 +30,13 @@ const UserSchema = new Schema(
             required: false,
             default: 'http://placekitten.com/200/200'
         },
-        friend: {
-            type: [String],
+        follow: {
+            type: [Schema.Types.ObjectId],
+            ref: 'User',
+            default: []
+        },
+        follower: {
+            type: [Schema.Types.ObjectId],
             ref: 'User',
             default: []
         },

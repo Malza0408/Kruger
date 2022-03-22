@@ -72,11 +72,13 @@ educationRouter.put(
     async (req, res, next) => {
         try {
             const education_id = req.params.id;
+            const user_id = req.currentUserId;
             const toUpdate = req.toUpdate;
             console.log('toUpdate : ', toUpdate);
 
             const updatedEducation = await EducationService.setEducation({
                 education_id,
+                user_id,
                 toUpdate
             });
             console.log('수정되었습니다.');
@@ -92,7 +94,8 @@ educationRouter.delete(
     async (req, res, next) => {
         try {
             const education_id = req.params.id;
-            await EducationService.deleteEducation({ education_id });
+            const user_id = req.currentUserId;
+            await EducationService.deleteEducation({ education_id, user_id });
             res.status(200).send('삭제되었습니다.');
             console.log('삭제되었습니다.');
         } catch (error) {

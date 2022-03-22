@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const NoteSchema = new Schema(
+const TakenNoteSchema = new Schema(
     {
         id: {
             type: String,
@@ -36,6 +36,6 @@ const NoteSchema = new Schema(
     }
 );
 
-const NoteModel = model('Note', NoteSchema);
+const TakenNoteModel = model('TakenNote', TakenNoteSchema);
 
-export { NoteModel };
+export { TakenNoteModel };
