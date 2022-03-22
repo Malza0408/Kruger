@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown, Image } from 'react-bootstrap';
 import { UserStateContext, DispatchContext } from '../App';
 import LogoutModal from './modal/LogoutModal';
 import '../styles/scss/Header.scss';
@@ -33,10 +33,16 @@ function Header() {
     };
 
     return (
-        <Navbar className="navbarWrap" expand="lg">
-            <Container>
+        <Navbar className="navbarWrap mb-4" expand="lg">
+            <Container className="">
                 <Navbar.Brand onClick={() => navigate('/')}>
-                    우매함의 봉우리^ㅡ^
+                    <Image
+                        src={`${process.env.PUBLIC_URL}/img/logo.png`}
+                        alt="logo"
+                        width="140"
+                        height="50"
+                        className="navbarLogo"
+                    />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse

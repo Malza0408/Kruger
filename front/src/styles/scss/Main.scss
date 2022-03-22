@@ -1,16 +1,45 @@
-$mainColor: white;
 $buttonColor: #bac8ff;
 
 .login {
-    background-color: $mainColor;
     height: 100vh;
+    .loginImage {
+        border-radius: 50%;
+        height: 250px;
+        width: 250px;
+    }
+    .loginInput {
+    }
+    .passwordInput {
+    }
     .loginButton {
-        background-color: $buttonColor;
-        border: 0;
+        width: 80%;
+    }
+    .loginButton:hover {
+        background-color: #bac8ff;
     }
     .registerButton {
-        background-color: $buttonColor;
-        border: 0;
+    }
+    .registerButton:hover {
+        background-color: #bac8ff;
+    }
+
+    .githubLogin {
+        height: 50px;
+        background-color: #444343;
+        border-radius: 10px;
+    }
+    .githubLogin:hover {
+        border: 2px black solid;
+        cursor: pointer;
+    }
+    .googleLogin {
+        height: 50px;
+        background-color: #4285f4;
+        border-radius: 10px;
+    }
+    .googleLogin:hover {
+        border: 2px black solid;
+        cursor: pointer;
     }
 }
 
@@ -23,12 +52,4 @@ $buttonColor: #bac8ff;
         background-color: $buttonColor;
         border: 0;
     }
-}
-
-img {
-    border-radius: 10px;
-}
-
-img:hover {
-    cursor: pointer;
 }

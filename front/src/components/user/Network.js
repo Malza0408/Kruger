@@ -150,9 +150,9 @@ function Network() {
                             </Dropdown.Item>
                             <Dropdown.Item
                                 onClick={handleOnClickDescUser}
-                                value="이름내름차순"
+                                value="이름내림차순"
                             >
-                                이름 내름차순
+                                이름 내림차순
                             </Dropdown.Item>
                             <Dropdown.Item
                                 onClick={handleOnClickAscCreatedAt}
