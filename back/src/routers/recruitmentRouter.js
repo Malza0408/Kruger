@@ -100,4 +100,13 @@ recruitmentRouter.patch(
     }
 );
 
+recruitmentRouter.patch(
+    '/recruit/comment/:id',
+    login_required,
+    async (req, res, next) => {
+        const recruitmentId = req.params.id;
+        const authorId = req.currentUserId;
+    }
+);
+
 export { recruitmentRouter };
