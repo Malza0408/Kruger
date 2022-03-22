@@ -15,8 +15,8 @@ class Recruitment {
         return recruitment;
     }
 
-    static async update(recruitmentId, key, value) {
-        const filter = { id: recruitmentId };
+    static async update(id, key, value) {
+        const filter = { id };
         const update = { [key]: value };
         const option = { returnOriginal: false };
 
@@ -47,6 +47,21 @@ class Recruitment {
             { applicant }
         );
         return updatedRecruitment;
+    }
+    static async updateArray(filter, update) {
+        const option = { returnOriginal: false };
+
+        const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
+            filter,
+            update,
+            option
+        );
+        return updatedRecruitment;
+    }
+
+    static async deleteById({ recruitmentId }) {
+        await RecruitmentModel.deleteOne({ id: recruitmentId });
+        return;
     }
 }
 

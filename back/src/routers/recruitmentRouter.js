@@ -12,12 +12,12 @@ recruitmentRouter.put(
     updateMiddleware,
     async function (req, res, next) {
         try {
-            const recruitment_id = req.params.id;
+            const recruitmentId = req.params.id;
             const user_id = req.currentUserId;
             const toUpdate = req.toUpdate;
 
             const updatedRecruitment = await RecruitmentService.setRecruitment({
-                recruitment_id,
+                recruitmentId,
                 user_id,
                 toUpdate
             });
@@ -106,6 +106,85 @@ recruitmentRouter.patch(
     async (req, res, next) => {
         const recruitmentId = req.params.id;
         const authorId = req.currentUserId;
+    }
+);
+recruitmentRouter.patch(
+    '/likedRecruit/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+
+            const updatedRecruitment = await RecruitmentService.likeRecruitment(
+                {
+                    recruitmentId,
+                    user_id
+                }
+            );
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+recruitmentRouter.patch(
+    '/unlikedRecruit/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+
+            const updatedRecruitment =
+                await RecruitmentService.unlikeRecruitment({
+                    recruitmentId,
+                    user_id
+                });
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+recruitmentRouter.patch(
+    '/recruit/approval/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const { applicantId } = req.body;
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+
+            const updatedRecruitment = await RecruitmentService.setMember({
+                recruitmentId,
+                applicantId,
+                user_id
+            });
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+recruitmentRouter.delete(
+    '/recruit/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+            await RecruitmentService.deleteRecruitment({
+                recruitmentId,
+                user_id
+            });
+            res.status(200).json('삭제되었습니다.');
+        } catch (error) {
+            next(error);
+        }
     }
 );
 
