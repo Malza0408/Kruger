@@ -70,7 +70,7 @@ class ProjectService {
         return project;
     }
 
-    static async deleteProject({ project_id }) {
+    static async deleteProject({ project_id, user_id }) {
         const project = await Project.findById({ project_id });
 
         if (!project) {
