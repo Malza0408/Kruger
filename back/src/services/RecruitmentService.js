@@ -149,6 +149,7 @@ class RecruitmentService {
 
         return createdNewRecruitment;
     }
+
     static async closeRecruitment({ recruitmentId, userId }) {
         const recruitment = await Recruitment.findById({
             recruitmentId
@@ -213,6 +214,29 @@ class RecruitmentService {
 
         await Recruitment.deleteById({ recruitmentId });
         return;
+    }
+
+    static async setComment({ recruitmentId, authorId, toUpdate }) {
+        const recruitment = await Recruitment.findById({ recruitmentId });
+        if (!recruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+        const author = await User.findById(authorId);
+        console.log('author', author);
+        // captain이 댓글쓸 때 어떻게?
+        if (authorId === recruitment.captain.id) {
+            console.log('[captain]! writing');
+        }
+
+        // 로그인한 유저와 댓글작성자가 다르면 에러메세지.
+        if (authorId !== recruitment.Comment.author) {
+            const errorMessage = '수정 권한이 없습니다.';
+            throw new Error(errorMessage);
+        }
+
+        console.log('recruitment : ', recruitment.Comment);
+        // console.log(recruitment.Comment.type.author);
     }
 }
 

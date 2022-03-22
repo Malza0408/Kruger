@@ -103,9 +103,22 @@ recruitmentRouter.patch(
 recruitmentRouter.patch(
     '/recruit/comment/:id',
     login_required,
+    updateMiddleware,
     async (req, res, next) => {
-        const recruitmentId = req.params.id;
-        const authorId = req.currentUserId;
+        try {
+            const recruitmentId = req.params.id;
+            const authorId = req.currentUserId;
+            const toUpdate = req.toUpdate;
+            console.log('toUpdate : ', toUpdate);
+            const updatedRecruitment = await RecruitmentService.setComment({
+                recruitmentId,
+                authorId,
+                toUpdate
+            });
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
     }
 );
 recruitmentRouter.patch(
