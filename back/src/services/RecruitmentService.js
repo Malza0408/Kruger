@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 class RecruitmentService {
     static async setRecruitment({ recruitment_id, user_id, toUpdate }) {
-        let recruitment = await Recruitment.findById({ recruit_id });
+        let recruitment = await Recruitment.findById({ recruitment_id });
 
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
