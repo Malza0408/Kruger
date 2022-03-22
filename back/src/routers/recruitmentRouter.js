@@ -12,12 +12,12 @@ recruitmentRouter.put(
     updateMiddleware,
     async function (req, res, next) {
         try {
-            const recruit_id = req.params.id;
+            const recruitment_id = req.params.id;
             const user_id = req.currentUserId;
             const toUpdate = req.toUpdate;
 
             const updatedRecruit = await RecruitmentService.setRecruitment({
-                recruit_id,
+                recruitment_id,
                 user_id,
                 toUpdate
             });
@@ -28,6 +28,15 @@ recruitmentRouter.put(
         }
     }
 );
+
+// 게시글 하나 보기, 로그인 안해도 볼수있게.
+recruitmentRouter.get('/recruit/:id', async (req, res, next) => {
+    const recruitmentId = req.params.id;
+    const recruitment = await RecruitmentService.getRecruitment({
+        recruitmentId
+    });
+    res.status(200).json(recruitment);
+});
 
 recruitmentRouter.post(
     '/recruit/create',
@@ -66,7 +75,25 @@ recruitmentRouter.patch(
                     recruitmentId,
                     userId
                 });
-            return updatedRecruitment;
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+recruitmentRouter.patch(
+    '/recruit/apply/:id',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const recruitmentId = req.params.id;
+            const applicantId = req.currentUserId;
+            const updatedRecruitment = await RecruitmentService.addApplicant({
+                recruitmentId,
+                applicantId
+            });
+            res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);
         }
