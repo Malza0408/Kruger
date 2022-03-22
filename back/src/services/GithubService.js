@@ -24,6 +24,8 @@ class GithubService {
             const { password, ...refinedUser } = user._doc;
             user._doc = { ...refinedUser, token };
             console.log('github user log in.');
+            user._doc.token = token;
+
             return user;
         }
 

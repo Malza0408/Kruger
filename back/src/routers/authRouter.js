@@ -62,7 +62,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         if (tokenRequest.data.error) {
             const errorMessage = 'github 인증 실패';
             throw new Error(errorMessage);
-            return res.redirect('/user/login');
+            return res.redirect('/');
         }
         const accessToken = tokenRequest.data.access_token;
 
