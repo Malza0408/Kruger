@@ -1,6 +1,12 @@
 import { NoticeModel } from '../schemas/notice';
+import { UserModel } from '../schemas/user';
 
 class Notice {
+    static async create(newNotice) {
+        const createdNewNotice = await NoticeModel.create(newNotice);
+        return createdNewNotice;
+    }
+
     static async findById({ noticeId }) {
         const notice = await NoticeModel.find({ id: noticeId });
         return notice;
