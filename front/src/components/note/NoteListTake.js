@@ -15,7 +15,7 @@ const NoteListTake = ({ key, takeNote, setTakeNote }) => {
     const navigate = useNavigate();
 
     const handleRead = async () => {
-        await Api.put(`takenNotes/${takeNote.id}`);
+        await Api.patch(`takenNotes/${takeNote.id}`);
     };
 
     const handleDelete = async (e) => {
