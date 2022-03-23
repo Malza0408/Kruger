@@ -246,6 +246,13 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
+        const isMemberIndex = recruitment.member.indexOf(applyUser._id);
+
+        if (isMemberIndex !== -1) {
+            const errorMessage = '이미 멤버입니다.';
+            throw new Error(errorMessage);
+        }
+
         const applicant = recruitment.applicant;
         applicant.splice(applyUserIndex, 1);
         const newApplicantValue = { applicant };
