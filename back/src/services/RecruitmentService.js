@@ -192,12 +192,14 @@ class RecruitmentService {
 
     // 지원하기
     static async addApplicant({ recruitmentId, applicantId }) {
-        const recruitment = await Recruitment.findApplicant({ recruitmentId });
         const applicant = await User.findById(applicantId);
-        let applicantList = recruitment.applicant;
-        const AppliedOrNot = recruitment.applicant.indexOf(applicant.id);
-        console.log(applicantList);
-        console.log(AppliedOrNot);
+        const recruitment = await Recruitment.findById({
+            recruitmentId
+        });
+        const appliedOrNot = await Recruitment.findApplicant({
+            recruitmentId,
+            applicant
+        });
 
         // 게시글이 있는지 확인
         if (!recruitment) {
@@ -209,19 +211,15 @@ class RecruitmentService {
             const errorMessage = '해당 공고는 마감되었습니다.';
             throw new Error(errorMessage);
         }
-
-        //지원자가 기존 지원자목록에 있는지 확인
-        if (AppliedOrNot !== -1) {
+        // 유저가 기존 지원자목록에 있는지 확인
+        if (appliedOrNot !== null) {
             const errorMessage = '이미 지원하셨습니다.';
             throw new Error(errorMessage);
         }
 
-        applicantList.push(applicant);
-        // console.log(applicantList);
-
         const updatedRecruitment = await Recruitment.addApplicant({
             recruitmentId,
-            applicantList
+            applicant
         });
 
         return updatedRecruitment;
@@ -229,33 +227,38 @@ class RecruitmentService {
 
     //지원 취소하기
     static async cancleApplicant({ recruitmentId, applicantId }) {
-        const recruitment = await Recruitment.findApplicant({ recruitmentId });
         const applicant = await User.findById(applicantId);
-        let applicantList = recruitment.applicant;
-        const AppliedOrNot = applicantList.find((v) => v.id === applicant.id);
+        const recruitment = await Recruitment.findById({
+            recruitmentId
+        });
+        const appliedOrNot = await Recruitment.findApplicant({
+            recruitmentId,
+            applicant
+        });
 
+        // 게시글이 있는지 확인
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
-
+        // 모집중인지 확인
         if (!recruitment.nowEnrolling) {
             const errorMessage = '해당 공고는 마감되었습니다.';
             throw new Error(errorMessage);
         }
-
-        if (AppliedOrNot.length === 0) {
-            const errorMessage = '이미 취소했거나 지원하지 않은 공고입니다.';
+        // 유저가 기존 지원자목록에 있는지 확인
+        if (appliedOrNot === null) {
+            const errorMessage =
+                '지원하지 않으셨거나 이미 지원 취소하셨습니다.';
             throw new Error(errorMessage);
         }
 
-        applicantList = applicantList.find((v) => v.id !== applicant.id);
         const updatedRecruitment = await Recruitment.deleteApplicant({
             recruitmentId,
-            applicantList
+            applicant
         });
-
-        return updatedRecruitment;
+        console.log(updatedRecruitment);
+        // return updatedRecruitment;
     }
 
     static async addComment({ recruitmentId, content, user_id }) {

@@ -11,7 +11,9 @@ class Recruitment {
     static async findById({ recruitmentId }) {
         const recruitment = await RecruitmentModel.findOne({
             id: recruitmentId
-        }).populate('captain');
+        })
+            .populate('captain')
+            .populate('applicant');
         return recruitment;
     }
 
@@ -42,26 +44,29 @@ class Recruitment {
         return updatedRecruitment;
     }
 
-    static async findApplicant({ recruitmentId }) {
-        const isApplicant = await RecruitmentModel.findOne({
-            id: recruitmentId
+    static async findApplicant({ recruitmentId, applicant }) {
+        const recruitment = await RecruitmentModel.findOne({
+            id: recruitmentId,
+            applicant: applicant
         }).populate('applicant');
-        return isApplicant;
+        return recruitment;
     }
 
-    static async addApplicant({ recruitmentId, applicantList }) {
+    static async addApplicant({ recruitmentId, applicant }) {
         const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
             { id: recruitmentId },
-            { applicant: applicantList },
-            option
-        );
+            { $addToSet: { applicant: applicant } },
+            { returnDocument: 'after' }
+        ).populate('applicant');
         return updatedRecruitment;
     }
     static async deleteApplicant({ recruitmentId, applicant }) {
+        console.log(applicant);
         const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
             { id: recruitmentId },
-            { applicant: [applicant] }
-        );
+            { $pull: { applicant: applicant } },
+            { new: true }
+        ).populate('applicant');
         return updatedRecruitment;
     }
 
