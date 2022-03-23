@@ -4,8 +4,6 @@ import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import NoteListSend from './NoteListSend';
 import NoteListTake from './NoteListTake';
 
-import DatePicker from 'react-datepicker';
-
 import * as Api from '../../api';
 
 const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
@@ -51,8 +49,6 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
     return (
         <div>
             {/* 전체 */}
-            {console.log(allNote)}
-            {/* 전체 쪽지함 리스트 타임스탬프 정렬 기능 추후 구현 */}
             {DescCreatedAtAll().map((note) => {
                 return (
                     isNoteListAll &&
