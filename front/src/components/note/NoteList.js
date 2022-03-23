@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 
-import NoteListAll from './NoteListAll';
 import NoteListSend from './NoteListSend';
 import NoteListTake from './NoteListTake';
 
@@ -21,19 +20,40 @@ const NoteList = ({
 
     useEffect(() => {
         Api.get(`user/current`).then((res) => setUser(res.data));
+
+        // 전체
+        Api.get(`notelist`).then((res) => {
+            setAllNote(res.data);
+        });
+        // 발신함
         Api.get(`sentNotelist`).then((res) => {
             setSendNote(res.data);
         });
+        // 수신함
         Api.get(`takenNotelist`).then((res) => {
             setTakeNote(res.data);
         });
+
     }, []);
+
+    const DescCreatedAtAll = () => {
+        const descAllNote = [...allNote];
+        descAllNote.sort((note1, note2) =>
+            note1.createdAt < note2.createdAt
+                ? 1
+                : note1.createdAt > note2.createdAt
+                ? -1
+                : 0
+        );
+
+        return descAllNote
+    };
 
     return (
         <div>
             {/* 전체 */}
             {/* 전체 쪽지함 리스트 타임스탬프 정렬 기능 추후 구현 */}
-            {[...sendNote, ...takeNote].map((note) => {
+            {DescCreatedAtAll().map((note) => {
                 return (
                     isNoteListAll &&
                     (user.name === note.fromUser.name ? (
