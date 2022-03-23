@@ -9,7 +9,7 @@ import Educations from './education/Educations';
 import Awards from './award/Awards';
 import Projects from './project/Projects';
 import Certificates from './certificate/Certificates';
-import FriendsList from './user/FriendsList';
+import Follows from './follow/Follows';
 function Portfolio() {
     const navigate = useNavigate();
     const params = useParams();
@@ -63,7 +63,7 @@ function Portfolio() {
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
-                    <FriendsList />
+                    <Follows portfolioOwnerId={portfolioOwner.id} />
                 </Col>
                 <Col md="12" lg="8">
                     <div className="mb-4">
