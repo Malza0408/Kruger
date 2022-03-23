@@ -1,4 +1,12 @@
-import { Container, Form, Row, Col, Button, Card } from 'react-bootstrap';
+import {
+    Container,
+    Form,
+    Row,
+    Col,
+    Button,
+    Badge,
+    Card
+} from 'react-bootstrap';
 import * as Api from '../../api';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,7 +30,7 @@ const NoteDescription = () => {
             Api.get(`takenNotes/${params.noteId}`).then((res) => {
                 setNote(res.data);
             });
-    }, [params]);
+    }, [params, user]);
 
     useEffect(() => {
         const newDate = new Date(note?.createdAt);
@@ -46,14 +54,18 @@ const NoteDescription = () => {
                         {user?.name === note.fromUser?.name ? (
                             // 발신
                             <Col>
-                                <Row>
+                                {note.toUser?.name === '탈퇴한 회원' ? (
+                                    <Badge class="fs-3" bg="secondary">
+                                        탈퇴한 회원
+                                    </Badge>
+                                ) : (
                                     <span class="fs-2">
                                         <strong>{note.toUser?.name}</strong>
-                                        <span className="text-muted">
-                                            <small>에게 보낸 쪽지</small>
-                                        </span>
                                     </span>
-                                </Row>
+                                )}
+                                <span className="fs-2 text-muted">
+                                    <small>에게 보낸 쪽지</small>
+                                </span>
                                 <Row>
                                     <span className="text-muted">
                                         <small>{note.toUser?.email}</small>
@@ -79,7 +91,7 @@ const NoteDescription = () => {
                             </Col>
                         )}
                         <Card.Text>
-                            <span className="fs-6 text-muted" >
+                            <span className="fs-6 text-muted">
                                 {newDateFormatted}
                             </span>
                         </Card.Text>
