@@ -26,10 +26,28 @@ const NoteDescription = () => {
                         <Col>
                             <Card.Title>
                                 <span>
-                                    <strong>{note.fromUser?.name}</strong>
+                                    {user?.name === note.fromUser?.name ? ( // 발신
+                                        <span>
+                                            <strong>{note.toUser?.name}</strong>
+                                            <span className="text-muted">
+                                                <small>에게 보낸 쪽지</small>
+                                            </span>
+                                        </span>
+                                    ) : (
+                                        // 수신
+                                        <span>
+                                            <strong>
+                                                {note.fromUser?.name}
+                                            </strong>
+                                            <span className="text-muted">
+                                                <small>가 보낸 쪽지</small>
+                                            </span>
+                                        </span>
+                                    )}
+                                    {/* <strong>{user?.name}</strong> */}
                                 </span>
 
-                                <span className="text-muted">
+                                {/* <span className="text-muted">
                                     <small>가 </small>
                                 </span>
                                 <span>
@@ -38,7 +56,7 @@ const NoteDescription = () => {
 
                                 <span className="text-muted">
                                     <small>에게 보낸 쪽지</small>
-                                </span>
+                                </span> */}
                             </Card.Title>
                         </Col>
                     </Row>
