@@ -6,8 +6,8 @@ class TakenNote {
         return createdNewNote;
     }
 
-    static async findAll() {
-        const notes = await TakenNoteModel.find({})
+    static async findAll(toUser) {
+        const notes = await TakenNoteModel.find({ toUser })
             .populate('toUser')
             .populate('fromUser');
         return notes;
