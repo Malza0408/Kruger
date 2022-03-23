@@ -7,6 +7,7 @@ class RecruitmentService {
         const id = uuidv4();
         // title이나 detail 검증필요?
         const captain = await User.findById(user_id);
+        console.log(language);
         const newRecruitment = { id, captain, title, detail, language };
 
         const createdNewRecruitment = await Recruitment.create(newRecruitment);
@@ -115,18 +116,6 @@ class RecruitmentService {
         );
 
         return unlikedRecruitment;
-    }
-
-    // 게시글 생성
-    static async addRecruitment({ user_id, title, detail }) {
-        const id = uuidv4();
-        // title이나 detail 검증필요?
-        const captain = await User.findById(user_id);
-        const newRecruitment = { id, captain, title, detail };
-
-        const createdNewRecruitment = await Recruitment.create(newRecruitment);
-
-        return createdNewRecruitment;
     }
 
     // 모집마감 토글
@@ -454,7 +443,7 @@ class RecruitmentService {
 
         if (recruitment._doc.captain.id !== user_id) {
             const errorMessage = '삭제할 수 없습니다.';
-            throw new Error(errorMesaage);
+            throw new Error(errorMessage);
         }
 
         await Recruitment.deleteById({ recruitmentId });
