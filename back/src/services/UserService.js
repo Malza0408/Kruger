@@ -107,6 +107,16 @@ class UserService {
             user._doc = refinedUser;
         }
 
+        user.follow.map((v) => {
+            const { password, refinedUser } = v._doc;
+            v._doc = refinedUser;
+        });
+
+        user.follower.map((v) => {
+            const { password, refinedUser } = v._doc;
+            v._doc = refinedUser;
+        });
+
         return user;
     }
 
@@ -140,6 +150,16 @@ class UserService {
             const { password, ...refinedUser } = user._doc;
             user._doc = refinedUser;
         }
+
+        user.follow.map((v) => {
+            const { password, ...refinedUser } = v._doc;
+            v._doc = refinedUser;
+        });
+
+        user.follower.map((v) => {
+            const { password, ...refinedUser } = v._doc;
+            v._doc = refinedUser;
+        });
 
         return user;
     }
