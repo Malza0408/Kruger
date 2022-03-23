@@ -1,4 +1,4 @@
-import { Container, Form, Row, Col, Button, Card } from 'react-bootstrap';
+import { Container, Form, Row, Col, Button, Card, Badge } from 'react-bootstrap';
 import * as Api from '../../api';
 import React, { useState, useEffect, useContext } from 'react';
 
@@ -35,9 +35,13 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
         <Card.Text as={Col}>
             <Card.Body>
                 <Card.Title>
-                    <span>
-                        <strong>{sendNote.toUser.name}</strong>
-                    </span>
+                    {sendNote.toUser.name === '탈퇴한 회원' ? (
+                        <Badge class="badge bg-secondary">탈퇴한 회원</Badge>
+                    ) : (
+                        <span>
+                            <strong>{sendNote.toUser.name}</strong>
+                        </span>
+                    )}
                     <span className="text-muted">
                         <small>에게 보낸 쪽지</small>
                     </span>
