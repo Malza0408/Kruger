@@ -150,6 +150,27 @@ recruitmentRouter.patch(
     }
 );
 
+recruitmentRouter.put(
+    '/recruit/comment/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const { content } = req.body;
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+
+            const newComment = await RecruitmentService.addComment({
+                content,
+                recruitmentId,
+                user_id
+            });
+            res.status(200).json(newComment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 // 댓글 삭제하기
 recruitmentRouter.patch(
     '/recruit/delete/comment/:id',

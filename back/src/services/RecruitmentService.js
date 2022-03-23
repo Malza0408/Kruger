@@ -243,6 +243,35 @@ class RecruitmentService {
         return updatedRecruitment;
     }
 
+    static async addComment({ recruitmentId, content, user_id }) {
+        if (content === null || content === undefined || content.length === 0) {
+            const errorMessage = '빈칸 ㄴㄴ';
+            throw new Error(errorMessage);
+        }
+
+        let recruitment = await Recruitment.findById({ recruitmentId });
+
+        if (!recruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const id = uuidv4();
+
+        const user = await User.findById(user_id);
+
+        const newCommentValue = {
+            $push: { comment: { id, author: user, content } }
+        };
+
+        recruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            newCommentValue
+        );
+
+        return recruitment;
+    }
+
     static async deleteRecruitment({ recruitmentId, user_id }) {
         const recruitment = await Recruitment.findById({ recruitmentId });
 
@@ -274,11 +303,11 @@ class RecruitmentService {
             console.log('[captain]! writing');
         }
 
-        console.log(recruitment.Comment[0].author);
+        console.log(recruitment.comment[0].author);
         // 로그인한 유저와 댓글작성자가 다르면 에러메세지.
         if (
-            recruitment.Comment.length !== 0 &&
-            authorId !== recruitment.Comment.author.id
+            recruitment.comment.length !== 0 &&
+            authorId !== recruitment.comment.author.id
         ) {
             const errorMessage = '수정 권한이 없습니다.';
             throw new Error(errorMessage);
@@ -299,8 +328,8 @@ class RecruitmentService {
             const errorMessage = '삭제된 게시물입니다.';
             throw new Error(errorMessage);
         }
-        console.log(recruitment.Comment.author.id);
-        if (recruitment.Comment.author.id !== authorId) {
+        console.log(recruitment.comment.author.id);
+        if (recruitment.comment.author.id !== authorId) {
             const errorMessage = '권한이 없습니다.';
             throw new Error(errorMessage);
         }

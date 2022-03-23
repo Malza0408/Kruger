@@ -38,9 +38,13 @@ const RecruitmentSchema = new Schema(
             ref: 'User',
             default: []
         },
-        Comment: {
+        comment: {
             type: [
                 {
+                    id: {
+                        type: String,
+                        required: true
+                    },
                     author: {
                         type: Schema.Types.ObjectId,
                         ref: 'User',
@@ -52,7 +56,7 @@ const RecruitmentSchema = new Schema(
                     }
                 }
             ],
-            required: false
+            default: []
         }
     },
     {

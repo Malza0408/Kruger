@@ -30,6 +30,17 @@ noteRouter.post('/note/create', login_required, async (req, res, next) => {
     }
 });
 
+noteRouter.get('/notelist', login_required, async (req, res, next) => {
+    try {
+        const user_id = req.currentUserId;
+        const notes = await NoteService.getNotes({ user_id });
+
+        res.status(200).json(notes);
+    } catch (error) {
+        next(error);
+    }
+});
+
 noteRouter.get('/takenNotelist', login_required, async (req, res, next) => {
     try {
         const user_id = req.currentUserId;
