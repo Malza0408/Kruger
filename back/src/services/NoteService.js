@@ -35,10 +35,8 @@ class NoteService {
     }
 
     static async getNotes({ user_id }) {
-        const tNotes = await TakenNote.findAll();
-        const takenNotes = tNotes
-            .filter((v) => v.toUser !== null)
-            .filter((v) => v.toUser.id == user_id);
+        const user = await User.findById(user_id);
+        const takenNotes = await TakenNote.findAll(user._id);
         console.log(takenNotes.length);
         for (let i = 0; i < takenNotes.length; i++) {
             const { name, email, ...restUser } = takenNotes[i].toUser._doc;
@@ -56,10 +54,7 @@ class NoteService {
             }
         }
 
-        const sNotes = await SentNote.findAll();
-        const sentNotes = sNotes
-            .filter((v) => v.fromUser !== null)
-            .filter((v) => v.fromUser.id == user_id);
+        const sentNotes = await SentNote.findAll(user._id);
         console.log(sentNotes.length);
 
         for (let i = 0; i < sentNotes.length; i++) {
@@ -83,10 +78,8 @@ class NoteService {
     }
 
     static async getTakenNotes({ user_id }) {
-        const notes = await TakenNote.findAll();
-        const takenNotes = notes
-            .filter((v) => v.toUser !== null)
-            .filter((v) => v.toUser.id == user_id);
+        const user = await User.findById(user_id);
+        const takenNotes = await TakenNote.findAll(user._id);
         console.log(takenNotes.length);
         for (let i = 0; i < takenNotes.length; i++) {
             const { name, email, ...restUser } = takenNotes[i].toUser._doc;
@@ -108,10 +101,8 @@ class NoteService {
     }
 
     static async getSentNotes({ user_id }) {
-        const notes = await SentNote.findAll();
-        const sentNotes = notes
-            .filter((v) => v.fromUser !== null)
-            .filter((v) => v.fromUser.id == user_id);
+        const user = await User.findById(user_id);
+        const sentNotes = await SentNote.findAll(user._id);
         console.log(sentNotes.length);
 
         for (let i = 0; i < sentNotes.length; i++) {
