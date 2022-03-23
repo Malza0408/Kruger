@@ -42,6 +42,12 @@ class RecruitmentService {
         return recruitment;
     }
 
+    // 게시글 목록보기
+    static async getRecruitments() {
+        const recruitments = await Recruitment.findAll();
+        return recruitments;
+    }
+
     static async likeRecruitment({ recruitmentId, user_id }) {
         let likedRecruitment = await Recruitment.findById({ recruitmentId });
 
@@ -153,12 +159,12 @@ class RecruitmentService {
         return createdNewRecruitment;
     }
 
-    // 모집마감
+    // 모집마감 토글
     static async closeRecruitment({ recruitmentId, userId }) {
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
-        const nowEnrolling = recruitment.nowEnrolling;
+        let nowEnrolling = recruitment.nowEnrolling;
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
@@ -169,11 +175,19 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        const updatedRecruitment = await Recruitment.close({
+        const updatedRecruitment = await Recruitment.toggle({
             recruitmentId,
             nowEnrolling
         });
-        return updatedRecruitment;
+        nowEnrolling = updatedRecruitment.nowEnrolling;
+        let message = '';
+        if (nowEnrolling) {
+            message = '모집중입니다.';
+        } else {
+            message = '모집마감했습니다.';
+        }
+        console.log(message, nowEnrolling);
+        return { nowEnrolling, message };
     }
 
     // 지원하기
@@ -182,7 +196,8 @@ class RecruitmentService {
         const applicant = await User.findById(applicantId);
         let applicantList = recruitment.applicant;
         const AppliedOrNot = recruitment.applicant.indexOf(applicant.id);
-        // console.log(AppliedOrNot);
+        console.log(applicantList);
+        console.log(AppliedOrNot);
 
         // 게시글이 있는지 확인
         if (!recruitment) {

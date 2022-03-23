@@ -15,6 +15,11 @@ class Recruitment {
         return recruitment;
     }
 
+    static async findAll() {
+        const recruitments = await RecruitmentModel.find({});
+        return recruitments;
+    }
+
     static async update(id, key, value) {
         const filter = { id };
         const update = { [key]: value };
@@ -28,12 +33,13 @@ class Recruitment {
         return updatedRecruitment;
     }
 
-    static async close({ recruitmentId, nowEnrolling }) {
-        await RecruitmentModel.findOneAndUpdate(
+    static async toggle({ recruitmentId, nowEnrolling }) {
+        const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
             { id: recruitmentId },
-            { nowEnrolling: !nowEnrolling }
+            { nowEnrolling: !nowEnrolling },
+            { new: true }
         );
-        return;
+        return updatedRecruitment;
     }
 
     static async findApplicant({ recruitmentId }) {
@@ -44,7 +50,6 @@ class Recruitment {
     }
 
     static async addApplicant({ recruitmentId, applicantList }) {
-        console.log(applicantList);
         const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
             { id: recruitmentId },
             { applicant: applicantList },
