@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -26,6 +26,13 @@ const NoteWriteForm = () => {
     const [isToEmpty, setIsToEmpty] = useState(false);
     const [isTitleEmpty, setIsTitleEmpty] = useState(false);
     const [isContentEmpty, setIsContentEmpty] = useState(false);
+    const [isToMe, setIsToMe] = useState(false);
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        Api.get(`user/current`).then((res) => setUser(res.data));
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,15 +43,18 @@ const NoteWriteForm = () => {
         setIsTitleEmpty(!title);
         // content 공란이면 true
         setIsContentEmpty(!content);
+        //본인을 수신자로 선택했으면 true
+        setIsToMe(user.email === to);
 
         try {
-            !(isToEmpty && isTitleEmpty && isContentEmpty) &&
+            // 하나라도 공란이며, 본인이 수신자이면 post 불가
+            !(!to || !title || !content) && !(user.email === to) &&
                 (await Api.post('note/create', {
                     to,
                     title,
                     content
-                }));
-            navigate('/note');
+                }))
+            && (navigate('/note'));
         } catch (err) {
             console.log('전송 실패', err);
         }
@@ -70,6 +80,11 @@ const NoteWriteForm = () => {
                             {isToEmpty && (
                                 <Form.Text className="text-success">
                                     받는 사람을 입력해주세요
+                                </Form.Text>
+                            )}
+                            {isToMe && (
+                                <Form.Text className="text-success">
+                                    본인에게 쪽지를 전송할 수 없습니다
                                 </Form.Text>
                             )}
                         </Form.Group>
