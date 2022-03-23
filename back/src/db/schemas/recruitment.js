@@ -38,7 +38,7 @@ const RecruitmentSchema = new Schema(
             ref: 'User',
             default: []
         },
-        Comment: {
+        comment: {
             type: [
                 {
                     id: {

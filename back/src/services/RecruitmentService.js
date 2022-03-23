@@ -216,7 +216,7 @@ class RecruitmentService {
         const user = await User.findById(user_id);
 
         const newCommentValue = {
-            $push: { Comment: { id, author: user, content } }
+            $push: { comment: { id, author: user, content } }
         };
 
         recruitment = await Recruitment.updateArray(
