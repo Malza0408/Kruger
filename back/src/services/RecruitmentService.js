@@ -227,15 +227,11 @@ class RecruitmentService {
 
     //지원 취소하기
     static async cancleApplicant({ recruitmentId, applicantId }) {
-        const applicant = await User.findById(applicantId);
+        let applicant = await User.findById(applicantId);
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
-        const appliedOrNot = await Recruitment.findApplicant({
-            recruitmentId,
-            applicant
-        });
-
+        const appliedOrNot = recruitment.applicant.indexOf(applicant._id);
         // 게시글이 있는지 확인
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
@@ -247,18 +243,21 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
         // 유저가 기존 지원자목록에 있는지 확인
-        if (appliedOrNot === null) {
+        if (appliedOrNot === -1) {
             const errorMessage =
                 '지원하지 않으셨거나 이미 지원 취소하셨습니다.';
             throw new Error(errorMessage);
         }
 
-        const updatedRecruitment = await Recruitment.deleteApplicant({
-            recruitmentId,
-            applicant
-        });
-        console.log(updatedRecruitment);
-        // return updatedRecruitment;
+        applicant = recruitment.applicant;
+        applicant.splice(applicant, 1);
+        // console.log(applicant);
+        const updatedRecruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            { applicant }
+        );
+        // console.log(updatedRecruitment);
+        return updatedRecruitment;
     }
 
     static async addComment({ recruitmentId, content, user_id }) {
