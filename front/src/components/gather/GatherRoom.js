@@ -14,7 +14,7 @@ const GatherRoom = (props) => {
             <Row className="text-end">
                 <Col>
                     <button
-                        className="newPosting"
+                        className="newPostingBtn"
                         onClick={handleOnClickNewPosting}
                     >
                         새 글 쓰기
