@@ -3,27 +3,9 @@ function recruitmentUpdateMiddleware(req, res, next) {
     let toUpdate = {};
 
     try {
-        if (name !== null && name !== undefined) toUpdate.name = name;
-        if (email !== null && email !== undefined) toUpdate.email = email;
-        if (password !== null && password !== undefined)
-            toUpdate.password = password;
-        if (description !== null && description !== undefined)
-            toUpdate.description = description;
-        if (picture !== null && picture !== undefined)
-            toUpdate.picture = picture;
         if (title !== null && title !== undefined) toUpdate.title = title;
-        if (date !== null && date !== undefined) toUpdate.date = date;
-        if (from_date !== null && from_date !== undefined)
-            toUpdate.from_date = from_date;
-        if (to_date !== null && to_date !== undefined)
-            toUpdate.to_date = to_date;
-        if (school !== null && school !== undefined) toUpdate.school = school;
-        if (major !== null && major !== undefined) toUpdate.major = major;
-        if (position !== null && position !== undefined)
-            toUpdate.position = position;
-        if ((detail !== null) & (detail !== undefined))
-            toUpdate.detail = detail;
-        if ((content !== null) & (content !== undefined))
+        if (detail !== null && detail !== undefined) toUpdate.detail = detail;
+        if (content !== null && content !== undefined)
             toUpdate.content = content;
         if (language !== null && language !== undefined)
             toUpdate.language = language;
@@ -34,14 +16,6 @@ function recruitmentUpdateMiddleware(req, res, next) {
             const errorMessage = '수정할 내용이 없습니다.';
             res.status(400).json(errorMessage);
             return;
-        }
-
-        if (toUpdate.major) {
-            if (toUpdate.major.first === '') {
-                const errorMessage = '빈칸은 ㄴㄴ';
-                res.status(400).json(errorMessage);
-                return;
-            }
         }
 
         if (values.includes('')) {
