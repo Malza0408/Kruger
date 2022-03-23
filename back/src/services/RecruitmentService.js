@@ -296,7 +296,7 @@ class RecruitmentService {
 
     // 댓글 수정하기
     static async setComment({ recruitmentId, commentId, authorId, toUpdate }) {
-        const recruitment = await Recruitment.findById({ recruitmentId });
+        const recruitment = await Recruitment.findAuthor({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
@@ -307,23 +307,33 @@ class RecruitmentService {
         if (authorId === recruitment.captain.id) {
             console.log('[captain]! writing');
         }
-        const comments = recruitment.comment;
-        let comment = comments.filter((comment) => {
-            comment.id === commentId && comment.author._id === user._id;
-            console.log(comment.author._id);
-            console.log(user._id);
-            console.log(comment.author._id === user._id);
-        });
-        if (comment.length === 0) {
-            const errorMesaage = '댓글이 없거나 수정 권한이 없습니다.';
-            throw new Error(errorMesaage);
+
+        let comments = recruitment.comment.find(
+            (comment) => comment.id === commentId
+        );
+
+        if (comments.length === 0) {
+            const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
+            throw new Error(errorMessage);
         }
-        comment = { id: commentId, author: user._id, ...comment };
+
+        comments = recruitment.comment.find(
+            (comment) =>
+                comment.id === commentId && comment.author.id === authorId
+        );
+
+        if (comments === null || comments === undefined) {
+            const errorMesaage = '수정 권한이 없습니다.';
+            throw new Error(errorMessage);
+        }
+
+        const comment = { id: commentId, author: user._id, ...toUpdate };
+        console.log(comment);
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             { comment }
         );
-        // console.log(updatedRecruitment);
+        console.log(updatedRecruitment);
         return updatedRecruitment;
     }
 

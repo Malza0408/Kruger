@@ -64,24 +64,7 @@ class Recruitment {
         }).populate('comment.author');
         return recruitment;
     }
-    static async findComment({ commentId }) {
-        const recruitment = await RecruitmentModel.findOne({
-            comment: commentId
-        });
-        return recruitment;
-    }
 
-    // static async deleteComment({ recruitmentId, authorId }) {
-    //     await RecruitmentModel.findOneAndUpdate(
-    //         { id: recruitmentId },
-    //         {
-    //             Comment: {
-    //                 author: { id: authorId }
-    //             }
-    //         }
-    //     );
-    //     return;
-    // }
     static async updateArray(filter, update) {
         const option = { returnOriginal: false };
 
