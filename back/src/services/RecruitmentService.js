@@ -140,13 +140,14 @@ class RecruitmentService {
     // 지원하기
     static async addApplicant({ recruitmentId, applicantId }) {
         const applicant = await User.findById(applicantId);
-        const recruitment = await Recruitment.findById({
+        const recruitment = await Recruitment.findApplicant({
             recruitmentId
         });
-        const appliedOrNot = await Recruitment.findApplicant({
-            recruitmentId,
-            applicant
-        });
+
+        console.log(recruitment.applicant);
+        const applicants = recruitment.applicant.find(
+            (v) => v.id === applicant.id
+        );
 
         // 게시글이 있는지 확인
         if (!recruitment) {
@@ -159,7 +160,7 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
         // 유저가 기존 지원자목록에 있는지 확인
-        if (appliedOrNot !== null) {
+        if (applicants) {
             const errorMessage = '이미 지원하셨습니다.';
             throw new Error(errorMessage);
         }

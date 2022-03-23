@@ -42,10 +42,9 @@ class Recruitment {
         return updatedRecruitment;
     }
 
-    static async findApplicant({ recruitmentId, applicant }) {
+    static async findApplicant({ recruitmentId }) {
         const recruitment = await RecruitmentModel.findOne({
-            id: recruitmentId,
-            applicant: applicant
+            id: recruitmentId
         }).populate('applicant');
         return recruitment;
     }
