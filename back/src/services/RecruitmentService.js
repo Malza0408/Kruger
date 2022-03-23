@@ -111,6 +111,7 @@ class RecruitmentService {
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
+        console.log(recruitment);
         let nowEnrolling = recruitment.nowEnrolling;
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
