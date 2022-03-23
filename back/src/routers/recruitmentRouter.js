@@ -165,52 +165,6 @@ recruitmentRouter.patch(
     }
 );
 
-// 댓글 수정하기
-recruitmentRouter.patch(
-    '/recruit/comment/:id/:commentId',
-    login_required,
-    updateMiddleware,
-    async (req, res, next) => {
-        try {
-            const recruitmentId = req.params.id;
-            const commentId = req.params.commentId;
-            const authorId = req.currentUserId;
-            const toUpdate = req.toUpdate;
-            const updatedRecruitment = await RecruitmentService.setComment({
-                recruitmentId,
-                commentId,
-                authorId,
-                toUpdate
-            });
-            res.status(200).json(updatedRecruitment);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-// 댓글 달기
-recruitmentRouter.put(
-    '/recruit/comment/:id',
-    login_required,
-    async function (req, res, next) {
-        try {
-            const { applicantId } = req.body;
-            const recruitmentId = req.params.id;
-            const user_id = req.currentUserId;
-
-            const updatedRecruitment = await RecruitmentService.setMember({
-                recruitmentId,
-                applicantId,
-                user_id
-            });
-            res.status(200).json(updatedRecruitment);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
 // 게시물에 좋아요 누르기
 recruitmentRouter.patch(
     '/likedRecruit/:id',
@@ -276,16 +230,42 @@ recruitmentRouter.put(
     }
 );
 
+// 댓글 수정하기
+recruitmentRouter.patch(
+    '/recruit/:id/:commentId',
+    login_required,
+    updateMiddleware,
+    async (req, res, next) => {
+        try {
+            const recruitmentId = req.params.id;
+            const commentId = req.params.commentId;
+            const authorId = req.currentUserId;
+            const toUpdate = req.toUpdate;
+            const updatedRecruitment = await RecruitmentService.setComment({
+                recruitmentId,
+                commentId,
+                authorId,
+                toUpdate
+            });
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 // 댓글 삭제하기
 recruitmentRouter.patch(
-    '/recruit/delete/comment/:id',
+    '/recruit/delete/:id/:commentId',
     login_required,
     async (req, res, next) => {
         try {
             const recruitmentId = req.params.id;
+            const commentId = req.params.commentId;
             const authorId = req.currentUserId;
             await RecruitmentService.deleteComment({
                 recruitmentId,
+                commentId,
                 authorId
             });
             res.status(200).json('댓글이 삭제되었습니다.');
@@ -296,8 +276,8 @@ recruitmentRouter.patch(
 );
 
 // 게시글 삭제하기
-recruitmentRouter.delete(
-    '/recruit/:id',
+recruitmentRouter.patch(
+    '/recruit/delete/:id/:commentId',
     login_required,
     async function (req, res, next) {
         try {
