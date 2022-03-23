@@ -1,6 +1,6 @@
 function updateMiddleware(req, res, next) {
     const { name, email, password, description, picture } = req.body ?? null;
-    const { title, date, from_date, to_date } = req.body ?? null;
+    const { title, date, from_date, to_date, language } = req.body ?? null;
     const { school, major, position, detail, content } = req.body ?? null;
     let toUpdate = {};
 
@@ -27,6 +27,8 @@ function updateMiddleware(req, res, next) {
             toUpdate.detail = detail;
         if ((content !== null) & (content !== undefined))
             toUpdate.content = content;
+        if (language !== null && language !== undefined)
+            toUpdate.language = language;
 
         const values = Object.values(toUpdate);
         console.log('toUpdate : ', toUpdate);

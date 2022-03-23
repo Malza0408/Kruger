@@ -19,6 +19,10 @@ const RecruitmentSchema = new Schema(
             type: String,
             required: true
         },
+        language: {
+            type: [String],
+            required: true
+        },
         like: {
             type: [Schema.Types.ObjectId],
             ref: 'User',
