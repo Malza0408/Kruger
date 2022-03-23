@@ -95,7 +95,7 @@ noteRouter.get('/sentNotes/:id', login_required, async (req, res, next) => {
     }
 });
 
-noteRouter.put('/takenNotes/:id', login_required, async (req, res, next) => {
+noteRouter.patch('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
         console.log(noteId);
