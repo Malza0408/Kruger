@@ -52,6 +52,7 @@ recruitmentRouter.get('/recruit/:id', async (req, res, next) => {
 recruitmentRouter.put(
     '/recruit/:id',
     login_required,
+    languageMiddleware,
     updateMiddleware,
     async function (req, res, next) {
         try {

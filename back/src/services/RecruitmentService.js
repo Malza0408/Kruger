@@ -27,6 +27,7 @@ class RecruitmentService {
     // 게시물 수정하기
     static async setRecruitment({ recruitmentId, user_id, toUpdate }) {
         let recruitment = await Recruitment.findById({ recruitmentId });
+        console.log('hi');
 
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';

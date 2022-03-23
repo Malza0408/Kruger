@@ -1,8 +1,10 @@
-import { reset } from 'nodemon';
-
 function languageMiddleware(req, res, next) {
-    const { language } = req.body;
     try {
+        const { language } = req.body;
+        if (!language) {
+            next();
+            return;
+        }
         // js, ts, react, node,  vue, python, django
         const languageType = [
             'js',
@@ -22,7 +24,7 @@ function languageMiddleware(req, res, next) {
 
         next();
     } catch (error) {
-        res.status(400).json('이 방법이 아닌듯');
+        res.status(400).json('이 방법이 아닌가봐');
     }
 }
 
