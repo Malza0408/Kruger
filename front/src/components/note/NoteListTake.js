@@ -98,6 +98,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                     <span className="text-muted">{takeNote.content}</span>
                 </Card.Text> */}
             </Card.Body>
+            <hr />
         </Card.Text>
     );
 };

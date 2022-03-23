@@ -71,6 +71,7 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                     </Col>
                 </Row>
             </Card.Body>
+            <hr />
         </Card.Text>
     );
 };
