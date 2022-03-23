@@ -56,75 +56,10 @@ class RecruitmentService {
         return recruitment;
     }
 
-    // 게시물 1개보기
-    static async getRecruitment({ recruitmentId }) {
-        const recruitment = await Recruitment.findById({ recruitmentId });
-        if (!recruitment) {
-            const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-        return recruitment;
-    }
-
     // 게시글 목록보기
     static async getRecruitments() {
         const recruitments = await Recruitment.findAll();
         return recruitments;
-    }
-
-    static async likeRecruitment({ recruitmentId, user_id }) {
-        let likedRecruitment = await Recruitment.findById({ recruitmentId });
-
-        if (!likedRecruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const user = await User.findById(user_id);
-
-        console.log(likedRecruitment.like.indexOf(user._id));
-        if (likedRecruitment.like.includes(user._id)) {
-            const errorMessage = '이미 좋아요를 누른 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const newLikeValue = { $push: { like: user } };
-
-        likedRecruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newLikeValue
-        );
-
-        return likedRecruitment;
-    }
-
-    static async unlikeRecruitment({ recruitmentId, user_id }) {
-        let unlikedRecruitment = await Recruitment.findById({ recruitmentId });
-
-        if (!unlikedRecruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const user = await User.findById(user_id);
-
-        console.log(unlikedRecruitment.like.indexOf(user._id));
-        const unlikedIndex = unlikedRecruitment.like.indexOf(user._id);
-        if (unlikedIndex === -1) {
-            const errorMessage = '좋아요를 누르지 않은 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const like = unlikedRecruitment.like;
-        like.splice(unlikedIndex, 1);
-        const newUnlikeValue = { like };
-
-        unlikedRecruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newUnlikeValue
-        );
-
-        return unlikedRecruitment;
     }
 
     static async setMember({ recruitmentId, applicantId, user_id }) {
@@ -169,18 +104,6 @@ class RecruitmentService {
         );
 
         return recruitment;
-    }
-
-    // 게시글 생성
-    static async addRecruitment({ user_id, title, detail }) {
-        const id = uuidv4();
-        // title이나 detail 검증필요?
-        const captain = await User.findById(user_id);
-        const newRecruitment = { id, captain, title, detail };
-
-        const createdNewRecruitment = await Recruitment.create(newRecruitment);
-
-        return createdNewRecruitment;
     }
 
     // 모집마감 토글
@@ -282,51 +205,6 @@ class RecruitmentService {
         );
         // console.log(updatedRecruitment);
         return updatedRecruitment;
-    }
-
-    // 멤버 승인하기
-    static async setMember({ recruitmentId, applicantId, user_id }) {
-        let recruitment = await Recruitment.findById({ recruitmentId });
-        if (!recruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        if (recruitment.captain.id !== user_id) {
-            const errorMessage = '권한이 없는 사용자입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const applyUser = await User.findById(applicantId);
-        if (!applyUser) {
-            const errorMessage = '존재하지 않는 사용자입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const applyUserIndex = recruitment.applicant.indexOf(applyUser._id);
-
-        if (applyUserIndex === -1) {
-            const errorMessage = '지원하지 않은 사용자입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const applicant = recruitment.applicant;
-        applicant.splice(applyUserIndex, 1);
-        const newApplicantValue = { applicant };
-
-        recruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newApplicantValue
-        );
-
-        const newMemberValue = { $push: { member: applicant } };
-
-        recruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newMemberValue
-        );
-
-        return recruitment;
     }
 
     // 게시물에 좋아요 누르기
@@ -447,18 +325,33 @@ class RecruitmentService {
     }
 
     //댓글 삭제하기
-    static async deleteComment({ recruitmentId, authorId }) {
-        const recruitment = await Recruitment.findById({ recruitment });
+    static async deleteComment({ recruitmentId, commentId, authorId }) {
+        const recruitment = await Recruitment.findById({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '삭제된 게시물입니다.';
             throw new Error(errorMessage);
         }
-        console.log(recruitment.comment.author.id);
-        if (recruitment.comment.author.id !== authorId) {
-            const errorMessage = '권한이 없습니다.';
+        const user = await User.findById(authorId);
+        const comments = recruitment.comment;
+        console.log(comments);
+        let comment = recruitment.comment.find(
+            (comment) => comment.id === commentId
+        );
+        if (Object.keys(comment).length === 0) {
+            const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
             throw new Error(errorMessage);
         }
-        await Recruitment.deleteComment({ recruitmentId, authorId });
+
+        // console.log(comments.splice(comment, 1));
+        // await Recruitment.updateArray({ id: recruitmentId });
+        // if (recruitment.comment.author.id !== authorId) {
+        //     const errorMessage = '권한이 없습니다.';
+        //     throw new Error(errorMessage);
+        // }
+        await Recruitment.updateArray(
+            { id: recruitmentId },
+            { $pull: { comment: { author: user._id } } }
+        );
         return;
     }
 
