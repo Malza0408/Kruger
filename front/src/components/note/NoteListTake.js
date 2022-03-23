@@ -1,6 +1,4 @@
 import {
-    Container,
-    Form,
     Row,
     Col,
     Button,
@@ -11,8 +9,25 @@ import * as Api from '../../api';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const NoteListTake = ({ key, takeNote, setTakeNote }) => {
+const NoteListTake = ({ takeNote, setTakeNote }) => {
     const navigate = useNavigate();
+
+    const [date, setDate] = useState(new Date());
+    const [newDateFormatted, setNewDateFormatted] = useState('');
+
+    useEffect(() => {
+        setDate(new Date(takeNote.createdAt));
+        const time = new Date(takeNote.createdAt)
+            .toLocaleString()
+            .split('.')[3];
+
+        // date format을 'yyyy-MM-dd'로 변경
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+
+        setNewDateFormatted(`${year}년 ${month}월 ${day}일 ${time}`);
+    }, []);
 
     const handleRead = async () => {
         await Api.patch(`takenNotes/${takeNote.id}`);
@@ -64,7 +79,7 @@ const NoteListTake = ({ key, takeNote, setTakeNote }) => {
                             handleRead();
                         }}
                     >
-                        <span>
+                        <span className="fs-5">
                             <strong>{takeNote.title}</strong>
                         </span>
                     </Card.Link>
@@ -73,7 +88,7 @@ const NoteListTake = ({ key, takeNote, setTakeNote }) => {
                     <Col>
                         <Card.Text>
                             <span className="text-muted">
-                                {takeNote.createdAt}
+                                <small>{newDateFormatted}</small>
                             </span>
                         </Card.Text>
                     </Col>
