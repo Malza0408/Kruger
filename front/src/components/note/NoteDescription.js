@@ -54,40 +54,46 @@ const NoteDescription = () => {
                         {user?.name === note.fromUser?.name ? (
                             // 발신
                             <Col>
-                                {note.toUser?.name === '탈퇴한 회원' ? (
-                                    <Badge class="fs-3" bg="secondary">
-                                        탈퇴한 회원
-                                    </Badge>
-                                ) : (
-                                    <span class="fs-2">
-                                        <strong>{note.toUser?.name}</strong>
-                                    </span>
-                                )}
-                                <span className="fs-2 text-muted">
-                                    <small>에게 보낸 쪽지</small>
-                                </span>
-                                <Row>
+                                <h3>
+                                    {note.toUser?.name === '탈퇴한 회원' ? (
+                                        <Badge bg="secondary">
+                                            탈퇴한 회원
+                                        </Badge>
+                                    ) : (
+                                        <span class="fs-2">
+                                            <strong>{note.toUser?.name}</strong>
+                                        </span>
+                                    )}
                                     <span className="text-muted">
-                                        <small>{note.toUser?.email}</small>
+                                        <small>에게 보낸 쪽지</small>
                                     </span>
-                                </Row>
+                                </h3>
+                                <span className="text-muted">
+                                    <small>{note.toUser?.email}</small>
+                                </span>
                             </Col>
                         ) : (
                             // 수신
                             <Col>
-                                <Row>
-                                    <span class="fs-2">
-                                        <strong>{note.fromUser?.name}</strong>
-                                        <span className="text-muted">
-                                            <small>가 보낸 쪽지</small>
+                                <h3>
+                                    {note.fromUser?.name === '탈퇴한 회원' ? (
+                                        <Badge bg="secondary">
+                                            탈퇴한 회원
+                                        </Badge>
+                                    ) : (
+                                        <span class="fs-2">
+                                            <strong>
+                                                {note.fromUser?.name}
+                                            </strong>
                                         </span>
-                                    </span>
-                                </Row>
-                                <Row>
+                                    )}
                                     <span className="text-muted">
-                                        <small>{note.fromUser?.email}</small>
+                                        <small>이(가) 보낸 쪽지</small>
                                     </span>
-                                </Row>
+                                </h3>
+                                <span className="text-muted">
+                                    <small>{note.fromUser?.email}</small>
+                                </span>
                             </Col>
                         )}
                         <Card.Text>
