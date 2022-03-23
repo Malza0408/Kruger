@@ -6,16 +6,11 @@ import NoteDescription from './NoteDescription';
 const NoteListSend = ({ sendNote, setSendNote }) => {
     const navigate = useNavigate();
 
-    const handleCheck = () => {
-        Api.get(``)
-    }
-
     const handleDelete = async (e) => {
         e.preventDefault();
 
         await Api.delete(`sentNotes/${sendNote.id}`);
 
-        // await Api.get('sentNotelist', user_id).then((res) => setSendNote(res.data));
         await Api.get(`sentNotelist`).then((res) => {
             setSendNote(res.data);
         });
@@ -35,9 +30,6 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                                 <small>에게 보낸 쪽지</small>
                             </span>
                         </Card.Title>
-                    </Col>
-                    <Col>
-
                     </Col>
                 </Row>
                 <Col>
@@ -66,9 +58,6 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                         </Button>{' '}
                     </Col>
                 </Row>
-                {/* <Card.Text>
-                    <span className="text-muted">{sendNote.content}</span>
-                </Card.Text> */}
             </Card.Body>
         </Card.Text>
     );
