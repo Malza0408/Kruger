@@ -14,7 +14,7 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // 전체
+        // 전체 쪽지함
         Api.get(`notelist`).then((res) => {
             setAllNote(res.data);
         });
@@ -33,8 +33,9 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
         });
     }, []);
 
-    const DescCreatedAtAll = () => {
-        const descAllNote = [...allNote];
+    // 발신 시간 내림차순
+    const DescCreatedAt = (note) => {
+        const descAllNote = [...note];
         descAllNote.sort((note1, note2) =>
             note1.createdAt < note2.createdAt
                 ? 1
@@ -48,8 +49,8 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
 
     return (
         <div>
-            {/* 전체 */}
-            {DescCreatedAtAll().map((note) => {
+            {/* 전체 쪽지함 */}
+            {DescCreatedAt(allNote).map((note) => {
                 return (
                     isNoteListAll &&
                     (user.name === note.fromUser.name ? (
@@ -67,8 +68,8 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
                     ))
                 );
             })}
-            {/* 발신 */}
-            {sendNote.map((note) => {
+            {/* 발신함 */}
+            {DescCreatedAt(sendNote).map((note) => {
                 return (
                     !isNoteListAll &&
                     isNoteListSendig && (
@@ -80,23 +81,19 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
                     )
                 );
             })}
-            {/* 수신 */}
-            {takeNote.length === 0 ? (
-                <Col>수신함이 비었습니다.</Col>
-            ) : (
-                takeNote.map((note) => {
-                    return (
-                        !isNoteListAll &&
-                        !isNoteListSendig && (
-                            <NoteListTake
-                                key={note.id}
-                                takeNote={note}
-                                setTakeNote={setTakeNote}
-                            />
-                        )
-                    );
-                })
-            )}
+            {/* 수신함 */}
+            {DescCreatedAt(takeNote).map((note) => {
+                return (
+                    !isNoteListAll &&
+                    !isNoteListSendig && (
+                        <NoteListTake
+                            key={note.id}
+                            takeNote={note}
+                            setTakeNote={setTakeNote}
+                        />
+                    )
+                );
+            })}
         </div>
     );
 };
