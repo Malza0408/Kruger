@@ -127,50 +127,6 @@ class RecruitmentService {
         return unlikedRecruitment;
     }
 
-    static async setMember({ recruitmentId, applicantId, user_id }) {
-        let recruitment = await Recruitment.findById({ recruitmentId });
-        if (!recruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        if (recruitment.captain.id !== user_id) {
-            const errorMessage = '권한이 없는 사용자입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const applyUser = await User.findById(applicantId);
-        if (!applyUser) {
-            const errorMessage = '존재하지 않는 사용자입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const applyUserIndex = recruitment.applicant.indexOf(applyUser._id);
-
-        if (applyUserIndex === -1) {
-            const errorMessage = '지원하지 않은 사용자입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const applicant = recruitment.applicant;
-        applicant.splice(applyUserIndex, 1);
-        const newApplicantValue = { applicant };
-
-        recruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newApplicantValue
-        );
-
-        const newMemberValue = { $push: { member: applicant } };
-
-        recruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newMemberValue
-        );
-
-        return recruitment;
-    }
-
     // 게시글 생성
     static async addRecruitment({ user_id, title, detail }) {
         const id = uuidv4();
@@ -319,7 +275,7 @@ class RecruitmentService {
             newApplicantValue
         );
 
-        const newMemberValue = { $push: { member: applicant } };
+        const newMemberValue = { $push: { member: applyUser } };
 
         recruitment = await Recruitment.updateArray(
             { id: recruitmentId },
