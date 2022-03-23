@@ -179,8 +179,10 @@ class UserService {
 
         let user = await User.findById(user_id);
 
-        console.log(followedUser._doc.follower.indexOf(user._doc._id) !== -1);
-        if (followedUser._doc.follower.includes(user._doc._id)) {
+        const validator = followedUser.follower.filter(
+            (v) => v.id === user_id
+        ).length;
+        if (validator !== 0) {
             const errorMessage = '이미 팔로우 중입니다.';
             throw new Error(errorMessage);
         }
@@ -193,6 +195,17 @@ class UserService {
             newFollowedValue
         );
         user = await User.updateFollow({ id: user_id }, newFollowValue);
+
+        user.follow.map((v) => {
+            const { password, ...refinedUser } = v._doc;
+            console.log(refinedUser);
+            v._doc = refinedUser;
+        });
+
+        user.follower.map((v) => {
+            const { password, ...refinedUser } = v._doc;
+            v._doc = refinedUser;
+        });
 
         return user;
     }
@@ -207,15 +220,28 @@ class UserService {
 
         let user = await User.findById(user_id);
 
-        console.log(user._doc.follow.indexOf(unfollowedUser._doc._id));
-        const unfollowedIndex = unfollowedUser._doc.follower.indexOf(
-            user._doc._id
+        const followArray = [];
+        user.follow.map((v) =>
+            v.id === unfollowedId
+                ? followArray.push(true)
+                : followArray.push(false)
         );
-        const unfollowIndex = user._doc.follow.indexOf(unfollowedUser._doc._id);
+        const followedArray = [];
+        unfollowedUser.follower.map((v) =>
+            v.id === user_id
+                ? followedArray.push(true)
+                : followedArray.push(false)
+        );
+        console.log(followArray);
+
+        const unfollowIndex = followArray.indexOf(true);
+        const unfollowedIndex = followedArray.indexOf(true);
+
         if (unfollowIndex === -1) {
             const errorMessage = '팔로우하지 않은 사용자입니다.';
             throw new Error(errorMessage);
         }
+        console.log(unfollowIndex);
 
         const follower = unfollowedUser._doc.follower;
         follower.splice(unfollowedIndex, 1);
@@ -231,6 +257,16 @@ class UserService {
             newUnfollowedValue
         );
         user = await User.updateFollow({ id: user_id }, newUnfollowValue);
+
+        user.follow.map((v) => {
+            const { password, ...refinedUser } = v._doc;
+            v._doc = refinedUser;
+        });
+
+        user.follower.map((v) => {
+            const { password, ...refinedUser } = v._doc;
+            v._doc = refinedUser;
+        });
 
         return user;
     }
