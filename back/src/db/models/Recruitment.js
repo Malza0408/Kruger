@@ -62,7 +62,7 @@ class Recruitment {
     static async findAuthor({ recruitmentId }) {
         const recruitment = await RecruitmentModel.findOne({
             id: recruitmentId
-        }).populate('Comment.author');
+        }).populate('comment.author');
     }
 
     static async updateComment({ recruitmentId, author, toUpdate }) {

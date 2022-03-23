@@ -140,16 +140,18 @@ recruitmentRouter.patch(
 
 // 댓글 수정하기
 recruitmentRouter.patch(
-    '/recruit/comment/:id',
+    '/recruit/comment/:id/:commentId',
     login_required,
     updateMiddleware,
     async (req, res, next) => {
         try {
             const recruitmentId = req.params.id;
+            const commentId = req.params.commentId;
             const authorId = req.currentUserId;
             const toUpdate = req.toUpdate;
             const updatedRecruitment = await RecruitmentService.setComment({
                 recruitmentId,
+                commentId,
                 authorId,
                 toUpdate
             });
