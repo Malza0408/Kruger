@@ -1,30 +1,20 @@
-import {
-    Row,
-    Col,
-    Button,
-    Card,
-    Badge
-} from 'react-bootstrap';
+import { Row, Col, Button, Card, Badge } from 'react-bootstrap';
 import * as Api from '../../api';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const NoteListTake = ({ takeNote, setTakeNote }) => {
     const navigate = useNavigate();
-
-    const [date, setDate] = useState(new Date());
     const [newDateFormatted, setNewDateFormatted] = useState('');
 
     useEffect(() => {
-        setDate(new Date(takeNote.createdAt));
-        const time = new Date(takeNote.createdAt)
-            .toLocaleString()
-            .split('.')[3];
+        const newDate = new Date(takeNote?.createdAt);
 
-        // date format을 'yyyy-MM-dd'로 변경
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
+        // date format을 'yyyy년 MM월 dd일 h:m:s'로 변경
+        const year = newDate.getFullYear();
+        const month = (newDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = newDate.getDate().toString().padStart(2, '0');
+        const time = newDate.toLocaleString().split('.')[3];
 
         setNewDateFormatted(`${year}년 ${month}월 ${day}일 ${time}`);
     }, []);
@@ -49,41 +39,42 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                 <Row>
                     <Col>
                         <Card.Title>
-                            <span>
-                                <strong>{takeNote.fromUser.name}</strong>
-                            </span>
+                            {takeNote.fromUser.name === '탈퇴한 회원' ? (
+                                <Badge class="badge bg-secondary">
+                                    탈퇴한 회원
+                                </Badge>
+                            ) : (
+                                <span>
+                                    <strong>{takeNote.fromUser.name}</strong>
+                                </span>
+                            )}
                             <span className="text-muted">
                                 <small>이(가) 보낸 쪽지</small>
                             </span>
                         </Card.Title>
                     </Col>
                     <Col>
-                        <span className="text-muted">
-                            {takeNote.check ? (
-                                <Badge pill bg="secondary">
-                                    읽음
-                                </Badge>
-                            ) : (
-                                <Badge pill bg="success">
-                                    읽지 않음
-                                </Badge>
-                            )}
-                            <small>{takeNote.check}</small>
-                        </span>
+                        {takeNote.check ? (
+                            <Badge pill bg="secondary">
+                                읽음
+                            </Badge>
+                        ) : (
+                            <Badge pill bg="success">
+                                읽지 않음
+                            </Badge>
+                        )}
                     </Col>
                 </Row>
-                <Col>
-                    <Card.Link
-                        onClick={() => {
-                            navigate(`/note/${takeNote.id}`);
-                            handleRead();
-                        }}
-                    >
-                        <span className="fs-5">
-                            <strong>{takeNote.title}</strong>
-                        </span>
-                    </Card.Link>
-                </Col>
+                <Card.Link
+                    onClick={() => {
+                        navigate(`/note/${takeNote.id}`);
+                        handleRead();
+                    }}
+                >
+                    <span className="fs-5">
+                        <strong>{takeNote.title}</strong>
+                    </span>
+                </Card.Link>
                 <Row>
                     <Col>
                         <Card.Text>

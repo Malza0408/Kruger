@@ -7,20 +7,16 @@ import NoteDescription from './NoteDescription';
 
 const NoteListSend = ({ sendNote, setSendNote }) => {
     const navigate = useNavigate();
-
-    const [date, setDate] = useState(new Date());
     const [newDateFormatted, setNewDateFormatted] = useState('');
 
     useEffect(() => {
-        setDate(new Date(sendNote.createdAt));
-        const time = new Date(sendNote.createdAt)
-            .toLocaleString()
-            .split('.')[3];
+        const newDate = new Date(sendNote?.createdAt);
 
-        // date format을 'yyyy-MM-dd'로 변경
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
+        // date format을 'yyyy년 MM월 dd일 h:m:s'로 변경
+        const year = newDate.getFullYear();
+        const month = (newDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = newDate.getDate().toString().padStart(2, '0');
+        const time = newDate.toLocaleString().split('.')[3];
 
         setNewDateFormatted(`${year}년 ${month}월 ${day}일 ${time}`);
     }, []);
@@ -38,25 +34,19 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
     return (
         <Card.Text as={Col}>
             <Card.Body>
-                <Row>
-                    <Col>
-                        <Card.Title>
-                            <span>
-                                <strong>{sendNote.toUser.name}</strong>
-                            </span>
-                            <span className="text-muted">
-                                <small>에게 보낸 쪽지</small>
-                            </span>
-                        </Card.Title>
-                    </Col>
-                </Row>
-                <Col>
-                    <Card.Link onClick={() => navigate(`/note/${sendNote.id}`)}>
-                        <span className="fs-5">
-                            <strong>{sendNote.title}</strong>
-                        </span>
-                    </Card.Link>
-                </Col>
+                <Card.Title>
+                    <span>
+                        <strong>{sendNote.toUser.name}</strong>
+                    </span>
+                    <span className="text-muted">
+                        <small>에게 보낸 쪽지</small>
+                    </span>
+                </Card.Title>
+                <Card.Link onClick={() => navigate(`/note/${sendNote.id}`)}>
+                    <span className="fs-5">
+                        <strong>{sendNote.title}</strong>
+                    </span>
+                </Card.Link>
                 <Row>
                     <Col>
                         <Card.Text>
