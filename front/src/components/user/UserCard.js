@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import WithdrawalModal from '../modal/WithdrawalModal';
 import ChangeProfileModal from '../modal/ChangeProfileModal';
-import FriendsList from './FriendsList';
 
 import * as Api from '../../api';
 
@@ -35,7 +34,6 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                         className="mb-3 mt-3 profileImage"
                         src={user?.picture}
                         alt="프로필 사진"
-                        onClick={() => navigate(`/users/${user.id}`)}
                     />
                     <ChangeProfileModal
                         show={showProfile}
@@ -76,8 +74,6 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                                     handleClose={handleCloseWithdrawal}
                                     userDelete={userDelete}
                                 />
-
-                                {/* onClick={userDelete} */}
                             </Col>
                         </Row>
                     </Col>
