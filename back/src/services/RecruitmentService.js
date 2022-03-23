@@ -417,34 +417,32 @@ class RecruitmentService {
     }
 
     // 댓글 수정하기
-    static async setComment({ recruitmentId, authorId, toUpdate }) {
-        const recruitment = await Recruitment.findAuthor({ recruitmentId });
+    static async setComment({ recruitmentId, commentId, authorId, toUpdate }) {
+        const recruitment = await Recruitment.findById({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
-        const author = await User.findById(authorId);
-        console.log(recruitment);
+
+        const user = await User.findById(authorId);
         // captain이 댓글쓸 때 어떻게?
         if (authorId === recruitment.captain.id) {
             console.log('[captain]! writing');
         }
-
-        console.log(recruitment.comment[0].author);
-        // 로그인한 유저와 댓글작성자가 다르면 에러메세지.
-        if (
-            recruitment.comment.length !== 0 &&
-            authorId !== recruitment.comment.author.id
-        ) {
-            const errorMessage = '수정 권한이 없습니다.';
-            throw new Error(errorMessage);
-        }
-
-        const updatedRecruitment = await Recruitment.updateComment({
-            recruitmentId,
-            author,
-            toUpdate
+        const comments = recruitment.comment;
+        let comment = comments.filter((comment) => {
+            comment.id === commentId && comment.author === user._id;
         });
+        if (comment.length === 0) {
+            const errorMesaage = '댓글이 없거나 수정 권한이 없습니다.';
+            throw new Error(errorMesaage);
+        }
+        comment = { id: commentId, author: user._id, ...comment };
+        const updatedRecruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            { comment }
+        );
+        // console.log(updatedRecruitment);
         return updatedRecruitment;
     }
 

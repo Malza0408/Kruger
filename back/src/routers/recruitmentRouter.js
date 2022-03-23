@@ -165,6 +165,52 @@ recruitmentRouter.patch(
     }
 );
 
+// 댓글 수정하기
+recruitmentRouter.patch(
+    '/recruit/comment/:id/:commentId',
+    login_required,
+    updateMiddleware,
+    async (req, res, next) => {
+        try {
+            const recruitmentId = req.params.id;
+            const commentId = req.params.commentId;
+            const authorId = req.currentUserId;
+            const toUpdate = req.toUpdate;
+            const updatedRecruitment = await RecruitmentService.setComment({
+                recruitmentId,
+                commentId,
+                authorId,
+                toUpdate
+            });
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+// 댓글 달기
+recruitmentRouter.put(
+    '/recruit/comment/:id',
+    login_required,
+    async function (req, res, next) {
+        try {
+            const { applicantId } = req.body;
+            const recruitmentId = req.params.id;
+            const user_id = req.currentUserId;
+
+            const updatedRecruitment = await RecruitmentService.setMember({
+                recruitmentId,
+                applicantId,
+                user_id
+            });
+            res.status(200).json(updatedRecruitment);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 // 게시물에 좋아요 누르기
 recruitmentRouter.patch(
     '/likedRecruit/:id',
@@ -224,28 +270,6 @@ recruitmentRouter.put(
                 user_id
             });
             res.status(200).json(newComment);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-// 댓글 수정하기
-recruitmentRouter.patch(
-    '/recruit/comment/:id',
-    login_required,
-    updateMiddleware,
-    async (req, res, next) => {
-        try {
-            const recruitmentId = req.params.id;
-            const authorId = req.currentUserId;
-            const toUpdate = req.toUpdate;
-            const updatedRecruitment = await RecruitmentService.setComment({
-                recruitmentId,
-                authorId,
-                toUpdate
-            });
-            res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);
         }
