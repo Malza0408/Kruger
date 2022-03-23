@@ -1,7 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
-import { updateMiddleware } from '../middlewares/updateMiddleware';
+import { userUpdateMiddleware } from '../middlewares/userUpdateMiddleware';
 import { UserService } from '../services/UserService';
 
 const userRouter = Router();
@@ -85,7 +85,7 @@ userRouter.get('/users/:id', login_required, async function (req, res, next) {
 userRouter.put(
     '/users/:id',
     login_required,
-    updateMiddleware,
+    userUpdateMiddleware,
     async function (req, res, next) {
         try {
             // URI로부터 사용자 id를 추출함.
