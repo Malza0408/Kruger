@@ -1,4 +1,12 @@
-import { Container, Form, Row, Col, Button, Card, Badge } from 'react-bootstrap';
+import {
+    Container,
+    Form,
+    Row,
+    Col,
+    Button,
+    Card,
+    Badge
+} from 'react-bootstrap';
 import * as Api from '../../api';
 import React, { useState, useEffect, useContext } from 'react';
 
@@ -46,11 +54,14 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                         <small>에게 보낸 쪽지</small>
                     </span>
                 </Card.Title>
-                <Card.Link onClick={() => navigate(`/note/${sendNote.id}`)}>
+                <Card.Title
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate(`/note/${sendNote.id}`)}
+                >
                     <span className="fs-5">
                         <strong>{sendNote.title}</strong>
                     </span>
-                </Card.Link>
+                </Card.Title>
                 <Row>
                     <Col>
                         <Card.Text>
