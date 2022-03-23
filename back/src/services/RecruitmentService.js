@@ -32,12 +32,14 @@ class RecruitmentService {
         return recruitment;
     }
 
+    // 게시물 1개보기
     static async getRecruitment({ recruitmentId }) {
         const recruitment = await Recruitment.findById({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
+        return recruitment;
     }
 
     static async likeRecruitment({ recruitmentId, user_id }) {
@@ -139,6 +141,7 @@ class RecruitmentService {
         return recruitment;
     }
 
+    // 게시글 생성
     static async addRecruitment({ user_id, title, detail }) {
         const id = uuidv4();
         // title이나 detail 검증필요?
@@ -150,6 +153,7 @@ class RecruitmentService {
         return createdNewRecruitment;
     }
 
+    // 모집마감
     static async closeRecruitment({ recruitmentId, userId }) {
         const recruitment = await Recruitment.findById({
             recruitmentId
@@ -172,13 +176,19 @@ class RecruitmentService {
         return updatedRecruitment;
     }
 
+    // 지원하기
     static async addApplicant({ recruitmentId, applicantId }) {
-        const recruitment = await Recruitment.findById({ recruitmentId });
-        // 지원자가져오기
+        const recruitment = await Recruitment.findApplicant({ recruitmentId });
         const applicant = await User.findById(applicantId);
-        // 기존 지원자목록서 지원자 찾아서 가져오기
-        const applied = await Recruitment.findApplicant({ applicant });
+        let applicantList = recruitment.applicant;
+        const AppliedOrNot = recruitment.applicant.indexOf(applicant.id);
+        // console.log(AppliedOrNot);
 
+        // 게시글이 있는지 확인
+        if (!recruitment) {
+            const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
+            throw new Error(errorMessage);
+        }
         // 모집중인지 확인
         if (!recruitment.nowEnrolling) {
             const errorMessage = '해당 공고는 마감되었습니다.';
@@ -186,14 +196,48 @@ class RecruitmentService {
         }
 
         //지원자가 기존 지원자목록에 있는지 확인
-        if (applied) {
+        if (AppliedOrNot !== -1) {
             const errorMessage = '이미 지원하셨습니다.';
             throw new Error(errorMessage);
         }
 
+        applicantList.push(applicant);
+        // console.log(applicantList);
+
         const updatedRecruitment = await Recruitment.addApplicant({
             recruitmentId,
-            applicant
+            applicantList
+        });
+
+        return updatedRecruitment;
+    }
+
+    //지원 취소하기
+    static async cancleApplicant({ recruitmentId, applicantId }) {
+        const recruitment = await Recruitment.findApplicant({ recruitmentId });
+        const applicant = await User.findById(applicantId);
+        let applicantList = recruitment.applicant;
+        const AppliedOrNot = applicantList.find((v) => v.id === applicant.id);
+
+        if (!recruitment) {
+            const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        if (!recruitment.nowEnrolling) {
+            const errorMessage = '해당 공고는 마감되었습니다.';
+            throw new Error(errorMessage);
+        }
+
+        if (AppliedOrNot.length === 0) {
+            const errorMessage = '이미 취소했거나 지원하지 않은 공고입니다.';
+            throw new Error(errorMessage);
+        }
+
+        applicantList = applicantList.find((v) => v.id !== applicant.id);
+        const updatedRecruitment = await Recruitment.deleteApplicant({
+            recruitmentId,
+            applicantList
         });
 
         return updatedRecruitment;
@@ -216,27 +260,52 @@ class RecruitmentService {
         return;
     }
 
+    // 댓글 수정하기
     static async setComment({ recruitmentId, authorId, toUpdate }) {
-        const recruitment = await Recruitment.findById({ recruitmentId });
+        const recruitment = await Recruitment.findAuthor({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
         const author = await User.findById(authorId);
-        console.log('author', author);
+        console.log(recruitment);
         // captain이 댓글쓸 때 어떻게?
         if (authorId === recruitment.captain.id) {
             console.log('[captain]! writing');
         }
 
+        console.log(recruitment.Comment[0].author);
         // 로그인한 유저와 댓글작성자가 다르면 에러메세지.
-        if (authorId !== recruitment.Comment.author) {
+        if (
+            recruitment.Comment.length !== 0 &&
+            authorId !== recruitment.Comment.author.id
+        ) {
             const errorMessage = '수정 권한이 없습니다.';
             throw new Error(errorMessage);
         }
 
-        console.log('recruitment : ', recruitment.Comment);
-        // console.log(recruitment.Comment.type.author);
+        const updatedRecruitment = await Recruitment.updateComment({
+            recruitmentId,
+            author,
+            toUpdate
+        });
+        return updatedRecruitment;
+    }
+
+    //댓글 삭제하기
+    static async deleteComment({ recruitmentId, authorId }) {
+        const recruitment = await Recruitment.findById({ recruitment });
+        if (!recruitment) {
+            const errorMessage = '삭제된 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+        console.log(recruitment.Comment.author.id);
+        if (recruitment.Comment.author.id !== authorId) {
+            const errorMessage = '권한이 없습니다.';
+            throw new Error(errorMessage);
+        }
+        await Recruitment.deleteComment({ recruitmentId, authorId });
+        return;
     }
 }
 
