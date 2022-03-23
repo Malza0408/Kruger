@@ -1,0 +1,16 @@
+.Posting {
+    button {
+        transition: all 0.2s ease-out;
+        background-color: transparent;
+        color: black;
+        border-color: transparent;
+        background-color: white;
+        border-radius: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        &:hover {
+            background-color: black;
+            color: white;
+        }
+    }
+}

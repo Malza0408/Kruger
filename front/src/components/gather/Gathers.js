@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import * as Api from '../../api';
+import { UserStateContext } from '../../App';
 import Gather from './Gather';
 
 const Gathers = (props) => {
     // 얘네가 무슨 프로젝트인지 가지고 있을꺼임. 아마 배열로
+    const navigate = useNavigate();
+    const userState = useContext(UserStateContext);
     const [projects, setProjects] = useState([
         {
             projects: ['js']
@@ -22,7 +26,13 @@ const Gathers = (props) => {
             projects: ['vue', 'node', 'js']
         },
         {
-            projects: ['vue']
+            projects: ['django', 'python']
+        },
+        {
+            projects: ['python']
+        },
+        {
+            projects: ['vue', 'ts']
         },
         {
             projects: ['node']
@@ -60,6 +70,16 @@ const Gathers = (props) => {
             src: `${process.env.PUBLIC_URL}/gatherImg/vue.png`,
             isFocusing: true,
             language: 'vue'
+        },
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/python.png`,
+            isFocusing: true,
+            language: 'python'
+        },
+        {
+            src: `${process.env.PUBLIC_URL}/gatherImg/django.png`,
+            isFocusing: true,
+            language: 'django'
         }
     ]);
     // 포커싱 된게 몇개인지 추적한다.
@@ -79,23 +99,15 @@ const Gathers = (props) => {
                 ) {
                     const newFilteredLang = [...filteredLanguage];
                     newFilteredLang.push(language);
-                    const filterd = newFilteredLang.map((lang) => {
-                        const filteredP = projects.filter((project) => {
-                            const langArray = Object.values(project);
-                            // console.log(
-                            //     'lang : ',
-                            //     lang,
-                            //     ' ',
-                            //     'langArray : ',
-                            //     langArray
-                            // );
-                            console.log(langArray.includes(lang));
-                            return langArray.includes(lang);
-                        });
-                        // console.log('filteredP: ', filteredP);
-                        return filteredP;
-                    });
-                    // console.log(('filltered: ', filterd));
+                    const filterd = newFilteredLang
+                        .map((lang) => {
+                            const filteredP = projects.filter((project) => {
+                                return project.projects.includes(lang);
+                            });
+                            return filteredP;
+                        })
+                        .flat();
+
                     setFilteredProjects([...filterd]);
                     setFilteredLanguage(newFilteredLang);
                 }
@@ -104,12 +116,20 @@ const Gathers = (props) => {
                 const newFilteredLang = filteredLanguage.filter((lang) => {
                     return lang !== language;
                 });
+                const newFilteredProject = [...filteredProjects];
+                const filtered = newFilteredProject.filter((project) => {
+                    return !project.projects.includes(language);
+                });
                 setFilteredLanguage(newFilteredLang);
+                setFilteredProjects(filtered);
             }
         }
     };
 
     useEffect(() => {
+        if (!userState.user) {
+            navigate('/login');
+        }
         const getProjects = async () => {
             try {
                 // 여기에 Project 불러오는 로직
@@ -120,7 +140,7 @@ const Gathers = (props) => {
             }
         };
         // getProjects()
-    }, []);
+    }, [navigate, userState.user]);
     return (
         <>
             <Row className="m-5">
