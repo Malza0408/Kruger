@@ -1,7 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
-import { updateMiddleware } from '../middlewares/updateMiddleware';
+import { profileUpdateMiddleware } from '../middlewares/profileUpdateMiddleware';
 import { CertificateService } from '../services/CertificateService';
 
 const certificateRouter = Router();
@@ -73,7 +73,7 @@ certificateRouter.get(
 certificateRouter.put(
     '/certificates/:id',
     login_required,
-    updateMiddleware,
+    profileUpdateMiddleware,
     async function (req, res, next) {
         try {
             // URI로부터 자격증 id를 추출함.
