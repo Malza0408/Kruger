@@ -1,4 +1,5 @@
 .gatherRoom {
+    box-sizing: border-box;
     justify-content: center;
     img {
         cursor: pointer;
@@ -18,14 +19,21 @@
             }
         }
     }
-    .newPosting {
+    button {
         background-color: transparent;
         color: black;
         border-color: transparent;
+    }
+    .newPostingBtn {
         width: 100px;
-        padding: 0;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
         font-weight: 600;
         transition: all 0.2s ease-in-out;
+        border: 1px solid white;
+        &:hover {
+            border: 1px solid black;
+        }
     }
 
     .Gather {

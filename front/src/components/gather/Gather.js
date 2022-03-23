@@ -8,7 +8,7 @@ const Gather = ({ project }) => {
                     <Card.Title>팀원 모집중!</Card.Title>
                 </Row>
                 <div className="imageContainer">
-                    {project?.map((project) => {
+                    {project?.map((project, index) => {
                         return (
                             <>
                                 {project === 'js' ? (
@@ -17,6 +17,7 @@ const Gather = ({ project }) => {
                                         alt="js"
                                         width="45px"
                                         height="45px"
+                                        key={index}
                                     ></img>
                                 ) : project === 'node' ? (
                                     <img
@@ -24,6 +25,7 @@ const Gather = ({ project }) => {
                                         alt="node"
                                         width="45px"
                                         height="45px"
+                                        key={index}
                                     ></img>
                                 ) : project === 'react' ? (
                                     <img
@@ -31,6 +33,7 @@ const Gather = ({ project }) => {
                                         alt="react"
                                         width="45px"
                                         height="45px"
+                                        key={index}
                                     ></img>
                                 ) : project === 'ts' ? (
                                     <img
@@ -38,6 +41,7 @@ const Gather = ({ project }) => {
                                         alt="ts"
                                         width="45px"
                                         height="45px"
+                                        key={index}
                                     ></img>
                                 ) : project === 'vue' ? (
                                     <img
@@ -45,6 +49,7 @@ const Gather = ({ project }) => {
                                         alt="vue"
                                         width="45px"
                                         height="45px"
+                                        key={index}
                                     ></img>
                                 ) : project === 'python' ? (
                                     <img
@@ -52,6 +57,7 @@ const Gather = ({ project }) => {
                                         alt="pyton"
                                         width="45px"
                                         height="45px"
+                                        key={index}
                                     ></img>
                                 ) : project === 'django' ? (
                                     <img
@@ -59,6 +65,7 @@ const Gather = ({ project }) => {
                                         alt="django"
                                         width="45px"
                                         height="45px"
+                                        key={index}
                                     ></img>
                                 ) : (
                                     <></>

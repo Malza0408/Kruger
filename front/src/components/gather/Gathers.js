@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import * as Api from '../../api';
+import { UserStateContext } from '../../App';
 import Gather from './Gather';
 
 const Gathers = (props) => {
     // 얘네가 무슨 프로젝트인지 가지고 있을꺼임. 아마 배열로
+    const navigate = useNavigate();
+    const userState = useContext(UserStateContext);
     const [projects, setProjects] = useState([
         {
             projects: ['js']
@@ -103,7 +107,6 @@ const Gathers = (props) => {
                             return filteredP;
                         })
                         .flat();
-                    console.log(filterd);
 
                     setFilteredProjects([...filterd]);
                     setFilteredLanguage(newFilteredLang);
@@ -117,7 +120,6 @@ const Gathers = (props) => {
                 const filtered = newFilteredProject.filter((project) => {
                     return !project.projects.includes(language);
                 });
-                // console.log(filtered);
                 setFilteredLanguage(newFilteredLang);
                 setFilteredProjects(filtered);
             }
@@ -125,6 +127,9 @@ const Gathers = (props) => {
     };
 
     useEffect(() => {
+        if (!userState.user) {
+            navigate('/login');
+        }
         const getProjects = async () => {
             try {
                 // 여기에 Project 불러오는 로직
@@ -135,7 +140,7 @@ const Gathers = (props) => {
             }
         };
         // getProjects()
-    }, []);
+    }, [navigate, userState.user]);
     return (
         <>
             <Row className="m-5">
