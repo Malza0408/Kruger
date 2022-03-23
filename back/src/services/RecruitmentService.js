@@ -211,10 +211,12 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
+        const id = uuidv4();
+
         const user = await User.findById(user_id);
 
         const newCommentValue = {
-            $push: { Comment: { author: user, content } }
+            $push: { Comment: { id, author: user, content } }
         };
 
         recruitment = await Recruitment.updateArray(
