@@ -7,13 +7,13 @@ function languageMiddleware(req, res, next) {
         }
         // js, ts, react, node,  vue, python, django
         const languageType = [
-            'js',
-            'ts',
-            'react',
-            'node',
-            'vue',
-            'python',
-            'django'
+            'JavaScript',
+            'TypeScript',
+            'Node.js',
+            'React',
+            'Vue',
+            'Python',
+            'Django'
         ];
 
         language.map((v) => {

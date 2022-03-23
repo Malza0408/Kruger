@@ -20,6 +20,7 @@ recruitmentRouter.post(
                 );
             }
             const { title, detail, language } = req.body;
+            console.log(language);
             const user_id = req.currentUserId;
 
             const newRecruitment = await RecruitmentService.addRecruitment({
@@ -276,8 +277,8 @@ recruitmentRouter.patch(
 );
 
 // 게시글 삭제하기
-recruitmentRouter.patch(
-    '/recruit/delete/:id/:commentId',
+recruitmentRouter.delete(
+    '/recruit/delete/:id',
     login_required,
     async function (req, res, next) {
         try {
