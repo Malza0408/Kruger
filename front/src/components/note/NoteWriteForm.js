@@ -67,6 +67,11 @@ const NoteWriteForm = () => {
                                 placeholder="이메일을 입력하세요"
                                 onChange={(e) => setTo(e.target.value)}
                             />
+                            {isToEmpty && (
+                                <Form.Text className="text-success">
+                                    받는 사람을 입력해주세요
+                                </Form.Text>
+                            )}
                         </Form.Group>
                         <Col>
                             {/* 친구 검색창 */}
