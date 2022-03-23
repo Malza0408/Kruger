@@ -49,7 +49,10 @@ function Network() {
                 });
 
                 const searchList = users.filter((user) => {
-                    return user.name.match(regexp) || user.email.match(regexp);
+                    // console.log(user);
+                    return (
+                        user?.name?.match(regexp) || user?.email?.match(regexp)
+                    );
                 });
                 setSearchUsers([...searchList]);
             }, 300),
