@@ -30,20 +30,21 @@ authRouter.get(
 );
 
 // 깃허브
-authRouter.get('/auth/github', async (req, res, next) => {
-    try {
-        const clientId = process.env.GITHUB_CLIENT_ID;
-        const redirectUri = 'http://localhost:5000/auth/github/callback';
-        const uri = 'https://github.com/login/oauth/authorize';
-        // window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`;
-        res.redirect(
-            `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
-        );
-    } catch (error) {
-        next(error);
-    }
-});
+// authRouter.get('/auth/github', async (req, res, next) => {
+//     try {
+//         const clientId = process.env.GITHUB_CLIENT_ID;
+//         const redirectUri = 'http://localhost:5000/auth/github/callback';
+//         const uri = 'https://github.com/login/oauth/authorize';
+//         // window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`;
+//         res.redirect(
+//             `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
+//         );
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
+// 깃허브 콜백
 authRouter.get('/auth/github/callback', async (req, res, next) => {
     try {
         const uri = 'https://github.com/login/oauth/access_token';
@@ -109,4 +110,5 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         next(error);
     }
 });
+
 export { authRouter };
