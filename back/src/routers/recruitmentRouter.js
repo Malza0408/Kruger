@@ -39,10 +39,20 @@ recruitmentRouter.post(
 recruitmentRouter.get('/recruit/:id', async (req, res, next) => {
     try {
         const recruitmentId = req.params.id;
-        const recruitment = await RecruitmentService.getRecruitment({
+        const recruitments = await RecruitmentService.getRecruitment({
             recruitmentId
         });
-        res.status(200).json(recruitment);
+        res.status(200).json(recruitments);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// 게시글 목록 보기
+recruitmentRouter.get('/recruitlist', async (req, res, next) => {
+    try {
+        const recruitmentList = await RecruitmentService.getRecruitments();
+        res.status(200).json(recruitmentList);
     } catch (error) {
         next(error);
     }
@@ -73,20 +83,20 @@ recruitmentRouter.put(
     }
 );
 
-// 게시글 모집마감
+// 게시글 모집마감 토글
 recruitmentRouter.patch(
-    '/recruit/:id',
+    '/recruit/toggle/:id',
     login_required,
     async (req, res, next) => {
         try {
             const recruitmentId = req.params.id;
             const userId = req.currentUserId;
-            const updatedRecruitment =
+            const { nowEnrolling, message } =
                 await RecruitmentService.closeRecruitment({
                     recruitmentId,
                     userId
                 });
-            res.status(200).json(updatedRecruitment);
+            res.status(200).json({ nowEnrolling, message });
         } catch (error) {
             next(error);
         }

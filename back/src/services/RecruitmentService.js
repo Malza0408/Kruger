@@ -56,12 +56,139 @@ class RecruitmentService {
         return recruitment;
     }
 
-    // 모집마감
+    // 게시물 1개보기
+    static async getRecruitment({ recruitmentId }) {
+        const recruitment = await Recruitment.findById({ recruitmentId });
+        if (!recruitment) {
+            const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+        return recruitment;
+    }
+
+    // 게시글 목록보기
+    static async getRecruitments() {
+        const recruitments = await Recruitment.findAll();
+        return recruitments;
+    }
+
+    static async likeRecruitment({ recruitmentId, user_id }) {
+        let likedRecruitment = await Recruitment.findById({ recruitmentId });
+
+        if (!likedRecruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const user = await User.findById(user_id);
+
+        console.log(likedRecruitment.like.indexOf(user._id));
+        if (likedRecruitment.like.includes(user._id)) {
+            const errorMessage = '이미 좋아요를 누른 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const newLikeValue = { $push: { like: user } };
+
+        likedRecruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            newLikeValue
+        );
+
+        return likedRecruitment;
+    }
+
+    static async unlikeRecruitment({ recruitmentId, user_id }) {
+        let unlikedRecruitment = await Recruitment.findById({ recruitmentId });
+
+        if (!unlikedRecruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const user = await User.findById(user_id);
+
+        console.log(unlikedRecruitment.like.indexOf(user._id));
+        const unlikedIndex = unlikedRecruitment.like.indexOf(user._id);
+        if (unlikedIndex === -1) {
+            const errorMessage = '좋아요를 누르지 않은 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const like = unlikedRecruitment.like;
+        like.splice(unlikedIndex, 1);
+        const newUnlikeValue = { like };
+
+        unlikedRecruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            newUnlikeValue
+        );
+
+        return unlikedRecruitment;
+    }
+
+    static async setMember({ recruitmentId, applicantId, user_id }) {
+        let recruitment = await Recruitment.findById({ recruitmentId });
+        if (!recruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        if (recruitment.captain.id !== user_id) {
+            const errorMessage = '권한이 없는 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const applyUser = await User.findById(applicantId);
+        if (!applyUser) {
+            const errorMessage = '존재하지 않는 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const applyUserIndex = recruitment.applicant.indexOf(applyUser._id);
+
+        if (applyUserIndex === -1) {
+            const errorMessage = '지원하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const applicant = recruitment.applicant;
+        applicant.splice(applyUserIndex, 1);
+        const newApplicantValue = { applicant };
+
+        recruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            newApplicantValue
+        );
+
+        const newMemberValue = { $push: { member: applicant } };
+
+        recruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            newMemberValue
+        );
+
+        return recruitment;
+    }
+
+    // 게시글 생성
+    static async addRecruitment({ user_id, title, detail }) {
+        const id = uuidv4();
+        // title이나 detail 검증필요?
+        const captain = await User.findById(user_id);
+        const newRecruitment = { id, captain, title, detail };
+
+        const createdNewRecruitment = await Recruitment.create(newRecruitment);
+
+        return createdNewRecruitment;
+    }
+
+    // 모집마감 토글
     static async closeRecruitment({ recruitmentId, userId }) {
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
-        const nowEnrolling = recruitment.nowEnrolling;
+        let nowEnrolling = recruitment.nowEnrolling;
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
@@ -72,20 +199,31 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        const updatedRecruitment = await Recruitment.close({
+        const updatedRecruitment = await Recruitment.toggle({
             recruitmentId,
             nowEnrolling
         });
-        return updatedRecruitment;
+        nowEnrolling = updatedRecruitment.nowEnrolling;
+        let message = '';
+        if (nowEnrolling) {
+            message = '모집중입니다.';
+        } else {
+            message = '모집마감했습니다.';
+        }
+        console.log(message, nowEnrolling);
+        return { nowEnrolling, message };
     }
 
     // 지원하기
     static async addApplicant({ recruitmentId, applicantId }) {
-        const recruitment = await Recruitment.findApplicant({ recruitmentId });
         const applicant = await User.findById(applicantId);
-        let applicantList = recruitment.applicant;
-        const AppliedOrNot = recruitment.applicant.indexOf(applicant.id);
-        // console.log(AppliedOrNot);
+        const recruitment = await Recruitment.findById({
+            recruitmentId
+        });
+        const appliedOrNot = await Recruitment.findApplicant({
+            recruitmentId,
+            applicant
+        });
 
         // 게시글이 있는지 확인
         if (!recruitment) {
@@ -97,19 +235,15 @@ class RecruitmentService {
             const errorMessage = '해당 공고는 마감되었습니다.';
             throw new Error(errorMessage);
         }
-
-        //지원자가 기존 지원자목록에 있는지 확인
-        if (AppliedOrNot !== -1) {
+        // 유저가 기존 지원자목록에 있는지 확인
+        if (appliedOrNot !== null) {
             const errorMessage = '이미 지원하셨습니다.';
             throw new Error(errorMessage);
         }
 
-        applicantList.push(applicant);
-        // console.log(applicantList);
-
         const updatedRecruitment = await Recruitment.addApplicant({
             recruitmentId,
-            applicantList
+            applicant
         });
 
         return updatedRecruitment;
@@ -117,33 +251,38 @@ class RecruitmentService {
 
     //지원 취소하기
     static async cancleApplicant({ recruitmentId, applicantId }) {
-        const recruitment = await Recruitment.findApplicant({ recruitmentId });
         const applicant = await User.findById(applicantId);
-        let applicantList = recruitment.applicant;
-        const AppliedOrNot = applicantList.find((v) => v.id === applicant.id);
+        const recruitment = await Recruitment.findById({
+            recruitmentId
+        });
+        const appliedOrNot = await Recruitment.findApplicant({
+            recruitmentId,
+            applicant
+        });
 
+        // 게시글이 있는지 확인
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
-
+        // 모집중인지 확인
         if (!recruitment.nowEnrolling) {
             const errorMessage = '해당 공고는 마감되었습니다.';
             throw new Error(errorMessage);
         }
-
-        if (AppliedOrNot.length === 0) {
-            const errorMessage = '이미 취소했거나 지원하지 않은 공고입니다.';
+        // 유저가 기존 지원자목록에 있는지 확인
+        if (appliedOrNot === null) {
+            const errorMessage =
+                '지원하지 않으셨거나 이미 지원 취소하셨습니다.';
             throw new Error(errorMessage);
         }
 
-        applicantList = applicantList.find((v) => v.id !== applicant.id);
         const updatedRecruitment = await Recruitment.deleteApplicant({
             recruitmentId,
-            applicantList
+            applicant
         });
-
-        return updatedRecruitment;
+        console.log(updatedRecruitment);
+        // return updatedRecruitment;
     }
 
     // 멤버 승인하기

@@ -11,8 +11,15 @@ class Recruitment {
     static async findById({ recruitmentId }) {
         const recruitment = await RecruitmentModel.findOne({
             id: recruitmentId
-        }).populate('captain');
+        })
+            .populate('captain')
+            .populate('applicant');
         return recruitment;
+    }
+
+    static async findAll() {
+        const recruitments = await RecruitmentModel.find({});
+        return recruitments;
     }
 
     static async update(id, key, value) {
@@ -28,35 +35,38 @@ class Recruitment {
         return updatedRecruitment;
     }
 
-    static async close({ recruitmentId, nowEnrolling }) {
-        await RecruitmentModel.findOneAndUpdate(
-            { id: recruitmentId },
-            { nowEnrolling: !nowEnrolling }
-        );
-        return;
-    }
-
-    static async findApplicant({ recruitmentId }) {
-        const isApplicant = await RecruitmentModel.findOne({
-            id: recruitmentId
-        }).populate('applicant');
-        return isApplicant;
-    }
-
-    static async addApplicant({ recruitmentId, applicantList }) {
-        console.log(applicantList);
+    static async toggle({ recruitmentId, nowEnrolling }) {
         const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
             { id: recruitmentId },
-            { applicant: applicantList },
-            option
+            { nowEnrolling: !nowEnrolling },
+            { new: true }
         );
         return updatedRecruitment;
     }
-    static async deleteApplicant({ recruitmentId, applicant }) {
+
+    static async findApplicant({ recruitmentId, applicant }) {
+        const recruitment = await RecruitmentModel.findOne({
+            id: recruitmentId,
+            applicant: applicant
+        }).populate('applicant');
+        return recruitment;
+    }
+
+    static async addApplicant({ recruitmentId, applicant }) {
         const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
             { id: recruitmentId },
-            { applicant: [applicant] }
-        );
+            { $addToSet: { applicant: applicant } },
+            { returnDocument: 'after' }
+        ).populate('applicant');
+        return updatedRecruitment;
+    }
+    static async deleteApplicant({ recruitmentId, applicant }) {
+        console.log(applicant);
+        const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
+            { id: recruitmentId },
+            { $pull: { applicant: applicant } },
+            { new: true }
+        ).populate('applicant');
         return updatedRecruitment;
     }
 
