@@ -7,8 +7,7 @@ class NoteService {
 
         const fromUser = await User.findById(user_id);
 
-        const email = to;
-        const toUser = await User.findByEmail({ email });
+        const toUser = await User.findByEmail({ email: to });
 
         if (!toUser) {
             const errorMessage =
@@ -23,18 +22,14 @@ class NoteService {
         const createdNewTakenNote = await TakenNote.create({ newNote });
         console.log(createdNewTakenNote);
 
-        const toUserKeys = Object.keys(createdNewSentNote.toUser._doc);
-        if (toUserKeys.indexOf('password') !== -1) {
-            const { password, ...refinedUser } = createdNewSentNote.toUser._doc;
-            createdNewSentNote.toUser._doc = refinedUser;
+        if (createdNewSentNote) {
+            const { name, email, ...restUser } =
+                createdNewSentNote.fromUser._doc;
+            createdNewSentNote.fromUser._doc = { name, email };
         }
 
-        const fromUserKeys = Object.keys(createdNewSentNote.fromUser._doc);
-        if (fromUserKeys.indexOf('password') !== -1) {
-            const { password, ...refinedUser } =
-                createdNewSentNote.fromUser._doc;
-            createdNewSentNote.fromUser._doc = refinedUser;
-        }
+        const { name, email, ...restUser } = createdNewSentNote.toUser._doc;
+        createdNewSentNote.toUser._doc = { name, email };
 
         return createdNewSentNote;
     }
@@ -43,46 +38,46 @@ class NoteService {
         const tNotes = await TakenNote.findAll();
         const takenNotes = tNotes
             .filter((v) => v.toUser !== null)
-            .filter((v) => v.fromUser !== null)
             .filter((v) => v.toUser.id == user_id);
         console.log(takenNotes.length);
         for (let i = 0; i < takenNotes.length; i++) {
-            const toUserKeys = Object.keys(takenNotes[i].toUser._doc);
-            if (toUserKeys.indexOf('password') !== -1) {
-                const { password, ...refinedUser } = takenNotes[i].toUser._doc;
-                takenNotes[i].toUser._doc = refinedUser;
-            }
+            const { name, email, ...restUser } = takenNotes[i].toUser._doc;
+            takenNotes[i].toUser._doc = { name, email };
 
-            const fromUserKeys = Object.keys(takenNotes[i].fromUser._doc);
-            if (fromUserKeys.indexOf('password') !== -1) {
-                const { password, ...refinedUser } =
+            if (takenNotes[i].fromUser === null) {
+                takenNotes[i].fromUser = {
+                    name: '탈퇴한 회원',
+                    email: '탈퇴한 회원입니다.'
+                };
+            } else {
+                const { name, email, ...restUser } =
                     takenNotes[i].fromUser._doc;
-                takenNotes[i].fromUser._doc = refinedUser;
+                takenNotes[i].fromUser._doc = { name, email };
             }
         }
 
         const sNotes = await SentNote.findAll();
         const sentNotes = sNotes
             .filter((v) => v.fromUser !== null)
-            .filter((v) => v.toUser !== null)
             .filter((v) => v.fromUser.id == user_id);
         console.log(sentNotes.length);
 
         for (let i = 0; i < sentNotes.length; i++) {
-            const toUserKeys = Object.keys(sentNotes[i].toUser._doc);
-            if (toUserKeys.indexOf('password') !== -1) {
-                const { password, ...refinedUser } = sentNotes[i].toUser._doc;
-                sentNotes[i].toUser._doc = refinedUser;
-            }
+            const { name, email, ...restUser } = sentNotes[i].fromUser._doc;
+            sentNotes[i].fromUser._doc = { name, email };
 
-            const fromUserKeys = Object.keys(sentNotes[i].fromUser._doc);
-            if (fromUserKeys.indexOf('password') !== -1) {
-                const { password, ...refinedUser } = sentNotes[i].fromUser._doc;
-                sentNotes[i].fromUser._doc = refinedUser;
+            if (sentNotes[i].toUser === null) {
+                sentNotes[i].toUser = {
+                    name: '탈퇴한 회원',
+                    email: '탈퇴한 회원입니다.'
+                };
+            } else {
+                const { name, email, ...restUser } = sentNotes[i].toUser._doc;
+                sentNotes[i].toUser._doc = { name, email };
             }
         }
 
-        const notes = { ...takenNotes, ...sentNotes };
+        const notes = [...takenNotes, ...sentNotes];
 
         return notes;
     }
@@ -91,21 +86,21 @@ class NoteService {
         const notes = await TakenNote.findAll();
         const takenNotes = notes
             .filter((v) => v.toUser !== null)
-            .filter((v) => v.fromUser !== null)
             .filter((v) => v.toUser.id == user_id);
         console.log(takenNotes.length);
         for (let i = 0; i < takenNotes.length; i++) {
-            const toUserKeys = Object.keys(takenNotes[i].toUser._doc);
-            if (toUserKeys.indexOf('password') !== -1) {
-                const { password, ...refinedUser } = takenNotes[i].toUser._doc;
-                takenNotes[i].toUser._doc = refinedUser;
-            }
+            const { name, email, ...restUser } = takenNotes[i].toUser._doc;
+            takenNotes[i].toUser._doc = { name, email };
 
-            const fromUserKeys = Object.keys(takenNotes[i].fromUser._doc);
-            if (fromUserKeys.indexOf('password') !== -1) {
-                const { password, ...refinedUser } =
+            if (takenNotes[i].fromUser === null) {
+                takenNotes[i].fromUser = {
+                    name: '탈퇴한 회원',
+                    email: '탈퇴한 회원입니다.'
+                };
+            } else {
+                const { name, email, ...restUser } =
                     takenNotes[i].fromUser._doc;
-                takenNotes[i].fromUser._doc = refinedUser;
+                takenNotes[i].fromUser._doc = { name, email };
             }
         }
 
@@ -116,21 +111,21 @@ class NoteService {
         const notes = await SentNote.findAll();
         const sentNotes = notes
             .filter((v) => v.fromUser !== null)
-            .filter((v) => v.toUser !== null)
             .filter((v) => v.fromUser.id == user_id);
         console.log(sentNotes.length);
 
         for (let i = 0; i < sentNotes.length; i++) {
-            const toUserKeys = Object.keys(sentNotes[i].toUser._doc);
-            if (toUserKeys.indexOf('password') !== -1) {
-                const { password, ...refinedUser } = sentNotes[i].toUser._doc;
-                sentNotes[i].toUser._doc = refinedUser;
-            }
+            const { name, email, ...restUser } = sentNotes[i].fromUser._doc;
+            sentNotes[i].fromUser._doc = { name, email };
 
-            const fromUserKeys = Object.keys(sentNotes[i].fromUser._doc);
-            if (fromUserKeys.indexOf('password') !== -1) {
-                const { password, ...refinedUser } = sentNotes[i].fromUser._doc;
-                sentNotes[i].fromUser._doc = refinedUser;
+            if (sentNotes[i].toUser === null) {
+                sentNotes[i].toUser = {
+                    name: '탈퇴한 회원',
+                    email: '탈퇴한 회원입니다.'
+                };
+            } else {
+                const { name, email, ...restUser } = sentNotes[i].toUser._doc;
+                sentNotes[i].toUser._doc = { name, email };
             }
         }
 
@@ -151,16 +146,17 @@ class NoteService {
             throw new Error(errorMessage);
         }
 
-        const toUserKeys = Object.keys(note.toUser._doc);
-        if (toUserKeys.indexOf('password') !== -1) {
-            const { password, ...refinedUser } = note.toUser._doc;
-            note.toUser._doc = refinedUser;
-        }
+        const { name, email, ...restUser } = note.toUser._doc;
+        note.toUser._doc = { name, email };
 
-        const fromUserKeys = Object.keys(note.fromUser._doc);
-        if (fromUserKeys.indexOf('password') !== -1) {
-            const { password, ...refinedUser } = note.fromUser._doc;
-            note.fromUser._doc = refinedUser;
+        if (note.fromUser === null) {
+            note.fromUser = {
+                name: '탈퇴한 회원',
+                email: '탈퇴한 회원입니다.'
+            };
+        } else {
+            const { name, email, ...restUser } = note.fromUser._doc;
+            note.fromUser._doc = { name, email };
         }
 
         return note;
@@ -180,16 +176,17 @@ class NoteService {
             throw new Error(errorMessage);
         }
 
-        const toUserKeys = Object.keys(note.toUser._doc);
-        if (toUserKeys.indexOf('password') !== -1) {
-            const { password, ...refinedUser } = note.toUser._doc;
-            note.toUser._doc = refinedUser;
-        }
+        const { name, email, ...restUser } = note.fromUser._doc;
+        note.fromUser._doc = { name, email };
 
-        const fromUserKeys = Object.keys(note.fromUser._doc);
-        if (fromUserKeys.indexOf('password') !== -1) {
-            const { password, ...refinedUser } = note.fromUser._doc;
-            note.fromUser._doc = refinedUser;
+        if (note.toUser === null) {
+            note.toUser = {
+                name: '탈퇴한 회원',
+                email: '탈퇴한 회원입니다.'
+            };
+        } else {
+            const { name, email, ...restUser } = note.toUser._doc;
+            note.toUser._doc = { name, email };
         }
 
         return note;
