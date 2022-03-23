@@ -167,7 +167,7 @@ recruitmentRouter.patch(
 
 // 댓글 수정하기
 recruitmentRouter.patch(
-    '/recruit/comment/:id/:commentId',
+    '/recruit/:id/:commentId',
     login_required,
     updateMiddleware,
     async (req, res, next) => {
@@ -296,8 +296,8 @@ recruitmentRouter.patch(
 );
 
 // 게시글 삭제하기
-recruitmentRouter.delete(
-    '/recruit/:id',
+recruitmentRouter.patch(
+    '/recruit/delete/:id/:commentId',
     login_required,
     async function (req, res, next) {
         try {
