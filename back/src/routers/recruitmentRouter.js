@@ -2,6 +2,7 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { updateMiddleware } from '../middlewares/updateMiddleware';
+import { languageMiddleware } from '../middlewares/languageMiddleward';
 import { RecruitmentService } from '../services/RecruitmentService';
 
 const recruitmentRouter = Router();
@@ -10,6 +11,7 @@ const recruitmentRouter = Router();
 recruitmentRouter.post(
     '/recruit/create',
     login_required,
+    languageMiddleware,
     async (req, res, next) => {
         try {
             if (is.emptyObject(req.body)) {
@@ -17,13 +19,14 @@ recruitmentRouter.post(
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-            const { title, detail } = req.body;
+            const { title, detail, language } = req.body;
             const user_id = req.currentUserId;
 
             const newRecruitment = await RecruitmentService.addRecruitment({
                 user_id,
                 title,
-                detail
+                detail,
+                language
             });
             res.status(201).json(newRecruitment);
         } catch (error) {

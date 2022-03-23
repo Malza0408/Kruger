@@ -142,11 +142,11 @@ class RecruitmentService {
     }
 
     // 게시글 생성
-    static async addRecruitment({ user_id, title, detail }) {
+    static async addRecruitment({ user_id, title, detail, language }) {
         const id = uuidv4();
         // title이나 detail 검증필요?
         const captain = await User.findById(user_id);
-        const newRecruitment = { id, captain, title, detail };
+        const newRecruitment = { id, captain, title, detail, language };
 
         const createdNewRecruitment = await Recruitment.create(newRecruitment);
 
