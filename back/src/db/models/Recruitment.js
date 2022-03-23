@@ -11,9 +11,7 @@ class Recruitment {
     static async findById({ recruitmentId }) {
         const recruitment = await RecruitmentModel.findOne({
             id: recruitmentId
-        })
-            .populate('captain')
-            .populate('applicant');
+        }).populate('captain');
         return recruitment;
     }
 
@@ -57,15 +55,6 @@ class Recruitment {
             { id: recruitmentId },
             { $addToSet: { applicant: applicant } },
             { returnDocument: 'after' }
-        ).populate('applicant');
-        return updatedRecruitment;
-    }
-    static async deleteApplicant({ recruitmentId, applicant }) {
-        console.log(applicant);
-        const updatedRecruitment = await RecruitmentModel.findOneAndUpdate(
-            { id: recruitmentId },
-            { $pull: { applicant: applicant } },
-            { new: true }
         ).populate('applicant');
         return updatedRecruitment;
     }
