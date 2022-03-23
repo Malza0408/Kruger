@@ -1,14 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import PostingForm from './PostingForm';
 import '../../styles/scss/posting.scss';
+import { UserStateContext } from '../../App';
 import { post } from '../../api';
 
 const Posting = (props) => {
     const navigate = useNavigate();
+    const userState = useContext(UserStateContext);
     const titleRef = useRef();
     const contentRef = useRef();
+    const languageFormRef = useRef();
+    const dropDownMenuRef = useRef();
+    const [isToggle, setIsToggle] = useState(false);
+    const [langInputValue, setLangInputValue] = useState([]);
 
     const handleOnClick = (e) => {
         navigate('/gatherRoom');
@@ -17,25 +23,51 @@ const Posting = (props) => {
         e.preventDefault();
         try {
             await post('recruit/create', {
+                user_id: userState.id,
                 title: titleRef.current.value,
-                detatil: contentRef.current.value
+                detail: contentRef.current.value,
+                language: langInputValue.split(' / ')
             });
             navigate('/gatherRoom');
         } catch (error) {
             throw new Error(error);
         }
     };
+    const handleToggle = () => {
+        setIsToggle(!isToggle);
+    };
+    const getLangFromDropDown = (lang) => {
+        if (!langInputValue.length) {
+            setLangInputValue((current) => {
+                return current + `${lang}`;
+            });
+        } else {
+            setLangInputValue((current) => {
+                return current + ` / ${lang}`;
+            });
+        }
+    };
+    const handleOnDeleteInputValue = () => {
+        setLangInputValue('');
+    };
     return (
-        <Container fluid style={{ width: '85%' }} className="Posting">
-            <Row>
+        <Container fluid className="Posting">
+            <Row className="justify-content-center">
                 <PostingForm
                     handleOnClick={handleOnClick}
                     handleOnSubmit={handleOnSubmit}
+                    handleToggle={handleToggle}
+                    isToggle={isToggle}
+                    getLangFromDropDown={getLangFromDropDown}
+                    langInputValue={langInputValue}
+                    handleOnDeleteInputValue={handleOnDeleteInputValue}
                     ref={{
                         titleRef,
-                        contentRef
+                        contentRef,
+                        languageFormRef,
+                        dropDownMenuRef
                     }}
-                ></PostingForm>
+                />
             </Row>
         </Container>
     );
