@@ -4,14 +4,11 @@ import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import NoteListSend from './NoteListSend';
 import NoteListTake from './NoteListTake';
 
+import DatePicker from 'react-datepicker';
+
 import * as Api from '../../api';
 
-const NoteList = ({
-    isNoteListAll,
-    setIsNoteListAll,
-    isNoteListSendig,
-    setIsNoteListSending
-}) => {
+const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
     const [allNote, setAllNote] = useState([]);
     const [sendNote, setSendNote] = useState([]);
     const [takeNote, setTakeNote] = useState([]);
@@ -19,12 +16,15 @@ const NoteList = ({
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        Api.get(`user/current`).then((res) => setUser(res.data));
-
         // 전체
         Api.get(`notelist`).then((res) => {
             setAllNote(res.data);
         });
+    }, [sendNote, takeNote]);
+
+    useEffect(() => {
+        Api.get(`user/current`).then((res) => setUser(res.data));
+
         // 발신함
         Api.get(`sentNotelist`).then((res) => {
             setSendNote(res.data);
@@ -33,7 +33,6 @@ const NoteList = ({
         Api.get(`takenNotelist`).then((res) => {
             setTakeNote(res.data);
         });
-
     }, []);
 
     const DescCreatedAtAll = () => {
@@ -46,12 +45,13 @@ const NoteList = ({
                 : 0
         );
 
-        return descAllNote
+        return descAllNote;
     };
 
     return (
         <div>
             {/* 전체 */}
+            {console.log(allNote)}
             {/* 전체 쪽지함 리스트 타임스탬프 정렬 기능 추후 구현 */}
             {DescCreatedAtAll().map((note) => {
                 return (
