@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -13,7 +13,7 @@ import {
 
 import * as Api from '../../api';
 
-const NoteWriteForm = ({ isWriting, setIsWriting }) => {
+const NoteWriteForm = () => {
     const navigate = useNavigate();
     const [to, setTo] = useState('');
     const [title, setTitle] = useState('');
@@ -26,6 +26,13 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
     const [isToEmpty, setIsToEmpty] = useState(false);
     const [isTitleEmpty, setIsTitleEmpty] = useState(false);
     const [isContentEmpty, setIsContentEmpty] = useState(false);
+    const [isToMe, setIsToMe] = useState(false);
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        Api.get(`user/current`).then((res) => setUser(res.data));
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,22 +43,21 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
         setIsTitleEmpty(!title);
         // content 공란이면 true
         setIsContentEmpty(!content);
+        //본인을 수신자로 선택했으면 true
+        setIsToMe(user.email === to);
 
         try {
-            !(isToEmpty && isTitleEmpty && isContentEmpty) &&
+            // 하나라도 공란이며, 본인이 수신자이면 post 불가
+            !(!to || !title || !content) && !(user.email === to) &&
                 (await Api.post('note/create', {
                     to,
                     title,
                     content
-                }));
-
-            // console.log(res.data);
-            setIsWriting(false);
+                }))
+            && (navigate('/note'));
         } catch (err) {
             console.log('전송 실패', err);
         }
-
-        navigate('/note');
     };
 
     return (
@@ -60,20 +66,34 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formNoteTo">
-                            <Form.Label>받는 사람</Form.Label>
+                            <Form.Label>
+                                <span>
+                                    <strong>받는 사람</strong>
+                                </span>
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 value={to}
                                 placeholder="이메일을 입력하세요"
                                 onChange={(e) => setTo(e.target.value)}
                             />
+                            {isToEmpty && (
+                                <Form.Text className="text-success">
+                                    받는 사람을 입력해주세요
+                                </Form.Text>
+                            )}
+                            {isToMe && (
+                                <Form.Text className="text-success">
+                                    본인에게 쪽지를 전송할 수 없습니다
+                                </Form.Text>
+                            )}
                         </Form.Group>
                         <Col>
                             {/* 친구 검색창 */}
                             <Accordion defaultActiveKey="0">
                                 <Accordion.Item eventKey="1">
                                     <Accordion.Header>
-                                        친구 목록
+                                        <strong>친구 목록</strong>
                                     </Accordion.Header>
                                     <Accordion.Body>
                                         <Form.Group
@@ -111,7 +131,9 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                         </Col>
 
                         <Form.Group className="mb-3" controlId="formNoteTitle">
-                            <Form.Label>제목</Form.Label>
+                            <Form.Label>
+                                <strong>제목</strong>
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 value={title}
@@ -127,7 +149,9 @@ const NoteWriteForm = ({ isWriting, setIsWriting }) => {
                             className="mb-3"
                             controlId="formNoteDescription"
                         >
-                            <Form.Label>내용</Form.Label>
+                            <Form.Label>
+                                <strong>내용</strong>
+                            </Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={9}

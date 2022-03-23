@@ -56,16 +56,6 @@ class RecruitmentService {
         return recruitment;
     }
 
-    // 게시물 1개보기
-    static async getRecruitment({ recruitmentId }) {
-        const recruitment = await Recruitment.findById({ recruitmentId });
-        if (!recruitment) {
-            const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-        return recruitment;
-    }
-
     // 게시글 목록보기
     static async getRecruitments() {
         const recruitments = await Recruitment.findAll();
@@ -374,7 +364,7 @@ class RecruitmentService {
 
     // 댓글 수정하기
     static async setComment({ recruitmentId, commentId, authorId, toUpdate }) {
-        const recruitment = await Recruitment.findById({ recruitmentId });
+        const recruitment = await Recruitment.findAuthor({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
@@ -385,37 +375,72 @@ class RecruitmentService {
         if (authorId === recruitment.captain.id) {
             console.log('[captain]! writing');
         }
-        const comments = recruitment.comment;
-        let comment = comments.filter((comment) => {
-            comment.id === commentId && comment.author === user._id;
-        });
-        if (comment.length === 0) {
-            const errorMesaage = '댓글이 없거나 수정 권한이 없습니다.';
-            throw new Error(errorMesaage);
+
+        let comments = recruitment.comment.find(
+            (comment) => comment.id === commentId
+        );
+
+        if (comments.length === 0) {
+            const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
+            throw new Error(errorMessage);
         }
-        comment = { id: commentId, author: user._id, ...comment };
+
+        comments = recruitment.comment.find(
+            (comment) =>
+                comment.id === commentId && comment.author.id === authorId
+        );
+
+        if (comments === null || comments === undefined) {
+            const errorMesaage = '수정 권한이 없습니다.';
+            throw new Error(errorMessage);
+        }
+
+        const comment = { id: commentId, author: user._id, ...toUpdate };
+        console.log(comment);
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             { comment }
         );
-        // console.log(updatedRecruitment);
+        console.log(updatedRecruitment);
         return updatedRecruitment;
     }
 
     //댓글 삭제하기
-    static async deleteComment({ recruitmentId, authorId }) {
-        const recruitment = await Recruitment.findById({ recruitment });
+    static async deleteComment({ recruitmentId, commentId, authorId }) {
+        const user = await User.findById(authorId);
+        const recruitment = await Recruitment.findAuthor({ recruitmentId });
+
         if (!recruitment) {
             const errorMessage = '삭제된 게시물입니다.';
             throw new Error(errorMessage);
         }
-        console.log(recruitment.comment.author.id);
-        if (recruitment.comment.author.id !== authorId) {
-            const errorMessage = '권한이 없습니다.';
+        // commentId 로 comment 찾기
+        let comment = recruitment.comment.find(
+            (comment) => comment.id === commentId
+        );
+
+        if (comment.length === 0) {
+            const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
             throw new Error(errorMessage);
         }
-        await Recruitment.deleteComment({ recruitmentId, authorId });
-        return;
+        comment = recruitment.comment.find(
+            (comment) =>
+                comment.id === commentId && comment.author.id === authorId
+        );
+        console.log(comment);
+        if (comment === null || comment === undefined) {
+            const errorMesaage = '삭제 권한이 없습니다.';
+            throw new Error(errorMessage);
+        }
+
+        // console.log(comments.splice(comment, 1));
+
+        const updatedRecruitment = await Recruitment.updateArray(
+            { id: recruitmentId },
+            { $pull: { comment: { id: commentId } } }
+        );
+        console.log(updatedRecruitment);
+        // return;
     }
 
     // 게시물 삭제하기
