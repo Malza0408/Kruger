@@ -123,6 +123,7 @@ class RecruitmentService {
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
+        console.log(recruitment);
         let nowEnrolling = recruitment.nowEnrolling;
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
@@ -152,13 +153,14 @@ class RecruitmentService {
     // 지원하기
     static async addApplicant({ recruitmentId, applicantId }) {
         const applicant = await User.findById(applicantId);
-        const recruitment = await Recruitment.findById({
+        const recruitment = await Recruitment.findApplicant({
             recruitmentId
         });
-        const appliedOrNot = await Recruitment.findApplicant({
-            recruitmentId,
-            applicant
-        });
+
+        console.log(recruitment.applicant);
+        const applicants = recruitment.applicant.find(
+            (v) => v.id === applicant.id
+        );
 
         // 게시글이 있는지 확인
         if (!recruitment) {
@@ -171,7 +173,7 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
         // 유저가 기존 지원자목록에 있는지 확인
-        if (appliedOrNot !== null) {
+        if (applicants) {
             const errorMessage = '이미 지원하셨습니다.';
             throw new Error(errorMessage);
         }
@@ -242,6 +244,13 @@ class RecruitmentService {
 
         if (applyUserIndex === -1) {
             const errorMessage = '지원하지 않은 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+
+        const isMemberIndex = recruitment.member.indexOf(applyUser._id);
+
+        if (isMemberIndex !== -1) {
+            const errorMessage = '이미 멤버입니다.';
             throw new Error(errorMessage);
         }
 

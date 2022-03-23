@@ -40,7 +40,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                     <Col>
                         <Card.Title>
                             {takeNote.fromUser.name === '탈퇴한 회원' ? (
-                                <Badge class="badge bg-secondary">
+                                <Badge bg="secondary">
                                     탈퇴한 회원
                                 </Badge>
                             ) : (

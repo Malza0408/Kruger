@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
-
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
 
@@ -71,6 +70,9 @@ function LoginForm() {
     const handleOnClickGoogle = async () => {
         await Api.get('auth/google').then((res) => console.log(res));
     };
+    const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+    const redirectUri = 'http://localhost:5000/auth/github/callback';
+    const uri = 'https://github.com/login/oauth/authorize';
 
     return (
         <div className="login">
@@ -166,12 +168,17 @@ function LoginForm() {
                     <Col md={0} lg={2}></Col>
                     <Col sm={6} md={6} lg={4}>
                         <Row className="mt-5 mb-4">
-                            <img
-                                src={`${process.env.PUBLIC_URL}/img/github.png`}
-                                alt=""
+                            <a
+                                href={`${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`}
                                 onClick={handleOnClickGithub}
-                                className="githubLogin"
-                            />
+                            >
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/img/github.png`}
+                                    alt=""
+                                    // onClick={handleOnClickGithub}
+                                    className="githubLogin"
+                                />
+                            </a>
                         </Row>
                         <Row>
                             <img

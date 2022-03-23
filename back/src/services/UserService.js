@@ -151,16 +151,6 @@ class UserService {
             user._doc = refinedUser;
         }
 
-        user.follow.map((v) => {
-            const { password, ...refinedUser } = v._doc;
-            v._doc = refinedUser;
-        });
-
-        user.follower.map((v) => {
-            const { password, ...refinedUser } = v._doc;
-            v._doc = refinedUser;
-        });
-
         return user;
     }
 
@@ -198,6 +188,11 @@ class UserService {
         }
 
         let user = await User.findById(user_id);
+
+        if (followedUser === user) {
+            const errorMessage = '본인은 팔로우할 수 없습니다.';
+            throw new errorMessage();
+        }
 
         const validator = followedUser.follower.filter(
             (v) => v.id === user_id

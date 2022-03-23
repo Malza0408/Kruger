@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Offcanvas, Row, Col, ButtonGroup } from 'react-bootstrap';
+import { Button, Offcanvas, Row, Col } from 'react-bootstrap';
+
 import { useNavigate } from 'react-router-dom';
 import * as Api from '../../api';
 const FollowingList = ({ user }) => {

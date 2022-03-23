@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import * as Api from '../../api';
+import { get } from '../../api';
 import { UserStateContext } from '../../App';
 import Gather from './Gather';
 
@@ -9,138 +9,117 @@ const Gathers = (props) => {
     // 얘네가 무슨 프로젝트인지 가지고 있을꺼임. 아마 배열로
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
-    const [projects, setProjects] = useState([
-        {
-            projects: ['js']
-        },
-        {
-            projects: ['js', 'react']
-        },
-        {
-            projects: ['node', 'react']
-        },
-        {
-            projects: ['ts', 'react', 'node']
-        },
-        {
-            projects: ['vue', 'node', 'js']
-        },
-        {
-            projects: ['django', 'python']
-        },
-        {
-            projects: ['python']
-        },
-        {
-            projects: ['vue', 'ts']
-        },
-        {
-            projects: ['node']
-        },
-        {
-            projects: ['ts', 'js']
-        },
-        {
-            projects: ['ts']
-        }
-    ]);
+    const [projects, setProjects] = useState([]);
     // 언어 이미지의 경로 및 상태
     const [imgs, setImgs] = useState([
         {
             src: `${process.env.PUBLIC_URL}/gatherImg/js.png`,
             isFocusing: true,
-            language: 'js'
+            language: 'JavaScript'
         },
         {
             src: `${process.env.PUBLIC_URL}/gatherImg/node.png`,
             isFocusing: true,
-            language: 'node'
+            language: 'Node.js'
         },
         {
             src: `${process.env.PUBLIC_URL}/gatherImg/react.png`,
             isFocusing: true,
-            language: 'react'
+            language: 'React'
         },
         {
             src: `${process.env.PUBLIC_URL}/gatherImg/ts.png`,
             isFocusing: true,
-            language: 'ts'
+            language: 'TypeScript'
         },
         {
             src: `${process.env.PUBLIC_URL}/gatherImg/vue.png`,
             isFocusing: true,
-            language: 'vue'
+            language: 'Vue'
         },
         {
             src: `${process.env.PUBLIC_URL}/gatherImg/python.png`,
             isFocusing: true,
-            language: 'python'
+            language: 'Python'
         },
         {
             src: `${process.env.PUBLIC_URL}/gatherImg/django.png`,
             isFocusing: true,
-            language: 'django'
+            language: 'Django'
         }
     ]);
     // 포커싱 된게 몇개인지 추적한다.
     const [traceFocusing, setTraceFocusing] = useState(0);
     const [filteredLanguage, setFilteredLanguage] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
-    const filteringLanguage = (language, isAddLanguage = true) => {
-        if (language === 'none') {
-            setFilteredLanguage([]);
-            setFilteredProjects([]);
-        } else {
-            // 새로운 언어를 추가한다면
-            if (isAddLanguage) {
-                if (
-                    filteredLanguage.find((element) => element === language) ===
-                    undefined
-                ) {
-                    const newFilteredLang = [...filteredLanguage];
-                    newFilteredLang.push(language);
-                    const filterd = newFilteredLang
+    const filteringLanguage = useCallback(
+        (language, isAddLanguage = true) => {
+            if (language === 'none') {
+                setFilteredLanguage([]);
+                setFilteredProjects([]);
+            } else {
+                // 새로운 언어를 추가한다면
+                if (isAddLanguage) {
+                    if (
+                        filteredLanguage.find(
+                            (element) => element === language
+                        ) === undefined
+                    ) {
+                        const newFilteredLang = [...filteredLanguage];
+                        newFilteredLang.push(language);
+                        const filtered = newFilteredLang
+                            .map((lang) => {
+                                const filteredP = projects.filter((project) => {
+                                    return project.language.includes(lang);
+                                });
+                                return filteredP;
+                            })
+                            .flat();
+                        const set = new Set(filtered);
+                        setFilteredProjects([...set]);
+                        setFilteredLanguage(newFilteredLang);
+                    }
+                } else {
+                    // 기존의 언어를 뺀다면
+                    const newFilteredLang = filteredLanguage.filter((lang) => {
+                        return lang !== language;
+                    });
+                    const newFilteredProject = [...filteredProjects];
+                    const filtered = newFilteredLang
                         .map((lang) => {
-                            const filteredP = projects.filter((project) => {
-                                return project.projects.includes(lang);
-                            });
+                            const filteredP = newFilteredProject.filter(
+                                (project) => {
+                                    return project.language.includes(lang);
+                                }
+                            );
                             return filteredP;
                         })
                         .flat();
-
-                    setFilteredProjects([...filterd]);
+                    setFilteredProjects([...filtered]);
                     setFilteredLanguage(newFilteredLang);
                 }
-            } else {
-                // 기존의 언어를 뺀다면
-                const newFilteredLang = filteredLanguage.filter((lang) => {
-                    return lang !== language;
-                });
-                const newFilteredProject = [...filteredProjects];
-                const filtered = newFilteredProject.filter((project) => {
-                    return !project.projects.includes(language);
-                });
-                setFilteredLanguage(newFilteredLang);
-                setFilteredProjects(filtered);
             }
-        }
-    };
+        },
+        [filteredLanguage, filteredProjects, projects]
+    );
 
     useEffect(() => {
         if (!userState.user) {
             navigate('/login');
         }
-        const getProjects = async () => {
+
+        const getRecruits = async () => {
             try {
                 // 여기에 Project 불러오는 로직
-                // const projects = await Api.get()
-                // setProjects(projects);
+                const recruitlist = await get('recruitlist');
+                setProjects([...recruitlist.data]);
             } catch (error) {
                 throw new Error(error);
             }
         };
-        // getProjects()
-    }, [navigate, userState.user]);
+
+        getRecruits();
+    }, [filteredProjects, navigate, userState.user]);
     return (
         <>
             <Row className="m-5">
@@ -227,21 +206,15 @@ const Gathers = (props) => {
                 })}
             </Row>
             <Row xs="auto" className="jusify-content-center">
-                {filteredProjects.length === 0
+                {traceFocusing === 0
                     ? projects?.map((project, index) => {
                           return (
-                              <Gather
-                                  key={index}
-                                  project={project.projects}
-                              ></Gather>
+                              <Gather key={index} project={project}></Gather>
                           );
                       })
                     : filteredProjects?.map((project, index) => {
                           return (
-                              <Gather
-                                  key={index}
-                                  project={project.projects}
-                              ></Gather>
+                              <Gather key={index} project={project}></Gather>
                           );
                       })}
             </Row>

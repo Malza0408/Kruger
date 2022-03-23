@@ -36,7 +36,7 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
             <Card.Body>
                 <Card.Title>
                     {sendNote.toUser.name === '탈퇴한 회원' ? (
-                        <Badge class="badge bg-secondary">탈퇴한 회원</Badge>
+                        <Badge bg="secondary">탈퇴한 회원</Badge>
                     ) : (
                         <span>
                             <strong>{sendNote.toUser.name}</strong>

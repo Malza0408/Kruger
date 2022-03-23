@@ -1,7 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
-import { updateMiddleware } from '../middlewares/updateMiddleware';
+import { profileUpdateMiddleware } from '../middlewares/profileUpdateMiddleware';
 import { ProjectService } from '../services/ProjectService';
 
 const projectRouter = Router();
@@ -67,7 +67,7 @@ projectRouter.get('/projects/:id', login_required, async (req, res, next) => {
 projectRouter.put(
     '/projects/:id',
     login_required,
-    updateMiddleware,
+    profileUpdateMiddleware,
     async function (req, res, next) {
         try {
             // URI로부터 프로젝트 id를 추출함.
@@ -100,7 +100,7 @@ projectRouter.delete(
             const user_id = req.currentUserId;
             await ProjectService.deleteProject({ project_id, user_id });
             console.log(project_id);
-            res.status(200).send('삭제되었습니다.');
+            res.status(200).json('삭제되었습니다.');
         } catch (error) {
             next(error);
         }
