@@ -309,7 +309,10 @@ class RecruitmentService {
         }
         const comments = recruitment.comment;
         let comment = comments.filter((comment) => {
-            comment.id === commentId && comment.author === user._id;
+            comment.id === commentId && comment.author._id === user._id;
+            console.log(comment.author._id);
+            console.log(user._id);
+            console.log(comment.author._id === user._id);
         });
         if (comment.length === 0) {
             const errorMesaage = '댓글이 없거나 수정 권한이 없습니다.';
@@ -326,33 +329,40 @@ class RecruitmentService {
 
     //댓글 삭제하기
     static async deleteComment({ recruitmentId, commentId, authorId }) {
-        const recruitment = await Recruitment.findById({ recruitmentId });
+        const user = await User.findById(authorId);
+        const recruitment = await Recruitment.findAuthor({ recruitmentId });
+
         if (!recruitment) {
             const errorMessage = '삭제된 게시물입니다.';
             throw new Error(errorMessage);
         }
-        const user = await User.findById(authorId);
-        const comments = recruitment.comment;
-        console.log(comments);
+        // commentId 로 comment 찾기
         let comment = recruitment.comment.find(
             (comment) => comment.id === commentId
         );
-        if (Object.keys(comment).length === 0) {
+
+        if (comment.length === 0) {
             const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
+            throw new Error(errorMessage);
+        }
+        comment = recruitment.comment.find(
+            (comment) =>
+                comment.id === commentId && comment.author.id === authorId
+        );
+        console.log(comment);
+        if (comment === null || comment === undefined) {
+            const errorMesaage = '삭제 권한이 없습니다.';
             throw new Error(errorMessage);
         }
 
         // console.log(comments.splice(comment, 1));
-        // await Recruitment.updateArray({ id: recruitmentId });
-        // if (recruitment.comment.author.id !== authorId) {
-        //     const errorMessage = '권한이 없습니다.';
-        //     throw new Error(errorMessage);
-        // }
-        await Recruitment.updateArray(
+
+        const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
-            { $pull: { comment: { author: user._id } } }
+            { $pull: { comment: { id: commentId } } }
         );
-        return;
+        console.log(updatedRecruitment);
+        // return;
     }
 
     // 게시물 삭제하기

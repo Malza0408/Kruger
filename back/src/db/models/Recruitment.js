@@ -58,6 +58,18 @@ class Recruitment {
         ).populate('applicant');
         return updatedRecruitment;
     }
+    static async findAuthor({ recruitmentId }) {
+        const recruitment = await RecruitmentModel.findOne({
+            id: recruitmentId
+        }).populate('comment.author');
+        return recruitment;
+    }
+    static async findComment({ commentId }) {
+        const recruitment = await RecruitmentModel.findOne({
+            comment: commentId
+        });
+        return recruitment;
+    }
 
     // static async deleteComment({ recruitmentId, authorId }) {
     //     await RecruitmentModel.findOneAndUpdate(
