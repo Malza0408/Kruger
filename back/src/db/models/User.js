@@ -12,7 +12,9 @@ class User {
     }
 
     static async findById(id) {
-        const user = await UserModel.findOne({ id });
+        const user = await UserModel.findOne({ id })
+            .populate('follow')
+            .populate('follower');
         return user;
     }
 
