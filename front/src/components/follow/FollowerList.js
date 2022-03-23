@@ -13,6 +13,7 @@ const FollowingList = ({ user }) => {
         );
         setShow(true);
     };
+    const handlePortfolio = () => {};
     return (
         <>
             <Button variant="secondary" onClick={handleShow}>
@@ -33,9 +34,13 @@ const FollowingList = ({ user }) => {
                                         <Row>{follower.email}</Row>
                                     </Col>
                                     <Col>
+                                        <Button size="sm">쪽지</Button>
                                         <Button
                                             size="sm"
                                             onClick={() => {
+                                                alert(
+                                                    '포트폴리오로 이동합니다.'
+                                                );
                                                 navigate(
                                                     `/users/${follower.id}`
                                                 );

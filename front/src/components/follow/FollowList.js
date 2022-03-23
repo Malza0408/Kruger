@@ -46,13 +46,17 @@ const FollowingList = ({ user }) => {
                                         <Row>{follow.email}</Row>
                                     </Col>
                                     <Col>
+                                        <Button size="sm">쪽지</Button>
                                         <Button
                                             size="sm"
                                             onClick={() => {
+                                                alert(
+                                                    '포트폴리오로 이동합니다.'
+                                                );
                                                 navigate(`/users/${follow.id}`);
                                             }}
                                         >
-                                            포트폴리오
+                                            프로필
                                         </Button>
 
                                         <Button
@@ -61,7 +65,7 @@ const FollowingList = ({ user }) => {
                                                 handleUnfollow(follow);
                                             }}
                                         >
-                                            언팔로우
+                                            삭제
                                         </Button>
                                     </Col>
                                 </Row>
