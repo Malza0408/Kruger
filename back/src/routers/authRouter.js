@@ -35,6 +35,7 @@ authRouter.get('/auth/github', async (req, res, next) => {
         const clientId = process.env.GITHUB_CLIENT_ID;
         const redirectUri = 'http://localhost:5000/auth/github/callback';
         const uri = 'https://github.com/login/oauth/authorize';
+        // window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`;
         res.redirect(
             `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
         );
