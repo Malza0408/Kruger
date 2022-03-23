@@ -7,8 +7,7 @@ class NoteService {
 
         const fromUser = await User.findById(user_id);
 
-        const email = to;
-        const toUser = await User.findByEmail({ email });
+        const toUser = await User.findByEmail({ email: to });
 
         if (!toUser) {
             const errorMessage =
@@ -23,18 +22,14 @@ class NoteService {
         const createdNewTakenNote = await TakenNote.create({ newNote });
         console.log(createdNewTakenNote);
 
-        const toUserKeys = Object.keys(createdNewSentNote.toUser._doc);
-        if (toUserKeys.indexOf('password') !== -1) {
-            const { password, ...refinedUser } = createdNewSentNote.toUser._doc;
-            createdNewSentNote.toUser._doc = refinedUser;
+        if (createdNewSentNote) {
+            const { name, email, ...restUser } =
+                createdNewSentNote.fromUser._doc;
+            createdNewSentNote.fromUser._doc = { name, email };
         }
 
-        const fromUserKeys = Object.keys(createdNewSentNote.fromUser._doc);
-        if (fromUserKeys.indexOf('password') !== -1) {
-            const { password, ...refinedUser } =
-                createdNewSentNote.fromUser._doc;
-            createdNewSentNote.fromUser._doc = refinedUser;
-        }
+        const { name, email, ...restUser } = createdNewSentNote.toUser._doc;
+        createdNewSentNote.toUser._doc = { name, email };
 
         return createdNewSentNote;
     }
