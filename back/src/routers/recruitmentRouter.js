@@ -1,7 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
-import { updateMiddleware } from '../middlewares/updateMiddleware';
+import { recruitmentUpdateMiddleware } from '../middlewares/recruitmentUpdateMiddleware';
 import { languageMiddleware } from '../middlewares/languageMiddleward';
 import { RecruitmentService } from '../services/RecruitmentService';
 
@@ -64,7 +64,7 @@ recruitmentRouter.put(
     '/recruit/:id',
     login_required,
     languageMiddleware,
-    updateMiddleware,
+    recruitmentUpdateMiddleware,
     async function (req, res, next) {
         try {
             const recruitmentId = req.params.id;
@@ -235,7 +235,7 @@ recruitmentRouter.put(
 recruitmentRouter.patch(
     '/recruit/:id/:commentId',
     login_required,
-    updateMiddleware,
+    recruitmentUpdateMiddleware,
     async (req, res, next) => {
         try {
             const recruitmentId = req.params.id;

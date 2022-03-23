@@ -1,7 +1,7 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
-import { updateMiddleware } from '../middlewares/updateMiddleware';
+import { profileUpdateMiddleware } from '../middlewares/profileUpdateMiddleware';
 import { AwardService } from '../services/AwardService';
 
 const awardRouter = Router();
@@ -61,7 +61,7 @@ awardRouter.get('/awards/:id', login_required, async (req, res, next) => {
 awardRouter.put(
     '/awards/:id',
     login_required,
-    updateMiddleware,
+    profileUpdateMiddleware,
     async function (req, res, next) {
         try {
             // URI로부터 수상 요소 id를 추출함.
