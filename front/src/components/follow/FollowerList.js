@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import { Button, Offcanvas, Navbar, Container, Nav } from 'react-bootstrap';
-
-const FollowList = ({ followers }) => {
+import { Button, Offcanvas, Row, Col, ButtonGroup } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import * as Api from '../../api';
+const FollowingList = ({ user }) => {
+    const navigate = useNavigate();
+    const [followers, setFollowers] = useState([]);
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    // 나를 팔로우하는 사람
-
+    const handleShow = async () => {
+        const res = await Api.get('user/current').then((res) =>
+            setFollowers(res.data.follower)
+        );
+        setShow(true);
+    };
     return (
         <>
             <Button variant="secondary" onClick={handleShow}>
-                팔로워 목록
+                팔로워목록
             </Button>
 
             <Offcanvas show={show} onHide={handleClose}>
@@ -20,33 +24,34 @@ const FollowList = ({ followers }) => {
                     <Offcanvas.Title>나를 팔로우하는 사람</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    {followers.map((follower, i) => {
-                        return (
-                            <div key={i}>
-                                <Navbar expand="lg" className="friendCard py-0">
-                                    <Container>
-                                        <Nav>
-                                            {i + 1}. {follower}
-                                        </Nav>
-                                        <Nav>
-                                            <Nav.Item>
-                                                <Nav.Link>쪽지</Nav.Link>
-                                            </Nav.Item>
-                                            <Nav.Item>
-                                                <Nav.Link onClick={() => {}}>
-                                                    친구삭제
-                                                </Nav.Link>
-                                            </Nav.Item>
-                                        </Nav>
-                                    </Container>
-                                </Navbar>
-                            </div>
-                        );
-                    })}
+                    <Row>
+                        {followers.map((follower, i) => {
+                            return (
+                                <Row key={i} className="ms-3 mt-3">
+                                    <Col>
+                                        <Row>{follower.name}</Row>
+                                        <Row>{follower.email}</Row>
+                                    </Col>
+                                    <Col>
+                                        <Button
+                                            size="sm"
+                                            onClick={() => {
+                                                navigate(
+                                                    `/users/${follower.id}`
+                                                );
+                                            }}
+                                        >
+                                            포트폴리오
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            );
+                        })}
+                    </Row>
                 </Offcanvas.Body>
             </Offcanvas>
         </>
     );
 };
 
-export default FollowList;
+export default FollowingList;
