@@ -46,7 +46,14 @@ const FollowingList = ({ user }) => {
                                         <Row>{follow.email}</Row>
                                     </Col>
                                     <Col>
-                                        <Button size="sm">쪽지</Button>
+                                        <Button
+                                            size="sm"
+                                            onClick={() => {
+                                                navigate('/note/write');
+                                            }}
+                                        >
+                                            쪽지
+                                        </Button>
                                         <Button
                                             size="sm"
                                             onClick={() => {
