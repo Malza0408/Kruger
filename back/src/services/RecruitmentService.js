@@ -399,12 +399,11 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
         comment = recruitment.comment.find(
-            (comment) =>
-                comment.id === commentId && comment.author.id === authorId
+            (comment) => comment.author.id == authorId
         );
         console.log(comment);
         if (comment === null || comment === undefined) {
-            const errorMesaage = '삭제 권한이 없습니다.';
+            const errorMessage = '삭제 권한이 없습니다.';
             throw new Error(errorMessage);
         }
 

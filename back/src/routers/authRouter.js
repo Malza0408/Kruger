@@ -101,6 +101,7 @@ authRouter.get('/auth/github', async (req, res, next) => {
 
             email = emailData.data[0].email;
         }
+        id = String(id);
 
         const userInfo = {
             id,
