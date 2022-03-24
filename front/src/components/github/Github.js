@@ -7,12 +7,9 @@ import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 import axios from 'axios';
 
-function Github(props) {
-    // const dispatch = useDispatch();
+function Github() {
     const navigate = useNavigate();
     const dispatch = useContext(DispatchContext);
-    //useState로 login 실패 여부를 판단함.
-    // const [isLoginFail, setIsLoginFail] = useState(false);
 
     const Spinner = () => {
         return (
@@ -27,7 +24,7 @@ function Github(props) {
             // 백엔드로 코드 넘김
             const res = await Api.get(`auth/github?code=${code}`);
 
-            console.log(res); // 토큰이 넘어올 것임
+            console.log(res);
 
             // 유저 정보는 response의 data임.
             const user = res.data;
