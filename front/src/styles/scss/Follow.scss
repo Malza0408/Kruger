@@ -29,6 +29,32 @@
         font-size: 17px;
         transition: 0.8s;
     }
+    .follow {
+        color: #495057;
+        margin: 0 10px;
+        background-color: white;
+        border: 0;
+        font-weight: bold;
+        font-size: 15px;
+    }
+    .follow:hover {
+        background-color: #fff5f5;
+        font-size: 17px;
+        transition: 0.8s;
+    }
+    .unfollow {
+        color: #495057;
+        margin: 0 10px;
+        background-color: white;
+        border: 0;
+        font-weight: bold;
+        font-size: 15px;
+    }
+    .unfollow:hover {
+        background-color: #fff5f5;
+        font-size: 17px;
+        transition: 0.8s;
+    }
 }
 .optionButton:hover {
     background-color: #fff5f5;
