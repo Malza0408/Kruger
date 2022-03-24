@@ -7,6 +7,7 @@ import './styles/scss/Portfolio.scss';
 import './styles/scss/Modal.scss';
 import './styles/scss/Network.scss';
 import './styles/scss/Main.scss';
+import './styles/scss/Follow.scss';
 ReactDOM.render(
     <React.StrictMode>
         <App />

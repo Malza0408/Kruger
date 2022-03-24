@@ -45,11 +45,13 @@ authRouter.get(
 // });
 
 // 깃허브 콜백
-authRouter.get('/auth/github/callback', async (req, res, next) => {
+authRouter.get('/auth/github', async (req, res, next) => {
     try {
+        console.log('여기까지 옴?');
+        console.log(req.query.code.slice(0, -1));
         const uri = 'https://github.com/login/oauth/access_token';
         const config = {
-            code: req.query.code,
+            code: req.query.code.slice(0, -1),
             client_id: process.env.GITHUB_CLIENT_ID,
             client_secret: process.env.GITHUB_CLIENT_SECRET
         };
@@ -60,7 +62,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
                 Accept: 'application/json'
             }
         });
-
+        console.log(tokenRequest.data);
         if (tokenRequest.data.error) {
             const errorMessage = 'github 인증 실패';
             throw new Error(errorMessage);
@@ -89,7 +91,7 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
             const errorMessage =
                 '깃허브에 이메일을 등록하거나 이메일을 public으로 설정해주세요.';
             throw new Error(errorMessage);
-            res.redirect('/user/register');
+            // res.redirect('/user/register');
         }
         const userInfo = {
             id,
@@ -102,8 +104,6 @@ authRouter.get('/auth/github/callback', async (req, res, next) => {
         };
         // 깃허브로 로그인 or 회원가입
         const user = await GithubService.checkUser(userInfo);
-        console.log(req.headers);
-        console.log(req.headers['authorization']);
 
         res.status(201).json(user);
     } catch (error) {

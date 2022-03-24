@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
+import axios from 'axios';
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -57,21 +58,26 @@ function LoginForm() {
             });
 
             // 기본 페이지로 이동함.
-            navigate('/', { replace: true });
+            // navigate('/', { replace: true });
+            window.location.replace('/')
+
         } catch (err) {
             setIsLoginFail(true);
             console.log('로그인에 실패하였습니다.\n', err);
         }
     };
 
-    const handleOnClickGithub = async () => {
-        await Api.get('auth/github').then((res) => console.log(res));
-    };
+
+    // const handleOnClickGithub = async () => {
+    //     await Api.get(
+    //         `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
+    //     ).then((res) => console.log(res));
+    // };
     const handleOnClickGoogle = async () => {
         await Api.get('auth/google').then((res) => console.log(res));
     };
     const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
-    const redirectUri = 'http://localhost:5000/auth/github/callback';
+    const redirectUri = 'http://localhost:3000/auth/github/callback';
     const uri = 'https://github.com/login/oauth/authorize';
 
     return (
@@ -170,7 +176,6 @@ function LoginForm() {
                         <Row className="mt-5 mb-4">
                             <a
                                 href={`${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`}
-                                onClick={handleOnClickGithub}
                             >
                                 <img
                                     src={`${process.env.PUBLIC_URL}/img/github.png`}
@@ -181,12 +186,14 @@ function LoginForm() {
                             </a>
                         </Row>
                         <Row>
-                            <img
-                                src={`${process.env.PUBLIC_URL}/img/google.png`}
-                                alt=""
-                                onClick={handleOnClickGoogle}
-                                className="googleLogin"
-                            />
+                            <a>
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/img/google.png`}
+                                    alt=""
+                                    onClick={handleOnClickGoogle}
+                                    className="googleLogin"
+                                />
+                            </a>
                         </Row>
                     </Col>
                 </Row>
