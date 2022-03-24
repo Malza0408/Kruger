@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
+import axios from 'axios';
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -66,16 +67,17 @@ function LoginForm() {
         }
     };
 
-    const handleOnClickGithub = async () => {
-        await Api.get(
-            `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
-        ).then((res) => console.log(res));
-    };
+
+    // const handleOnClickGithub = async () => {
+    //     await Api.get(
+    //         `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
+    //     ).then((res) => console.log(res));
+    // };
     const handleOnClickGoogle = async () => {
         await Api.get('auth/google').then((res) => console.log(res));
     };
     const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
-    const redirectUri = 'http://localhost:5000/auth/github/callback';
+    const redirectUri = 'http://localhost:3000/auth/github/callback';
     const uri = 'https://github.com/login/oauth/authorize';
 
     return (
@@ -174,7 +176,6 @@ function LoginForm() {
                         <Row className="mt-5 mb-4">
                             <a
                                 href={`${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`}
-                                onClick={handleOnClickGithub}
                             >
                                 <img
                                     src={`${process.env.PUBLIC_URL}/img/github.png`}

@@ -59,8 +59,20 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
                 </Card.Body>
             ) : (
                 <div>
-                    <Button onClick={handleFollow}>팔로우</Button>
-                    <Button onClick={handleUnfollow}>언팔로우</Button>
+                    <Button
+                        variant="light"
+                        className="follow"
+                        onClick={handleFollow}
+                    >
+                        팔로우
+                    </Button>
+                    <Button
+                        variant="light"
+                        className="unfollow"
+                        onClick={handleUnfollow}
+                    >
+                        언팔로우
+                    </Button>
                 </div>
             )}
         </Card>
