@@ -188,27 +188,6 @@ recruitmentRouter.patch(
     }
 );
 
-// 게시글에 좋아요 해제하기
-recruitmentRouter.patch(
-    '/unlikedRecruit/:id',
-    login_required,
-    async function (req, res, next) {
-        try {
-            const recruitmentId = req.params.id;
-            const user_id = req.currentUserId;
-
-            const updatedRecruitment =
-                await RecruitmentService.unlikeRecruitment({
-                    recruitmentId,
-                    user_id
-                });
-            res.status(200).json(updatedRecruitment);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
 // 댓글 달기
 recruitmentRouter.put(
     '/recruit/comment/:id',

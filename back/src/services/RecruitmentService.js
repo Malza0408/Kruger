@@ -285,49 +285,26 @@ class RecruitmentService {
         const user = await User.findById(user_id);
 
         console.log(likedRecruitment.like.indexOf(user._id));
-        if (likedRecruitment.like.includes(user._id)) {
-            const errorMessage = '이미 좋아요를 누른 게시물입니다.';
-            throw new Error(errorMessage);
+        const likedIndex = likedRecruitment.like.indexOf(user._id);
+
+        if (likedIndex === -1) {
+            const newLikeValue = { $push: { like: user } };
+            likedRecruitment = await Recruitment.updateArray(
+                { id: recruitmentId },
+                newLikeValue
+            );
+        } else {
+            const like = likedRecruitment.like;
+            like.splice(likedIndex, 1);
+            const newLikeValue = { like };
+
+            likedRecruitment = await Recruitment.updateArray(
+                { id: recruitmentId },
+                newLikeValue
+            );
         }
-
-        const newLikeValue = { $push: { like: user } };
-
-        likedRecruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newLikeValue
-        );
 
         return likedRecruitment;
-    }
-
-    // 게시물에 좋아요 해제하기
-    static async unlikeRecruitment({ recruitmentId, user_id }) {
-        let unlikedRecruitment = await Recruitment.findById({ recruitmentId });
-
-        if (!unlikedRecruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const user = await User.findById(user_id);
-
-        console.log(unlikedRecruitment.like.indexOf(user._id));
-        const unlikedIndex = unlikedRecruitment.like.indexOf(user._id);
-        if (unlikedIndex === -1) {
-            const errorMessage = '좋아요를 누르지 않은 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const like = unlikedRecruitment.like;
-        like.splice(unlikedIndex, 1);
-        const newUnlikeValue = { like };
-
-        unlikedRecruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newUnlikeValue
-        );
-
-        return unlikedRecruitment;
     }
 
     // 댓글 추가하기
