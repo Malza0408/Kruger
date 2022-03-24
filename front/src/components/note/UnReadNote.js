@@ -15,14 +15,14 @@ const UnReadNote = () => {
         });
     }, []);
 
-    // 5초마다 수신 쪽지 get
-    useEffect(() => {
-        const getTakeNotes = setInterval(() => {
-            Api.get(`takenNotelist`).then((res) => {
-                setTakeNoteCheck(res.data);
-            });
-        }, 5000);
-    }, []);
+    // // 실시간 갱신: 5초마다 수신 쪽지 get
+    // useEffect(() => {
+    //     const getTakeNotes = setInterval(() => {
+    //         Api.get(`takenNotelist`).then((res) => {
+    //             setTakeNoteCheck(res.data);
+    //         });
+    //     }, 5000);
+    // }, []);
 
     useEffect(() => {
         setCountUnReadNoteCheck(0)
