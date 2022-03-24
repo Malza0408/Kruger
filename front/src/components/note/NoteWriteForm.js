@@ -17,6 +17,8 @@ import * as Api from '../../api';
 
 const NoteWriteForm = () => {
     const navigate = useNavigate();
+    const params = useParams();
+
     const [to, setTo] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -31,7 +33,15 @@ const NoteWriteForm = () => {
 
     useEffect(() => {
         Api.get(`user/current`).then((res) => setUser(res.data));
+
+        // 답장 작성이라면 이전 쪽지를 보낸 사람을 수신자로 설정
+        !(`${params.replyTo}` === 'undefined') && setTo(`${params.replyTo}`);
     }, []);
+
+    // 답장 작성이라면 수신자 란 수정할 수 없음
+    const handelDisabled = () => {
+        return `${params.replyTo}` === 'undefined' ? false : true;
+    };
 
     const handleSubmit = async (e) => {
         const emailList = [];
@@ -88,6 +98,7 @@ const NoteWriteForm = () => {
                                         type="text"
                                         value={to}
                                         placeholder="이메일을 입력하세요"
+                                        disabled={handelDisabled()}
                                         onChange={(e) => setTo(e.target.value)}
                                     />
                                     {isToEmpty && (
