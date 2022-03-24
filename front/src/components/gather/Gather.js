@@ -1,13 +1,25 @@
 import React from 'react';
-import { Card, Row, Col, Button } from 'react-bootstrap';
-const Gather = ({ project }) => {
+import { Card, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { get } from '../../api';
+
+const Gather = ({ project, handleOnClickPost }) => {
+    const navigate = useNavigate();
+
+    const handleOnClick = async () => {
+        navigate(`/gatherRoom/${project.id}`);
+    };
     return (
-        <Card style={{ width: '18rem' }} className="Gather">
+        <Card
+            style={{ width: '18rem' }}
+            className="Gather"
+            onClick={handleOnClick}
+        >
             <Card.Body>
-                <Row className="text-center">
-                    <Card.Title>{project.title}</Card.Title>
+                <Row className="text-center mt-3">
+                    <Card.Title className="mb-0">{project.title}</Card.Title>
                 </Row>
-                <div className="imageContainer">
+                <div className="imageContainer" as={Row}>
                     <ul
                         style={{
                             display: 'flex',
@@ -82,12 +94,18 @@ const Gather = ({ project }) => {
                         })}
                     </ul>
                 </div>
-
-                <Col>
-                    <Row className="mt-3 text-center text-info">
-                        <Col sm={{ span: 20 }}></Col>
-                    </Row>
-                </Col>
+                <Row>
+                    <Col className="like-container text-end">
+                        <img
+                            src={`${process.env.PUBLIC_URL}/gatherImg/heart.png`}
+                            alt="like"
+                            width="20px"
+                            height="20px"
+                            className="me-1"
+                        />
+                        <span className="like-count">{project.length}</span>
+                    </Col>
+                </Row>
             </Card.Body>
         </Card>
     );

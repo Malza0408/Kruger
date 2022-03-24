@@ -41,7 +41,14 @@ const PostingForm = forwardRef(
                         value={langInputValue && langInputValue}
                         ref={ref.dropDownMenuRef}
                     />
-
+                    <Button
+                        variant="outline-secondary"
+                        id="button-addon2"
+                        className="deleteBtn"
+                        onClick={handleOnDeleteInputValue}
+                    >
+                        Delete
+                    </Button>
                     <DropdownButton
                         variant="outline-secondary"
                         title="Language"
@@ -52,7 +59,7 @@ const PostingForm = forwardRef(
                             href="#"
                             onClick={(e) => {
                                 getLangFromDropDown(e.target.innerText);
-                                // e.target.hidden = true;
+                                e.target.hidden = true;
                             }}
                         >
                             JavaScript
@@ -61,6 +68,7 @@ const PostingForm = forwardRef(
                             href="#"
                             onClick={(e) => {
                                 getLangFromDropDown(e.target.innerText);
+                                e.target.hidden = true;
                             }}
                         >
                             TypeScript
@@ -69,6 +77,7 @@ const PostingForm = forwardRef(
                             href="#"
                             onClick={(e) => {
                                 getLangFromDropDown(e.target.innerText);
+                                e.target.hidden = true;
                             }}
                         >
                             Node.js
@@ -77,6 +86,7 @@ const PostingForm = forwardRef(
                             href="#"
                             onClick={(e) => {
                                 getLangFromDropDown(e.target.innerText);
+                                e.target.hidden = true;
                             }}
                         >
                             React
@@ -85,6 +95,7 @@ const PostingForm = forwardRef(
                             href="#"
                             onClick={(e) => {
                                 getLangFromDropDown(e.target.innerText);
+                                e.target.hidden = true;
                             }}
                         >
                             Vue
@@ -93,6 +104,7 @@ const PostingForm = forwardRef(
                             href="#"
                             onClick={(e) => {
                                 getLangFromDropDown(e.target.innerText);
+                                e.target.hidden = true;
                             }}
                         >
                             Python
@@ -101,19 +113,12 @@ const PostingForm = forwardRef(
                             href="#"
                             onClick={(e) => {
                                 getLangFromDropDown(e.target.innerText);
+                                e.target.hidden = true;
                             }}
                         >
                             Django
                         </Dropdown.Item>
                     </DropdownButton>
-                    <Button
-                        variant="outline-secondary"
-                        id="button-addon2"
-                        className="deleteBtn"
-                        onClick={handleOnDeleteInputValue}
-                    >
-                        Delete
-                    </Button>
                 </InputGroup>
                 <Form.Group controlId="posting" className="mt-3">
                     <Form.Control

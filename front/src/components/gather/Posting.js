@@ -5,6 +5,7 @@ import PostingForm from './PostingForm';
 import '../../styles/scss/posting.scss';
 import { UserStateContext } from '../../App';
 import { post } from '../../api';
+import useGetLangFromDropDown from '../../custom/useGetLangFromDropDown';
 
 const Posting = (props) => {
     const navigate = useNavigate();
@@ -36,17 +37,10 @@ const Posting = (props) => {
     const handleToggle = () => {
         setIsToggle(!isToggle);
     };
-    const getLangFromDropDown = (lang) => {
-        if (!langInputValue.length) {
-            setLangInputValue((current) => {
-                return current + `${lang}`;
-            });
-        } else {
-            setLangInputValue((current) => {
-                return current + ` / ${lang}`;
-            });
-        }
-    };
+    const getLangFromDropDown = useGetLangFromDropDown({
+        langInputValue,
+        setLangInputValue
+    });
     const handleOnDeleteInputValue = () => {
         setLangInputValue('');
     };
