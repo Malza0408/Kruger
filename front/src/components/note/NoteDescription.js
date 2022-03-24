@@ -12,6 +12,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const NoteDescription = () => {
+    const navigate = useNavigate();
     const params = useParams();
     const [user, setUser] = useState(null);
     const [note, setNote] = useState('');
@@ -44,8 +45,35 @@ const NoteDescription = () => {
         setNewDateFormatted(`${year}년 ${month}월 ${day}일 ${time}`);
     }, [note]);
 
+    const handleDelete = async (e) => {
+        e.preventDefault();
+
+        user?.name === note.fromUser?.name
+            ? await Api.delete(`sentNotes/${params.noteId}`)
+            : await Api.delete(`takenNotes/${params.noteId}`);
+
+        console.log(params.noteId);
+
+        navigate('/note');
+
+        // await Api.get(`sentNotelist`).then((res) => {
+        //     setSendNote(res.data);
+        // });
+    };
+
     return (
         <Container fluid>
+            <Button onClick={() => navigate('/note')}>
+                쪽지함으로 돌아가기
+            </Button>
+            <Button
+                variant="primary"
+                size="sm"
+                className="mvpCardCancelButton"
+                onClick={handleDelete}
+            >
+                삭제
+            </Button>
             <Card>
                 <Card.Body>
                     <Card.Title>

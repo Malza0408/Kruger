@@ -30,25 +30,8 @@ authRouter.get(
 );
 
 // 깃허브
-// authRouter.get('/auth/github', async (req, res, next) => {
-//     try {
-//         const clientId = process.env.GITHUB_CLIENT_ID;
-//         const redirectUri = 'http://localhost:5000/auth/github/callback';
-//         const uri = 'https://github.com/login/oauth/authorize';
-//         // window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`;
-//         res.redirect(
-//             `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
-//         );
-//     } catch (error) {
-//         next(error);
-//     }
-// });
-
-// 깃허브 콜백
 authRouter.get('/auth/github', async (req, res, next) => {
     try {
-        console.log('여기까지 옴?');
-        console.log(req.query.code.slice(0, -1));
         const uri = 'https://github.com/login/oauth/access_token';
         const config = {
             code: req.query.code.slice(0, -1),
@@ -62,7 +45,7 @@ authRouter.get('/auth/github', async (req, res, next) => {
                 Accept: 'application/json'
             }
         });
-        console.log(tokenRequest.data);
+
         if (tokenRequest.data.error) {
             const errorMessage = 'github 인증 실패';
             throw new Error(errorMessage);
@@ -77,22 +60,31 @@ authRouter.get('/auth/github', async (req, res, next) => {
                 Accept: 'application/json'
             }
         });
+
         if (userData.data.error) {
             const errorMessage = 'github 데이터 전송 실패';
             throw new Error(errorMessage);
         }
-        console.log(userData.data);
 
         // 깃허브에서 데이터 가져와서 userInfo 객체로 만들기
-        const { id, name, email, login, avatar } = userData.data;
+        let { id, name, email, login, avatar } = userData.data;
         const repositoryUrl = `https://github.com/${login}`;
         const description = userData.data.bio;
         if (!email) {
-            const errorMessage =
-                '깃허브에 이메일을 등록하거나 이메일을 public으로 설정해주세요.';
-            throw new Error(errorMessage);
-            // res.redirect('/user/register');
+            const emailData = await axios.get(
+                'https://api.github.com/user/emails',
+                {
+                    headers: {
+                        Authorization: `token ${accessToken}`,
+                        Accept: 'application/json'
+                    }
+                }
+            );
+
+            email = emailData.data[0].email;
         }
+        id = String(id);
+
         const userInfo = {
             id,
             name,
