@@ -360,15 +360,14 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        comments = recruitment.comment.find(
-            (comment) =>
-                comment.id === commentId && comment.author.id === authorId
-        );
+        // comments = recruitment.comment.find(
+        //     (comment) => comment.author.id === authorId
+        // );
 
-        if (comments === null || comments === undefined) {
-            const errorMesaage = '수정 권한이 없습니다.';
-            throw new Error(errorMessage);
-        }
+        // if (comments === null || comments === undefined) {
+        //     const errorMesaage = '수정 권한이 없습니다.';
+        //     throw new Error(errorMessage);
+        // }
 
         const comment = { id: commentId, author: user._id, ...toUpdate };
         console.log(comment);
@@ -394,16 +393,16 @@ class RecruitmentService {
             (comment) => comment.id === commentId
         );
 
-        if (comment.length === 0) {
-            const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
-            throw new Error(errorMessage);
-        }
-        comment = recruitment.comment.find(
-            (comment) => comment.author.id == authorId
-        );
+        // if (comment.length === 0) {
+        //     const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
+        //     throw new Error(errorMessage);
+        // }
+        // comment = recruitment.comment.find(
+        //     (comment) => comment.author.id == authorId
+        // );
         console.log(comment);
-        if (comment === null || comment === undefined) {
-            const errorMessage = '삭제 권한이 없습니다.';
+        if (comment === null || comment === undefined || comment.length === 0) {
+            const errorMessage = '없는 댓글입니다.';
             throw new Error(errorMessage);
         }
 
@@ -414,7 +413,7 @@ class RecruitmentService {
             { $pull: { comment: { id: commentId } } }
         );
         console.log(updatedRecruitment);
-        // return;
+        return updatedRecruitment;
     }
 
     // 게시물 삭제하기

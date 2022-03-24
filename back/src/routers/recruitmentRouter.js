@@ -243,12 +243,12 @@ recruitmentRouter.patch(
             const recruitmentId = req.params.id;
             const commentId = req.params.commentId;
             const authorId = req.currentUserId;
-            await RecruitmentService.deleteComment({
+            const updatedRecruitment = await RecruitmentService.deleteComment({
                 recruitmentId,
                 commentId,
                 authorId
             });
-            res.status(200).json('댓글이 삭제되었습니다.');
+            res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);
         }
