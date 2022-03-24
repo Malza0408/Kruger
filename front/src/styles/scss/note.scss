@@ -1,0 +1,31 @@
+.sendNote {
+    background-color: antiquewhite;
+}
+.takeNote {
+    background-color: aliceblue;
+}
+.filterButton {
+    background-color: lightblue;
+    width: 100px;
+}
+.filterButton:hover {
+    background-color: lightblue;
+}
+.filterButton:focus {
+    background-color: lightblue;
+    border: 3px solid white;
+}
+.descriptionButton {
+    background-color: lightblue;
+    color: black;
+    border: 0;
+}
+.descriptionButton:hover {
+    background-color: lightblue;
+    color: black;
+}
+.descriptionCard {
+    background-color: white;
+    border: 4px solid lightblue;
+    height: 70vh;
+}
