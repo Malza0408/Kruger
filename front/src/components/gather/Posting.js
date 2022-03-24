@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import PostingForm from './PostingForm';
-import '../../styles/scss/posting.scss';
+import '../../styles/scss/Posting.scss';
 import { UserStateContext } from '../../App';
 import { post } from '../../api';
 import useGetLangFromDropDown from '../../custom/useGetLangFromDropDown';
