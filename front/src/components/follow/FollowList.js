@@ -28,12 +28,20 @@ const FollowingList = ({ user }) => {
     };
     return (
         <>
-            <Button variant="secondary" onClick={handleShow}>
+            <Button
+                variant="light
+                "
+                onClick={handleShow}
+                className="followList"
+            >
                 팔로우목록
             </Button>
 
             <Offcanvas show={show} onHide={handleClose}>
-                <Offcanvas.Header closeButton>
+                <Offcanvas.Header
+                    style={{ backgroundColor: '#fff5f5' }}
+                    closeButton
+                >
                     <Offcanvas.Title>내가 팔로우하는 사람</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
@@ -49,10 +57,25 @@ const FollowingList = ({ user }) => {
                                         <Button
                                             size="sm"
                                             onClick={() => {
+                                                navigate('/note/write');
+                                            }}
+                                            variant="light"
+                                            className="optionButton"
+                                        >
+                                            쪽지
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            onClick={() => {
+                                                alert(
+                                                    '포트폴리오로 이동합니다.'
+                                                );
                                                 navigate(`/users/${follow.id}`);
                                             }}
+                                            variant="light"
+                                            className="optionButton"
                                         >
-                                            포트폴리오
+                                            프로필
                                         </Button>
 
                                         <Button
@@ -60,8 +83,10 @@ const FollowingList = ({ user }) => {
                                             onClick={() => {
                                                 handleUnfollow(follow);
                                             }}
+                                            variant="light"
+                                            className="optionButton"
                                         >
-                                            언팔로우
+                                            삭제
                                         </Button>
                                     </Col>
                                 </Row>
