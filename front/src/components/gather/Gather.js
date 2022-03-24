@@ -103,7 +103,9 @@ const Gather = ({ project, handleOnClickPost }) => {
                             height="20px"
                             className="me-1"
                         />
-                        <span className="like-count">{project.length}</span>
+                        <span className="like-count">
+                            {project.like.length}
+                        </span>
                     </Col>
                 </Row>
             </Card.Body>
