@@ -13,10 +13,12 @@ import * as Api from '../../api';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import NoteWriteForm from './NoteWriteForm';
+
 const NoteDescription = () => {
     const navigate = useNavigate();
     const params = useParams();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(true);
     const [note, setNote] = useState('');
     const [newDateFormatted, setNewDateFormatted] = useState('');
 
@@ -25,15 +27,11 @@ const NoteDescription = () => {
     }, []);
 
     useEffect(() => {
-        Api.get(`sentNotes/${params.noteId}`).then((res) => {
+        Api.get(`${params.noteType}/${params.noteId}`).then((res) => {
             setNote(res.data);
         });
 
-        !user &&
-            Api.get(`takenNotes/${params.noteId}`).then((res) => {
-                setNote(res.data);
-            });
-    }, [params, user]);
+    }, [params]);
 
     useEffect(() => {
         const newDate = new Date(note?.createdAt);
@@ -50,17 +48,13 @@ const NoteDescription = () => {
     const handleDelete = async (e) => {
         e.preventDefault();
 
-        user?.name === note.fromUser?.name
-            ? await Api.delete(`sentNotes/${params.noteId}`)
-            : await Api.delete(`takenNotes/${params.noteId}`);
-
-        console.log(params.noteId);
+        await Api.delete(`${params.noteType}/${params.noteId}`);
 
         navigate('/note');
+    };
 
-        // await Api.get(`sentNotelist`).then((res) => {
-        //     setSendNote(res.data);
-        // });
+    const reply = () => {
+            navigate(`/note/write/${note.fromUser?.email}`)
     };
 
     return (
@@ -83,12 +77,22 @@ const NoteDescription = () => {
                     >
                         삭제
                     </Button>
+                    {`${params.noteType}` === 'takenNotes' && (
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            className="noteDescriptionButton"
+                            onClick={reply}
+                        >
+                            답장
+                        </Button>
+                    )}
                 </ButtonGroup>
             </ButtonToolbar>
             <Card className="descriptionCard">
                 <Card.Body>
                     <Card.Title>
-                        {user?.name === note.fromUser?.name ? (
+                        {`${params.noteType}` === 'sentNotes' ? (
                             // 발신
                             <Col>
                                 <h3>

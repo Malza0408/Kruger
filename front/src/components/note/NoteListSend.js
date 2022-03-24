@@ -56,7 +56,7 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                 </Card.Title>
                 <Card.Title
                     style={{ cursor: 'pointer' }}
-                    onClick={() => navigate(`/note/${sendNote.id}`)}
+                    onClick={() => navigate(`/note/sentNotes/${sendNote.id}`)}
                 >
                     <span className="fs-5">
                         <strong>{sendNote.title}</strong>
