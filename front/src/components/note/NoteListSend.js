@@ -40,7 +40,7 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
     };
 
     return (
-        <Card.Text as={Col}>
+        <Card.Text as={Col} className="sendNote">
             <Card.Body>
                 <Card.Title>
                     {sendNote.toUser.name === '탈퇴한 회원' ? (
@@ -74,8 +74,8 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                         <Button
                             variant="primary"
                             size="sm"
-                            className="mvpCardCancelButton"
                             onClick={handleDelete}
+                            className="descriptionButton"
                         >
                             삭제
                         </Button>{' '}
