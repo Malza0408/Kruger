@@ -30,25 +30,8 @@ authRouter.get(
 );
 
 // 깃허브
-// authRouter.get('/auth/github', async (req, res, next) => {
-//     try {
-//         const clientId = process.env.GITHUB_CLIENT_ID;
-//         const redirectUri = 'http://localhost:5000/auth/github/callback';
-//         const uri = 'https://github.com/login/oauth/authorize';
-//         // window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`;
-//         res.redirect(
-//             `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
-//         );
-//     } catch (error) {
-//         next(error);
-//     }
-// });
-
-// 깃허브 콜백
 authRouter.get('/auth/github', async (req, res, next) => {
     try {
-        console.log('여기까지 옴?');
-        console.log(req.query.code.slice(0, -1));
         const uri = 'https://github.com/login/oauth/access_token';
         const config = {
             code: req.query.code.slice(0, -1),
@@ -82,7 +65,6 @@ authRouter.get('/auth/github', async (req, res, next) => {
             const errorMessage = 'github 데이터 전송 실패';
             throw new Error(errorMessage);
         }
-        console.log(userData.data);
 
         // 깃허브에서 데이터 가져와서 userInfo 객체로 만들기
         let { id, name, email, login, avatar } = userData.data;
