@@ -122,6 +122,7 @@ const Post = () => {
         if (!userState.user) {
             navigate('/login');
         }
+        console.log(userState.user);
         getPostDataWithComment();
     }, [getPostDataWithComment, navigate, userState.user]);
     return (
@@ -163,9 +164,13 @@ const Post = () => {
                     />
 
                     <span className="like-count">{post?.like.length}</span>
-                    <Button onClick={() => handleToggleEditDetail()}>
-                        수정하기
-                    </Button>
+                    {userState.user.id === post?.captain.id ? (
+                        <Button onClick={() => handleToggleEditDetail()}>
+                            수정하기
+                        </Button>
+                    ) : (
+                        <></>
+                    )}
                     <Form onSubmit={handleOnSubmitComment}>
                         <Form.Group
                             className="mb-3"
@@ -187,15 +192,20 @@ const Post = () => {
                                         <Col>
                                             <li>{comment.content}</li>
                                         </Col>
-                                        <Col>
-                                            <Button
-                                                onClick={handleOnClickDelete(
-                                                    comment.id
-                                                )}
-                                            >
-                                                삭제
-                                            </Button>
-                                        </Col>
+                                        {userState.user._id ===
+                                        comment.author ? (
+                                            <Col>
+                                                <Button
+                                                    onClick={handleOnClickDelete(
+                                                        comment.id
+                                                    )}
+                                                >
+                                                    삭제
+                                                </Button>
+                                            </Col>
+                                        ) : (
+                                            <></>
+                                        )}
                                     </Row>
                                 );
                             })}
