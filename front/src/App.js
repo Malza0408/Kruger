@@ -74,7 +74,7 @@ function App() {
                         <Route path="/note" element={<Notes />} />
                         <Route path="/note/write" element={<NoteWriteForm />} />
                         <Route
-                            path="/note/:noteId"
+                            path="/note/:noteType/:noteId"
                             element={<NoteDescription />}
                         />
                         <Route path="/posting" element={<Posting />} />
