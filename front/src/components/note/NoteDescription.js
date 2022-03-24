@@ -52,19 +52,12 @@ const NoteDescription = () => {
     };
 
     const reply = () => {
-        user?.name === note.fromUser?.name ? (
-            // <NoteWriteForm replyTo={note.toUser?.email} />
-            navigate(`/note/write/${note.id}`)
-        ) : (
-            // <NoteWriteForm replyTo={note.fromUser?.email} />
-            navigate(`/note/write/${note.id}`)
-        );
-
-        navigate('/note/write');
+            navigate(`/note/write/${note.fromUser?.email}`)
     };
 
     return (
         <Container fluid>
+
             <Button
                 variant="primary"
                 size="sm"
@@ -81,14 +74,16 @@ const NoteDescription = () => {
             >
                 삭제
             </Button>
-            <Button
-                variant="primary"
-                size="sm"
-                className="noteDescriptionButton"
-                onClick={reply}
-            >
-                답장
-            </Button>
+            {`${params.noteType}` === 'takenNotes' && (
+                <Button
+                    variant="primary"
+                    size="sm"
+                    className="noteDescriptionButton"
+                    onClick={reply}
+                >
+                    답장
+                </Button>
+            )}
             <Card>
                 <Card.Body>
                     <Card.Title>
