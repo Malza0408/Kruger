@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Gathers from './Gathers';
 import '../../styles/scss/gatherRoom.scss';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const GatherRoom = (props) => {
+const GatherRoom = ({ handleOnClickPost }) => {
     const navigate = useNavigate();
     const handleOnClickNewPosting = () => {
         navigate('/posting');
     };
+
     return (
         <Container fluid style={{ width: '85%' }} className="gatherRoom">
             <Row className="text-end">
@@ -21,7 +22,7 @@ const GatherRoom = (props) => {
                     </button>
                 </Col>
             </Row>
-            <Gathers></Gathers>
+            <Gathers handleOnClickPost={handleOnClickPost}></Gathers>
         </Container>
     );
 };

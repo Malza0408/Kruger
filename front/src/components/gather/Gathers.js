@@ -1,11 +1,12 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { get } from '../../api';
 import { UserStateContext } from '../../App';
+import useFilteringLanguage from '../../custom/useFilteringLanguage';
 import Gather from './Gather';
 
-const Gathers = (props) => {
+const Gathers = ({ handleOnClickPost }) => {
     // 얘네가 무슨 프로젝트인지 가지고 있을꺼임. 아마 배열로
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
@@ -52,56 +53,13 @@ const Gathers = (props) => {
     const [traceFocusing, setTraceFocusing] = useState(0);
     const [filteredLanguage, setFilteredLanguage] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
-    const filteringLanguage = useCallback(
-        (language, isAddLanguage = true) => {
-            if (language === 'none') {
-                setFilteredLanguage([]);
-                setFilteredProjects([]);
-            } else {
-                // 새로운 언어를 추가한다면
-                if (isAddLanguage) {
-                    if (
-                        filteredLanguage.find(
-                            (element) => element === language
-                        ) === undefined
-                    ) {
-                        const newFilteredLang = [...filteredLanguage];
-                        newFilteredLang.push(language);
-                        const filtered = newFilteredLang
-                            .map((lang) => {
-                                const filteredP = projects.filter((project) => {
-                                    return project.language.includes(lang);
-                                });
-                                return filteredP;
-                            })
-                            .flat();
-                        const set = new Set(filtered);
-                        setFilteredProjects([...set]);
-                        setFilteredLanguage(newFilteredLang);
-                    }
-                } else {
-                    // 기존의 언어를 뺀다면
-                    const newFilteredLang = filteredLanguage.filter((lang) => {
-                        return lang !== language;
-                    });
-                    const newFilteredProject = [...filteredProjects];
-                    const filtered = newFilteredLang
-                        .map((lang) => {
-                            const filteredP = newFilteredProject.filter(
-                                (project) => {
-                                    return project.language.includes(lang);
-                                }
-                            );
-                            return filteredP;
-                        })
-                        .flat();
-                    setFilteredProjects([...filtered]);
-                    setFilteredLanguage(newFilteredLang);
-                }
-            }
-        },
-        [filteredLanguage, filteredProjects, projects]
-    );
+    const filteringLanguage = useFilteringLanguage({
+        setFilteredLanguage,
+        setFilteredProjects,
+        filteredLanguage,
+        projects,
+        filteredProjects
+    });
 
     useEffect(() => {
         if (!userState.user) {
@@ -113,6 +71,7 @@ const Gathers = (props) => {
                 // 여기에 Project 불러오는 로직
                 const recruitlist = await get('recruitlist');
                 setProjects([...recruitlist.data]);
+                // console.log(recruitlist.data[0]);
             } catch (error) {
                 throw new Error(error);
             }
@@ -209,12 +168,20 @@ const Gathers = (props) => {
                 {traceFocusing === 0
                     ? projects?.map((project, index) => {
                           return (
-                              <Gather key={index} project={project}></Gather>
+                              <Gather
+                                  key={index}
+                                  project={project}
+                                  handleOnClickPost={handleOnClickPost}
+                              ></Gather>
                           );
                       })
                     : filteredProjects?.map((project, index) => {
                           return (
-                              <Gather key={index} project={project}></Gather>
+                              <Gather
+                                  key={index}
+                                  project={project}
+                                  handleOnClickPost={handleOnClickPost}
+                              ></Gather>
                           );
                       })}
             </Row>

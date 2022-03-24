@@ -12,8 +12,9 @@ import Portfolio from './components/Portfolio';
 import GatherRoom from './components/gather/GatherRoom';
 import Notes from './components/note/Notes';
 import NoteWriteForm from './components/note/NoteWriteForm';
-import NoteDescription from './components/note/NoteDescription'
+import NoteDescription from './components/note/NoteDescription';
 import Posting from './components/gather/Posting';
+import Post from './components/gather/Post';
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -23,6 +24,7 @@ function App() {
     const [userState, dispatch] = useReducer(loginReducer, {
         user: null
     });
+    const [post, setPost] = useState(null);
 
     // 아래의 fetchCurrentUser 함수가 실행된 다음에 컴포넌트가 구현되도록 함.
     // 아래 코드를 보면 isFetchCompleted 가 true여야 컴포넌트가 구현됨.
@@ -47,7 +49,9 @@ function App() {
         // fetchCurrentUser 과정이 끝났으므로, isFetchCompleted 상태를 true로 바꿔줌
         setIsFetchCompleted(true);
     };
-
+    const handleOnClickPost = (postData) => {
+        setPost(postData);
+    };
     // useEffect함수를 통해 fetchCurrentUser 함수를 실행함.
     useEffect(() => {
         fetchCurrentUser();
@@ -67,12 +71,26 @@ function App() {
                         <Route path="/login" element={<LoginForm />} />
                         <Route path="/register" element={<RegisterForm />} />
                         <Route path="/users/:userId" element={<Portfolio />} />
-                        <Route path="/gatherRoom" element={<GatherRoom />} />
+                        <Route
+                            path="/gatherRoom"
+                            element={
+                                <GatherRoom
+                                    handleOnClickPost={handleOnClickPost}
+                                />
+                            }
+                        />
                         <Route path="/network" element={<Network />} />
                         <Route path="/note" element={<Notes />} />
                         <Route path="/note/write" element={<NoteWriteForm />} />
-                        <Route path="/note/:noteId" element={<NoteDescription />} />
+                        <Route
+                            path="/note/:noteId"
+                            element={<NoteDescription />}
+                        />
                         <Route path="/posting" element={<Posting />} />
+                        <Route
+                            path="/recruitment"
+                            element={<Post post={post} />}
+                        />
                         <Route path="*" element={<Portfolio />} />
                     </Routes>
                 </Router>
