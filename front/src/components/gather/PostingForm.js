@@ -61,6 +61,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('JavaScript')}
                         >
                             JavaScript
                         </Dropdown.Item>
@@ -70,6 +71,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('TypeScript')}
                         >
                             TypeScript
                         </Dropdown.Item>
@@ -79,6 +81,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('Node.js')}
                         >
                             Node.js
                         </Dropdown.Item>
@@ -88,6 +91,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('React')}
                         >
                             React
                         </Dropdown.Item>
@@ -97,6 +101,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('Vue')}
                         >
                             Vue
                         </Dropdown.Item>
@@ -106,6 +111,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('Python')}
                         >
                             Python
                         </Dropdown.Item>
@@ -115,6 +121,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('Django')}
                         >
                             Django
                         </Dropdown.Item>

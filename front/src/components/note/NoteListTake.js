@@ -34,7 +34,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
     };
 
     return (
-        <Card.Text as={Col}>
+        <Card.Text as={Col} className="takeNote">
             <Card.Body>
                 <Row>
                     <Col>
@@ -86,7 +86,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                         <Button
                             variant="primary"
                             size="sm"
-                            className="mvpCardCancelButton"
+                            className="descriptionButton"
                             onClick={handleDelete}
                         >
                             삭제

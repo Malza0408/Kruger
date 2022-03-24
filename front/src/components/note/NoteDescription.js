@@ -5,7 +5,9 @@ import {
     Col,
     Button,
     Badge,
-    Card
+    Card,
+    ButtonGroup,
+    ButtonToolbar
 } from 'react-bootstrap';
 import * as Api from '../../api';
 import React, { useState, useEffect, useContext } from 'react';
@@ -57,34 +59,37 @@ const NoteDescription = () => {
 
     return (
         <Container fluid>
-
-            <Button
-                variant="primary"
-                size="sm"
-                className="noteDescriptionButton"
-                onClick={() => navigate('/note')}
+            <ButtonToolbar
+                className="mb-3"
+                aria-label="Toolbar with Button groups"
             >
-                쪽지함으로 돌아가기
-            </Button>
-            <Button
-                variant="primary"
-                size="sm"
-                className="noteDescriptionButton"
-                onClick={handleDelete}
-            >
-                삭제
-            </Button>
-            {`${params.noteType}` === 'takenNotes' && (
-                <Button
-                    variant="primary"
-                    size="sm"
-                    className="noteDescriptionButton"
-                    onClick={reply}
-                >
-                    답장
-                </Button>
-            )}
-            <Card>
+                <ButtonGroup>
+                    <Button
+                        onClick={() => navigate('/note')}
+                        className="descriptionButton"
+                    >
+                        쪽지함으로 돌아가기
+                    </Button>
+                    <Button
+                        variant="primary"
+                        onClick={handleDelete}
+                        className="descriptionButton"
+                    >
+                        삭제
+                    </Button>
+                    {`${params.noteType}` === 'takenNotes' && (
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            className="noteDescriptionButton"
+                            onClick={reply}
+                        >
+                            답장
+                        </Button>
+                    )}
+                </ButtonGroup>
+            </ButtonToolbar>
+            <Card className="descriptionCard">
                 <Card.Body>
                     <Card.Title>
                         {`${params.noteType}` === 'sentNotes' ? (

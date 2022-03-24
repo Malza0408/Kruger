@@ -216,8 +216,8 @@ const NoteWriteForm = () => {
                         <Button
                             variant="primary"
                             value="전송"
-                            className="me-3"
                             onClick={handleSubmit}
+                            className="descriptionButton"
                         >
                             전송
                         </Button>
