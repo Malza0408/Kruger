@@ -79,6 +79,10 @@ function App() {
                                 />
                             }
                         />
+                        <Route
+                            path="gatherRoom/:id"
+                            element={<Post post={post} />}
+                        />
                         <Route path="/network" element={<Network />} />
                         <Route path="/note" element={<Notes />} />
                         <Route path="/note/write" element={<NoteWriteForm />} />
@@ -87,10 +91,7 @@ function App() {
                             element={<NoteDescription />}
                         />
                         <Route path="/posting" element={<Posting />} />
-                        <Route
-                            path="/recruitment"
-                            element={<Post post={post} />}
-                        />
+
                         <Route path="*" element={<Portfolio />} />
                     </Routes>
                 </Router>

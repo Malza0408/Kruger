@@ -9,7 +9,7 @@ const Gather = ({ project, handleOnClickPost }) => {
     const handleOnClick = async () => {
         const result = await get('recruit', project.id);
         handleOnClickPost(result.data);
-        navigate('/recruitment');
+        navigate(`/gatherRoom/${project.id}`);
     };
     return (
         <Card
