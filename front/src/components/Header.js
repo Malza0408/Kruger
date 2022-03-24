@@ -5,6 +5,8 @@ import { UserStateContext, DispatchContext } from '../App';
 import LogoutModal from './modal/LogoutModal';
 import '../styles/scss/Header.scss';
 
+import UnReadNote from '../components/note/UnReadNote';
+
 function Header() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -29,7 +31,8 @@ function Header() {
         dispatch({ type: 'LOGOUT' });
         handleClose();
         // 기본 페이지로 돌아감.
-        navigate('/');
+        // navigate('/');
+        window.location.replace('/')
     };
 
     return (
@@ -65,6 +68,7 @@ function Header() {
                                 onClick={() => navigate('/note')}
                             >
                                 쪽지
+                                <UnReadNote />
                             </Nav.Link>
                         </Nav.Item>
                         <NavDropdown.Divider />

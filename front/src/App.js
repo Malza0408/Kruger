@@ -15,6 +15,7 @@ import NoteWriteForm from './components/note/NoteWriteForm';
 import NoteDescription from './components/note/NoteDescription';
 import Posting from './components/gather/Posting';
 import Post from './components/gather/Post';
+import Github from './components/github/Github';
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -79,6 +80,10 @@ function App() {
                         <Route path="/posting" element={<Posting />} />
 
                         <Route path="*" element={<Portfolio />} />
+                        <Route
+                            path="/auth/github/callback"
+                            element={<Github />}
+                        />
                     </Routes>
                 </Router>
             </UserStateContext.Provider>
