@@ -26,9 +26,9 @@ const Post = () => {
     const post_id = useParams();
     const [post, setPost] = useState();
     const [comments, setComments] = useState([]);
-    // const []
     const [langInputValue, setLangInputValue] = useState([]);
     const [isEditPost, setIsEditPost] = useState(false);
+    const [isLike, setIsLike] = useState(false);
 
     const commentRef = useRef();
     const titleRef = useRef();
@@ -45,6 +45,7 @@ const Post = () => {
                 await Api.patch(`unlikedRecruit/${post.id}`);
                 getPostData();
             }
+            setIsLike(!isLike);
         } catch (error) {
             throw new Error(error);
         }
@@ -54,8 +55,15 @@ const Post = () => {
         const result = await Api.get('recruit', post_id.id);
         setPost(result.data);
         setComments(result.data.comment);
-        console.log(result.data);
-    }, [post_id.id]);
+        if (
+            result.data.like.find((id) => id === userState.user._id) ===
+            undefined
+        ) {
+            setIsLike(false);
+        } else {
+            setIsLike(true);
+        }
+    }, [post_id.id, userState.user._id]);
 
     const getPostData = useCallback(async () => {
         const result = await Api.get('recruit', post_id.id);
@@ -75,7 +83,7 @@ const Post = () => {
             throw new Error(error);
         }
     };
-    const handleOnClickDelete = (commentId) => {
+    const handleOnClickDeleteComment = (commentId) => {
         return async () => {
             try {
                 await Api.patch(`recruit/delete/${post.id}/${commentId}`);
@@ -85,6 +93,7 @@ const Post = () => {
             }
         };
     };
+    const handleOnClickModifyComment = (commentId) => {};
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -122,9 +131,10 @@ const Post = () => {
         if (!userState.user) {
             navigate('/login');
         }
-        console.log(userState.user);
+
         getPostDataWithComment();
     }, [getPostDataWithComment, navigate, userState.user]);
+
     return (
         <Container fluid className="text-center" style={{ maxWidth: '1000px' }}>
             {isEditPost === false ? (
@@ -154,14 +164,25 @@ const Post = () => {
                             <pre>{post?.detail}</pre>
                         </Col>
                     </Row>
-                    <img
-                        src={`${process.env.PUBLIC_URL}/gatherImg/heart.png`}
-                        alt="like"
-                        width="20px"
-                        height="20px"
-                        className="me-1"
-                        onClick={handleOnClickLike}
-                    />
+                    {isLike === true ? (
+                        <img
+                            src={`${process.env.PUBLIC_URL}/gatherImg/heart.png`}
+                            alt="like"
+                            width="20px"
+                            height="20px"
+                            className="me-1"
+                            onClick={handleOnClickLike}
+                        />
+                    ) : (
+                        <img
+                            src={`${process.env.PUBLIC_URL}/gatherImg/b-heart.png`}
+                            alt="like"
+                            width="20px"
+                            height="20px"
+                            className="me-1"
+                            onClick={handleOnClickLike}
+                        />
+                    )}
 
                     <span className="like-count">{post?.like.length}</span>
                     {userState.user.id === post?.captain.id ? (
@@ -181,6 +202,7 @@ const Post = () => {
                                 placeholder="댓글을 입력하세요."
                                 as="textarea"
                                 rows={4}
+                                maxLength="200"
                                 ref={commentRef}
                             />
                         </Form.Group>
@@ -194,15 +216,26 @@ const Post = () => {
                                         </Col>
                                         {userState.user._id ===
                                         comment.author ? (
-                                            <Col>
-                                                <Button
-                                                    onClick={handleOnClickDelete(
-                                                        comment.id
-                                                    )}
-                                                >
-                                                    삭제
-                                                </Button>
-                                            </Col>
+                                            <>
+                                                <Col>
+                                                    <Button
+                                                        onClick={handleOnClickModifyComment(
+                                                            comment.id
+                                                        )}
+                                                    >
+                                                        수정
+                                                    </Button>
+                                                </Col>
+                                                <Col>
+                                                    <Button
+                                                        onClick={handleOnClickDeleteComment(
+                                                            comment.id
+                                                        )}
+                                                    >
+                                                        삭제
+                                                    </Button>
+                                                </Col>
+                                            </>
                                         ) : (
                                             <></>
                                         )}
