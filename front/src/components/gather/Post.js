@@ -16,7 +16,7 @@ import {
     Dropdown
 } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { patch, put, get } from '../../api';
+import * as Api from '../../api';
 import { UserStateContext } from '../../App';
 import useGetLangFromDropDown from '../../custom/useGetLangFromDropDown';
 
@@ -39,10 +39,10 @@ const Post = () => {
             if (
                 post.like.find((id) => id === userState.user.id) === undefined
             ) {
-                await patch(`likedRecruit/${post.id}`);
+                await Api.patch(`likedRecruit/${post.id}`);
                 getPostData();
             } else {
-                await patch(`unlikedRecruit/${post.id}`);
+                await Api.patch(`unlikedRecruit/${post.id}`);
                 getPostData();
             }
         } catch (error) {
@@ -51,14 +51,14 @@ const Post = () => {
     };
 
     const getPostDataWithComment = useCallback(async () => {
-        const result = await get('recruit', post_id.id);
+        const result = await Api.get('recruit', post_id.id);
         setPost(result.data);
         setComments(result.data.comment);
         console.log(result.data);
     }, [post_id.id]);
 
     const getPostData = useCallback(async () => {
-        const result = await get('recruit', post_id.id);
+        const result = await Api.get('recruit', post_id.id);
         setPost(result.data);
     }, [post_id.id]);
 
@@ -66,7 +66,7 @@ const Post = () => {
         e.preventDefault();
         const content = commentRef.current.value;
         try {
-            await put(`recruit/comment/${post.id}`, {
+            await Api.put(`recruit/comment/${post.id}`, {
                 content
             });
             getPostDataWithComment();
@@ -78,7 +78,7 @@ const Post = () => {
     const handleOnClickDelete = (commentId) => {
         return async () => {
             try {
-                await patch(`recruit/delete/${post.id}/${commentId}`);
+                await Api.patch(`recruit/delete/${post.id}/${commentId}`);
                 getPostDataWithComment();
             } catch (error) {
                 throw new Error(error);
@@ -89,7 +89,7 @@ const Post = () => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         try {
-            await put(`recruit/${post.id}`, {
+            await Api.put(`recruit/${post.id}`, {
                 title: titleRef.current.value,
                 detail: detailRef.current.value,
                 language: langInputValue.split(' / ')
@@ -107,6 +107,16 @@ const Post = () => {
         langInputValue,
         setLangInputValue
     });
+
+    const deletePost = async () => {
+        try {
+            await Api.delete(`recruit/delete/${post.id}`);
+            console.log(post.id);
+            navigate('/gatherRoom');
+        } catch (error) {
+            throw new Error(error);
+        }
+    };
 
     useEffect(() => {
         if (!userState.user) {
@@ -175,9 +185,7 @@ const Post = () => {
                                 return (
                                     <Row>
                                         <Col>
-                                            <li key={index}>
-                                                {comment.content}
-                                            </li>
+                                            <li>{comment.content}</li>
                                         </Col>
                                         <Col>
                                             <Button
@@ -210,7 +218,6 @@ const Post = () => {
                         <Form.Control
                             type="text"
                             disabled
-                            // onClick={handleToggle}
                             placeholder="사용할 언어를 선택해주세요."
                             value={langInputValue && langInputValue}
                         />
@@ -313,7 +320,8 @@ const Post = () => {
                     <Col className="text-end mt-3">
                         <button
                             className="postingBtn"
-                            onClick={() => handleToggleEditDetail()}
+                            onClick={handleToggleEditDetail}
+                            type="button"
                         >
                             취소
                         </button>
@@ -322,6 +330,11 @@ const Post = () => {
                         </button>
                     </Col>
                 </Form>
+            )}
+            {userState.user.id === post?.captain.id ? (
+                <Button onClick={deletePost}>포스트 삭제하기</Button>
+            ) : (
+                <></>
             )}
         </Container>
     );
