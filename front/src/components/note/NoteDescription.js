@@ -44,8 +44,6 @@ const NoteDescription = () => {
         setNewDateFormatted(`${year}년 ${month}월 ${day}일 ${time}`);
     }, [note]);
 
-    console.log(note);
-
     return (
         <Container fluid>
             <Card>
@@ -60,7 +58,7 @@ const NoteDescription = () => {
                                             탈퇴한 회원
                                         </Badge>
                                     ) : (
-                                        <span class="fs-2">
+                                        <span className="fs-2">
                                             <strong>{note.toUser?.name}</strong>
                                         </span>
                                     )}
@@ -81,7 +79,7 @@ const NoteDescription = () => {
                                             탈퇴한 회원
                                         </Badge>
                                     ) : (
-                                        <span class="fs-2">
+                                        <span className="fs-2">
                                             <strong>
                                                 {note.fromUser?.name}
                                             </strong>
@@ -104,7 +102,7 @@ const NoteDescription = () => {
                     </Card.Title>
                     <br />
                     <Card.Title>
-                        <span class="fs-4">
+                        <span className="fs-4">
                             <strong>{note.title}</strong>
                         </span>
                     </Card.Title>
