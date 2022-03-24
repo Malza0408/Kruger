@@ -57,7 +57,9 @@ function LoginForm() {
             });
 
             // 기본 페이지로 이동함.
-            navigate('/', { replace: true });
+            // navigate('/', { replace: true });
+            window.location.replace('/')
+
         } catch (err) {
             setIsLoginFail(true);
             console.log('로그인에 실패하였습니다.\n', err);
