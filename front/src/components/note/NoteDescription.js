@@ -150,7 +150,7 @@ const NoteDescription = () => {
                         </span>
                     </Card.Title>
                     <Card.Text>
-                        <span className="fs-5 text-muted">{note.content}</span>
+                        <pre className="fs-5 text-muted">{note.content}</pre>
                     </Card.Text>
                 </Card.Body>
             </Card>
