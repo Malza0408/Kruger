@@ -58,15 +58,20 @@ function LoginForm() {
             });
 
             // 기본 페이지로 이동함.
-            navigate('/', { replace: true });
+            // navigate('/', { replace: true });
+            window.location.replace('/')
+
         } catch (err) {
             setIsLoginFail(true);
             console.log('로그인에 실패하였습니다.\n', err);
         }
     };
 
+
     // const handleOnClickGithub = async () => {
-    //     await Api.get('auth/github').then((res) => console.log(res));
+    //     await Api.get(
+    //         `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
+    //     ).then((res) => console.log(res));
     // };
     const handleOnClickGoogle = async () => {
         await Api.get('auth/google').then((res) => console.log(res));
@@ -181,12 +186,14 @@ function LoginForm() {
                             </a>
                         </Row>
                         <Row>
-                            <img
-                                src={`${process.env.PUBLIC_URL}/img/google.png`}
-                                alt=""
-                                onClick={handleOnClickGoogle}
-                                className="googleLogin"
-                            />
+                            <a>
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/img/google.png`}
+                                    alt=""
+                                    onClick={handleOnClickGoogle}
+                                    className="googleLogin"
+                                />
+                            </a>
                         </Row>
                     </Col>
                 </Row>

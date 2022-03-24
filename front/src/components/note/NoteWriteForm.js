@@ -27,14 +27,22 @@ const NoteWriteForm = () => {
     const [isTitleEmpty, setIsTitleEmpty] = useState(false);
     const [isContentEmpty, setIsContentEmpty] = useState(false);
     const [isToMe, setIsToMe] = useState(false);
+    const [isExistent, setIsExistent] = useState(true);
 
     useEffect(() => {
         Api.get(`user/current`).then((res) => setUser(res.data));
     }, []);
 
     const handleSubmit = async (e) => {
+        const emailList = [];
         e.preventDefault();
 
+        await Api.get('userlist').then((res) =>
+            res.data.map((user) => emailList.push(user.email))
+        );
+
+        // 존재하는 이메일이라면 true
+        setIsExistent(emailList.includes(to));
         // to 공란이면 true
         setIsToEmpty(!to);
         // title 공란이면 true
@@ -45,9 +53,10 @@ const NoteWriteForm = () => {
         setIsToMe(user.email === to);
 
         try {
-            // 하나라도 공란이며, 본인이 수신자이면 post 불가
+            // 하나라도 공란이며, 본인이 수신자이고, 존재하지 않는 수신자라면 post 불가
             !(!to || !title || !content) &&
                 !(user.email === to) &&
+                emailList.includes(to) &&
                 (await Api.post('note/create', {
                     to,
                     title,
@@ -87,12 +96,18 @@ const NoteWriteForm = () => {
                                         </Form.Text>
                                     )}
                                     {isToMe && (
-                                        <Form.Text className="text-success">
+                                        <Form.Text className="text-danger">
                                             본인에게 쪽지를 전송할 수 없습니다
+                                        </Form.Text>
+                                    )}
+                                    {!isToEmpty && !isExistent && (
+                                        <Form.Text className="text-danger">
+                                            존재하지 않는 사용자 입니다
                                         </Form.Text>
                                     )}
                                 </Form.Group>
                             </Col>
+                            <Col xs={1}></Col>
                             <Col>
                                 {/* 팔로우 */}
                                 <Accordion defaultActiveKey="0">

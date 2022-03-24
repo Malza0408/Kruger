@@ -13,14 +13,22 @@ const FollowingList = ({ user }) => {
         );
         setShow(true);
     };
+    const handlePortfolio = () => {};
     return (
         <>
-            <Button variant="secondary" onClick={handleShow}>
+            <Button
+                variant="light"
+                onClick={handleShow}
+                className="followerList"
+            >
                 팔로워목록
             </Button>
 
             <Offcanvas show={show} onHide={handleClose}>
-                <Offcanvas.Header closeButton>
+                <Offcanvas.Header
+                    style={{ backgroundColor: '#fff5f5' }}
+                    closeButton
+                >
                     <Offcanvas.Title>나를 팔로우하는 사람</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
@@ -34,12 +42,27 @@ const FollowingList = ({ user }) => {
                                     </Col>
                                     <Col>
                                         <Button
+                                            variant="light"
                                             size="sm"
                                             onClick={() => {
+                                                navigate('/note/write');
+                                            }}
+                                            className="optionButton"
+                                        >
+                                            쪽지
+                                        </Button>
+                                        <Button
+                                            variant="light"
+                                            size="sm"
+                                            onClick={() => {
+                                                alert(
+                                                    '포트폴리오로 이동합니다.'
+                                                );
                                                 navigate(
                                                     `/users/${follower.id}`
                                                 );
                                             }}
+                                            className="optionButton"
                                         >
                                             포트폴리오
                                         </Button>
