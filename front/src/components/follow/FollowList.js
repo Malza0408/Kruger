@@ -57,7 +57,7 @@ const FollowingList = ({ user }) => {
                                         <Button
                                             size="sm"
                                             onClick={() => {
-                                                navigate('/note/write');
+                                                navigate(`/note/write/${follow.email}`);
                                             }}
                                             variant="light"
                                             className="optionButton"
