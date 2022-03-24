@@ -89,35 +89,6 @@ class RecruitmentService {
         return likedRecruitment;
     }
 
-    static async unlikeRecruitment({ recruitmentId, user_id }) {
-        let unlikedRecruitment = await Recruitment.findById({ recruitmentId });
-
-        if (!unlikedRecruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const user = await User.findById(user_id);
-
-        console.log(unlikedRecruitment.like.indexOf(user._id));
-        const unlikedIndex = unlikedRecruitment.like.indexOf(user._id);
-        if (unlikedIndex === -1) {
-            const errorMessage = '좋아요를 누르지 않은 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const like = unlikedRecruitment.like;
-        like.splice(unlikedIndex, 1);
-        const newUnlikeValue = { like };
-
-        unlikedRecruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newUnlikeValue
-        );
-
-        return unlikedRecruitment;
-    }
-
     // 모집마감 토글
     static async closeRecruitment({ recruitmentId, userId }) {
         const recruitment = await Recruitment.findById({
@@ -366,7 +337,7 @@ class RecruitmentService {
         );
 
         if (comments === null || comments === undefined) {
-            const errorMesaage = '수정 권한이 없습니다.';
+            const errorMessage = '수정 권한이 없습니다.';
             throw new Error(errorMessage);
         }
 
