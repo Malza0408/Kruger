@@ -46,6 +46,16 @@
         &:hover {
             cursor: pointer;
         }
+        .card-title {
+            font-size: 18px;
+            height: 40px;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
         .imageContainer {
             text-align: center;
             img {
@@ -54,6 +64,9 @@
                     margin-right: 0.5rem;
                 }
             }
+        }
+        .like-container {
+            padding: 0;
         }
     }
 }
