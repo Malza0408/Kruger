@@ -18,7 +18,6 @@ const UnReadNote = () => {
     // 5초마다 수신 쪽지 get
     useEffect(() => {
         const getTakeNotes = setInterval(() => {
-            console.log('수신 쪽지 불러옴');
             Api.get(`takenNotelist`).then((res) => {
                 setTakeNoteCheck(res.data);
             });
