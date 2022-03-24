@@ -65,7 +65,8 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                         )}
                     </Col>
                 </Row>
-                <Card.Link
+                <Card.Title
+                    style={{ cursor: 'pointer' }}
                     onClick={() => {
                         navigate(`/note/${takeNote.id}`);
                         handleRead();
@@ -74,7 +75,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                     <span className="fs-5">
                         <strong>{takeNote.title}</strong>
                     </span>
-                </Card.Link>
+                </Card.Title>
                 <Row>
                     <Col>
                         <Card.Text>
