@@ -183,12 +183,14 @@ function LoginForm() {
                             </a>
                         </Row>
                         <Row>
-                            <img
-                                src={`${process.env.PUBLIC_URL}/img/google.png`}
-                                alt=""
-                                onClick={handleOnClickGoogle}
-                                className="googleLogin"
-                            />
+                            <a>
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/img/google.png`}
+                                    alt=""
+                                    onClick={handleOnClickGoogle}
+                                    className="googleLogin"
+                                />
+                            </a>
                         </Row>
                     </Col>
                 </Row>

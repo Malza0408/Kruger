@@ -28,12 +28,20 @@ const FollowingList = ({ user }) => {
     };
     return (
         <>
-            <Button variant="secondary" onClick={handleShow}>
+            <Button
+                variant="light
+                "
+                onClick={handleShow}
+                className="followList"
+            >
                 팔로우목록
             </Button>
 
             <Offcanvas show={show} onHide={handleClose}>
-                <Offcanvas.Header closeButton>
+                <Offcanvas.Header
+                    style={{ backgroundColor: '#fff5f5' }}
+                    closeButton
+                >
                     <Offcanvas.Title>내가 팔로우하는 사람</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
@@ -51,6 +59,8 @@ const FollowingList = ({ user }) => {
                                             onClick={() => {
                                                 navigate('/note/write');
                                             }}
+                                            variant="light"
+                                            className="optionButton"
                                         >
                                             쪽지
                                         </Button>
@@ -62,6 +72,8 @@ const FollowingList = ({ user }) => {
                                                 );
                                                 navigate(`/users/${follow.id}`);
                                             }}
+                                            variant="light"
+                                            className="optionButton"
                                         >
                                             프로필
                                         </Button>
@@ -71,6 +83,8 @@ const FollowingList = ({ user }) => {
                                             onClick={() => {
                                                 handleUnfollow(follow);
                                             }}
+                                            variant="light"
+                                            className="optionButton"
                                         >
                                             삭제
                                         </Button>

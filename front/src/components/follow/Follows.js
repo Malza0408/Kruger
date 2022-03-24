@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col, Card } from 'react-bootstrap';
 import FollowList from './FollowList';
 import FollowerList from './FollowerList';
 import { useParams } from 'react-router-dom';
@@ -48,23 +48,22 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
     };
 
     return (
-        <Row style={{ width: '18rem' }} className="mb-2 ms-3 mr-5 text-center">
+        <Card
+            style={{ width: '18rem' }}
+            className="mt-1 ms-3 mr-5 text-center followCard"
+        >
             {isEditable ? (
-                <Row>
-                    <Col>
-                        <FollowList user={user} />
-                    </Col>
-                    <Col>
-                        <FollowerList user={user} />
-                    </Col>
-                </Row>
+                <Card.Body>
+                    <FollowList user={user} />
+                    <FollowerList user={user} />
+                </Card.Body>
             ) : (
                 <div>
                     <Button onClick={handleFollow}>팔로우</Button>
                     <Button onClick={handleUnfollow}>언팔로우</Button>
                 </div>
             )}
-        </Row>
+        </Card>
     );
 };
 

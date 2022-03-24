@@ -63,11 +63,13 @@ function Portfolio() {
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
+
                     <Follows
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
                 </Col>
+
                 <Col md="12" lg="8">
                     <div className="mb-4">
                         <Educations
