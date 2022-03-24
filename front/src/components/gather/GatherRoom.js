@@ -22,7 +22,7 @@ const GatherRoom = ({ handleOnClickPost }) => {
                     </button>
                 </Col>
             </Row>
-            <Gathers handleOnClickPost={handleOnClickPost}></Gathers>
+            <Gathers></Gathers>
         </Container>
     );
 };

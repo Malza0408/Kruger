@@ -6,7 +6,7 @@ import { UserStateContext } from '../../App';
 import useFilteringLanguage from '../../custom/useFilteringLanguage';
 import Gather from './Gather';
 
-const Gathers = ({ handleOnClickPost }) => {
+const Gathers = () => {
     // 얘네가 무슨 프로젝트인지 가지고 있을꺼임. 아마 배열로
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
@@ -168,20 +168,12 @@ const Gathers = ({ handleOnClickPost }) => {
                 {traceFocusing === 0
                     ? projects?.map((project, index) => {
                           return (
-                              <Gather
-                                  key={index}
-                                  project={project}
-                                  handleOnClickPost={handleOnClickPost}
-                              ></Gather>
+                              <Gather key={index} project={project}></Gather>
                           );
                       })
                     : filteredProjects?.map((project, index) => {
                           return (
-                              <Gather
-                                  key={index}
-                                  project={project}
-                                  handleOnClickPost={handleOnClickPost}
-                              ></Gather>
+                              <Gather key={index} project={project}></Gather>
                           );
                       })}
             </Row>

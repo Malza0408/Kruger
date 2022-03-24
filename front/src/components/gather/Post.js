@@ -1,89 +1,95 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState
+} from 'react';
+import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { patch, put, get } from '../../api';
-
 import { UserStateContext } from '../../App';
 
-const Post = ({ post }) => {
+const Post = () => {
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
     const post_id = useParams();
-    const [savePost, setSavePost] = useState(post);
+    const [post, setPost] = useState();
     const commentRef = useRef();
     const [isLike, setIsLike] = useState(false);
-    const [comments, setCommets] = useState([]);
-
-    useEffect(() => {
-        if (!userState.user) {
-            navigate('/login');
-        }
-        console.log('post: ', post);
-        console.log('user id: ', userState.user.id);
-        console.log('post_id: ', post_id.id);
-        if (post === undefined || post === null) {
-            get('recruit', post_id.id).then((res) => {
-                console.log('get 결과: ', res.data);
-                setSavePost(res.data);
-            });
-        } else {
-            setSavePost(post);
-        }
-
-        if (isLike === true) {
-            console.log('좋아요 이미 누름');
-            setIsLike(true);
-        }
-        if (isLike === false) {
-            console.log('좋아요 안 누름');
-            setIsLike(false);
-        }
-
-        setCommets(savePost?.comment);
-    }, [isLike, navigate, post, post_id.id, userState.user]);
+    const [isEditComment, setIsEditComment] = useState(false);
+    const [comments, setComments] = useState([]);
 
     const handleOnClickLike = async () => {
         try {
-            if (!isLike) {
-                await patch(`likedRecruit/${savePost.id}`);
-                setIsLike(true);
+            if (
+                post.like.find((id) => id === userState.user.id) === undefined
+            ) {
+                await patch(`likedRecruit/${post.id}`);
+                getPostDataWithoutComment();
             } else {
-                await patch(`unlikedRecruit/${savePost.id}`);
-                setIsLike(false);
+                await patch(`unlikedRecruit/${post.id}`);
+                getPostDataWithoutComment();
             }
         } catch (error) {
             throw new Error(error);
         }
     };
 
+    const getPostData = useCallback(async () => {
+        const result = await get('recruit', post_id.id);
+        setPost(result.data);
+        setComments(result.data.comment);
+    }, [post_id.id]);
+
+    const getPostDataWithoutComment = useCallback(async () => {
+        const result = await get('recruit', post_id.id);
+        setPost(result.data);
+    }, [post_id.id]);
+
     const handleOnSubmitComment = async (e) => {
         e.preventDefault();
         const content = commentRef.current.value;
         try {
-            await put(`recruit/comment/${savePost.id}`, {
+            await put(`recruit/comment/${post.id}`, {
                 content
             });
-            console.log('content: ', content);
-            setCommets((current) => {
-                return [...current, content];
-            });
+            getPostData();
+            commentRef.current.value = '';
         } catch (error) {
             throw new Error(error);
         }
     };
+    const handleOnClickDelete = (commentId) => {
+        return async () => {
+            try {
+                await patch(`recruit/delete/${post.id}/${commentId}`);
+                getPostData();
+            } catch (error) {
+                throw new Error(error);
+            }
+        };
+    };
+
+    useEffect(() => {
+        if (!userState.user) {
+            navigate('/login');
+        }
+        getPostData();
+    }, [getPostData, navigate, userState.user]);
     return (
         <Container fluid className="text-center">
-            <h1>{savePost?.title}</h1>
-            <h4>{savePost?.captain?.name}</h4>
-            <h2>{savePost?.createdAt.substr(0, 10)}</h2>
+            <h1>{post?.title}</h1>
+            <h4>{post?.captain?.name}</h4>
+            <h2>{post?.createdAt.substr(0, 10)}</h2>
             <h2>
                 사용언어 :{' '}
-                {savePost?.language?.reduce((prev, cur, index) => {
+                {post?.language?.reduce((prev, cur, index) => {
                     return prev + cur + ' ';
                 }, '')}
             </h2>
             <hr />
-            <pre>{savePost?.detail}</pre>
+            <pre>{post?.detail}</pre>
             <img
                 src={`${process.env.PUBLIC_URL}/gatherImg/heart.png`}
                 alt="like"
@@ -92,7 +98,7 @@ const Post = ({ post }) => {
                 className="me-1"
                 onClick={handleOnClickLike}
             />
-            <span className="like-count">{savePost?.like.length}</span>
+            <span className="like-count">{post?.like.length}</span>
             <Form onSubmit={handleOnSubmitComment}>
                 <Form.Group
                     className="mb-3"
@@ -111,9 +117,33 @@ const Post = ({ post }) => {
             </Form>
             <ul>
                 {comments?.map((comment, index) => {
-                    return <li key={index}>{comment.content}</li>;
+                    return (
+                        <Row>
+                            <Col>
+                                {isEditComment ?? (
+                                    <li key={index}>{comment.content}</li>
+                                )}
+                            </Col>
+                            <Col>
+                                <Button
+                                    onClick={() =>
+                                        setIsEditComment(!isEditComment)
+                                    }
+                                >
+                                    수정
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    onClick={handleOnClickDelete(comment.id)}
+                                >
+                                    삭제
+                                </Button>
+                            </Col>
+                        </Row>
+                    );
                 })}
-            </ul>{' '}
+            </ul>
         </Container>
     );
 };
