@@ -66,7 +66,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                 <Card.Title
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
-                        navigate(`/note/${takeNote.id}`);
+                        navigate(`/note/takenNotes/${takeNote.id}`);
                         handleRead();
                     }}
                 >
