@@ -62,7 +62,7 @@ authRouter.get('/auth/github', async (req, res, next) => {
                 Accept: 'application/json'
             }
         });
-        console.log(tokenRequest.data);
+
         if (tokenRequest.data.error) {
             const errorMessage = 'github 인증 실패';
             throw new Error(errorMessage);
@@ -77,6 +77,7 @@ authRouter.get('/auth/github', async (req, res, next) => {
                 Accept: 'application/json'
             }
         });
+
         if (userData.data.error) {
             const errorMessage = 'github 데이터 전송 실패';
             throw new Error(errorMessage);
@@ -84,15 +85,23 @@ authRouter.get('/auth/github', async (req, res, next) => {
         console.log(userData.data);
 
         // 깃허브에서 데이터 가져와서 userInfo 객체로 만들기
-        const { id, name, email, login, avatar } = userData.data;
+        let { id, name, email, login, avatar } = userData.data;
         const repositoryUrl = `https://github.com/${login}`;
         const description = userData.data.bio;
         if (!email) {
-            const errorMessage =
-                '깃허브에 이메일을 등록하거나 이메일을 public으로 설정해주세요.';
-            throw new Error(errorMessage);
-            // res.redirect('/user/register');
+            const emailData = await axios.get(
+                'https://api.github.com/user/emails',
+                {
+                    headers: {
+                        Authorization: `token ${accessToken}`,
+                        Accept: 'application/json'
+                    }
+                }
+            );
+
+            email = emailData.data[0].email;
         }
+
         const userInfo = {
             id,
             name,
