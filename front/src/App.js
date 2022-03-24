@@ -73,6 +73,7 @@ function App() {
                         <Route path="/network" element={<Network />} />
                         <Route path="/note" element={<Notes />} />
                         <Route path="/note/write" element={<NoteWriteForm />} />
+                        <Route path="/note/write/:replyTo" element={<NoteWriteForm />} />
                         <Route
                             path="/note/:noteType/:noteId"
                             element={<NoteDescription />}
