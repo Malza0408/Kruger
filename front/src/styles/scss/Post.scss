@@ -1,0 +1,77 @@
+$maxWidth: 1000px;
+.Post {
+    text-align: center;
+    max-width: $maxWidth;
+    .recruit-btn-group {
+        text-align: end;
+    }
+    .recruit-btn {
+        border: 1px solid #f8f9fa;
+        width: 100px;
+    }
+    .name {
+        text-align: left;
+    }
+    .date {
+        text-align: end;
+    }
+    hr {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 10px;
+    }
+    pre {
+        white-space: pre-wrap;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        font-family: 'Orbitron', sans-serif;
+    }
+    .heart-img {
+        text-align: right;
+        line-height: 40px;
+    }
+    .comment-form {
+        max-width: $maxWidth;
+    }
+    button {
+        background-color: lightblue;
+        border-radius: 5px;
+        color: black;
+        border-color: transparent;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+            background-color: cadetblue;
+        }
+    }
+    .like-count {
+        font-size: 30px;
+    }
+    .register-comment {
+        text-align: end;
+    }
+
+    .complete-modify-btn {
+        text-align: end;
+    }
+
+    ul {
+        list-style: none;
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 200px;
+    }
+    .comment-container {
+        height: 42px;
+        align-items: center;
+        border-bottom: 1px solid lightgray;
+    }
+    .comment-btns {
+        text-align: end;
+        .comment-btn {
+            margin-left: 3px;
+        }
+    }
+}
