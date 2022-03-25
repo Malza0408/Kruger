@@ -173,7 +173,18 @@ class RecruitmentService {
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
-        const appliedOrNot = recruitment.applicant.indexOf(applicant._id);
+
+        const applicantValidator = [];
+        for (const user of recruitment.applicant) {
+            if (user.id === applicantId) {
+                applicantValidator.push(true);
+            } else {
+                applicantValidator.push(false);
+            }
+        }
+
+        const appliedOrNot = applicantValidator.indexOf(true);
+
         // 게시글이 있는지 확인
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
@@ -192,7 +203,7 @@ class RecruitmentService {
         }
 
         applicant = recruitment.applicant;
-        applicant.splice(applicant, 1);
+        applicant.splice(appliedOrNot, 1);
 
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
