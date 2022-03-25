@@ -13,7 +13,8 @@ import {
     Col,
     InputGroup,
     DropdownButton,
-    Dropdown
+    Dropdown,
+    Badge
 } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
@@ -55,8 +56,9 @@ const Post = () => {
         console.log(userState.user);
     };
 
-    const checkApply = () => {
+    const checkApply = async () => {
         // post.member.find()
+        await Api.patch(`recruit/apply/${post.id}`);
     };
 
     // 좋아요를 누른다.
@@ -192,12 +194,19 @@ const Post = () => {
     };
 
     const showLanguage = (post) => {
-        const language = post?.language
-            ?.reduce((prev, cur) => {
-                return prev + cur + ' / ';
-            }, '')
-            .slice(0, -3);
-        return language;
+        // const language = post?.language
+        //     ?.reduce((prev, cur) => {
+        //         return prev + cur + ' / ';
+        //     }, '')
+        //     .slice(0, -3);
+        return post?.language.map((lang) => {
+            return (
+                <Button className="lang-badge" variant="default" as={Col}>
+                    {lang}
+                </Button>
+            );
+        });
+        // return language;
     };
 
     useEffect(() => {
@@ -236,14 +245,21 @@ const Post = () => {
                     <Row>
                         <Col className="apply-btn-group">
                             {userState.user.id !== post?.captain.id ? (
-                                <Button className="apply-btn">지원하기</Button>
+                                <Button
+                                    className="apply-btn"
+                                    onClick={() => {}}
+                                >
+                                    지원하기
+                                </Button>
                             ) : (
                                 <></>
                             )}
                         </Col>
                     </Row>
                     <Row>
-                        <h1>{post?.title}</h1>
+                        <h1>
+                            <strong>{post?.title}</strong>
+                        </h1>
                     </Row>
                     <Row>
                         <Col className="name">
@@ -253,9 +269,9 @@ const Post = () => {
                             <h2>{post?.createdAt.substr(0, 10)}</h2>
                         </Col>
                     </Row>
-                    <Row>
-                        <h2>사용언어 : {showLanguage(post)}</h2>
-                        <hr />
+                    <Row className="text-center">
+                        <Col>{showLanguage(post)}</Col>
+                        {/* <hr /> */}
                     </Row>
                     <Row>
                         <Col>

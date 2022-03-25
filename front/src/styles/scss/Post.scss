@@ -19,8 +19,19 @@ $maxWidth: 1000px;
     .date {
         text-align: end;
     }
+    .lang-badge {
+        font-size: 20px;
+        line-height: 30px;
+        margin-bottom: 10px;
+        // background-color: #4dabf7;
+        box-shadow: 0px 0px 10px 0px #748ffc63;
+        pointer-events: none;
+        color: black;
+        margin-right: 10px;
+        width: 120px;
+    }
     hr {
-        max-width: 900px;
+        max-width: 1000px;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 10px;
@@ -31,6 +42,9 @@ $maxWidth: 1000px;
         font-size: 20px;
         font-weight: 600;
         font-family: 'Orbitron', sans-serif;
+        min-height: 500px;
+        font-size: 20px;
+        border: 1px solid lightgrey;
     }
 
     .comment-form {
