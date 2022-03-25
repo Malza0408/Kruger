@@ -1,17 +1,25 @@
 function educationUpdateMiddleware(req, res, next) {
     const { school, major, position } = req.body ?? null;
-    let toUpdate = {};
 
     try {
-        if (school !== null && school !== undefined) toUpdate.school = school;
-        if (major !== null && major !== undefined) toUpdate.major = major;
-        if (position !== null && position !== undefined)
-            toUpdate.position = position;
+        if (school === null || school === undefined) {
+            const { school, ...restUpdate } = req.body;
+            req.body = restUpdate;
+            console.log(req.body);
+        }
+        if (major === null || major === undefined) {
+            const { major, ...restUpdate } = req.body;
+            req.body = restUpdate;
+        }
+        if (position === null || position === undefined) {
+            const { position, ...restUpdate } = req.body;
+            req.body = restUpdate;
+        }
 
-        const values = Object.values(toUpdate);
-        console.log('toUpdate : ', toUpdate);
+        const values = Object.values(req.body);
+        console.log('toUpdate : ', req.body);
         const positionArray = ['재학중', '학사졸업', '석사졸업', '박사졸업'];
-        if (toUpdate.position && !positionArray.includes(toUpdate.position)) {
+        if (req.body.position && !positionArray.includes(req.body.position)) {
             const errorMessage = '잘못된 학위명입니다.';
             res.status(400).json(errorMessage);
         }
@@ -22,8 +30,8 @@ function educationUpdateMiddleware(req, res, next) {
             return;
         }
 
-        if (toUpdate.major) {
-            if (toUpdate.major.first === '') {
+        if (req.body.major) {
+            if (req.body.major.first === '') {
                 const errorMessage = '빈칸은 ㄴㄴ';
                 res.status(400).json(errorMessage);
                 return;
@@ -36,7 +44,6 @@ function educationUpdateMiddleware(req, res, next) {
             return;
         }
 
-        req.toUpdate = toUpdate;
         next();
     } catch (error) {
         res.status(400).send('이 방법이 아닌 듯');
