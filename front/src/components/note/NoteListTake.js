@@ -42,7 +42,14 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                             {takeNote.fromUser.name === '탈퇴한 회원' ? (
                                 <Badge bg="secondary">탈퇴한 회원</Badge>
                             ) : (
-                                <span>
+                                <span
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() =>
+                                        navigate(
+                                            `/users/${takeNote.fromUser?.id}`
+                                        )
+                                    }
+                                >
                                     <strong>{takeNote.fromUser.name}</strong>
                                 </span>
                             )}
