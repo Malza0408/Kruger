@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { DispatchContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
-// import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 
 function Kakao() {
@@ -20,9 +19,6 @@ function Kakao() {
         try {
             // 백엔드로 코드 넘김
             const res = await Api.get(`auth/kakao?code=${code}`);
-
-            console.log(res);
-
             // 유저 정보는 response의 data임.
             const user = res.data;
             // JWT 토큰은 유저 정보의 token임.
@@ -44,7 +40,7 @@ function Kakao() {
 
     // 인가코드
     let code = new URL(window.location.href).searchParams.get('code');
-    console.log(code);
+
     React.useEffect(() => {
         dispatch(kakaoLogin(code));
     }, []);
