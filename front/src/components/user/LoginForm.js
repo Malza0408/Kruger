@@ -154,39 +154,39 @@ function LoginForm() {
                                 >
                                     <img
                                         src={`${process.env.PUBLIC_URL}/img/github.png`}
-                                        alt=""
-                                        // onClick={handleOnClickGithub}
-                                        className="githubLogin"
+                                        alt="github"
+                                        className="githubLogin social"
+                                        width="100px"
+                                        height="100px"
                                     />
                                 </a>
                             </Col>
-                        </Row>
-                        <Row className="mt-3 text-center">
+
                             <Col>
                                 <a
                                     href={`${googleUri}?response_type=code&client_id=${googleClientId}&scope=openid%20profile%20email&redirect_uri=${googleRedirectUri}&`}
                                 >
-                                    구글
-                                    {/* <img
-                                        src={`${process.env.PUBLIC_URL}/img/github.png`}
-                                        alt=""
-                                        // onClick={handleOnClickGithub}
-                                        className="googleLogin"
-                                    /> */}
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/img/google.png`}
+                                        alt="google"
+                                        className="googleLogin social"
+                                        width="70px"
+                                        height="70px"
+                                    />
                                 </a>
                             </Col>
-                        </Row>
-                        <Row className="mt-3 text-center">
+
                             <Col>
                                 <a
                                     href={`${kakaoUri}?response_type=code&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectUri}`}
                                 >
-                                    카카오
-                                    {/* <img
-                                        src={`${process.env.PUBLIC_URL}/img/github.png`}
-                                        alt=""
-                                        className="kakaoLogin"
-                                    /> */}
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/img/kakao.png`}
+                                        alt="kakao"
+                                        className="kakaoLogin social"
+                                        width="100px"
+                                        height="100px"
+                                    />
                                 </a>
                             </Col>
                         </Row>
