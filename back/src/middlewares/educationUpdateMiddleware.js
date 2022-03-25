@@ -9,7 +9,7 @@ function educationUpdateMiddleware(req, res, next) {
             toUpdate.position = position;
 
         const values = Object.values(toUpdate);
-        console.log('toUpdate : ', toUpdate);
+
         const positionArray = ['재학중', '학사졸업', '석사졸업', '박사졸업'];
         if (toUpdate.position && !positionArray.includes(toUpdate.position)) {
             const errorMessage = '잘못된 학위명입니다.';
