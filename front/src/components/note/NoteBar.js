@@ -66,9 +66,9 @@ const NoteBar = ({
                     >
                         <img
                             src={`${process.env.PUBLIC_URL}/img/edit (1).png`}
-                            alt="refresh"
-                            width="20"
-                            height="20"
+                            alt="write"
+                            width="17"
+                            height="17"
                         ></img>
                     </Button>
                 </ButtonGroup>
