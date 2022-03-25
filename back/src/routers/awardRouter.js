@@ -16,7 +16,6 @@ awardRouter.post('/award/create', login_required, async (req, res, next) => {
         // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
         const user_id = req.currentUserId;
         const { title, description } = req.body;
-        console.log(user_id, title, description);
 
         const newAward = await AwardService.addAward({
             user_id,
@@ -67,8 +66,7 @@ awardRouter.put(
             // URI로부터 수상 요소 id를 추출함.
             const award_id = req.params.id;
             const user_id = req.currentUserId;
-            const toUpdate = req.toUpdate;
-            console.log('toUpdate : ', toUpdate);
+            const toUpdate = req.body;
             // 해당 수상 요소 아이디로 수상 요소 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedAward = await AwardService.setAward({
                 award_id,
@@ -92,7 +90,6 @@ awardRouter.delete(
             const award_id = req.params.id;
             const user_id = req.currentUserId;
             await AwardService.deleteAward({ award_id, user_id });
-            console.log(award_id);
             res.status(200).send('삭제되었습니다.');
         } catch (error) {
             next(error);

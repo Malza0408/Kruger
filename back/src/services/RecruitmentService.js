@@ -5,7 +5,7 @@ class RecruitmentService {
     // 게시글 생성
     static async addRecruitment({ user_id, title, detail, language }) {
         const id = uuidv4();
-        // title이나 detail 검증필요?
+
         const captain = await User.findById(user_id);
         const newRecruitment = { id, captain, title, detail, language };
 
@@ -14,16 +14,6 @@ class RecruitmentService {
         const { password, follow, follower, ...refinedUser } =
             createdNewRecruitment.captain._doc;
         createdNewRecruitment.captain._doc = refinedUser;
-
-        // createdNewRecruitment.captain.follow.map((v) => {
-        //     const { password, ...refinedUser } = v._doc;
-        //     v._doc = refinedUser;
-        // });
-
-        // // createdNewRecruitment.captain.follower.map((v) => {
-        // //     const { password, refinedUser } = v._doc;
-        // //     v._doc = refinedUser;
-        // // });
 
         return createdNewRecruitment;
     }
@@ -35,8 +25,13 @@ class RecruitmentService {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
-        const { password, ...refinedUser } = recruitment.captain._doc;
-        recruitment.captain._doc = refinedUser;
+        const { id, name, ...refinedUser } = recruitment.captain._doc;
+        recruitment.captain._doc = { id, name };
+
+        recruitment.applicant.map((v) => {
+            const { id, name, ...refinedUser } = v._doc;
+            v._doc = { id, name };
+        });
 
         return recruitment;
     }
@@ -44,20 +39,17 @@ class RecruitmentService {
     // 게시물 수정하기
     static async setRecruitment({ recruitmentId, user_id, toUpdate }) {
         let recruitment = await Recruitment.findById({ recruitmentId });
-        console.log('hi');
 
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
-        console.log(recruitment._doc);
         if (recruitment._doc.captain.id !== user_id) {
             const errorMessage = '수정할 수 없습니다.';
             throw new Error(errorMessage);
         }
 
-        console.log(toUpdate);
         const keys = Object.keys(toUpdate);
         const values = Object.values(toUpdate);
 
@@ -67,7 +59,6 @@ class RecruitmentService {
                 keys[i],
                 values[i]
             );
-            console.log(keys[i], values[i]);
         }
 
         return recruitment;
@@ -89,7 +80,6 @@ class RecruitmentService {
 
         const user = await User.findById(user_id);
 
-        console.log(likedRecruitment.like.indexOf(user._id));
         if (likedRecruitment.like.includes(user._id)) {
             const errorMessage = '이미 좋아요를 누른 게시물입니다.';
             throw new Error(errorMessage);
@@ -110,7 +100,7 @@ class RecruitmentService {
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
-        console.log(recruitment);
+
         let nowEnrolling = recruitment.nowEnrolling;
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
@@ -133,7 +123,7 @@ class RecruitmentService {
         } else {
             message = '모집마감했습니다.';
         }
-        console.log(message, nowEnrolling);
+
         return { nowEnrolling, message };
     }
 
@@ -144,7 +134,6 @@ class RecruitmentService {
             recruitmentId
         });
 
-        console.log(recruitment.applicant);
         const applicants = recruitment.applicant.find(
             (v) => v.id === applicant.id
         );
@@ -184,7 +173,18 @@ class RecruitmentService {
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
-        const appliedOrNot = recruitment.applicant.indexOf(applicant._id);
+
+        const applicantValidator = [];
+        for (const user of recruitment.applicant) {
+            if (user.id === applicantId) {
+                applicantValidator.push(true);
+            } else {
+                applicantValidator.push(false);
+            }
+        }
+
+        const appliedOrNot = applicantValidator.indexOf(true);
+
         // 게시글이 있는지 확인
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
@@ -203,13 +203,13 @@ class RecruitmentService {
         }
 
         applicant = recruitment.applicant;
-        applicant.splice(applicant, 1);
-        // console.log(applicant);
+        applicant.splice(appliedOrNot, 1);
+
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             { applicant }
         );
-        // console.log(updatedRecruitment);
+
         return updatedRecruitment;
     }
 
@@ -232,9 +232,18 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        const applyUserIndex = recruitment.applicant.indexOf(applyUser._id);
+        const applicantValidator = [];
+        for (const user of recruitment.applicant) {
+            if (user.id === applicantId) {
+                applicantValidator.push(true);
+            } else {
+                applicantValidator.push(false);
+            }
+        }
 
-        if (applyUserIndex === -1) {
+        const applyUserIndex = applicantValidator.indexOf(true);
+
+        if (!applicantValidator.includes(true)) {
             const errorMessage = '지원하지 않은 사용자입니다.';
             throw new Error(errorMessage);
         }
@@ -276,7 +285,6 @@ class RecruitmentService {
 
         const user = await User.findById(user_id);
 
-        console.log(likedRecruitment.like.indexOf(user._id));
         const likedIndex = likedRecruitment.like.indexOf(user._id);
 
         if (likedIndex === -1) {
@@ -338,7 +346,7 @@ class RecruitmentService {
         }
 
         const user = await User.findById(authorId);
-        console.log(user);
+
         // captain이 댓글쓸 때 어떻게?
         if (authorId === recruitment.captain.id) {
             console.log('[captain]! writing');
@@ -348,15 +356,10 @@ class RecruitmentService {
             (comment) => comment.id === commentId
         );
 
-        console.log(comments);
         if (comments.length === 0) {
             const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
             throw new Error(errorMessage);
         }
-
-        // comments = recruitment.comment.find(
-        //     (comment) => comment.author.id === authorId
-        // );
 
         if (comments === null || comments === undefined) {
             const errorMessage = '수정 권한이 없습니다.';
@@ -367,12 +370,11 @@ class RecruitmentService {
         const commentIndex = comment.indexOf(comments);
         comment[commentIndex] = { id: commentId, author: user, ...toUpdate };
 
-        console.log(comment);
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             { comment }
         );
-        console.log(updatedRecruitment);
+
         return updatedRecruitment;
     }
 
@@ -390,26 +392,16 @@ class RecruitmentService {
             (comment) => comment.id === commentId
         );
 
-        // if (comment.length === 0) {
-        //     const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
-        //     throw new Error(errorMessage);
-        // }
-        // comment = recruitment.comment.find(
-        //     (comment) => comment.author.id == authorId
-        // );
-        console.log(comment);
         if (comment === null || comment === undefined || comment.length === 0) {
             const errorMessage = '없는 댓글입니다.';
             throw new Error(errorMessage);
         }
 
-        // console.log(comments.splice(comment, 1));
-
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             { $pull: { comment: { id: commentId } } }
         );
-        console.log(updatedRecruitment);
+
         return updatedRecruitment;
     }
 

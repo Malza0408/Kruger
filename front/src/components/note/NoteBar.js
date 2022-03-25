@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const NoteBar = ({ setIsNoteListAll, setIsNoteListSending }) => {
+const NoteBar = ({
+    setIsNoteListAll,
+    setIsNoteListSending,
+    isNoteRefreshed,
+    setIsNoteRefreshed
+}) => {
     const navigate = useNavigate();
 
     return (
-        <Container>
-            <ButtonToolbar className="justify-content-between mb-3">
+        <Container fluid>
+            <ButtonToolbar className="justify-content-between mb-3 noteBar">
                 <ButtonGroup>
                     <Button
                         variant="light"
@@ -43,9 +48,21 @@ const NoteBar = ({ setIsNoteListAll, setIsNoteListSending }) => {
                 <ButtonGroup>
                     <Button
                         variant="light"
+                        onClick={() => setIsNoteRefreshed(!isNoteRefreshed)}
+                        className="writeNoteButton"
+                    >
+                        <img
+                            src={`${process.env.PUBLIC_URL}/img/refresh.png`}
+                            alt="refresh"
+                            width="20"
+                            height="20"
+                        ></img>
+                    </Button>
+                    <Button
+                        variant="light"
                         value="전송"
                         onClick={() => navigate('/note/write')}
-                        className="filterButton"
+                        className="writeNoteButton"
                     >
                         쪽지 작성
                     </Button>

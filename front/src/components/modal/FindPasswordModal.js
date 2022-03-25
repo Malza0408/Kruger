@@ -30,7 +30,6 @@ const FindPasswordModal = ({ show, handleClose }) => {
                             <Form.Label>이메일을 입력해주세요.</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="http://placekitten.com/200/200"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />

@@ -10,6 +10,8 @@ const Note = () => {
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
 
+    const [isNoteRefreshed, setIsNoteRefreshed] = useState(false);
+
     const [isNoteListAll, setIsNoteListAll] = useState(true);
     const [isNoteListSendig, setIsNoteListSending] = useState(false);
 
@@ -26,10 +28,13 @@ const Note = () => {
             <NoteBar
                 setIsNoteListAll={setIsNoteListAll}
                 setIsNoteListSending={setIsNoteListSending}
+                isNoteRefreshed={isNoteRefreshed}
+                setIsNoteRefreshed={setIsNoteRefreshed}
             />
             <NoteList
                 isNoteListAll={isNoteListAll}
                 isNoteListSendig={isNoteListSendig}
+                isNoteRefreshed={isNoteRefreshed}
             />
         </Container>
     );

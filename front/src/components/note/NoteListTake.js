@@ -68,7 +68,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                             </span>
                         </Card.Title>
                     </Col>
-                    <Col>
+                    <Col className="text-end">
                         {takeNote.check ? (
                             <Badge pill bg="secondary">
                                 읽음
@@ -93,19 +93,21 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                             </span>
                         </Card.Text>
                     </Col>
-                    <Col>
+                    <Col className="text-end">
                         <Button
                             variant="primary"
                             size="sm"
                             className="descriptionButton"
-                            onClick={handleDelete}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(e);
+                            }}
                         >
                             삭제
                         </Button>{' '}
                     </Col>
                 </Row>
             </Card.Body>
-            <hr />
         </Card.Text>
     );
 };

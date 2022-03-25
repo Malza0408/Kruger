@@ -46,14 +46,14 @@ const NoteDescription = () => {
     };
 
     const reply = () => {
-        // 쪽지 작성 url 뒤에 답장할 수신자의 email을 붙임 
+        // 쪽지 작성 url 뒤에 답장할 수신자의 email을 붙임
         navigate(`/note/write/${note.fromUser?.email}`);
     };
 
     return (
         <Container fluid>
             <ButtonToolbar
-                className="mb-3"
+                className="mb-3 noteDescription"
                 aria-label="Toolbar with Button groups"
             >
                 <ButtonGroup>
@@ -75,8 +75,7 @@ const NoteDescription = () => {
                         !(note.fromUser?.name === '탈퇴한 회원') && (
                             <Button
                                 variant="primary"
-                                size="sm"
-                                className="noteDescriptionButton"
+                                className="descriptionButton"
                                 onClick={reply}
                             >
                                 답장
@@ -160,6 +159,7 @@ const NoteDescription = () => {
                     <Card.Title>
                         <span className="fs-4">
                             <strong>{note.title}</strong>
+                            <hr className="noteTitle" />
                         </span>
                     </Card.Title>
                     <Card.Text>

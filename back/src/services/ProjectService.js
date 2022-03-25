@@ -20,8 +20,6 @@ class ProjectService {
             to_date
         };
 
-        console.log(newProject);
-
         // db에 저장
         const createdNewProject = await Project.create({ newProject });
 

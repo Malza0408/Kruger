@@ -28,7 +28,7 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
     };
 
     return (
-        <Card style={{ width: '18rem' }} className="mb-2 ms-3 mr-5 UserCard">
+        <Card style={{ width: '18rem' }} className="mb-3 mx-4 UserCard">
             <Card.Body>
                 <Row className="justify-content-md-center">
                     <img
@@ -57,7 +57,7 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                                     className="me-4 px-2 editButton"
                                     onClick={handleShowProfile}
                                 >
-                                    프로필 변경
+                                    사진 변경
                                 </button>
                                 <button
                                     className="me-4 px-2 editButton"

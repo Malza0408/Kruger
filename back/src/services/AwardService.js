@@ -7,8 +7,6 @@ class AwardService {
         const id = uuidv4();
         const newAward = { id, user_id, title, description };
 
-        console.log(newAward);
-
         // db에 저장
         const createdNewAward = await Award.create({ newAward });
 
@@ -49,12 +47,9 @@ class AwardService {
 
         const keys = Object.keys(toUpdate);
         const values = Object.values(toUpdate);
-        console.log(keys);
-        console.log(values);
 
         for (let i = 0; i < keys.length; i++) {
             award = await Award.update(award_id, keys[i], values[i]);
-            console.log(keys[i], values[i], award);
         }
 
         return award;

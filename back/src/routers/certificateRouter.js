@@ -19,7 +19,6 @@ certificateRouter.post(
             // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
             const user_id = req.currentUserId;
             const { title, description, date } = req.body;
-            console.log(user_id, title, description, date);
 
             const newCertificate = await CertificateService.addCertificate({
                 user_id,
@@ -79,7 +78,7 @@ certificateRouter.put(
             // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
             const user_id = req.currentUserId;
-            const toUpdate = req.toUpdate;
+            const toUpdate = req.body;
 
             // 해당 자격증 아이디로 자격증 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedCertificate = await CertificateService.setCertificate({
@@ -107,7 +106,6 @@ certificateRouter.delete(
                 certificate_id,
                 user_id
             });
-            console.log(certificate_id);
             res.status(200).send('삭제되었습니다.');
         } catch (error) {
             next(error);

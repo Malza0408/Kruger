@@ -13,7 +13,8 @@ import {
     Col,
     InputGroup,
     DropdownButton,
-    Dropdown
+    Dropdown,
+    Offcanvas
 } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
@@ -38,16 +39,50 @@ const Post = () => {
     const [isLike, setIsLike] = useState(false);
     // 수정할 댓글 타겟
     const [targetComment, setTargetComment] = useState('');
-    // 모집중인지?
-    const [isDeadline, setIsDeadline] = useState(false);
+    const [applicants, setApplicants] = useState([]);
+    // offcanvas
+    const [showOffcanvas, setShowOffcanvas] = useState(false);
+    const handleClose = () => setShowOffcanvas(false);
+    const handleShow = async () => {
+        console.log(post);
+        setShowOffcanvas(true);
+    };
 
     const commentRef = useRef();
     const titleRef = useRef();
     const detailRef = useRef();
     const modifyCommentInput = useRef();
 
-    const handleDeadLine = () => {
-        if (userState.user.id === post?.captain.id) setIsDeadline(!isDeadline);
+    const handleDeadLine = async () => {
+        if (userState.user.id === post?.captain.id) {
+            await Api.patch(`recruit/toggle/${post.id}`);
+            getPostData();
+        } else {
+            return;
+        }
+    };
+
+    const apply = async () => {
+        console.log(post);
+        await Api.patch(`recruit/apply/${post.id}`);
+        getPostData();
+    };
+
+    const checkApply = () => {
+        // 못찾았으면
+        return (
+            post?.applicant.find((app) => app.id === userState.user.id) ===
+            undefined
+        );
+    };
+
+    const cancelApply = async () => {
+        await Api.patch(`recruit/cancle/apply/${post.id}`);
+        getPostData();
+    };
+
+    const cmpUserAndCaptain = () => {
+        return userState.user.id === post?.captain.id;
     };
 
     // 좋아요를 누른다.
@@ -68,6 +103,12 @@ const Post = () => {
         }
     };
 
+    // 포스트를 업데이트
+    const getPostData = useCallback(async () => {
+        const result = await Api.get('recruit', post_id.id);
+        setPost(result.data);
+    }, [post_id.id]);
+
     // 댓글과 포스트를 함께 업데이트
     const getPostDataWithComment = useCallback(async () => {
         const result = await Api.get('recruit', post_id.id);
@@ -85,12 +126,6 @@ const Post = () => {
             setIsLike(true);
         }
     }, [post_id.id, userState.user._id]);
-
-    // 포스트를 업데이트
-    const getPostData = useCallback(async () => {
-        const result = await Api.get('recruit', post_id.id);
-        setPost(result.data);
-    }, [post_id.id]);
 
     // 댓글을 단다.
     const handleSubmitComment = async (e) => {
@@ -146,9 +181,8 @@ const Post = () => {
         };
     };
 
-    // 전체 내용 수정하기 폼 띄우기
+    // 전체 내용 수정 제출
     const handleSubmit = async (e) => {
-        // if (langInputValue.length === 0) return;
         e.preventDefault();
         try {
             await Api.put(`recruit/${post.id}`, {
@@ -183,316 +217,422 @@ const Post = () => {
     };
 
     const showLanguage = (post) => {
-        const language = post?.language
-            ?.reduce((prev, cur) => {
-                return prev + cur + ' / ';
-            }, '')
-            .slice(0, -3);
-        return language;
+        return post?.language.map((lang, index) => {
+            return (
+                <Button
+                    className="lang-badge"
+                    variant="default"
+                    as={Col}
+                    key={index}
+                >
+                    {lang}
+                </Button>
+            );
+        });
+    };
+
+    const handliClickAcknowledgment = (applicantId) => {
+        return async () => {
+            await Api.patch(`recruit/approval/${post.id}`, {
+                applicantId
+            });
+            getPostData();
+        };
     };
 
     useEffect(() => {
         if (!userState.user) {
             navigate('/login');
         }
+
         getPostDataWithComment();
     }, [getPostDataWithComment, navigate, targetComment, userState.user]);
 
-    return (
-        <Container fluid className="Post">
-            {isEditPost === false ? (
-                <>
-                    <Row>
-                        <Col className="recruit-btn-group">
-                            {isDeadline ? (
-                                <Button
-                                    className="recruit-btn"
-                                    variant="secondary"
-                                    onClick={handleDeadLine}
-                                >
-                                    모집완료
-                                </Button>
-                            ) : (
-                                <Button
-                                    className="recruit-btn"
-                                    variant="secondary"
-                                    onClick={handleDeadLine}
-                                >
-                                    모집중
-                                </Button>
-                            )}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <h1>{post?.title}</h1>
-                    </Row>
-                    <Row>
-                        <Col className="name">
-                            <h4>{post?.captain?.name}</h4>
-                        </Col>
-                        <Col className="date">
-                            <h2>{post?.createdAt.substr(0, 10)}</h2>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <h2>사용언어 : {showLanguage(post)}</h2>
-                        <hr />
-                    </Row>
-                    <Row>
-                        <Col>
-                            <pre>{post?.detail}</pre>
-                        </Col>
-                    </Row>
-                    {isLike === true ? (
-                        <div className="heart-container">
-                            <FontAwesomeIcon
-                                icon={faHeart}
-                                size={'2x'}
-                                onClick={handleClickLike}
-                                className="red-heart"
-                            />
-                            <div className="like-count">
-                                {post?.like.length}
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="heart-container">
-                            <FontAwesomeIcon
-                                icon={faHeart}
-                                size={'2x'}
-                                onClick={handleClickLike}
-                                className="black-heart"
-                            />
-                            <div className="like-count">
-                                {post?.like.length}
-                            </div>
-                        </div>
-                    )}
+    useEffect(() => {
+        setApplicants(post?.applicant);
+    }, [post?.applicant]);
 
-                    {userState.user.id === post?.captain.id ? (
-                        <Button onClick={handleToggleEditDetail}>
-                            수정하기
-                        </Button>
-                    ) : (
-                        <></>
-                    )}
-                    <Form onSubmit={handleSubmitComment}>
-                        <Form.Group
-                            className="mb-3 comment-form"
-                            controlId="ControlTextarea"
-                        >
-                            <Form.Control
-                                placeholder="댓글을 입력하세요."
-                                as="textarea"
-                                rows={4}
-                                maxLength="200"
-                                ref={commentRef}
-                            />
-                        </Form.Group>
-                        <Row className="register-comment">
-                            <Col>
-                                <button type="submit">댓글 등록</button>
+    return (
+        <>
+            <Container fluid className="Post">
+                {isEditPost === false ? (
+                    <>
+                        <Row>
+                            <Col className="recruit-btn-group">
+                                {post?.nowEnrolling === false ? (
+                                    <Button
+                                        className="recruit-btn"
+                                        variant="secondary"
+                                        onClick={handleDeadLine}
+                                    >
+                                        모집완료
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        className="recruit-btn"
+                                        variant="secondary"
+                                        onClick={handleDeadLine}
+                                    >
+                                        모집중
+                                    </Button>
+                                )}
                             </Col>
                         </Row>
-                    </Form>
-                    <ul>
-                        {comments?.map((comment) => {
-                            return (
-                                <Row
-                                    className="comment-container"
-                                    key={comment.id}
-                                >
-                                    {targetComment !== comment.id ? (
-                                        <Col>
-                                            <li>{comment.content}</li>
-                                        </Col>
-                                    ) : targetComment === comment.id ? (
-                                        <>
-                                            <Col>
-                                                <Form.Control
-                                                    ref={modifyCommentInput}
-                                                />
-                                            </Col>
-                                            <Col className="complete-modify-btn">
-                                                <button
-                                                    onClick={
-                                                        handleClickCommentModify
-                                                    }
-                                                >
-                                                    완료
-                                                </button>
-                                            </Col>
-                                        </>
-                                    ) : (
-                                        <></>
-                                    )}
+                        {cmpUserAndCaptain() ? (
+                            <Row>
+                                <Col className="recruit-btn-group">
+                                    <Button
+                                        variant="light"
+                                        className="applicant-list"
+                                        onClick={handleShow}
+                                    >
+                                        지원자 목록
+                                    </Button>
+                                </Col>
+                            </Row>
+                        ) : (
+                            <></>
+                        )}
+                        <Row>
+                            <Col className="apply-btn-group">
+                                {/* 유저 아이디와 포스트 주인 아이디가 다르면 지원하기 버튼이 보인다. */}
+                                {/* 내가 지원안했다면 */}
+                                {!cmpUserAndCaptain() && checkApply() ? (
+                                    <Button
+                                        className="apply-btn"
+                                        onClick={apply}
+                                        disabled={post?.nowEnrolling}
+                                    >
+                                        지원하기
+                                    </Button>
+                                ) : !cmpUserAndCaptain() && !checkApply() ? (
+                                    <Button
+                                        className="apply-btn"
+                                        onClick={cancelApply}
+                                    >
+                                        지원취소
+                                    </Button>
+                                ) : (
+                                    <></>
+                                )}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <h1>
+                                <strong>{post?.title}</strong>
+                            </h1>
+                        </Row>
+                        <Row>
+                            <Col className="name">
+                                <h4>{post?.captain?.name}</h4>
+                            </Col>
+                            <Col className="date">
+                                <h2>{post?.createdAt.substr(0, 10)}</h2>
+                            </Col>
+                        </Row>
+                        <Row className="text-center">
+                            <Col>{showLanguage(post)}</Col>
+                            {/* <hr /> */}
+                        </Row>
+                        <Row>
+                            <Col>
+                                <pre>{post?.detail}</pre>
+                            </Col>
+                        </Row>
+                        {isLike === true ? (
+                            <div className="heart-container">
+                                <FontAwesomeIcon
+                                    icon={faHeart}
+                                    size={'2x'}
+                                    onClick={handleClickLike}
+                                    className="red-heart"
+                                />
+                                <div className="like-count">
+                                    {post?.like.length}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="heart-container">
+                                <FontAwesomeIcon
+                                    icon={faHeart}
+                                    size={'2x'}
+                                    onClick={handleClickLike}
+                                    className="black-heart"
+                                />
+                                <div className="like-count">
+                                    {post?.like.length}
+                                </div>
+                            </div>
+                        )}
 
-                                    {userState.user._id === comment.author &&
-                                    isEditComment === false ? (
-                                        <>
-                                            <Col className="comment-btns">
-                                                <button
-                                                    className="comment-btn"
-                                                    onClick={handleClickModifyComment(
-                                                        comment.id
-                                                    )}
-                                                >
-                                                    수정
-                                                </button>
-                                                <button
-                                                    className="comment-btn"
-                                                    onClick={handleClickDeleteComment(
-                                                        comment.id
-                                                    )}
-                                                >
-                                                    삭제
-                                                </button>
+                        {cmpUserAndCaptain() ? (
+                            <Button
+                                onClick={handleToggleEditDetail}
+                                className="mb-3"
+                            >
+                                수정하기
+                            </Button>
+                        ) : (
+                            <></>
+                        )}
+                        <Form onSubmit={handleSubmitComment}>
+                            <Form.Group
+                                className="mb-3 comment-form"
+                                controlId="ControlTextarea"
+                            >
+                                <Form.Control
+                                    placeholder="댓글을 입력하세요."
+                                    as="textarea"
+                                    rows={4}
+                                    maxLength="200"
+                                    ref={commentRef}
+                                />
+                            </Form.Group>
+                            <Row className="register-comment">
+                                <Col>
+                                    <button type="submit">댓글 등록</button>
+                                </Col>
+                            </Row>
+                        </Form>
+                        <ul>
+                            {comments?.map((comment) => {
+                                return (
+                                    <Row
+                                        className="comment-container"
+                                        key={comment.id}
+                                    >
+                                        {targetComment !== comment.id ? (
+                                            <Col>
+                                                <li>{comment.content}</li>
                                             </Col>
-                                        </>
-                                    ) : (
-                                        <></>
+                                        ) : targetComment === comment.id ? (
+                                            <>
+                                                <Col>
+                                                    <Form.Control
+                                                        ref={modifyCommentInput}
+                                                    />
+                                                </Col>
+                                                <Col className="complete-modify-btn">
+                                                    <button
+                                                        onClick={
+                                                            handleClickCommentModify
+                                                        }
+                                                    >
+                                                        완료
+                                                    </button>
+                                                </Col>
+                                            </>
+                                        ) : (
+                                            <></>
+                                        )}
+
+                                        {userState.user._id ===
+                                            comment.author &&
+                                        isEditComment === false ? (
+                                            <>
+                                                <Col className="comment-btns">
+                                                    <button
+                                                        className="comment-btn"
+                                                        onClick={handleClickModifyComment(
+                                                            comment.id
+                                                        )}
+                                                    >
+                                                        수정
+                                                    </button>
+                                                    <button
+                                                        className="comment-btn"
+                                                        onClick={handleClickDeleteComment(
+                                                            comment.id
+                                                        )}
+                                                    >
+                                                        삭제
+                                                    </button>
+                                                </Col>
+                                            </>
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </Row>
+                                );
+                            })}
+                        </ul>
+                    </>
+                ) : (
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="posting" className="mb-3">
+                            {/* <Form.Label>제목</Form.Label> */}
+                            <Form.Control
+                                placeholder="제목을 작성해주세요."
+                                type="text"
+                                size="lg"
+                                ref={titleRef}
+                                defaultValue={post.title}
+                            />
+                        </Form.Group>
+                        <InputGroup className="mb-3">
+                            <Form.Control
+                                type="text"
+                                disabled
+                                placeholder="사용할 언어를 선택해주세요."
+                                value={langInputValue && langInputValue}
+                                className="lang-input"
+                            />
+                            <Button
+                                variant="outline-secondary"
+                                id="button-addon2"
+                                className="deleteBtn"
+                                onClick={() => setLangInputValue([])}
+                            >
+                                Delete
+                            </Button>
+                            <DropdownButton
+                                variant="outline-secondary"
+                                title="Language"
+                                id="input-group-dropdown"
+                                align="end"
+                            >
+                                <Dropdown.Item
+                                    href="#"
+                                    onClick={(e) => {
+                                        getLangFromDropDown(e.target.innerText);
+                                        e.target.hidden = true;
+                                    }}
+                                    hidden={langInputValue.includes(
+                                        'JavaScript'
                                     )}
-                                </Row>
-                            );
-                        })}
-                    </ul>
-                </>
-            ) : (
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="posting" className="mb-3">
-                        {/* <Form.Label>제목</Form.Label> */}
-                        <Form.Control
-                            placeholder="제목을 작성해주세요."
-                            type="text"
-                            size="lg"
-                            ref={titleRef}
-                            defaultValue={post.title}
-                        />
-                    </Form.Group>
-                    <InputGroup className="mb-3">
-                        <Form.Control
-                            type="text"
-                            disabled
-                            placeholder="사용할 언어를 선택해주세요."
-                            value={langInputValue && langInputValue}
-                            className="lang-input"
-                        />
-                        <Button
-                            variant="outline-secondary"
-                            id="button-addon2"
-                            className="deleteBtn"
-                            onClick={() => setLangInputValue('')}
-                        >
-                            Delete
-                        </Button>
-                        <DropdownButton
-                            variant="outline-secondary"
-                            title="Language"
-                            id="input-group-dropdown"
-                            align="end"
-                        >
-                            <Dropdown.Item
-                                href="#"
-                                onClick={(e) => {
-                                    getLangFromDropDown(e.target.innerText);
-                                    e.target.hidden = true;
-                                }}
-                                hidden={langInputValue.includes('JavaScript')}
+                                >
+                                    JavaScript
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    href="#"
+                                    onClick={(e) => {
+                                        getLangFromDropDown(e.target.innerText);
+                                        e.target.hidden = true;
+                                    }}
+                                    hidden={langInputValue.includes(
+                                        'TypeScript'
+                                    )}
+                                >
+                                    TypeScript
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    href="#"
+                                    onClick={(e) => {
+                                        getLangFromDropDown(e.target.innerText);
+                                        e.target.hidden = true;
+                                    }}
+                                    hidden={langInputValue.includes('Node.js')}
+                                >
+                                    Node.js
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    href="#"
+                                    onClick={(e) => {
+                                        getLangFromDropDown(e.target.innerText);
+                                        e.target.hidden = true;
+                                    }}
+                                    hidden={langInputValue.includes('React')}
+                                >
+                                    React
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    href="#"
+                                    onClick={(e) => {
+                                        getLangFromDropDown(e.target.innerText);
+                                        e.target.hidden = true;
+                                    }}
+                                    hidden={langInputValue.includes('Vue')}
+                                >
+                                    Vue
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    href="#"
+                                    onClick={(e) => {
+                                        getLangFromDropDown(e.target.innerText);
+                                        e.target.hidden = true;
+                                    }}
+                                    hidden={langInputValue.includes('Python')}
+                                >
+                                    Python
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    href="#"
+                                    onClick={(e) => {
+                                        getLangFromDropDown(e.target.innerText);
+                                        e.target.hidden = true;
+                                    }}
+                                    hidden={langInputValue.includes('Django')}
+                                >
+                                    Django
+                                </Dropdown.Item>
+                            </DropdownButton>
+                        </InputGroup>
+                        <Form.Group controlId="posting" className="mt-3">
+                            <Form.Control
+                                as="textarea"
+                                rows={15}
+                                placeholder="프로젝트 및 스터디원을 구해보세요!"
+                                size="lg"
+                                ref={detailRef}
+                                defaultValue={post.detail}
+                            />
+                        </Form.Group>
+                        <Col className="text-end mt-3">
+                            <button
+                                className="postingBtn"
+                                onClick={handleToggleEditDetail}
+                                type="button"
                             >
-                                JavaScript
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                href="#"
-                                onClick={(e) => {
-                                    getLangFromDropDown(e.target.innerText);
-                                    e.target.hidden = true;
-                                }}
-                                hidden={langInputValue.includes('TypeScript')}
-                            >
-                                TypeScript
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                href="#"
-                                onClick={(e) => {
-                                    getLangFromDropDown(e.target.innerText);
-                                    e.target.hidden = true;
-                                }}
-                                hidden={langInputValue.includes('Node.js')}
-                            >
-                                Node.js
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                href="#"
-                                onClick={(e) => {
-                                    getLangFromDropDown(e.target.innerText);
-                                    e.target.hidden = true;
-                                }}
-                                hidden={langInputValue.includes('React')}
-                            >
-                                React
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                href="#"
-                                onClick={(e) => {
-                                    getLangFromDropDown(e.target.innerText);
-                                    e.target.hidden = true;
-                                }}
-                                hidden={langInputValue.includes('Vue')}
-                            >
-                                Vue
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                href="#"
-                                onClick={(e) => {
-                                    getLangFromDropDown(e.target.innerText);
-                                    e.target.hidden = true;
-                                }}
-                                hidden={langInputValue.includes('Python')}
-                            >
-                                Python
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                href="#"
-                                onClick={(e) => {
-                                    getLangFromDropDown(e.target.innerText);
-                                    e.target.hidden = true;
-                                }}
-                                hidden={langInputValue.includes('Django')}
-                            >
-                                Django
-                            </Dropdown.Item>
-                        </DropdownButton>
-                    </InputGroup>
-                    <Form.Group controlId="posting" className="mt-3">
-                        <Form.Control
-                            as="textarea"
-                            rows={15}
-                            placeholder="프로젝트 및 스터디원을 구해보세요!"
-                            size="lg"
-                            ref={detailRef}
-                            defaultValue={post.detail}
-                        />
-                    </Form.Group>
-                    <Col className="text-end mt-3">
-                        <button
-                            className="postingBtn"
-                            onClick={handleToggleEditDetail}
-                            type="button"
-                        >
-                            취소
-                        </button>
-                        <button className="postingBtn ms-3" type="submit">
-                            등록하기
-                        </button>
-                    </Col>
-                </Form>
-            )}
-            {userState.user.id === post?.captain.id ? (
-                <Button onClick={deletePost}>포스트 삭제하기</Button>
-            ) : (
-                <></>
-            )}
-        </Container>
+                                취소
+                            </button>
+                            <button className="postingBtn ms-3" type="submit">
+                                등록하기
+                            </button>
+                        </Col>
+                    </Form>
+                )}
+                {cmpUserAndCaptain() ? (
+                    <Button onClick={deletePost}>포스트 삭제하기</Button>
+                ) : (
+                    <></>
+                )}
+            </Container>
+
+            <Offcanvas
+                show={showOffcanvas}
+                onHide={handleClose}
+                className="offcanvas"
+            >
+                <Offcanvas.Header
+                    style={{ backgroundColor: '#fff5f5' }}
+                    closeButton
+                >
+                    <Offcanvas.Title>지원자 목록</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    {applicants?.map((applicant, index) => {
+                        return (
+                            <Row key={index} className="applicant-list">
+                                <Col>
+                                    {index + 1}. {applicant.name}
+                                </Col>
+                                <Col className="applicant-btn-container">
+                                    <Button
+                                        className="applicant-list-btn"
+                                        onClick={handliClickAcknowledgment(
+                                            applicant.id
+                                        )}
+                                        // disabled={post?.member.find(m => m === )}
+                                    >
+                                        승인
+                                    </Button>
+                                </Col>
+                            </Row>
+                        );
+                    })}
+                </Offcanvas.Body>
+            </Offcanvas>
+        </>
     );
 };
 

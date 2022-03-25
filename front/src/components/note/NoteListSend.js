@@ -69,11 +69,14 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                             </span>
                         </Card.Text>
                     </Col>
-                    <Col>
+                    <Col className="text-end">
                         <Button
                             variant="primary"
                             size="sm"
-                            onClick={handleDelete}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(e);
+                            }}
                             className="descriptionButton"
                         >
                             삭제
@@ -81,7 +84,6 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                     </Col>
                 </Row>
             </Card.Body>
-            <hr />
         </Card.Text>
     );
 };

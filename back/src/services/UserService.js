@@ -44,7 +44,7 @@ class UserService {
 
     static async getUsers() {
         const users = await User.findAll();
-        console.log(users.length);
+
         for (let i = 0; i < users.length; i++) {
             let userKeys = Object.keys(users[i]._doc);
             if (userKeys.indexOf('password') !== -1) {
@@ -126,7 +126,6 @@ class UserService {
         const keys = Object.keys(toUpdate);
         const values = Object.values(toUpdate);
         const filter = { id: user_id };
-        console.log(filter);
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!user) {
@@ -156,7 +155,7 @@ class UserService {
 
     static async resetPassword({ email }) {
         let user = await User.findByEmail({ email });
-        console.log(email);
+
         const subject = '포트폴리오 공유 웹 서비스';
         // 등록되지 않은 회원일 경우 이메일 내용
         if (!user) {
@@ -213,7 +212,7 @@ class UserService {
 
         user.follow.map((v) => {
             const { password, ...refinedUser } = v._doc;
-            console.log(refinedUser);
+
             v._doc = refinedUser;
         });
 
@@ -247,7 +246,6 @@ class UserService {
                 ? followedArray.push(true)
                 : followedArray.push(false)
         );
-        console.log(followArray);
 
         const unfollowIndex = followArray.indexOf(true);
         const unfollowedIndex = followedArray.indexOf(true);
@@ -256,11 +254,10 @@ class UserService {
             const errorMessage = '팔로우하지 않은 사용자입니다.';
             throw new Error(errorMessage);
         }
-        console.log(unfollowIndex);
 
         const follower = unfollowedUser._doc.follower;
         follower.splice(unfollowedIndex, 1);
-        console.log(user._doc.follow);
+
         const newUnfollowedValue = { follower };
 
         const follow = user._doc.follow;

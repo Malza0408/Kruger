@@ -12,7 +12,7 @@ const Gather = ({ project }) => {
     };
     return (
         <Card
-            style={{ width: '18rem' }}
+            style={{ width: '18rem', margin: '0 50px 50px 0' }}
             className="Gather"
             onClick={handleOnClick}
         >
