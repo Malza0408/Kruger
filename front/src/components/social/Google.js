@@ -1,11 +1,7 @@
 import React, { useContext, useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import LoginForm from '../user/LoginForm';
 import { DispatchContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
-// import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
-// import axios from 'axios';
 
 function Google() {
     const navigate = useNavigate();
