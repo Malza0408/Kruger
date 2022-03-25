@@ -16,7 +16,7 @@ function educationUpdateMiddleware(req, res, next) {
             req.body = restUpdate;
         }
 
-        const values = Object.values(toUpdate);
+        const values = Object.values(req.body);
 
         const positionArray = ['재학중', '학사졸업', '석사졸업', '박사졸업'];
         if (req.body.position && !positionArray.includes(req.body.position)) {

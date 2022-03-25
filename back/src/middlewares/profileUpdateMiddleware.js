@@ -23,7 +23,7 @@ function profileUpdateMiddleware(req, res, next) {
             req.body = restUpdate;
         }
 
-        const values = Object.values(toUpdate);
+        const values = Object.values(req.body);
 
         if (values.length === 0) {
             const errorMessage = '수정할 내용이 없습니다.';
