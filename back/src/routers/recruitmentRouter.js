@@ -4,6 +4,7 @@ import { login_required } from '../middlewares/login_required';
 import { recruitmentUpdateMiddleware } from '../middlewares/recruitmentUpdateMiddleware';
 import { languageMiddleware } from '../middlewares/languageMiddleward';
 import { RecruitmentService } from '../services/RecruitmentService';
+import { NoteService } from '../services/NoteService';
 
 const recruitmentRouter = Router();
 
@@ -158,6 +159,16 @@ recruitmentRouter.patch(
                 recruitmentId,
                 applicantId,
                 user_id
+            });
+
+            const title = updatedRecruitment.title;
+            const content =
+                '저희 팀의 멤버가 되셨습니다. 우리 함께 정말 멋진 프로젝트를 완성해보아요!!';
+            await NoteService.addNote({
+                user_id,
+                to: applicantId,
+                title,
+                content
             });
 
             res.status(200).json(updatedRecruitment);
