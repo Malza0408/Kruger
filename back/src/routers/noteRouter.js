@@ -15,7 +15,6 @@ noteRouter.post('/note/create', login_required, async (req, res, next) => {
         // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
         const user_id = req.currentUserId;
         const { to, title, content } = req.body;
-        console.log(to, title, content);
 
         const newNote = await NoteService.addNote({
             user_id,
@@ -67,12 +66,10 @@ noteRouter.get('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
         const user_id = req.currentUserId;
-        console.log(noteId);
         const currentTakenNoteInfo = await NoteService.getTakenNoteInfo({
             noteId,
             user_id
         });
-        console.log(currentTakenNoteInfo);
 
         res.status(200).json(currentTakenNoteInfo);
     } catch (error) {
@@ -98,7 +95,6 @@ noteRouter.get('/sentNotes/:id', login_required, async (req, res, next) => {
 noteRouter.patch('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
-        console.log(noteId);
         await NoteService.checkNote({ noteId });
         res.status(200).json('읽음처리되었습니다.');
     } catch (error) {

@@ -16,7 +16,6 @@ userRouter.post('/user/register', async function (req, res, next) {
 
         // req (request) 에서 데이터 가져오기
         const { name, email, password } = req.body;
-        console.log(name, email, password);
         // 위 데이터를 유저 db에 추가하기
         const userData = { name, email, password };
         const newUser = await UserService.addUser(userData);
@@ -92,7 +91,6 @@ userRouter.put(
             const user_id = req.params.id;
             // body data 로부터 업데이트할 사용자 정보를 추출함
             const toUpdate = req.body;
-            console.log(toUpdate);
 
             // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedUser = await UserService.setUser({

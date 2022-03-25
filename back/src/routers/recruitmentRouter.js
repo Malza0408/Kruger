@@ -21,7 +21,6 @@ recruitmentRouter.post(
                 );
             }
             const { title, detail, language } = req.body;
-            console.log(language);
             const user_id = req.currentUserId;
 
             const newRecruitment = await RecruitmentService.addRecruitment({

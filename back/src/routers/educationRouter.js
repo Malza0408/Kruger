@@ -29,7 +29,6 @@ educationRouter.post(
                 major,
                 position
             });
-            console.log('education 생성되었습니다.');
             res.status(201).json(newEducation);
         } catch (error) {
             next(error);
@@ -74,14 +73,12 @@ educationRouter.put(
             const education_id = req.params.id;
             const user_id = req.currentUserId;
             const toUpdate = req.body;
-            console.log('toUpdate : ', toUpdate);
 
             const updatedEducation = await EducationService.setEducation({
                 education_id,
                 user_id,
                 toUpdate
             });
-            console.log('수정되었습니다.');
             res.status(200).json(updatedEducation);
         } catch (error) {
             next(error);
@@ -97,7 +94,6 @@ educationRouter.delete(
             const user_id = req.currentUserId;
             await EducationService.deleteEducation({ education_id, user_id });
             res.status(200).send('삭제되었습니다.');
-            console.log('삭제되었습니다.');
         } catch (error) {
             next(error);
         }
