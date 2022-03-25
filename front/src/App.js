@@ -15,7 +15,9 @@ import NoteWriteForm from './components/note/NoteWriteForm';
 import NoteDescription from './components/note/NoteDescription';
 import Posting from './components/gather/Posting';
 import Post from './components/gather/Post';
-import Github from './components/github/Github';
+import Github from './components/social/Github';
+import Google from './components/social/Google';
+import Kakao from './components/social/Kakao';
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -87,6 +89,14 @@ function App() {
                         <Route
                             path="/auth/github/callback"
                             element={<Github />}
+                        />
+                        <Route
+                            path="/auth/google/callback"
+                            element={<Google />}
+                        />
+                        <Route
+                            path="/auth/kakao/callback"
+                            element={<Kakao />}
                         />
                     </Routes>
                 </Router>
