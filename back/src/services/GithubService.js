@@ -23,9 +23,7 @@ class GithubService {
             throw new Error(errorMessage);
         }
         const accessToken = tokenRequest.data.access_token;
-        console.log('before getUserData');
         return this.getUserData(accessToken);
-        console.log('after getUserData');
     }
 
     static async getUserData(accessToken) {
