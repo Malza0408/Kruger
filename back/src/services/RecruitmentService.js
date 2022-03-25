@@ -25,8 +25,13 @@ class RecruitmentService {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
-        const { password, ...refinedUser } = recruitment.captain._doc;
-        recruitment.captain._doc = refinedUser;
+        const { id, name, ...refinedUser } = recruitment.captain._doc;
+        recruitment.captain._doc = { id, name };
+
+        recruitment.applicant.map((v) => {
+            const { id, name, ...refinedUser } = v._doc;
+            v._doc = { id, name };
+        });
 
         return recruitment;
     }
