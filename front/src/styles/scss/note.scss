@@ -1,10 +1,12 @@
 .sendNote {
     background-color: antiquewhite;
-    margin: 0 50px;
+    margin: 15px 50px;
+    padding: 0 30px;
 }
 .takeNote {
     background-color: aliceblue;
-    margin: 0 50px;
+    margin: 15px 50px;
+    padding: 0 30px;
 }
 .filterButton {
     background-color: white;
@@ -18,6 +20,10 @@
     background-color: lightblue;
     border: 3px solid white;
 }
+.writeNoteButton {
+    border: 0;
+    background-color: lightblue;
+}
 .descriptionButton {
     background-color: lightblue;
     color: black;
@@ -30,5 +36,17 @@
 .descriptionCard {
     background-color: white;
     border: 4px solid lightblue;
+    border-radius: 10px;
     height: 70vh;
+    margin: 15px 50px;
+    padding: 25px;
+}
+.noteDescription {
+    margin: 15px 50px;
+}
+.noteWriteForm {
+    margin: 0px 200px;
+}
+.noteTitle {
+    border: 1px solid gray;
 }

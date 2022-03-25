@@ -105,7 +105,6 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                     </Col>
                 </Row>
             </Card.Body>
-            <hr />
         </Card.Text>
     );
 };

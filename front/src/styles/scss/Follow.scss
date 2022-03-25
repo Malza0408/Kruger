@@ -1,7 +1,7 @@
 .followCard {
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
-
+    margin-bottom: 10px;
     .followList {
         color: #495057;
         margin: 0 10px;
@@ -9,11 +9,6 @@
         border: 0;
         font-weight: bold;
         font-size: 15px;
-        &.focus {
-        }
-        &::after {
-            box-shadow: none !important;
-        }
     }
     .followList:hover {
         background-color: #fff5f5;

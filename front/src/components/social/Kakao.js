@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { DispatchContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import * as Api from '../../api';
@@ -34,7 +34,8 @@ function Kakao() {
             navigate('/', { replace: true });
         } catch (err) {
             // setIsLoginFail(true);
-            console.log('로그인에 실패하였습니다.\n', err);
+            alert('로그인에 실패하였습니다.\n로그인 페이지로 이동합니다.', err);
+            navigate('/', { replace: true });
         }
     };
 

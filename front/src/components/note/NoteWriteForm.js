@@ -94,7 +94,7 @@ const NoteWriteForm = () => {
 
     return (
         <Container fluid>
-            <Card>
+            <Card className="noteWriteForm">
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         <Row>
@@ -235,14 +235,16 @@ const NoteWriteForm = () => {
                                 </Form.Text>
                             )}
                         </Form.Group>
-                        <Button
-                            variant="primary"
-                            value="전송"
-                            onClick={handleSubmit}
-                            className="descriptionButton"
-                        >
-                            전송
-                        </Button>
+                        <Col className="text-center">
+                            <Button
+                                variant="primary"
+                                value="전송"
+                                onClick={handleSubmit}
+                                className="descriptionButton"
+                            >
+                                전송
+                            </Button>
+                        </Col>
                     </Form>
                 </Card.Body>
             </Card>

@@ -36,7 +36,8 @@ function Github() {
             navigate('/', { replace: true });
         } catch (err) {
             // setIsLoginFail(true);
-            console.log('로그인에 실패하였습니다.\n', err);
+            alert('로그인에 실패하였습니다.\n로그인 페이지로 이동합니다.', err);
+            navigate('/', { replace: true });
         }
     };
 

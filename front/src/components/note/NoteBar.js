@@ -45,7 +45,7 @@ const NoteBar = ({ setIsNoteListAll, setIsNoteListSending }) => {
                         variant="light"
                         value="전송"
                         onClick={() => navigate('/note/write')}
-                        className="filterButton"
+                        className="writeNoteButton"
                     >
                         쪽지 작성
                     </Button>
