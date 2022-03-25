@@ -122,3 +122,15 @@ $maxWidth: 1000px;
         }
     }
 }
+
+.offcanvas {
+    .applicant-btn-container {
+        text-align: end;
+    }
+    .applicant-list-btn {
+        border-radius: 5px;
+        background-color: lightblue;
+        border-color: transparent;
+        color: black;
+    }
+}

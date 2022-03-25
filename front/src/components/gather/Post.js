@@ -44,6 +44,7 @@ const Post = () => {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const handleClose = () => setShowOffcanvas(false);
     const handleShow = async () => {
+        console.log(post);
         setShowOffcanvas(true);
     };
 
@@ -62,6 +63,7 @@ const Post = () => {
     };
 
     const apply = async () => {
+        console.log(post);
         await Api.patch(`recruit/apply/${post.id}`);
         getPostData();
     };
@@ -69,7 +71,7 @@ const Post = () => {
     const checkApply = () => {
         // 못찾았으면
         return (
-            post?.applicant.find((id) => id === userState.user._id) ===
+            post?.applicant.find((app) => app.id === userState.user.id) ===
             undefined
         );
     };
@@ -229,6 +231,15 @@ const Post = () => {
         });
     };
 
+    const handliClickAcknowledgment = (applicantId) => {
+        return async () => {
+            await Api.patch(`recruit/approval/${post.id}`, {
+                applicantId
+            });
+            getPostData();
+        };
+    };
+
     useEffect(() => {
         if (!userState.user) {
             navigate('/login');
@@ -290,6 +301,7 @@ const Post = () => {
                                     <Button
                                         className="apply-btn"
                                         onClick={apply}
+                                        disabled={post?.nowEnrolling}
                                     >
                                         지원하기
                                     </Button>
@@ -586,7 +598,11 @@ const Post = () => {
                 )}
             </Container>
 
-            <Offcanvas show={showOffcanvas} onHide={handleClose}>
+            <Offcanvas
+                show={showOffcanvas}
+                onHide={handleClose}
+                className="offcanvas"
+            >
                 <Offcanvas.Header
                     style={{ backgroundColor: '#fff5f5' }}
                     closeButton
@@ -595,7 +611,24 @@ const Post = () => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     {applicants?.map((applicant, index) => {
-                        return <Row key={index}>{applicant}</Row>;
+                        return (
+                            <Row key={index} className="applicant-list">
+                                <Col>
+                                    {index + 1}. {applicant.name}
+                                </Col>
+                                <Col className="applicant-btn-container">
+                                    <Button
+                                        className="applicant-list-btn"
+                                        onClick={handliClickAcknowledgment(
+                                            applicant.id
+                                        )}
+                                        // disabled={post?.member.find(m => m === )}
+                                    >
+                                        승인
+                                    </Button>
+                                </Col>
+                            </Row>
+                        );
                     })}
                 </Offcanvas.Body>
             </Offcanvas>
