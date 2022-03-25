@@ -41,12 +41,19 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
 
     return (
         <Card.Text as={Col} className="sendNote">
+            {console.log(sendNote?.toUser.picture)}
             <Card.Body>
                 <Card.Title>
                     {sendNote.toUser.name === '탈퇴한 회원' ? (
                         <Badge bg="secondary">탈퇴한 회원</Badge>
                     ) : (
-                        <span>
+                        // 작업 포인트 ------------------------------------ //
+                        <span
+                            style={{ cursor: 'pointer' }}
+                            onClick={() =>
+                                navigate(`/users/${sendNote.toUser?.id}`)
+                            }
+                        >
                             <strong>{sendNote.toUser.name}</strong>
                         </span>
                     )}
