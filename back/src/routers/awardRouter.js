@@ -67,8 +67,7 @@ awardRouter.put(
             // URI로부터 수상 요소 id를 추출함.
             const award_id = req.params.id;
             const user_id = req.currentUserId;
-            const toUpdate = req.toUpdate;
-            console.log('toUpdate : ', toUpdate);
+            const toUpdate = req.body;
             // 해당 수상 요소 아이디로 수상 요소 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedAward = await AwardService.setAward({
                 award_id,

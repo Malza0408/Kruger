@@ -16,11 +16,12 @@ function languageMiddleware(req, res, next) {
             'Django'
         ];
 
-        language.map((v) => {
-            if (languageType.indexOf(v) === -1) {
-                res.status(400).json('지원하는 언어가 아닙니다.');
+        for (const lan of language) {
+            if (languageType.indexOf(lan) === -1) {
+                const errorMessage = '지원하는 언어가 아닙니다.';
+                return res.status(400).json(errorMessage);
             }
-        });
+        }
 
         next();
     } catch (error) {

@@ -7,7 +7,12 @@ class NoteService {
 
         const fromUser = await User.findById(user_id);
 
-        const toUser = await User.findByEmail({ email: to });
+        let toUser;
+        if (to.indexOf('@') !== -1) {
+            toUser = await User.findByEmail({ email: to });
+        } else {
+            toUser = await User.findById(to);
+        }
 
         if (!toUser) {
             const errorMessage =

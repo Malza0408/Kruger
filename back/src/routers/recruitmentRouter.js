@@ -4,6 +4,7 @@ import { login_required } from '../middlewares/login_required';
 import { recruitmentUpdateMiddleware } from '../middlewares/recruitmentUpdateMiddleware';
 import { languageMiddleware } from '../middlewares/languageMiddleward';
 import { RecruitmentService } from '../services/RecruitmentService';
+import { NoteService } from '../services/NoteService';
 
 const recruitmentRouter = Router();
 
@@ -37,27 +38,35 @@ recruitmentRouter.post(
 );
 
 // 게시글 하나 보기, 로그인 안해도 볼수있게.
-recruitmentRouter.get('/recruit/:id', async (req, res, next) => {
-    try {
-        const recruitmentId = req.params.id;
-        const recruitments = await RecruitmentService.getRecruitment({
-            recruitmentId
-        });
-        res.status(200).json(recruitments);
-    } catch (error) {
-        next(error);
+recruitmentRouter.get(
+    '/recruit/:id',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const recruitmentId = req.params.id;
+            const recruitments = await RecruitmentService.getRecruitment({
+                recruitmentId
+            });
+            res.status(200).json(recruitments);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 // 게시글 목록 보기
-recruitmentRouter.get('/recruitlist', async (req, res, next) => {
-    try {
-        const recruitmentList = await RecruitmentService.getRecruitments();
-        res.status(200).json(recruitmentList);
-    } catch (error) {
-        next(error);
+recruitmentRouter.get(
+    '/recruitlist',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const recruitmentList = await RecruitmentService.getRecruitments();
+            res.status(200).json(recruitmentList);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 // 게시글 수정하기
 recruitmentRouter.put(
@@ -69,7 +78,7 @@ recruitmentRouter.put(
         try {
             const recruitmentId = req.params.id;
             const user_id = req.currentUserId;
-            const toUpdate = req.toUpdate;
+            const toUpdate = req.body;
 
             const updatedRecruitment = await RecruitmentService.setRecruitment({
                 recruitmentId,
@@ -159,6 +168,17 @@ recruitmentRouter.patch(
                 applicantId,
                 user_id
             });
+
+            const title = updatedRecruitment.title;
+            const content =
+                '저희 팀의 멤버가 되셨습니다. 우리 함께 정말 멋진 프로젝트를 완성해보아요!!';
+            await NoteService.addNote({
+                user_id,
+                to: applicantId,
+                title,
+                content
+            });
+
             res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);
