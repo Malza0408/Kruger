@@ -1,6 +1,6 @@
 import React from 'react';
 import Gathers from './Gathers';
-import '../../styles/scss/GatherRoom.scss';
+import '../../styles/scss/gatherRoom.scss';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
