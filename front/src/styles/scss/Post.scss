@@ -42,6 +42,19 @@ $maxWidth: 1000px;
             background-color: cadetblue;
         }
     }
+    .deleteBtn {
+        background-color: white;
+        border: 1px solid lightgrey;
+    }
+    .lang-input {
+        &:disabled {
+            background-color: white;
+        }
+    }
+    .dropdown-toggle {
+        background-color: white;
+        border: 1px solid lightgrey;
+    }
     .heart-container {
         display: flex;
         justify-content: end;

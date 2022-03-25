@@ -27,13 +27,18 @@ const Post = () => {
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
     const post_id = useParams();
+    // 포스팅된 공고문
     const [post, setPost] = useState();
     const [comments, setComments] = useState([]);
     const [langInputValue, setLangInputValue] = useState([]);
+    // 포스트를 수정중인지?
     const [isEditPost, setIsEditPost] = useState(false);
+    // 댓글을 수정중인지?
     const [isEditComment, setIsEditComment] = useState(false);
     const [isLike, setIsLike] = useState(false);
+    // 수정할 댓글 타겟
     const [targetComment, setTargetComment] = useState('');
+    // 모집중인지?
     const [isDeadline, setIsDeadline] = useState(false);
 
     const commentRef = useRef();
@@ -46,7 +51,7 @@ const Post = () => {
     };
 
     // 좋아요를 누른다.
-    const handleOnClickLike = async () => {
+    const handleClickLike = async () => {
         try {
             if (
                 post.like.find((id) => id === userState.user.id) === undefined
@@ -88,7 +93,7 @@ const Post = () => {
     }, [post_id.id]);
 
     // 댓글을 단다.
-    const handleOnSubmitComment = async (e) => {
+    const handleSubmitComment = async (e) => {
         e.preventDefault();
         const content = commentRef.current.value;
         try {
@@ -103,7 +108,7 @@ const Post = () => {
     };
 
     // 수정 이후에 완료 버튼 클릭
-    const handleOnClickCommentModify = async () => {
+    const handleClickCommentModify = async () => {
         const content = modifyCommentInput.current.value;
         if (content === '') {
             setIsEditComment(false);
@@ -122,7 +127,7 @@ const Post = () => {
     };
 
     // 댓글을 삭제한다.
-    const handleOnClickDeleteComment = (commentId) => {
+    const handleClickDeleteComment = (commentId) => {
         return async () => {
             try {
                 await Api.patch(`recruit/delete/${post.id}/${commentId}`);
@@ -134,7 +139,7 @@ const Post = () => {
     };
 
     // 댓글 수정 버튼을 눌러서 input 폼을 띄운다.
-    const handleOnClickModifyComment = (commentId) => {
+    const handleClickModifyComment = (commentId) => {
         return () => {
             setIsEditComment(true);
             setTargetComment(commentId);
@@ -142,7 +147,8 @@ const Post = () => {
     };
 
     // 전체 내용 수정하기 폼 띄우기
-    const handleOnSubmit = async (e) => {
+    const handleSubmit = async (e) => {
+        // if (langInputValue.length === 0) return;
         e.preventDefault();
         try {
             await Api.put(`recruit/${post.id}`, {
@@ -242,7 +248,7 @@ const Post = () => {
                             <FontAwesomeIcon
                                 icon={faHeart}
                                 size={'2x'}
-                                onClick={handleOnClickLike}
+                                onClick={handleClickLike}
                                 className="red-heart"
                             />
                             <div className="like-count">
@@ -254,7 +260,7 @@ const Post = () => {
                             <FontAwesomeIcon
                                 icon={faHeart}
                                 size={'2x'}
-                                onClick={handleOnClickLike}
+                                onClick={handleClickLike}
                                 className="black-heart"
                             />
                             <div className="like-count">
@@ -270,7 +276,7 @@ const Post = () => {
                     ) : (
                         <></>
                     )}
-                    <Form onSubmit={handleOnSubmitComment}>
+                    <Form onSubmit={handleSubmitComment}>
                         <Form.Group
                             className="mb-3 comment-form"
                             controlId="ControlTextarea"
@@ -292,7 +298,10 @@ const Post = () => {
                     <ul>
                         {comments?.map((comment) => {
                             return (
-                                <Row className="comment-container">
+                                <Row
+                                    className="comment-container"
+                                    key={comment.id}
+                                >
                                     {targetComment !== comment.id ? (
                                         <Col>
                                             <li>{comment.content}</li>
@@ -307,7 +316,7 @@ const Post = () => {
                                             <Col className="complete-modify-btn">
                                                 <button
                                                     onClick={
-                                                        handleOnClickCommentModify
+                                                        handleClickCommentModify
                                                     }
                                                 >
                                                     완료
@@ -324,7 +333,7 @@ const Post = () => {
                                             <Col className="comment-btns">
                                                 <button
                                                     className="comment-btn"
-                                                    onClick={handleOnClickModifyComment(
+                                                    onClick={handleClickModifyComment(
                                                         comment.id
                                                     )}
                                                 >
@@ -332,7 +341,7 @@ const Post = () => {
                                                 </button>
                                                 <button
                                                     className="comment-btn"
-                                                    onClick={handleOnClickDeleteComment(
+                                                    onClick={handleClickDeleteComment(
                                                         comment.id
                                                     )}
                                                 >
@@ -349,7 +358,7 @@ const Post = () => {
                     </ul>
                 </>
             ) : (
-                <Form onSubmit={handleOnSubmit}>
+                <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="posting" className="mb-3">
                         {/* <Form.Label>제목</Form.Label> */}
                         <Form.Control
@@ -366,6 +375,7 @@ const Post = () => {
                             disabled
                             placeholder="사용할 언어를 선택해주세요."
                             value={langInputValue && langInputValue}
+                            className="lang-input"
                         />
                         <Button
                             variant="outline-secondary"
