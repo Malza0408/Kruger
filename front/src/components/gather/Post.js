@@ -19,6 +19,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
 import { UserStateContext } from '../../App';
 import useGetLangFromDropDown from '../../custom/useGetLangFromDropDown';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import '../../styles/scss/Post.scss';
 
 const Post = () => {
@@ -100,11 +102,9 @@ const Post = () => {
         }
     };
 
-    // 수정 이후에 수정 클릭
-    const handleOnSubmitCommentModify = async () => {
+    // 수정 이후에 완료 버튼 클릭
+    const handleOnClickCommentModify = async () => {
         const content = modifyCommentInput.current.value;
-        // modifyCommentInput.current.value = '';
-        console.log('content: ', content);
         if (content === '') {
             setIsEditComment(false);
             setTargetComment('');
@@ -238,37 +238,29 @@ const Post = () => {
                         </Col>
                     </Row>
                     {isLike === true ? (
-                        <Row className="heart-img">
-                            <Col>
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/gatherImg/heart.png`}
-                                    alt="like"
-                                    width="40px"
-                                    height="40px"
-                                    className="me-1"
-                                    onClick={handleOnClickLike}
-                                />
-                                <span className="like-count">
-                                    {post?.like.length}
-                                </span>
-                            </Col>
-                        </Row>
+                        <div className="heart-container">
+                            <FontAwesomeIcon
+                                icon={faHeart}
+                                size={'2x'}
+                                onClick={handleOnClickLike}
+                                className="red-heart"
+                            />
+                            <div className="like-count">
+                                {post?.like.length}
+                            </div>
+                        </div>
                     ) : (
-                        <Row className="heart-img">
-                            <Col>
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/gatherImg/b-heart.png`}
-                                    alt="like"
-                                    width="40px"
-                                    height="40px"
-                                    className="me-1"
-                                    onClick={handleOnClickLike}
-                                />
-                                <span className="like-count">
-                                    {post?.like.length}
-                                </span>
-                            </Col>
-                        </Row>
+                        <div className="heart-container">
+                            <FontAwesomeIcon
+                                icon={faHeart}
+                                size={'2x'}
+                                onClick={handleOnClickLike}
+                                className="black-heart"
+                            />
+                            <div className="like-count">
+                                {post?.like.length}
+                            </div>
+                        </div>
                     )}
 
                     {userState.user.id === post?.captain.id ? (
@@ -296,66 +288,65 @@ const Post = () => {
                                 <button type="submit">댓글 등록</button>
                             </Col>
                         </Row>
-                        <ul>
-                            {comments?.map((comment, index) => {
-                                return (
-                                    <Row className="comment-container">
-                                        {targetComment !== comment.id ? (
-                                            <Col>
-                                                <li>{comment.content}</li>
-                                            </Col>
-                                        ) : targetComment === comment.id ? (
-                                            <>
-                                                <Col>
-                                                    <Form.Control
-                                                        ref={modifyCommentInput}
-                                                    />
-                                                </Col>
-                                                <Col className="complete-modify-btn">
-                                                    <button
-                                                        onClick={
-                                                            handleOnSubmitCommentModify
-                                                        }
-                                                    >
-                                                        완료
-                                                    </button>
-                                                </Col>
-                                            </>
-                                        ) : (
-                                            <></>
-                                        )}
-
-                                        {userState.user._id ===
-                                            comment.author &&
-                                        isEditComment === false ? (
-                                            <>
-                                                <Col className="comment-btns">
-                                                    <button
-                                                        className="comment-btn"
-                                                        onClick={handleOnClickModifyComment(
-                                                            comment.id
-                                                        )}
-                                                    >
-                                                        수정
-                                                    </button>
-                                                    <button
-                                                        className="comment-btn"
-                                                        onClick={handleOnClickDeleteComment(
-                                                            comment.id
-                                                        )}
-                                                    >
-                                                        삭제
-                                                    </button>
-                                                </Col>
-                                            </>
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </Row>
-                                );
-                            })}
-                        </ul>
                     </Form>
+                    <ul>
+                        {comments?.map((comment) => {
+                            return (
+                                <Row className="comment-container">
+                                    {targetComment !== comment.id ? (
+                                        <Col>
+                                            <li>{comment.content}</li>
+                                        </Col>
+                                    ) : targetComment === comment.id ? (
+                                        <>
+                                            <Col>
+                                                <Form.Control
+                                                    ref={modifyCommentInput}
+                                                />
+                                            </Col>
+                                            <Col className="complete-modify-btn">
+                                                <button
+                                                    onClick={
+                                                        handleOnClickCommentModify
+                                                    }
+                                                >
+                                                    완료
+                                                </button>
+                                            </Col>
+                                        </>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    {userState.user._id === comment.author &&
+                                    isEditComment === false ? (
+                                        <>
+                                            <Col className="comment-btns">
+                                                <button
+                                                    className="comment-btn"
+                                                    onClick={handleOnClickModifyComment(
+                                                        comment.id
+                                                    )}
+                                                >
+                                                    수정
+                                                </button>
+                                                <button
+                                                    className="comment-btn"
+                                                    onClick={handleOnClickDeleteComment(
+                                                        comment.id
+                                                    )}
+                                                >
+                                                    삭제
+                                                </button>
+                                            </Col>
+                                        </>
+                                    ) : (
+                                        <></>
+                                    )}
+                                </Row>
+                            );
+                        })}
+                    </ul>
                 </>
             ) : (
                 <Form onSubmit={handleOnSubmit}>
