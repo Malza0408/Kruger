@@ -221,9 +221,18 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        const applyUserIndex = recruitment.applicant.indexOf(applyUser._id);
+        const applicantValidator = [];
+        for (const user of recruitment.applicant) {
+            if (user.id === applicantId) {
+                applicantValidator.push(true);
+            } else {
+                applicantValidator.push(false);
+            }
+        }
 
-        if (applyUserIndex === -1) {
+        const applyUserIndex = applicantValidator.indexOf(true);
+
+        if (!applicantValidator.includes(true)) {
             const errorMessage = '지원하지 않은 사용자입니다.';
             throw new Error(errorMessage);
         }
