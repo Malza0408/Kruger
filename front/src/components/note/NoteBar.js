@@ -51,7 +51,12 @@ const NoteBar = ({
                         onClick={() => setIsNoteRefreshed(!isNoteRefreshed)}
                         className="writeNoteButton"
                     >
-                        새로 고침
+                        <img
+                            src={`${process.env.PUBLIC_URL}/img/refresh.png`}
+                            alt="refresh"
+                            width="20"
+                            height="20"
+                        ></img>
                     </Button>
                     <Button
                         variant="light"
