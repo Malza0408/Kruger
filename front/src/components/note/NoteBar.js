@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const NoteBar = ({ setIsNoteListAll, setIsNoteListSending }) => {
+const NoteBar = ({ setIsNoteListAll, setIsNoteListSending, isNoteRefreshed, setIsNoteRefreshed }) => {
     const navigate = useNavigate();
 
     return (
@@ -41,6 +41,13 @@ const NoteBar = ({ setIsNoteListAll, setIsNoteListSending }) => {
                     </Button>
                 </ButtonGroup>
                 <ButtonGroup>
+                    <Button
+                        variant="light"
+                        onClick={() => setIsNoteRefreshed(!isNoteRefreshed)}
+                        className="writeNoteButton"
+                    >
+                        새로 고침
+                    </Button>
                     <Button
                         variant="light"
                         value="전송"
