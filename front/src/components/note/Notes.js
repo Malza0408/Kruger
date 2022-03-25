@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { UserStateContext } from '../../App';
 import NoteBar from './NoteBar';
-
 import NoteList from './NoteList';
 
 const Note = () => {
@@ -15,7 +14,7 @@ const Note = () => {
     const [isNoteListSendig, setIsNoteListSending] = useState(false);
 
     useEffect(() => {
-        // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
+        // 전역 상태의 user가 null이라면 로그인 페이지로 이동
         if (!userState.user) {
             navigate('/login');
             return;
@@ -25,16 +24,12 @@ const Note = () => {
     return (
         <Container fluid>
             <NoteBar
-                isNoteListAll={isNoteListAll}
                 setIsNoteListAll={setIsNoteListAll}
-                isNoteListSendig={isNoteListSendig}
                 setIsNoteListSending={setIsNoteListSending}
             />
             <NoteList
                 isNoteListAll={isNoteListAll}
-                setIsNoteListAll={setIsNoteListAll}
                 isNoteListSendig={isNoteListSendig}
-                setIsNoteListSending={setIsNoteListSending}
             />
         </Container>
     );

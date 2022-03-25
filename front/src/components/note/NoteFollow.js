@@ -8,6 +8,7 @@ const NoteFollow = ({ follow, setTo, setName }) => {
         <Dropdown.Item
             style={{ cursor: 'pointer' }}
             onClick={() => {
+                // 팔료우 목록에서 선택한 사용자를 수신자로 설정
                 setTo(follow.email);
                 setName(follow.name);
             }}
@@ -19,7 +20,6 @@ const NoteFollow = ({ follow, setTo, setName }) => {
         </Dropdown.Item>
         // </Card.Body>
         // </Card.Text>
-
         // </Container>
     );
 };

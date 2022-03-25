@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const NoteBar = ({ setIsNoteListAll, setIsNoteListSending }) => {
     const navigate = useNavigate();
+
     return (
         <Container>
             <ButtonToolbar className="justify-content-between mb-3">

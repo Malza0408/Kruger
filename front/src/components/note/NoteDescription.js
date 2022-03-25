@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
     Container,
     Col,
@@ -7,20 +8,16 @@ import {
     ButtonGroup,
     ButtonToolbar
 } from 'react-bootstrap';
-import * as Api from '../../api';
-import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
+import * as Api from '../../api';
 
 const NoteDescription = () => {
     const navigate = useNavigate();
     const params = useParams();
-    const [user, setUser] = useState(true);
+
     const [note, setNote] = useState('');
     const [newDateFormatted, setNewDateFormatted] = useState('');
-
-    useEffect(() => {
-        Api.get(`user/current`).then((res) => setUser(res.data));
-    }, []);
 
     useEffect(() => {
         Api.get(`${params.noteType}/${params.noteId}`).then((res) => {
@@ -49,6 +46,7 @@ const NoteDescription = () => {
     };
 
     const reply = () => {
+        // 쪽지 작성 url 뒤에 답장할 수신자의 email을 붙임 
         navigate(`/note/write/${note.fromUser?.email}`);
     };
 
@@ -72,6 +70,7 @@ const NoteDescription = () => {
                     >
                         삭제
                     </Button>
+                    {/* 유효한 사용자가 전송한 수신 쪽지라면 답장 버튼 띄움 */}
                     {`${params.noteType}` === 'takenNotes' &&
                         !(note.fromUser?.name === '탈퇴한 회원') && (
                             <Button
@@ -101,6 +100,7 @@ const NoteDescription = () => {
                                             className="fs-2"
                                             style={{ cursor: 'pointer' }}
                                             onClick={() =>
+                                                // 수신자의 개인 페이지로 이동
                                                 navigate(
                                                     `/users/${note.toUser?.id}`
                                                 )
@@ -130,6 +130,7 @@ const NoteDescription = () => {
                                             className="fs-2"
                                             style={{ cursor: 'pointer' }}
                                             onClick={() =>
+                                                // 발신자의 개인 페이지로 이동
                                                 navigate(
                                                     `/users/${note.fromUser?.id}`
                                                 )

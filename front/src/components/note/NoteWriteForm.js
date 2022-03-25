@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import NoteFollow from './NoteFollow';
-
 import {
     Container,
     Accordion,
@@ -15,20 +11,22 @@ import {
     DropdownButton,
     InputGroup
 } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import * as Api from '../../api';
+
+import NoteFollow from './NoteFollow';
 
 const NoteWriteForm = () => {
     const navigate = useNavigate();
     const params = useParams();
+    
+    const [name, setName] = useState('');
+    const [user, setUser] = useState(null);
 
     const [to, setTo] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-
-    const [name, setName] = useState('');
-
-    const [user, setUser] = useState(null);
 
     const [isToEmpty, setIsToEmpty] = useState(false);
     const [isTitleEmpty, setIsTitleEmpty] = useState(false);
@@ -39,7 +37,7 @@ const NoteWriteForm = () => {
     useEffect(() => {
         Api.get(`user/current`).then((res) => setUser(res.data));
 
-        // 답장 작성이라면 이전 쪽지를 보낸 사람을 수신자로 설정
+        // 답장 작성이라면 이전 쪽지의 발신자를 수신자로 설정
         !(`${params.replyTo}` === 'undefined') && setTo(`${params.replyTo}`);
     }, []);
 
@@ -48,6 +46,7 @@ const NoteWriteForm = () => {
         return `${params.replyTo}` === 'undefined' ? false : true;
     };
 
+    // email input 시 해당 사용자의 이름 띄움
     const handleBlur = async (inputEmail) => {
         await Api.get('userlist')
             .then((res) => {
@@ -109,7 +108,7 @@ const NoteWriteForm = () => {
                                             <strong>받는 사람</strong>
                                         </span>
                                     </Form.Label>
-                                    {/* email input 시 해당 사용자의 name 띄우기 */}
+                                    {/* email input 시 해당 사용자의 name 띄움 */}
                                     <Badge bg="secondary">{name}</Badge>
                                     <InputGroup>
                                         <Form.Control

@@ -1,9 +1,8 @@
-import { Row, Col, Button, Card, Badge } from 'react-bootstrap';
-import * as Api from '../../api';
 import React, { useState, useEffect } from 'react';
-
+import { Row, Col, Button, Card, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import NoteDescription from './NoteDescription';
+
+import * as Api from '../../api';
 
 const NoteListSend = ({ sendNote, setSendNote }) => {
     const navigate = useNavigate();
@@ -38,10 +37,10 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                     {sendNote.toUser.name === '탈퇴한 회원' ? (
                         <Badge bg="secondary">탈퇴한 회원</Badge>
                     ) : (
-                        // 작업 포인트 ------------------------------------ //
                         <span
                             style={{ cursor: 'pointer' }}
                             onClick={() =>
+                                // 수신자의 개인 페이지로 이동
                                 navigate(`/users/${sendNote.toUser?.id}`)
                             }
                         >
@@ -54,6 +53,7 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                 </Card.Title>
                 <Card.Title
                     style={{ cursor: 'pointer' }}
+                    // 수신 쪽지 상세 페이지로 이동
                     onClick={() => navigate(`/note/sentNotes/${sendNote.id}`)}
                 >
                     <span className="fs-5">

@@ -11,17 +11,10 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
     const [takeNote, setTakeNote] = useState([]);
 
     const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        // 전체 쪽지함
-        Api.get(`notelist`).then((res) => {
-            setAllNote(res.data);
-        });
-    }, [sendNote, takeNote]);
-
+ 
     useEffect(() => {
         Api.get(`user/current`).then((res) => setUser(res.data));
-
+        
         // 발신함
         Api.get(`sentNotelist`).then((res) => {
             setSendNote(res.data);
@@ -31,6 +24,13 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
             setTakeNote(res.data);
         });
     }, []);
+    
+    useEffect(() => {
+        // 전체 쪽지함
+        Api.get(`notelist`).then((res) => {
+            setAllNote(res.data);
+        });
+    }, [sendNote, takeNote]);
 
     // 발신 시간 내림차순
     const DescCreatedAt = (note) => {
@@ -52,6 +52,7 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
             {DescCreatedAt(allNote).map((note) => {
                 return (
                     isNoteListAll &&
+                    // 로그인 되어있는 사용자와 발신자가 일치한다면 발신 쪽지임
                     (user.name === note.fromUser.name ? (
                         <NoteListSend
                             key={note.id}
