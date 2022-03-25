@@ -9,25 +9,79 @@ import { GoogleService } from '../services/GoogleService';
 import { GithubService } from '../services/GithubService';
 
 const authRouter = Router();
-//구글
-authRouter.get(
-    '/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-authRouter.get(
-    '/auth/google/callback',
-    passport.authenticate('google', { session: false }),
-    (req, res, next) => {
-        try {
-            const user = req.user;
-            console.log('google user signed in.');
-            // console.log(req);
-            res.status(201).json(user);
-        } catch (error) {
-            next(error);
+// //구글로 토큰을 보냄.
+// authRouter.get(
+//     '/auth/google',
+//     passport.authenticate('google', { scope: ['profile', 'email'] })
+// );
+
+// // 유저를 db에 넣거나 로그인시켜서 토큰생성후 res로 보냄
+// authRouter.get(
+//     '/auth/google/callback',
+//     passport.authenticate('google', { session: false }),
+//     (req, res, next) => {
+//         try {
+//             const user = req.user;
+//             console.log('google user signed in.');
+//             // console.log(req);
+//             res.status(201).json(user);
+//         } catch (error) {
+//             next(error);
+//         }
+//     }
+// );
+function base64urlDecode(str) {
+    return new Buffer(base64urlUnescape(str), 'base64').toString();
+}
+function base64urlUnescape(str) {
+    str += Array(5 - (str.length % 4)).join('=');
+    return str.replace(/\-/g, '+').replace(/_/g, '/');
+}
+authRouter.get('/auth/google', async (req, res, next) => {
+    try {
+        const uri = 'https://oauth2.googleapis.com/token';
+        const config = {
+            code: req.query.code,
+            client_id: process.env.GOOGLE_CLIENT_ID,
+            client_secret: process.env.GOOGLE_CLIENT_SECRET,
+            redirect_uri: 'http://localhost:3000/auth/google/callback'
+        };
+        const params = new URLSearchParams(config);
+        const finalUrl = `${uri}?${params}&grant_type=authorization_code`;
+        const tokenRequest = await axios.post(finalUrl, config);
+        // console.log(tokenRequest);
+        if (tokenRequest.status !== 200 || tokenRequest.statusText !== 'OK') {
+            const errorMessage = 'github 인증 실패';
+            throw new Error(errorMessage);
         }
+
+        let idToken = tokenRequest.data.id_token;
+        idToken = idToken.split('.');
+        const header = JSON.parse(base64urlDecode(idToken[0]));
+        const payload = JSON.parse(base64urlDecode(idToken[1]));
+
+        const { sub, email, name } = payload;
+        const userInfo = {
+            id: sub,
+            name,
+            email,
+            password: '',
+            loginMethod: 'google'
+        };
+        const user = await GoogleService.checkUser(userInfo);
+        res.status(201).json(user);
+
+        // const userData = await axios.get(scope[0], {
+        //     headers: {
+        //         Authorization: `token ${idToken}`,
+        //         Accept: 'application/json'
+        //     }
+        // });
+        // console.log(userData);
+    } catch (error) {
+        next(error);
     }
-);
+});
 
 // 깃허브
 authRouter.get('/auth/github', async (req, res, next) => {
@@ -49,7 +103,6 @@ authRouter.get('/auth/github', async (req, res, next) => {
         if (tokenRequest.data.error) {
             const errorMessage = 'github 인증 실패';
             throw new Error(errorMessage);
-            return res.redirect('/');
         }
         const accessToken = tokenRequest.data.access_token;
 
@@ -67,7 +120,7 @@ authRouter.get('/auth/github', async (req, res, next) => {
         }
 
         // 깃허브에서 데이터 가져와서 userInfo 객체로 만들기
-        let { id, name, email, login, avatar } = userData.data;
+        let { id, name, email, login } = userData.data;
         const repositoryUrl = `https://github.com/${login}`;
         const description = userData.data.bio;
         if (!email) {
@@ -87,7 +140,7 @@ authRouter.get('/auth/github', async (req, res, next) => {
 
         const userInfo = {
             id,
-            name,
+            name: 'Github user',
             email,
             password: '',
             description,

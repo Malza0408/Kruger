@@ -18,15 +18,14 @@ class GithubService {
         if (user && user.loginMethod === loginMethod) {
             const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
             const token = jwt.sign({ user_id: id }, secretKey);
-
-            const loginUserKeys = Object.keys(user._doc);
-
             const { password, ...refinedUser } = user._doc;
             user._doc = { ...refinedUser, token };
             console.log('github user log in.');
-            user._doc.token = token;
-
             return user;
+        } else if (user && user.loginMethod === 'email') {
+            const errorMessage =
+                '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
+            throw new Error(errorMessage);
         }
 
         // 이메일이 등록안됐으면 처음 깃허브로 회원가입하는 유저.

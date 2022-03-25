@@ -15,7 +15,8 @@ import NoteWriteForm from './components/note/NoteWriteForm';
 import NoteDescription from './components/note/NoteDescription';
 import Posting from './components/gather/Posting';
 import Post from './components/gather/Post';
-import Github from './components/github/Github';
+import Github from './components/social/Github';
+import Google from './components/social/Google';
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -73,7 +74,10 @@ function App() {
                         <Route path="/network" element={<Network />} />
                         <Route path="/note" element={<Notes />} />
                         <Route path="/note/write" element={<NoteWriteForm />} />
-                        <Route path="/note/write/:replyTo" element={<NoteWriteForm />} />
+                        <Route
+                            path="/note/write/:replyTo"
+                            element={<NoteWriteForm />}
+                        />
                         <Route
                             path="/note/:noteType/:noteId"
                             element={<NoteDescription />}
@@ -84,6 +88,10 @@ function App() {
                         <Route
                             path="/auth/github/callback"
                             element={<Github />}
+                        />
+                        <Route
+                            path="/auth/google/callback"
+                            element={<Google />}
                         />
                     </Routes>
                 </Router>
