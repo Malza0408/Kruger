@@ -1,7 +1,8 @@
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Card, Badge } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
 import * as Api from '../../api';
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 
 const NoteListTake = ({ takeNote, setTakeNote }) => {
     const navigate = useNavigate();
@@ -46,6 +47,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                                     style={{ cursor: 'pointer' }}
                                     onClick={() =>
                                         navigate(
+                                            // 발신자의 개인 페이지로 이동
                                             `/users/${takeNote.fromUser?.id}`
                                         )
                                     }
@@ -73,6 +75,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                 <Card.Title
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
+                        // 발신 쪽지 상세 페이지로 이동
                         navigate(`/note/takenNotes/${takeNote.id}`);
                         handleRead();
                     }}
@@ -100,9 +103,6 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                         </Button>{' '}
                     </Col>
                 </Row>
-                {/* <Card.Text>
-                    <span className="text-muted">{takeNote.content}</span>
-                </Card.Text> */}
             </Card.Body>
             <hr />
         </Card.Text>

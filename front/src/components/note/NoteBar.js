@@ -1,27 +1,10 @@
-import React, { useState } from 'react';
-import {
-    Container,
-    Accordion,
-    Form,
-    Row,
-    Col,
-    Button,
-    ButtonGroup,
-    ButtonToolbar
-} from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { Container, Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-import NoteWriteForm from './NoteWriteForm';
-
-const NoteBar = ({
-    isWriting,
-    setIsWritingis,
-    NoteListAll,
-    setIsNoteListAll,
-    isNoteListSendig,
-    setIsNoteListSending
-}) => {
+const NoteBar = ({ setIsNoteListAll, setIsNoteListSending }) => {
     const navigate = useNavigate();
+
     return (
         <Container>
             <ButtonToolbar className="justify-content-between mb-3">
