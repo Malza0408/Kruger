@@ -4,8 +4,7 @@ import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
 import FindPasswordModal from '../modal/FindPasswordModal';
-import GoogleLogin from 'react-google-login';
-import Google from '../social/Google';
+
 function LoginForm() {
     const navigate = useNavigate();
     const dispatch = useContext(DispatchContext);
@@ -82,6 +81,10 @@ function LoginForm() {
     const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
     const googleRedirectUri = 'http://localhost:3000/auth/google/callback';
     const googleUri = 'https://accounts.google.com/o/oauth2/v2/auth';
+    const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
+    const kakaoRedirectUri = 'http://localhost:3000/auth/kakao/callback';
+    const kakaoUri = `https://kauth.kakao.com/oauth/authorize`;
+    console.log('=======', kakaoClientId);
     return (
         <div className="login">
             <Row>
@@ -167,23 +170,30 @@ function LoginForm() {
                         </Row>
                         <Row className="mt-3 text-center">
                             <Col>
-                                {/* 구글! 
-                                <GoogleLogin
-                                    clientId={googleClientId}
-                                    buttonText="Continue with Google"
-                                    onSuccess={Google}
-                                    onFailure={Google}
-                                    cookiePolicy={'single_host_origin'}
-                                /> */}
                                 <a
                                     href={`${googleUri}?response_type=code&client_id=${googleClientId}&scope=openid%20profile%20email&redirect_uri=${googleRedirectUri}&`}
                                 >
-                                    <img
+                                    구글
+                                    {/* <img
                                         src={`${process.env.PUBLIC_URL}/img/github.png`}
                                         alt=""
                                         // onClick={handleOnClickGithub}
-                                        className="githubLogin"
-                                    />
+                                        className="googleLogin"
+                                    /> */}
+                                </a>
+                            </Col>
+                        </Row>
+                        <Row className="mt-3 text-center">
+                            <Col>
+                                <a
+                                    href={`${kakaoUri}?response_type=code&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectUri}`}
+                                >
+                                    카카오
+                                    {/* <img
+                                        src={`${process.env.PUBLIC_URL}/img/github.png`}
+                                        alt=""
+                                        className="kakaoLogin"
+                                    /> */}
                                 </a>
                             </Col>
                         </Row>

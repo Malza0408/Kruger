@@ -1,12 +1,10 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { login_required } from '../middlewares/login_required';
-
-// import fetch from 'node-fetch';
 import axios from 'axios';
-import { UserService } from '../services/UserService';
 import { GoogleService } from '../services/GoogleService';
 import { GithubService } from '../services/GithubService';
+import { KakaoService } from '../services/KakaoService';
 
 const authRouter = Router();
 // //구글로 토큰을 보냄.
@@ -30,6 +28,55 @@ const authRouter = Router();
 //         }
 //     }
 // );
+
+authRouter.get('/auth/kakao', async (req, res, next) => {
+    try {
+        const uri = 'https://kauth.kakao.com/oauth/token';
+        const config = {
+            code: req.query.code.slice(0, -1),
+            client_id: process.env.KAKAO_CLIENT_ID,
+            redirect_uri: 'http://localhost:3000/auth/kakao/callback',
+            grant_type: 'authorization_code'
+        };
+        const params = new URLSearchParams(config);
+        const finalUrl = `${uri}?${params}`;
+        const tokenRequest = await axios.post(finalUrl, config);
+        if (tokenRequest.status !== 200 || tokenRequest.statusText !== 'OK') {
+            const errorMessage = 'kakao 인증 실패';
+            throw new Error(errorMessage);
+        }
+        const accessToken = tokenRequest.data.access_token;
+        const userData = await axios.get('https://kapi.kakao.com/v2/user/me', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        if (userData.data.error) {
+            const errorMessage = 'kakao 데이터 전송 실패';
+            throw new Error(errorMessage);
+        }
+        console.log(userData.data);
+        const id = String(userData.data);
+        const { nickname, profile_image, thumbnail_image } =
+            userData.data.properties;
+        const email = userData.data.kakao_account.email;
+        const userInfo = {
+            id,
+            name: nickname,
+            email,
+            password: '',
+            loginMethod: 'kakao',
+            picture: profile_image
+        };
+        console.log(userInfo);
+        const user = await KakaoService.checkUser(userInfo);
+
+        res.status(201).json(user);
+    } catch (error) {
+        next(error);
+    }
+});
+
 function base64urlDecode(str) {
     return new Buffer(base64urlUnescape(str), 'base64').toString();
 }
@@ -51,7 +98,7 @@ authRouter.get('/auth/google', async (req, res, next) => {
         const tokenRequest = await axios.post(finalUrl, config);
         // console.log(tokenRequest);
         if (tokenRequest.status !== 200 || tokenRequest.statusText !== 'OK') {
-            const errorMessage = 'github 인증 실패';
+            const errorMessage = 'google 인증 실패';
             throw new Error(errorMessage);
         }
 
@@ -77,7 +124,6 @@ authRouter.get('/auth/google', async (req, res, next) => {
         //         Accept: 'application/json'
         //     }
         // });
-        // console.log(userData);
     } catch (error) {
         next(error);
     }
