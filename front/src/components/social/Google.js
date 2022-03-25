@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { DispatchContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import * as Api from '../../api';
@@ -8,10 +8,17 @@ function Google() {
     const dispatch = useContext(DispatchContext);
 
     const Spinner = () => {
+        useEffect(() => {
+            setTimeout(() => {
+                navigate('/login', { replace: true });
+            }, 3000);
+            return clearTimeout();
+        }, []);
         return (
-            <>
-                <h1>Loading...</h1>
-            </>
+            <div>
+                로그인에 실패했습니다. 가입된 이메일이 이미 존재합니다 3초 뒤
+                로그인 페이지로 이동됩니다.
+            </div>
         );
     };
 
