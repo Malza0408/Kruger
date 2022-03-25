@@ -94,7 +94,7 @@ const NoteWriteForm = () => {
 
     return (
         <Container fluid>
-            <Card>
+            <Card className="noteWriteForm">
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         <Row>
