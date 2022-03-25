@@ -1,19 +1,30 @@
 function userUpdateMiddleware(req, res, next) {
     const { name, email, password, description, picture } = req.body ?? null;
-    let toUpdate = {};
 
     try {
-        if (name !== null && name !== undefined) toUpdate.name = name;
-        if (email !== null && email !== undefined) toUpdate.email = email;
-        if (password !== null && password !== undefined)
-            toUpdate.password = password;
-        if (description !== null && description !== undefined)
-            toUpdate.description = description;
-        if (picture !== null && picture !== undefined)
-            toUpdate.picture = picture;
+        if (description === null || description === undefined) {
+            const { description, ...restUpdate } = req.body;
+            req.body = restUpdate;
+        }
+        if (name === null || name === undefined) {
+            const { name, ...restUpdate } = req.body;
+            req.body = restUpdate;
+        }
+        if (email === null || email === undefined) {
+            const { email, ...restUpdate } = req.body;
+            req.body = restUpdate;
+        }
+        if (password === null || password === undefined) {
+            const { password, ...restUpdate } = req.body;
+            req.body = restUpdate;
+        }
+        if (picture === null || picture === undefined) {
+            const { picture, ...restUpdate } = req.body;
+            req.body = restUpdate;
+        }
 
-        const values = Object.values(toUpdate);
-        console.log('toUpdate : ', toUpdate);
+        const values = Object.values(req.body);
+        console.log('toUpdate : ', req.body);
         if (values.length === 0) {
             const errorMessage = '수정할 내용이 없습니다.';
             res.status(400).json(errorMessage);
@@ -26,7 +37,6 @@ function userUpdateMiddleware(req, res, next) {
             return;
         }
 
-        req.toUpdate = toUpdate;
         next();
     } catch (error) {
         res.status(400).send('이 방법이 아닌 듯');
