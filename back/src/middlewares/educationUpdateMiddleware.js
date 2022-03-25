@@ -16,8 +16,8 @@ function educationUpdateMiddleware(req, res, next) {
             req.body = restUpdate;
         }
 
-        const values = Object.values(req.body);
-        console.log('toUpdate : ', req.body);
+        const values = Object.values(toUpdate);
+
         const positionArray = ['재학중', '학사졸업', '석사졸업', '박사졸업'];
         if (req.body.position && !positionArray.includes(req.body.position)) {
             const errorMessage = '잘못된 학위명입니다.';

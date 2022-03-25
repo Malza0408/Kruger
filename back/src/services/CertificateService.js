@@ -8,8 +8,6 @@ class CertificateService {
         const id = uuidv4();
         const newCertificate = { id, user_id, title, description, date };
 
-        console.log(newCertificate);
-
         // db에 저장
         const createdNewCertificate = await Certificate.create({
             newCertificate
