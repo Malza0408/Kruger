@@ -36,8 +36,10 @@
     }
 
     .Gather {
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.39);
+        box-shadow: 0px 0px 10px 0px #748ffc63;
         border-radius: 20px;
+        width: 18rem;
+        margin: 0 50px 50px 0;
         &:not(:last-of-type) {
             margin-right: 20px;
         }
