@@ -56,9 +56,9 @@ function Header() {
                         <Nav.Item>
                             <Nav.Link
                                 className="navbarButton"
-                                onClick={() => navigate('/gatherRoom')}
+                                onClick={() => navigate('/')}
                             >
-                                프로젝트
+                                나의 페이지
                             </Nav.Link>
                         </Nav.Item>
                         <NavDropdown.Divider />
@@ -75,18 +75,18 @@ function Header() {
                         <Nav.Item>
                             <Nav.Link
                                 className="navbarButton"
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate('/network')}
                             >
-                                나의 페이지
+                                네트워크
                             </Nav.Link>
                         </Nav.Item>
                         <NavDropdown.Divider />
                         <Nav.Item>
                             <Nav.Link
                                 className="navbarButton"
-                                onClick={() => navigate('/network')}
+                                onClick={() => navigate('/gatherRoom')}
                             >
-                                네트워크
+                                프로젝트
                             </Nav.Link>
                         </Nav.Item>
                         <NavDropdown.Divider />
