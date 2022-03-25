@@ -11,7 +11,7 @@
 .filterButton {
     background-color: white;
     border: 0;
-    width: 100px;
+    width: 70px;
 }
 .filterButton:hover {
     background-color: lightblue;
@@ -19,6 +19,10 @@
 .filterButton:focus {
     background-color: lightblue;
     border: 3px solid white;
+}
+.writeNoteButton {
+    border: 0;
+    background-color: lightblue;
 }
 .descriptionButton {
     background-color: lightblue;
@@ -32,6 +36,7 @@
 .descriptionCard {
     background-color: white;
     border: 4px solid lightblue;
+    border-radius: 10px;
     height: 70vh;
     margin: 15px 50px;
     padding: 25px;
