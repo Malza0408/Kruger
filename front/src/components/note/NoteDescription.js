@@ -75,7 +75,6 @@ const NoteDescription = () => {
                         !(note.fromUser?.name === '탈퇴한 회원') && (
                             <Button
                                 variant="primary"
-                                size="sm"
                                 className="descriptionButton"
                                 onClick={reply}
                             >
