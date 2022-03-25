@@ -1,13 +1,18 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Container, Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const NoteBar = ({ setIsNoteListAll, setIsNoteListSending, isNoteRefreshed, setIsNoteRefreshed }) => {
+const NoteBar = ({
+    setIsNoteListAll,
+    setIsNoteListSending,
+    isNoteRefreshed,
+    setIsNoteRefreshed
+}) => {
     const navigate = useNavigate();
 
     return (
-        <Container>
-            <ButtonToolbar className="justify-content-between mb-3">
+        <Container fluid>
+            <ButtonToolbar className="justify-content-between mb-3 noteBar">
                 <ButtonGroup>
                     <Button
                         variant="light"
