@@ -159,6 +159,7 @@ recruitmentRouter.patch(
                 applicantId,
                 user_id
             });
+
             res.status(200).json(updatedRecruitment);
         } catch (error) {
             next(error);

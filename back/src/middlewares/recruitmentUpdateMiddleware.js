@@ -23,14 +23,12 @@ function recruitmentUpdateMiddleware(req, res, next) {
         const values = Object.values(req.body);
         if (values.length === 0) {
             const errorMessage = '수정할 내용이 없습니다.';
-            res.status(400).json(errorMessage);
-            return;
+            return res.status(400).json(errorMessage);
         }
 
         if (values.includes('')) {
             const errorMessage = '빈칸은 ㄴㄴ.';
-            res.status(400).json(errorMessage);
-            return;
+            return res.status(400).json(errorMessage);
         }
 
         next();

@@ -21,27 +21,24 @@ function educationUpdateMiddleware(req, res, next) {
         const positionArray = ['재학중', '학사졸업', '석사졸업', '박사졸업'];
         if (req.body.position && !positionArray.includes(req.body.position)) {
             const errorMessage = '잘못된 학위명입니다.';
-            res.status(400).json(errorMessage);
+            return res.status(400).json(errorMessage);
         }
 
         if (values.length === 0) {
             const errorMessage = '수정할 내용이 없습니다.';
-            res.status(400).json(errorMessage);
-            return;
+            return res.status(400).json(errorMessage);
         }
 
         if (req.body.major) {
             if (req.body.major.first === '') {
                 const errorMessage = '빈칸은 ㄴㄴ';
-                res.status(400).json(errorMessage);
-                return;
+                return res.status(400).json(errorMessage);
             }
         }
 
         if (values.includes('')) {
             const errorMessage = '빈칸은 ㄴㄴ.';
-            res.status(400).json(errorMessage);
-            return;
+            return res.status(400).json(errorMessage);
         }
 
         next();
