@@ -32,17 +32,22 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
 
     return (
         <Card.Text as={Col} className="sendNote">
-            <Card.Body>
+            <Card.Body
+                style={{ cursor: 'pointer' }}
+                // 수신 쪽지 상세 페이지로 이동
+                onClick={() => navigate(`/note/sentNotes/${sendNote.id}`)}
+            >
                 <Card.Title>
                     {sendNote.toUser.name === '탈퇴한 회원' ? (
                         <Badge bg="secondary">탈퇴한 회원</Badge>
                     ) : (
                         <span
                             style={{ cursor: 'pointer' }}
-                            onClick={() =>
+                            onClick={(e) => {
+                                e.stopPropagation();
                                 // 수신자의 개인 페이지로 이동
-                                navigate(`/users/${sendNote.toUser?.id}`)
-                            }
+                                navigate(`/users/${sendNote.toUser?.id}`);
+                            }}
                         >
                             <strong>{sendNote.toUser.name}</strong>
                         </span>
@@ -51,11 +56,7 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                         <small>에게 보낸 쪽지</small>
                     </span>
                 </Card.Title>
-                <Card.Title
-                    style={{ cursor: 'pointer' }}
-                    // 수신 쪽지 상세 페이지로 이동
-                    onClick={() => navigate(`/note/sentNotes/${sendNote.id}`)}
-                >
+                <Card.Title>
                     <span className="fs-5">
                         <strong>{sendNote.title}</strong>
                     </span>

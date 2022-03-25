@@ -20,7 +20,7 @@ import NoteFollow from './NoteFollow';
 const NoteWriteForm = () => {
     const navigate = useNavigate();
     const params = useParams();
-    
+
     const [name, setName] = useState('');
     const [user, setUser] = useState(null);
 
@@ -110,57 +110,16 @@ const NoteWriteForm = () => {
                                     </Form.Label>
                                     {/* email input 시 해당 사용자의 name 띄움 */}
                                     <Badge bg="secondary">{name}</Badge>
-                                    <InputGroup>
-                                        <Form.Control
-                                            type="text"
-                                            value={to}
-                                            placeholder="이메일을 입력하세요"
-                                            disabled={handelDisabled()}
-                                            onChange={(e) =>
-                                                setTo(e.target.value)
-                                            }
-                                            onBlur={(e) =>
-                                                handleBlur(e.target.value)
-                                            }
-                                        />
-                                        <DropdownButton
-                                            variant="primary"
-                                            title="팔로우 목록"
-                                        >
-                                            <Col
-                                                xs="auto"
-                                                className="jusify-content-center"
-                                            >
-                                                {user?.follow.length === 0 ? (
-                                                    <span>
-                                                        팔로우가 없습니다
-                                                    </span>
-                                                ) : (
-                                                    user?.follow.map(
-                                                        (follow) => {
-                                                            return (
-                                                                <NoteFollow
-                                                                    key={
-                                                                        follow.id
-                                                                    }
-                                                                    follow={
-                                                                        follow
-                                                                    }
-                                                                    setTo={
-                                                                        setTo
-                                                                    }
-                                                                    setName={
-                                                                        setName
-                                                                    }
-                                                                />
-                                                            );
-                                                        }
-                                                    )
-                                                )}
-                                            </Col>
-                                        </DropdownButton>
-                                    </InputGroup>
-
+                                    <Form.Control
+                                        type="text"
+                                        value={to}
+                                        placeholder="이메일을 입력하세요"
+                                        disabled={handelDisabled()}
+                                        onChange={(e) => setTo(e.target.value)}
+                                        onBlur={(e) =>
+                                            handleBlur(e.target.value)
+                                        }
+                                    />
                                     {isToEmpty && (
                                         <Form.Text className="text-success">
                                             받는 사람을 입력해주세요

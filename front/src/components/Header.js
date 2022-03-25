@@ -32,7 +32,7 @@ function Header() {
         handleClose();
         // 기본 페이지로 돌아감.
         // navigate('/');
-        window.location.replace('/')
+        window.location.replace('/');
     };
 
     return (
@@ -68,7 +68,7 @@ function Header() {
                                 onClick={() => navigate('/note')}
                             >
                                 쪽지
-                                <UnReadNote />
+                                {isLogin && <UnReadNote />}
                             </Nav.Link>
                         </Nav.Item>
                         <NavDropdown.Divider />

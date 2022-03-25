@@ -1,11 +1,10 @@
-import { Row, Dropdown } from 'react-bootstrap';
+import { Row, Col, Card, Button } from 'react-bootstrap';
 
 const NoteFollow = ({ follow, setTo, setName }) => {
     return (
         // <Container>
-        // <Card.Text as={Col}>
-        // <Card.Body
-        <Dropdown.Item
+        <Card.Text as={Col}>
+        <Card.Body
             style={{ cursor: 'pointer' }}
             onClick={() => {
                 // 팔료우 목록에서 선택한 사용자를 수신자로 설정
@@ -17,9 +16,8 @@ const NoteFollow = ({ follow, setTo, setName }) => {
                 <Row>{follow.name}</Row>
                 <Row>{follow.email}</Row>
             </Row>
-        </Dropdown.Item>
-        // </Card.Body>
-        // </Card.Text>
+        </Card.Body>
+        </Card.Text>
         // </Container>
     );
 };
