@@ -11,7 +11,7 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
     const [isSchoolEmpty, setIsSchoolEmpty] = useState(false);
     const [isMajorEmpty, setIsMajorEmpty] = useState(false);
 
-    const handleOnChange = (e) => {
+    const handleChange = (e) => {
         const id = e.target.id;
         switch (id) {
             case 'school': {
@@ -60,18 +60,18 @@ const EducationAddForm = ({ setAddState, setEducations, portfolioOwnerId }) => {
         }
     };
 
-    const handleOnClick = () => {
+    const handleClick = () => {
         setAddState(false);
     };
 
     return (
         <DefaultForm
-            handleOnChange={handleOnChange}
+            handleChange={handleChange}
             school={school}
             major={major}
             subMajor={subMajor}
             handleSubmit={handleSubmit}
-            handleFunction={handleOnClick}
+            handleClick={handleClick}
             inputInfo={{
                 school,
                 major,

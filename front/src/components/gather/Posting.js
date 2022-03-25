@@ -7,7 +7,7 @@ import { UserStateContext } from '../../App';
 import { post } from '../../api';
 import useGetLangFromDropDown from '../../custom/useGetLangFromDropDown';
 
-const Posting = (props) => {
+const Posting = () => {
     const navigate = useNavigate();
     const userState = useContext(UserStateContext);
     const titleRef = useRef();
@@ -17,10 +17,10 @@ const Posting = (props) => {
     const [isToggle, setIsToggle] = useState(false);
     const [langInputValue, setLangInputValue] = useState([]);
 
-    const handleOnClick = (e) => {
+    const handleClick = () => {
         navigate('/gatherRoom');
     };
-    const handleOnSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await post('recruit/create', {
@@ -41,20 +41,19 @@ const Posting = (props) => {
         langInputValue,
         setLangInputValue
     });
-    const handleOnDeleteInputValue = () => {
+    const handleDeleteInputValue = () => {
         setLangInputValue('');
     };
     return (
         <Container fluid className="Posting">
             <Row className="justify-content-center">
                 <PostingForm
-                    handleOnClick={handleOnClick}
-                    handleOnSubmit={handleOnSubmit}
+                    handleClick={handleClick}
+                    handleSubmit={handleSubmit}
                     handleToggle={handleToggle}
-                    isToggle={isToggle}
                     getLangFromDropDown={getLangFromDropDown}
                     langInputValue={langInputValue}
-                    handleOnDeleteInputValue={handleOnDeleteInputValue}
+                    handleDeleteInputValue={handleDeleteInputValue}
                     ref={{
                         titleRef,
                         contentRef,

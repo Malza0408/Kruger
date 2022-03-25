@@ -9,7 +9,7 @@ const FollowingList = ({ user }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = async () => {
-        const res = await Api.get('user/current').then((res) =>
+        await Api.get('user/current').then((res) =>
             setFollows(res.data.follow)
         );
         setShow(true);
@@ -57,7 +57,9 @@ const FollowingList = ({ user }) => {
                                         <Button
                                             size="sm"
                                             onClick={() => {
-                                                navigate(`/note/write/${follow.email}`);
+                                                navigate(
+                                                    `/note/write/${follow.email}`
+                                                );
                                             }}
                                             variant="light"
                                             className="optionButton"

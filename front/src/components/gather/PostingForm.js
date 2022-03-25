@@ -11,18 +11,17 @@ import {
 const PostingForm = forwardRef(
     (
         {
-            handleOnClick,
-            handleOnSubmit,
+            handleClick,
+            handleSubmit,
             handleToggle,
-            isToggle,
             getLangFromDropDown,
             langInputValue,
-            handleOnDeleteInputValue
+            handleDeleteInputValue
         },
         ref
     ) => {
         return (
-            <Form onSubmit={handleOnSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="posting" className="mb-3">
                     {/* <Form.Label>제목</Form.Label> */}
                     <Form.Control
@@ -45,7 +44,7 @@ const PostingForm = forwardRef(
                         variant="outline-secondary"
                         id="button-addon2"
                         className="deleteBtn"
-                        onClick={handleOnDeleteInputValue}
+                        onClick={handleDeleteInputValue}
                     >
                         Delete
                     </Button>
@@ -137,7 +136,7 @@ const PostingForm = forwardRef(
                     />
                 </Form.Group>
                 <Col className="text-end mt-3">
-                    <button onClick={handleOnClick} className="postingBtn">
+                    <button onClick={handleClick} className="postingBtn">
                         취소
                     </button>
                     <button className="postingBtn ms-3" type="submit">
