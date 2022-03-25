@@ -301,7 +301,7 @@ const Post = () => {
                                         지원취소
                                     </Button>
                                 ) : (
-                                    !cmpUserAndCaptain()(<></>)
+                                    <></>
                                 )}
                             </Col>
                         </Row>
