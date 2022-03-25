@@ -76,7 +76,7 @@ const NoteDescription = () => {
                             <Button
                                 variant="primary"
                                 size="sm"
-                                className="noteDescriptionButton"
+                                className="descriptionButton"
                                 onClick={reply}
                             >
                                 답장
