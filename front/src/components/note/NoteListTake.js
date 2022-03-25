@@ -36,7 +36,14 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
 
     return (
         <Card.Text as={Col} className="takeNote">
-            <Card.Body>
+            <Card.Body
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                    // 발신 쪽지 상세 페이지로 이동
+                    navigate(`/note/takenNotes/${takeNote.id}`);
+                    handleRead();
+                }}
+            >
                 <Row>
                     <Col>
                         <Card.Title>
@@ -45,12 +52,13 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                             ) : (
                                 <span
                                     style={{ cursor: 'pointer' }}
-                                    onClick={() =>
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        // 발신자의 개인 페이지로 이동
                                         navigate(
-                                            // 발신자의 개인 페이지로 이동
                                             `/users/${takeNote.fromUser?.id}`
-                                        )
-                                    }
+                                        );
+                                    }}
                                 >
                                     <strong>{takeNote.fromUser.name}</strong>
                                 </span>
@@ -72,14 +80,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                         )}
                     </Col>
                 </Row>
-                <Card.Title
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                        // 발신 쪽지 상세 페이지로 이동
-                        navigate(`/note/takenNotes/${takeNote.id}`);
-                        handleRead();
-                    }}
-                >
+                <Card.Title>
                     <span className="fs-5">
                         <strong>{takeNote.title}</strong>
                     </span>
