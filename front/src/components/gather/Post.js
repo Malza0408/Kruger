@@ -54,6 +54,11 @@ const Post = () => {
     const modifyCommentInput = useRef();
 
     const handleDeadLine = async () => {
+        console.log(post);
+        console.log(
+            post?.member.find((app) => app === userState.user._id) ===
+                userState.user._id
+        );
         if (userState.user.id === post?.captain.id) {
             await Api.patch(`recruit/toggle/${post.id}`);
             getPostData();
@@ -76,7 +81,14 @@ const Post = () => {
         );
     };
 
+    const checkMember = () => {
+        return (
+            post?.member.find((app) => app === userState.user._id) === undefined
+        );
+    };
+
     const cancelApply = async () => {
+        console.log(post);
         await Api.patch(`recruit/cancle/apply/${post.id}`);
         getPostData();
     };
@@ -295,22 +307,38 @@ const Post = () => {
                         )}
                         <Row>
                             <Col className="apply-btn-group">
-                                {/* 유저 아이디와 포스트 주인 아이디가 다르면 지원하기 버튼이 보인다. */}
-                                {/* 내가 지원안했다면 */}
-                                {!cmpUserAndCaptain() && checkApply() ? (
+                                {/* 지원자도 아니고 멤버도 아니라면 */}
+                                {!cmpUserAndCaptain() &&
+                                checkApply() &&
+                                checkMember() ? (
                                     <Button
                                         className="apply-btn"
                                         onClick={apply}
-                                        disabled={post?.nowEnrolling}
+                                        disabled={post?.nowEnrolling === false}
                                     >
                                         지원하기
                                     </Button>
-                                ) : !cmpUserAndCaptain() && !checkApply() ? (
+                                ) : // 지원자이면서 아직 멤버는 아닐 때
+                                !cmpUserAndCaptain() &&
+                                  !checkApply() &&
+                                  checkMember() ? (
                                     <Button
                                         className="apply-btn"
                                         onClick={cancelApply}
+                                        disabled={post?.nowEnrolling === false}
                                     >
                                         지원취소
+                                    </Button>
+                                ) : // 지원자이면서 멤버일 때
+                                !checkMember() ? (
+                                    <Button
+                                        className="apply-btn"
+                                        disabled={
+                                            post?.nowEnrolling === false ||
+                                            !checkMember()
+                                        }
+                                    >
+                                        지원완료
                                     </Button>
                                 ) : (
                                     <></>
