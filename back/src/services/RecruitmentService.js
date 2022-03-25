@@ -15,16 +15,6 @@ class RecruitmentService {
             createdNewRecruitment.captain._doc;
         createdNewRecruitment.captain._doc = refinedUser;
 
-        // createdNewRecruitment.captain.follow.map((v) => {
-        //     const { password, ...refinedUser } = v._doc;
-        //     v._doc = refinedUser;
-        // });
-
-        // // createdNewRecruitment.captain.follower.map((v) => {
-        // //     const { password, refinedUser } = v._doc;
-        // //     v._doc = refinedUser;
-        // // });
-
         return createdNewRecruitment;
     }
 
