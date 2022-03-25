@@ -2,12 +2,12 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 
 const DefaultForm = ({
-    handleOnChange,
+    handleChange,
     school,
     major,
     subMajor,
     handleSubmit,
-    handleFunction,
+    handleClick,
     inputInfo,
     isSchoolEmpty,
     isMajorEmpty
@@ -20,7 +20,7 @@ const DefaultForm = ({
                     className="mvpCardInput"
                     type="text"
                     placeholder="OO대학교"
-                    onChange={handleOnChange}
+                    onChange={handleChange}
                     value={inputInfo?.school ?? school}
                 />
                 {isSchoolEmpty && (
@@ -35,7 +35,7 @@ const DefaultForm = ({
                     className="mvpCardInput"
                     type="text"
                     placeholder="OO전공"
-                    onChange={handleOnChange}
+                    onChange={handleChange}
                     value={inputInfo?.major.first ?? major}
                 />
                 {isMajorEmpty && (
@@ -49,7 +49,7 @@ const DefaultForm = ({
                 <Form.Control
                     type="text"
                     placeholder="OO부전공"
-                    onChange={handleOnChange}
+                    onChange={handleChange}
                     value={inputInfo?.major.second ?? subMajor}
                 />
             </Form.Group>
@@ -63,7 +63,7 @@ const DefaultForm = ({
                         id="radio"
                         name="group1"
                         value="재학중"
-                        onChange={handleOnChange}
+                        onChange={handleChange}
                         checked={inputInfo?.position === '재학중'}
                     />
                     <Form.Check
@@ -73,7 +73,7 @@ const DefaultForm = ({
                         id="radio"
                         name="group1"
                         value="학사졸업"
-                        onChange={handleOnChange}
+                        onChange={handleChange}
                         checked={inputInfo?.position === '학사졸업'}
                     />
                     <Form.Check
@@ -83,7 +83,7 @@ const DefaultForm = ({
                         id="radio"
                         name="group1"
                         value="석사졸업"
-                        onChange={handleOnChange}
+                        onChange={handleChange}
                         checked={inputInfo?.position === '석사졸업'}
                     />
                     <Form.Check
@@ -93,7 +93,7 @@ const DefaultForm = ({
                         id="radio"
                         name="group1"
                         value="박사졸업"
-                        onChange={handleOnChange}
+                        onChange={handleChange}
                         checked={inputInfo?.position === '박사졸업'}
                     />
                 </div>
@@ -114,7 +114,7 @@ const DefaultForm = ({
                     </Button>
                     <Button
                         variant="secondary"
-                        onClick={handleFunction}
+                        onClick={handleClick}
                         className="mvpCardCancelButton"
                     >
                         취소

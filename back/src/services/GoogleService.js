@@ -18,18 +18,14 @@ class GoogleService {
         let user = await User.findById(id);
 
         // 기존 유저가 있으면 토큰발급해서 리턴.
-        if (user && user.id === id) {
+        if (user) {
             const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
             const token = jwt.sign({ user_id: id }, secretKey);
             const { password, ...refinedUser } = user._doc;
             user._doc = { ...refinedUser, token };
             console.log('google user log in.');
             return user;
-        } else if (
-            user &&
-            user.email === email &&
-            user.loginMethod === 'email'
-        ) {
+        } else if (user.email === email) {
             const errorMessage =
                 '이 이메일은 현재 사용중입니다. 다른 방식으로 가입해주세요.';
             throw new Error(errorMessage);

@@ -19,7 +19,7 @@ const Education = ({
         position: ''
     });
 
-    const handleEditing = async (e) => {
+    const handleEdit = async (e) => {
         setIsEditing(!isEditing);
 
         try {
@@ -39,7 +39,7 @@ const Education = ({
         setIsEditing(!isEditing);
     };
 
-    const handleDeleting = async (e) => {
+    const handleDelete = async (e) => {
         try {
             await Api.delete('educations', education.id);
             const list = await Api.get('educationlist', portfolioOwnerId);
@@ -62,8 +62,8 @@ const Education = ({
                 />
             ) : (
                 <EducationCard
-                    handleEditing={handleEditing}
-                    handleDeleting={handleDeleting}
+                    handleEdit={handleEdit}
+                    handleDelete={handleDelete}
                     school={education.school}
                     major={education.major}
                     position={education.position}

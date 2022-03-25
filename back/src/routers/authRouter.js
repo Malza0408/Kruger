@@ -1,33 +1,8 @@
 import { Router } from 'express';
-import passport from 'passport';
-import { login_required } from '../middlewares/login_required';
 import axios from 'axios';
-import { GoogleService } from '../services/GoogleService';
-import { GithubService } from '../services/GithubService';
-import { KakaoService } from '../services/KakaoService';
+import { AuthService } from '../services/AuthService';
 
 const authRouter = Router();
-// //구글로 토큰을 보냄.
-// authRouter.get(
-//     '/auth/google',
-//     passport.authenticate('google', { scope: ['profile', 'email'] })
-// );
-
-// // 유저를 db에 넣거나 로그인시켜서 토큰생성후 res로 보냄
-// authRouter.get(
-//     '/auth/google/callback',
-//     passport.authenticate('google', { session: false }),
-//     (req, res, next) => {
-//         try {
-//             const user = req.user;
-//             console.log('google user signed in.');
-//             // console.log(req);
-//             res.status(201).json(user);
-//         } catch (error) {
-//             next(error);
-//         }
-//     }
-// );
 
 authRouter.get('/auth/kakao', async (req, res, next) => {
     try {
@@ -55,8 +30,8 @@ authRouter.get('/auth/kakao', async (req, res, next) => {
             const errorMessage = 'kakao 데이터 전송 실패';
             throw new Error(errorMessage);
         }
-        console.log(userData.data);
-        const id = String(userData.data);
+
+        const id = String(userData.data.id);
         const { nickname, profile_image, thumbnail_image } =
             userData.data.properties;
         const email = userData.data.kakao_account.email;
@@ -68,8 +43,8 @@ authRouter.get('/auth/kakao', async (req, res, next) => {
             loginMethod: 'kakao',
             picture: profile_image
         };
-        console.log(userInfo);
-        const user = await KakaoService.checkUser(userInfo);
+
+        const user = await AuthService.checkUser(userInfo);
 
         res.status(201).json(user);
     } catch (error) {
@@ -115,15 +90,8 @@ authRouter.get('/auth/google', async (req, res, next) => {
             password: '',
             loginMethod: 'google'
         };
-        const user = await GoogleService.checkUser(userInfo);
+        const user = await AuthService.checkUser(userInfo);
         res.status(201).json(user);
-
-        // const userData = await axios.get(scope[0], {
-        //     headers: {
-        //         Authorization: `token ${idToken}`,
-        //         Accept: 'application/json'
-        //     }
-        // });
     } catch (error) {
         next(error);
     }
@@ -194,7 +162,7 @@ authRouter.get('/auth/github', async (req, res, next) => {
             repositoryUrl
         };
         // 깃허브로 로그인 or 회원가입
-        const user = await GithubService.checkUser(userInfo);
+        const user = await AuthService.checkUser(userInfo);
 
         res.status(201).json(user);
     } catch (error) {

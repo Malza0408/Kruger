@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { Button, Offcanvas, Row, Col, ButtonGroup } from 'react-bootstrap';
+import { Button, Offcanvas, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import * as Api from '../../api';
-const FollowingList = ({ user }) => {
+const FollowingList = () => {
     const navigate = useNavigate();
     const [followers, setFollowers] = useState([]);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = async () => {
-        const res = await Api.get('user/current').then((res) =>
+        await Api.get('user/current').then((res) =>
             setFollowers(res.data.follower)
         );
         setShow(true);
     };
-    const handlePortfolio = () => {};
     return (
         <>
             <Button
@@ -45,7 +44,9 @@ const FollowingList = ({ user }) => {
                                             variant="light"
                                             size="sm"
                                             onClick={() => {
-                                                navigate(`/note/write/${follower.email}`);
+                                                navigate(
+                                                    `/note/write/${follower.email}`
+                                                );
                                             }}
                                             className="optionButton"
                                         >
