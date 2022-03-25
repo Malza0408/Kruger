@@ -5,7 +5,7 @@ import NoteListTake from './NoteListTake';
 
 import * as Api from '../../api';
 
-const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
+const NoteList = ({ isNoteListAll, isNoteListSendig, isNoteRefreshed }) => {
     const [allNote, setAllNote] = useState([]);
     const [sendNote, setSendNote] = useState([]);
     const [takeNote, setTakeNote] = useState([]);
@@ -23,7 +23,7 @@ const NoteList = ({ isNoteListAll, isNoteListSendig }) => {
         Api.get(`takenNotelist`).then((res) => {
             setTakeNote(res.data);
         });
-    }, []);
+    }, [isNoteRefreshed]);
     
     useEffect(() => {
         // 전체 쪽지함
