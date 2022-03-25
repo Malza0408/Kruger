@@ -13,7 +13,8 @@ import {
     Col,
     InputGroup,
     DropdownButton,
-    Dropdown
+    Dropdown,
+    Badge
 } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
@@ -38,16 +39,26 @@ const Post = () => {
     const [isLike, setIsLike] = useState(false);
     // 수정할 댓글 타겟
     const [targetComment, setTargetComment] = useState('');
-    // 모집중인지?
-    const [isDeadline, setIsDeadline] = useState(false);
 
     const commentRef = useRef();
     const titleRef = useRef();
     const detailRef = useRef();
     const modifyCommentInput = useRef();
 
-    const handleDeadLine = () => {
-        if (userState.user.id === post?.captain.id) setIsDeadline(!isDeadline);
+    const handleDeadLine = async () => {
+        if (userState.user.id === post?.captain.id) {
+            await Api.patch(`recruit/toggle/${post.id}`);
+            getPostData();
+        } else {
+            return;
+        }
+        console.log(post);
+        console.log(userState.user);
+    };
+
+    const checkApply = async () => {
+        // post.member.find()
+        await Api.patch(`recruit/apply/${post.id}`);
     };
 
     // 좋아요를 누른다.
@@ -146,9 +157,9 @@ const Post = () => {
         };
     };
 
-    // 전체 내용 수정하기 폼 띄우기
+    // 전체 내용 수정 제출
     const handleSubmit = async (e) => {
-        // if (langInputValue.length === 0) return;
+        console.log('진입!');
         e.preventDefault();
         try {
             await Api.put(`recruit/${post.id}`, {
@@ -183,18 +194,26 @@ const Post = () => {
     };
 
     const showLanguage = (post) => {
-        const language = post?.language
-            ?.reduce((prev, cur) => {
-                return prev + cur + ' / ';
-            }, '')
-            .slice(0, -3);
-        return language;
+        // const language = post?.language
+        //     ?.reduce((prev, cur) => {
+        //         return prev + cur + ' / ';
+        //     }, '')
+        //     .slice(0, -3);
+        return post?.language.map((lang) => {
+            return (
+                <Button className="lang-badge" variant="default" as={Col}>
+                    {lang}
+                </Button>
+            );
+        });
+        // return language;
     };
 
     useEffect(() => {
         if (!userState.user) {
             navigate('/login');
         }
+
         getPostDataWithComment();
     }, [getPostDataWithComment, navigate, targetComment, userState.user]);
 
@@ -204,7 +223,7 @@ const Post = () => {
                 <>
                     <Row>
                         <Col className="recruit-btn-group">
-                            {isDeadline ? (
+                            {post?.nowEnrolling === false ? (
                                 <Button
                                     className="recruit-btn"
                                     variant="secondary"
@@ -224,7 +243,23 @@ const Post = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <h1>{post?.title}</h1>
+                        <Col className="apply-btn-group">
+                            {userState.user.id !== post?.captain.id ? (
+                                <Button
+                                    className="apply-btn"
+                                    onClick={() => {}}
+                                >
+                                    지원하기
+                                </Button>
+                            ) : (
+                                <></>
+                            )}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <h1>
+                            <strong>{post?.title}</strong>
+                        </h1>
                     </Row>
                     <Row>
                         <Col className="name">
@@ -234,9 +269,9 @@ const Post = () => {
                             <h2>{post?.createdAt.substr(0, 10)}</h2>
                         </Col>
                     </Row>
-                    <Row>
-                        <h2>사용언어 : {showLanguage(post)}</h2>
-                        <hr />
+                    <Row className="text-center">
+                        <Col>{showLanguage(post)}</Col>
+                        {/* <hr /> */}
                     </Row>
                     <Row>
                         <Col>
@@ -270,7 +305,10 @@ const Post = () => {
                     )}
 
                     {userState.user.id === post?.captain.id ? (
-                        <Button onClick={handleToggleEditDetail}>
+                        <Button
+                            onClick={handleToggleEditDetail}
+                            className="mb-3"
+                        >
                             수정하기
                         </Button>
                     ) : (
@@ -381,7 +419,7 @@ const Post = () => {
                             variant="outline-secondary"
                             id="button-addon2"
                             className="deleteBtn"
-                            onClick={() => setLangInputValue('')}
+                            onClick={() => setLangInputValue([])}
                         >
                             Delete
                         </Button>

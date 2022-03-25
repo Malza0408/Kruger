@@ -37,13 +37,13 @@ function Header() {
 
     return (
         <Navbar className="navbarWrap mb-4" expand="lg">
-            <Container className="">
+            <Container>
                 <Navbar.Brand onClick={() => navigate('/')}>
                     <Image
                         src={`${process.env.PUBLIC_URL}/img/logo.png`}
                         alt="logo"
-                        width="140"
-                        height="50"
+                        width="200"
+                        height="80"
                         className="navbarLogo"
                     />
                 </Navbar.Brand>

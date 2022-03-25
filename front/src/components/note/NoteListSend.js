@@ -69,7 +69,7 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                             </span>
                         </Card.Text>
                     </Col>
-                    <Col>
+                    <Col className="text-end">
                         <Button
                             variant="primary"
                             size="sm"

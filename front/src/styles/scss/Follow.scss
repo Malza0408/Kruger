@@ -9,6 +9,11 @@
         border: 0;
         font-weight: bold;
         font-size: 15px;
+        &.focus {
+        }
+        &::after {
+            box-shadow: none !important;
+        }
     }
     .followList:hover {
         background-color: #fff5f5;
