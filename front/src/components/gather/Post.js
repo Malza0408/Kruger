@@ -73,6 +73,12 @@ const Post = () => {
             undefined
         );
     };
+
+    const cancelApply = async () => {
+        await Api.patch(`recruit/cancle/apply/${post.id}`);
+        getPostData();
+    };
+
     const cmpUserAndCaptain = () => {
         return userState.user.id === post?.captain.id;
     };
@@ -175,7 +181,6 @@ const Post = () => {
 
     // 전체 내용 수정 제출
     const handleSubmit = async (e) => {
-        console.log('진입!');
         e.preventDefault();
         try {
             await Api.put(`recruit/${post.id}`, {
@@ -289,8 +294,11 @@ const Post = () => {
                                         지원하기
                                     </Button>
                                 ) : !cmpUserAndCaptain() && !checkApply() ? (
-                                    <Button className="apply-btn">
-                                        지원마감
+                                    <Button
+                                        className="apply-btn"
+                                        onClick={cancelApply}
+                                    >
+                                        지원취소
                                     </Button>
                                 ) : (
                                     <></>
