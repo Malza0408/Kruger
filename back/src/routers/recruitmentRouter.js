@@ -38,27 +38,35 @@ recruitmentRouter.post(
 );
 
 // 게시글 하나 보기, 로그인 안해도 볼수있게.
-recruitmentRouter.get('/recruit/:id', async (req, res, next) => {
-    try {
-        const recruitmentId = req.params.id;
-        const recruitments = await RecruitmentService.getRecruitment({
-            recruitmentId
-        });
-        res.status(200).json(recruitments);
-    } catch (error) {
-        next(error);
+recruitmentRouter.get(
+    '/recruit/:id',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const recruitmentId = req.params.id;
+            const recruitments = await RecruitmentService.getRecruitment({
+                recruitmentId
+            });
+            res.status(200).json(recruitments);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 // 게시글 목록 보기
-recruitmentRouter.get('/recruitlist', async (req, res, next) => {
-    try {
-        const recruitmentList = await RecruitmentService.getRecruitments();
-        res.status(200).json(recruitmentList);
-    } catch (error) {
-        next(error);
+recruitmentRouter.get(
+    '/recruitlist',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const recruitmentList = await RecruitmentService.getRecruitments();
+            res.status(200).json(recruitmentList);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 // 게시글 수정하기
 recruitmentRouter.put(
