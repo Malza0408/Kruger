@@ -101,7 +101,15 @@ const NoteDescription = () => {
                                             탈퇴한 회원
                                         </Badge>
                                     ) : (
-                                        <span className="fs-2">
+                                        <span
+                                            className="fs-2"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/users/${note.toUser?.id}`
+                                                )
+                                            }
+                                        >
                                             <strong>{note.toUser?.name}</strong>
                                         </span>
                                     )}
@@ -122,7 +130,15 @@ const NoteDescription = () => {
                                             탈퇴한 회원
                                         </Badge>
                                     ) : (
-                                        <span className="fs-2">
+                                        <span
+                                            className="fs-2"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/users/${note.fromUser?.id}`
+                                                )
+                                            }
+                                        >
                                             <strong>
                                                 {note.fromUser?.name}
                                             </strong>
