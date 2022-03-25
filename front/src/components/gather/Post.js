@@ -45,8 +45,18 @@ const Post = () => {
     const modifyCommentInput = useRef();
 
     const handleDeadLine = async () => {
-        await Api.patch(`recruit/toggle/${post.id}`);
-        getPostData();
+        if (userState.user.id === post?.captain.id) {
+            await Api.patch(`recruit/toggle/${post.id}`);
+            getPostData();
+        } else {
+            return;
+        }
+        console.log(post);
+        console.log(userState.user);
+    };
+
+    const checkApply = () => {
+        // post.member.find()
     };
 
     // 좋아요를 누른다.
@@ -204,7 +214,7 @@ const Post = () => {
                 <>
                     <Row>
                         <Col className="recruit-btn-group">
-                            {post?.nowEnrolling === true ? (
+                            {post?.nowEnrolling === false ? (
                                 <Button
                                     className="recruit-btn"
                                     variant="secondary"
@@ -220,6 +230,15 @@ const Post = () => {
                                 >
                                     모집중
                                 </Button>
+                            )}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="apply-btn-group">
+                            {userState.user.id !== post?.captain.id ? (
+                                <Button className="apply-btn">지원하기</Button>
+                            ) : (
+                                <></>
                             )}
                         </Col>
                     </Row>
