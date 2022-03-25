@@ -41,7 +41,7 @@ class NoteService {
         const takenNotes = await TakenNote.findAll(user._id);
         console.log(takenNotes.length);
         for (let i = 0; i < takenNotes.length; i++) {
-            const { name, email, ...restUser } = takenNotes[i].toUser._doc;
+            const { name, email, id, ...restUser } = takenNotes[i].toUser._doc;
             takenNotes[i].toUser._doc = { name, email, id };
 
             if (takenNotes[i].fromUser === null) {

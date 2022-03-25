@@ -30,7 +30,6 @@ const NoteDescription = () => {
         Api.get(`${params.noteType}/${params.noteId}`).then((res) => {
             setNote(res.data);
         });
-
     }, [params]);
 
     useEffect(() => {
@@ -54,7 +53,7 @@ const NoteDescription = () => {
     };
 
     const reply = () => {
-            navigate(`/note/write/${note.fromUser?.email}`)
+        navigate(`/note/write/${note.fromUser?.email}`);
     };
 
     return (
@@ -77,16 +76,17 @@ const NoteDescription = () => {
                     >
                         삭제
                     </Button>
-                    {`${params.noteType}` === 'takenNotes' && (
-                        <Button
-                            variant="primary"
-                            size="sm"
-                            className="noteDescriptionButton"
-                            onClick={reply}
-                        >
-                            답장
-                        </Button>
-                    )}
+                    {`${params.noteType}` === 'takenNotes' &&
+                        !(note.fromUser?.name === '탈퇴한 회원') && (
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                className="noteDescriptionButton"
+                                onClick={reply}
+                            >
+                                답장
+                            </Button>
+                        )}
                 </ButtonGroup>
             </ButtonToolbar>
             <Card className="descriptionCard">
@@ -101,7 +101,15 @@ const NoteDescription = () => {
                                             탈퇴한 회원
                                         </Badge>
                                     ) : (
-                                        <span className="fs-2">
+                                        <span
+                                            className="fs-2"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/users/${note.toUser?.id}`
+                                                )
+                                            }
+                                        >
                                             <strong>{note.toUser?.name}</strong>
                                         </span>
                                     )}
@@ -122,7 +130,15 @@ const NoteDescription = () => {
                                             탈퇴한 회원
                                         </Badge>
                                     ) : (
-                                        <span className="fs-2">
+                                        <span
+                                            className="fs-2"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/users/${note.fromUser?.id}`
+                                                )
+                                            }
+                                        >
                                             <strong>
                                                 {note.fromUser?.name}
                                             </strong>
