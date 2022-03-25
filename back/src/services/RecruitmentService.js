@@ -7,10 +7,23 @@ class RecruitmentService {
         const id = uuidv4();
         // title이나 detail 검증필요?
         const captain = await User.findById(user_id);
-        console.log(language);
         const newRecruitment = { id, captain, title, detail, language };
 
         const createdNewRecruitment = await Recruitment.create(newRecruitment);
+
+        const { password, follow, follower, ...refinedUser } =
+            createdNewRecruitment.captain._doc;
+        createdNewRecruitment.captain._doc = refinedUser;
+
+        // createdNewRecruitment.captain.follow.map((v) => {
+        //     const { password, ...refinedUser } = v._doc;
+        //     v._doc = refinedUser;
+        // });
+
+        // // createdNewRecruitment.captain.follower.map((v) => {
+        // //     const { password, refinedUser } = v._doc;
+        // //     v._doc = refinedUser;
+        // // });
 
         return createdNewRecruitment;
     }
@@ -22,6 +35,9 @@ class RecruitmentService {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
+        const { password, ...refinedUser } = recruitment.captain._doc;
+        recruitment.captain._doc = refinedUser;
+
         return recruitment;
     }
 
@@ -89,35 +105,6 @@ class RecruitmentService {
         return likedRecruitment;
     }
 
-    static async unlikeRecruitment({ recruitmentId, user_id }) {
-        let unlikedRecruitment = await Recruitment.findById({ recruitmentId });
-
-        if (!unlikedRecruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const user = await User.findById(user_id);
-
-        console.log(unlikedRecruitment.like.indexOf(user._id));
-        const unlikedIndex = unlikedRecruitment.like.indexOf(user._id);
-        if (unlikedIndex === -1) {
-            const errorMessage = '좋아요를 누르지 않은 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const like = unlikedRecruitment.like;
-        like.splice(unlikedIndex, 1);
-        const newUnlikeValue = { like };
-
-        unlikedRecruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newUnlikeValue
-        );
-
-        return unlikedRecruitment;
-    }
-
     // 모집마감 토글
     static async closeRecruitment({ recruitmentId, userId }) {
         const recruitment = await Recruitment.findById({
@@ -181,6 +168,11 @@ class RecruitmentService {
         const updatedRecruitment = await Recruitment.addApplicant({
             recruitmentId,
             applicant
+        });
+
+        updatedRecruitment.applicant.map((v) => {
+            const { password, ...refinedUser } = v._doc;
+            v._doc = refinedUser;
         });
 
         return updatedRecruitment;
@@ -346,6 +338,7 @@ class RecruitmentService {
         }
 
         const user = await User.findById(authorId);
+        console.log(user);
         // captain이 댓글쓸 때 어떻게?
         if (authorId === recruitment.captain.id) {
             console.log('[captain]! writing');
@@ -355,22 +348,25 @@ class RecruitmentService {
             (comment) => comment.id === commentId
         );
 
+        console.log(comments);
         if (comments.length === 0) {
             const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
             throw new Error(errorMessage);
         }
 
-        comments = recruitment.comment.find(
-            (comment) =>
-                comment.id === commentId && comment.author.id === authorId
-        );
+        // comments = recruitment.comment.find(
+        //     (comment) => comment.author.id === authorId
+        // );
 
         if (comments === null || comments === undefined) {
-            const errorMesaage = '수정 권한이 없습니다.';
+            const errorMessage = '수정 권한이 없습니다.';
             throw new Error(errorMessage);
         }
 
-        const comment = { id: commentId, author: user._id, ...toUpdate };
+        const comment = recruitment.comment;
+        const commentIndex = comment.indexOf(comments);
+        comment[commentIndex] = { id: commentId, author: user, ...toUpdate };
+
         console.log(comment);
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
@@ -394,16 +390,16 @@ class RecruitmentService {
             (comment) => comment.id === commentId
         );
 
-        if (comment.length === 0) {
-            const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
-            throw new Error(errorMessage);
-        }
-        comment = recruitment.comment.find(
-            (comment) => comment.author.id == authorId
-        );
+        // if (comment.length === 0) {
+        //     const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
+        //     throw new Error(errorMessage);
+        // }
+        // comment = recruitment.comment.find(
+        //     (comment) => comment.author.id == authorId
+        // );
         console.log(comment);
-        if (comment === null || comment === undefined) {
-            const errorMessage = '삭제 권한이 없습니다.';
+        if (comment === null || comment === undefined || comment.length === 0) {
+            const errorMessage = '없는 댓글입니다.';
             throw new Error(errorMessage);
         }
 
@@ -414,7 +410,7 @@ class RecruitmentService {
             { $pull: { comment: { id: commentId } } }
         );
         console.log(updatedRecruitment);
-        // return;
+        return updatedRecruitment;
     }
 
     // 게시물 삭제하기

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Row, Col, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import FollowList from './FollowList';
 import FollowerList from './FollowerList';
 import { useParams } from 'react-router-dom';
@@ -12,7 +12,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
 
     useEffect(() => {
         Api.get('users', portfolioOwnerId).then((res) => setUser(res.data));
-    }, []);
+    }, [portfolioOwnerId]);
 
     const handleFollow = async () => {
         const followedId = params.userId;

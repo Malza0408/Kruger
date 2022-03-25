@@ -17,7 +17,7 @@ const EducationEditForm = ({
     const [isSchoolEmpty, setIsSchoolEmpty] = useState(false);
     const [isMajorEmpty, setIsMajorEmpty] = useState(false);
 
-    const handleOnChange = (e) => {
+    const handleChange = (e) => {
         const id = e.target.id;
         switch (id) {
             case 'school': {
@@ -101,11 +101,11 @@ const EducationEditForm = ({
     };
     return (
         <DefaultForm
-            handleOnChange={handleOnChange}
+            handleChange={handleChange}
             school={schoolInput}
             major={majorInput}
             handleSubmit={handleSubmit}
-            handleFunction={handleEditCancel}
+            handleClick={handleEditCancel}
             inputInfo={inputInfo}
             isSchoolEmpty={isSchoolEmpty}
             isMajorEmpty={isMajorEmpty}

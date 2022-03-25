@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import NoteFollow from './NoteFollow';
-
 import {
     Container,
     Accordion,
@@ -10,18 +6,27 @@ import {
     Form,
     Row,
     Col,
-    Button
+    Button,
+    Badge,
+    DropdownButton,
+    InputGroup
 } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import * as Api from '../../api';
 
+import NoteFollow from './NoteFollow';
+
 const NoteWriteForm = () => {
     const navigate = useNavigate();
+    const params = useParams();
+
+    const [name, setName] = useState('');
+    const [user, setUser] = useState(null);
+
     const [to, setTo] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-
-    const [user, setUser] = useState(null);
 
     const [isToEmpty, setIsToEmpty] = useState(false);
     const [isTitleEmpty, setIsTitleEmpty] = useState(false);
@@ -31,7 +36,26 @@ const NoteWriteForm = () => {
 
     useEffect(() => {
         Api.get(`user/current`).then((res) => setUser(res.data));
+
+        // 답장 작성이라면 이전 쪽지의 발신자를 수신자로 설정
+        !(`${params.replyTo}` === 'undefined') && setTo(`${params.replyTo}`);
     }, []);
+
+    // 답장 작성이라면 수신자 란 수정할 수 없음
+    const handelDisabled = () => {
+        return `${params.replyTo}` === 'undefined' ? false : true;
+    };
+
+    // email input 시 해당 사용자의 이름 띄움
+    const handleBlur = async (inputEmail) => {
+        await Api.get('userlist')
+            .then((res) => {
+                return res.data.filter((user) => user.email === inputEmail);
+            })
+            .then((res) =>
+                res === [] ? setName(null) : setName(res[0]?.name)
+            );
+    };
 
     const handleSubmit = async (e) => {
         const emailList = [];
@@ -84,11 +108,17 @@ const NoteWriteForm = () => {
                                             <strong>받는 사람</strong>
                                         </span>
                                     </Form.Label>
+                                    {/* email input 시 해당 사용자의 name 띄움 */}
+                                    <Badge bg="secondary">{name}</Badge>
                                     <Form.Control
                                         type="text"
                                         value={to}
                                         placeholder="이메일을 입력하세요"
+                                        disabled={handelDisabled()}
                                         onChange={(e) => setTo(e.target.value)}
+                                        onBlur={(e) =>
+                                            handleBlur(e.target.value)
+                                        }
                                     />
                                     {isToEmpty && (
                                         <Form.Text className="text-success">
@@ -154,6 +184,9 @@ const NoteWriteForm = () => {
                                                                     setTo={
                                                                         setTo
                                                                     }
+                                                                    setName={
+                                                                        setName
+                                                                    }
                                                                 />
                                                             );
                                                         }
@@ -205,8 +238,8 @@ const NoteWriteForm = () => {
                         <Button
                             variant="primary"
                             value="전송"
-                            className="me-3"
                             onClick={handleSubmit}
+                            className="descriptionButton"
                         >
                             전송
                         </Button>

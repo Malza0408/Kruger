@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
+import FindPasswordModal from '../modal/FindPasswordModal';
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -13,6 +14,9 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     //useState로 login 실패 여부를 판단함.
     const [isLoginFail, setIsLoginFail] = useState(false);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
     const validateEmail = (email) => {
@@ -58,27 +62,22 @@ function LoginForm() {
 
             // 기본 페이지로 이동함.
             // navigate('/', { replace: true });
-            window.location.replace('/')
-
+            window.location.replace('/');
         } catch (err) {
             setIsLoginFail(true);
             console.log('로그인에 실패하였습니다.\n', err);
         }
     };
 
-
-    // const handleOnClickGithub = async () => {
-    //     await Api.get(
-    //         `${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`
-    //     ).then((res) => console.log(res));
-    // };
-    const handleOnClickGoogle = async () => {
-        await Api.get('auth/google').then((res) => console.log(res));
-    };
-    const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
-    const redirectUri = 'http://localhost:3000/auth/github/callback';
-    const uri = 'https://github.com/login/oauth/authorize';
-
+    const githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+    const githubRedirectUri = 'http://localhost:3000/auth/github/callback';
+    const githubUri = 'https://github.com/login/oauth/authorize';
+    const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    const googleRedirectUri = 'http://localhost:3000/auth/google/callback';
+    const googleUri = 'https://accounts.google.com/o/oauth2/v2/auth';
+    const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
+    const kakaoRedirectUri = 'http://localhost:3000/auth/kakao/callback';
+    const kakaoUri = `https://kauth.kakao.com/oauth/authorize`;
     return (
         <div className="login">
             <Row>
@@ -93,7 +92,7 @@ function LoginForm() {
 
             <Container>
                 <Row className="justify-content-md-center pt-5 pb-5">
-                    <Col lg={4}>
+                    <Col lg={6}>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="loginEmail">
                                 <Form.Label>이메일 주소</Form.Label>
@@ -129,70 +128,91 @@ function LoginForm() {
                                         비밀번호는 4글자 이상입니다.
                                     </Form.Text>
                                 )}
-                            </Form.Group>
-                            <Form.Group as={Row} className="mt-3 text-center">
+
                                 {isLoginFail && (
                                     <Form.Text className="text-danger">
                                         이메일 또는 비밀번호를 잘못
                                         입력했습니다.
                                     </Form.Text>
                                 )}
-
+                                <Col className="mt-3 text-center">
+                                    <Button
+                                        variant="light"
+                                        type="submit"
+                                        disabled={!isFormValid}
+                                        className="loginButton mx-auto"
+                                    >
+                                        로그인
+                                    </Button>
+                                </Col>
+                            </Form.Group>
+                        </Form>
+                        <Row className="mt-3 text-center">
+                            <Col>
+                                <a
+                                    href={`${githubUri}?client_id=${githubClientId}&redirect_uri=${githubRedirectUri}&scope=read:user user:email`}
+                                >
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/img/github.png`}
+                                        alt=""
+                                        // onClick={handleOnClickGithub}
+                                        className="githubLogin"
+                                    />
+                                </a>
+                            </Col>
+                        </Row>
+                        <Row className="mt-3 text-center">
+                            <Col>
+                                <a
+                                    href={`${googleUri}?response_type=code&client_id=${googleClientId}&scope=openid%20profile%20email&redirect_uri=${googleRedirectUri}&`}
+                                >
+                                    구글
+                                    {/* <img
+                                        src={`${process.env.PUBLIC_URL}/img/github.png`}
+                                        alt=""
+                                        // onClick={handleOnClickGithub}
+                                        className="googleLogin"
+                                    /> */}
+                                </a>
+                            </Col>
+                        </Row>
+                        <Row className="mt-3 text-center">
+                            <Col>
+                                <a
+                                    href={`${kakaoUri}?response_type=code&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectUri}`}
+                                >
+                                    카카오
+                                    {/* <img
+                                        src={`${process.env.PUBLIC_URL}/img/github.png`}
+                                        alt=""
+                                        className="kakaoLogin"
+                                    /> */}
+                                </a>
+                            </Col>
+                        </Row>
+                        <Row className="mt-3 text-center">
+                            <Col lg={6}>
                                 <Button
                                     variant="light"
-                                    type="submit"
-                                    disabled={!isFormValid}
-                                    className="loginButton mx-auto"
+                                    onClick={handleShow}
+                                    className="registerButton"
                                 >
-                                    로그인
+                                    비밀번호 찾기
                                 </Button>
-                            </Form.Group>
-                            <Form.Group as={Row} className="mt-3 text-center">
-                                <Col>
-                                    <Button
-                                        variant="light"
-                                        onClick={() => navigate('/register')}
-                                        className="registerButton"
-                                    >
-                                        비밀번호 찾기
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button
-                                        variant="light"
-                                        onClick={() => navigate('/register')}
-                                        className="registerButton"
-                                    >
-                                        회원가입하기
-                                    </Button>
-                                </Col>
-                            </Form.Group>
-                            <Col sm={{ span: 20 }}></Col>
-                        </Form>
-                    </Col>
-                    <Col md={0} lg={2}></Col>
-                    <Col sm={6} md={6} lg={4}>
-                        <Row className="mt-5 mb-4">
-                            <a
-                                href={`${uri}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user user:email`}
-                            >
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/img/github.png`}
-                                    alt=""
-                                    // onClick={handleOnClickGithub}
-                                    className="githubLogin"
+                                <FindPasswordModal
+                                    show={show}
+                                    handleClose={handleClose}
                                 />
-                            </a>
-                        </Row>
-                        <Row>
-                            <a>
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/img/google.png`}
-                                    alt=""
-                                    onClick={handleOnClickGoogle}
-                                    className="googleLogin"
-                                />
-                            </a>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="light"
+                                    onClick={() => navigate('/register')}
+                                    className="registerButton"
+                                >
+                                    회원가입하기
+                                </Button>
+                            </Col>
                         </Row>
                     </Col>
                 </Row>

@@ -1,37 +1,29 @@
+import React, { useState, useEffect } from 'react';
 import {
     Container,
-    Form,
-    Row,
     Col,
     Button,
     Badge,
-    Card
+    Card,
+    ButtonGroup,
+    ButtonToolbar
 } from 'react-bootstrap';
-import * as Api from '../../api';
-import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
+import * as Api from '../../api';
 
 const NoteDescription = () => {
     const navigate = useNavigate();
     const params = useParams();
-    const [user, setUser] = useState(null);
+
     const [note, setNote] = useState('');
     const [newDateFormatted, setNewDateFormatted] = useState('');
 
     useEffect(() => {
-        Api.get(`user/current`).then((res) => setUser(res.data));
-    }, []);
-
-    useEffect(() => {
-        Api.get(`sentNotes/${params.noteId}`).then((res) => {
+        Api.get(`${params.noteType}/${params.noteId}`).then((res) => {
             setNote(res.data);
         });
-
-        !user &&
-            Api.get(`takenNotes/${params.noteId}`).then((res) => {
-                setNote(res.data);
-            });
-    }, [params, user]);
+    }, [params]);
 
     useEffect(() => {
         const newDate = new Date(note?.createdAt);
@@ -48,36 +40,54 @@ const NoteDescription = () => {
     const handleDelete = async (e) => {
         e.preventDefault();
 
-        user?.name === note.fromUser?.name
-            ? await Api.delete(`sentNotes/${params.noteId}`)
-            : await Api.delete(`takenNotes/${params.noteId}`);
-
-        console.log(params.noteId);
+        await Api.delete(`${params.noteType}/${params.noteId}`);
 
         navigate('/note');
+    };
 
-        // await Api.get(`sentNotelist`).then((res) => {
-        //     setSendNote(res.data);
-        // });
+    const reply = () => {
+        // 쪽지 작성 url 뒤에 답장할 수신자의 email을 붙임 
+        navigate(`/note/write/${note.fromUser?.email}`);
     };
 
     return (
         <Container fluid>
-            <Button onClick={() => navigate('/note')}>
-                쪽지함으로 돌아가기
-            </Button>
-            <Button
-                variant="primary"
-                size="sm"
-                className="mvpCardCancelButton"
-                onClick={handleDelete}
+            <ButtonToolbar
+                className="mb-3"
+                aria-label="Toolbar with Button groups"
             >
-                삭제
-            </Button>
-            <Card>
+                <ButtonGroup>
+                    <Button
+                        onClick={() => navigate('/note')}
+                        className="descriptionButton"
+                    >
+                        쪽지함으로 돌아가기
+                    </Button>
+                    <Button
+                        variant="primary"
+                        onClick={handleDelete}
+                        className="descriptionButton"
+                    >
+                        삭제
+                    </Button>
+                    {/* 유효한 사용자가 전송한 수신 쪽지라면 답장 버튼 띄움 */}
+                    {`${params.noteType}` === 'takenNotes' &&
+                        !(note.fromUser?.name === '탈퇴한 회원') && (
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                className="noteDescriptionButton"
+                                onClick={reply}
+                            >
+                                답장
+                            </Button>
+                        )}
+                </ButtonGroup>
+            </ButtonToolbar>
+            <Card className="descriptionCard">
                 <Card.Body>
                     <Card.Title>
-                        {user?.name === note.fromUser?.name ? (
+                        {`${params.noteType}` === 'sentNotes' ? (
                             // 발신
                             <Col>
                                 <h3>
@@ -86,7 +96,16 @@ const NoteDescription = () => {
                                             탈퇴한 회원
                                         </Badge>
                                     ) : (
-                                        <span className="fs-2">
+                                        <span
+                                            className="fs-2"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() =>
+                                                // 수신자의 개인 페이지로 이동
+                                                navigate(
+                                                    `/users/${note.toUser?.id}`
+                                                )
+                                            }
+                                        >
                                             <strong>{note.toUser?.name}</strong>
                                         </span>
                                     )}
@@ -107,7 +126,16 @@ const NoteDescription = () => {
                                             탈퇴한 회원
                                         </Badge>
                                     ) : (
-                                        <span className="fs-2">
+                                        <span
+                                            className="fs-2"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() =>
+                                                // 발신자의 개인 페이지로 이동
+                                                navigate(
+                                                    `/users/${note.fromUser?.id}`
+                                                )
+                                            }
+                                        >
                                             <strong>
                                                 {note.fromUser?.name}
                                             </strong>
@@ -135,7 +163,7 @@ const NoteDescription = () => {
                         </span>
                     </Card.Title>
                     <Card.Text>
-                        <span className="fs-5 text-muted">{note.content}</span>
+                        <pre className="fs-5 text-muted">{note.content}</pre>
                     </Card.Text>
                 </Card.Body>
             </Card>

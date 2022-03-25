@@ -1,13 +1,9 @@
 import React, { useContext, useState } from 'react';
-// import { useDispatch } from 'react-redux';
-import LoginForm from '../user/LoginForm';
 import { DispatchContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
-import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
-import axios from 'axios';
 
-function Github() {
+function Kakao() {
     const navigate = useNavigate();
     const dispatch = useContext(DispatchContext);
 
@@ -19,13 +15,10 @@ function Github() {
         );
     };
 
-    const githubLogin = async (code) => {
+    const kakaoLogin = async (code) => {
         try {
             // 백엔드로 코드 넘김
-            const res = await Api.get(`auth/github?code=${code}`);
-
-            console.log(res);
-
+            const res = await Api.get(`auth/kakao?code=${code}`);
             // 유저 정보는 response의 data임.
             const user = res.data;
             // JWT 토큰은 유저 정보의 token임.
@@ -47,12 +40,12 @@ function Github() {
 
     // 인가코드
     let code = new URL(window.location.href).searchParams.get('code');
-    console.log(code);
+
     React.useEffect(() => {
-        dispatch(githubLogin(code));
+        dispatch(kakaoLogin(code));
     }, []);
 
     return <Spinner />;
 }
 
-export default Github;
+export default Kakao;

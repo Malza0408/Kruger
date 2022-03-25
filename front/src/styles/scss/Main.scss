@@ -4,21 +4,21 @@ $buttonColor: #bac8ff;
     height: 100vh;
 
     .loginImage {
-        border-radius: 50%;
-        height: 250px;
-        width: 250px;
+        height: 300px;
+        width: 300px;
     }
-    .loginInput {
-    }
-    .passwordInput {
-    }
+
     .loginButton {
-        width: 80%;
+        height: 50px;
+        width: 60%;
     }
     .loginButton:hover {
         background-color: #bac8ff;
     }
     .registerButton {
+        height: 50px;
+
+        width: 100%;
     }
     .registerButton:hover {
         background-color: #bac8ff;
@@ -29,19 +29,9 @@ $buttonColor: #bac8ff;
         background-color: #444343;
         border-radius: 10px;
         border: 5px solid #444343;
-        width: 400px;
+        width: 60%;
     }
     .githubLogin:hover {
-        border: 2px black solid;
-    }
-    .googleLogin {
-        height: 50px;
-        background-color: #4285f4;
-        border-radius: 10px;
-        border: 5px solid #4285f4;
-        width: 400px;
-    }
-    .googleLogin:hover {
         border: 2px black solid;
     }
 }

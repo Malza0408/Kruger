@@ -1,68 +1,56 @@
-import React, { useState } from 'react';
-import { Container, Accordion, Form, Row, Col, Button } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { Container, Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-import NoteWriteForm from './NoteWriteForm';
-
-const NoteBar = ({
-    isWriting,
-    setIsWritingis,
-    NoteListAll,
-    setIsNoteListAll,
-    isNoteListSendig,
-    setIsNoteListSending
-}) => {
+const NoteBar = ({ setIsNoteListAll, setIsNoteListSending }) => {
     const navigate = useNavigate();
+
     return (
         <Container>
-            <Row>
-                <Col>
+            <ButtonToolbar className="justify-content-between mb-3">
+                <ButtonGroup>
                     <Button
-                        variant="primary"
+                        variant="light"
                         value="전체"
-                        className="me-3"
                         onClick={() => setIsNoteListAll(true)}
+                        className="filterButton"
                     >
                         전체
                     </Button>
-                </Col>
-                <Col>
                     <Button
-                        variant="primary"
+                        variant="light"
                         value="발신"
-                        className="me-3"
                         onClick={() => {
                             setIsNoteListSending(true);
                             setIsNoteListAll(false);
                         }}
+                        className="filterButton"
                     >
                         발신함
                     </Button>
-                </Col>
-                <Col>
                     <Button
-                        variant="primary"
-                        value="발신"
-                        className="me-3"
+                        variant="light"
+                        value="수신"
                         onClick={() => {
                             setIsNoteListSending(false);
                             setIsNoteListAll(false);
                         }}
+                        className="filterButton"
                     >
                         수신함
                     </Button>
-                </Col>
-                <Col>
+                </ButtonGroup>
+                <ButtonGroup>
                     <Button
-                        variant="primary"
+                        variant="light"
                         value="전송"
-                        className="me-3"
                         onClick={() => navigate('/note/write')}
+                        className="filterButton"
                     >
                         쪽지 작성
                     </Button>
-                </Col>
-            </Row>
+                </ButtonGroup>
+            </ButtonToolbar>
         </Container>
     );
 };

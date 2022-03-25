@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Gathers from './Gathers';
 import '../../styles/scss/gatherRoom.scss';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const GatherRoom = ({ handleOnClickPost }) => {
+const GatherRoom = () => {
     const navigate = useNavigate();
-    const handleOnClickNewPosting = () => {
+    const handleClickNewPosting = () => {
         navigate('/posting');
     };
 
@@ -16,7 +16,7 @@ const GatherRoom = ({ handleOnClickPost }) => {
                 <Col>
                     <button
                         className="newPostingBtn"
-                        onClick={handleOnClickNewPosting}
+                        onClick={handleClickNewPosting}
                     >
                         새 글 쓰기
                     </button>

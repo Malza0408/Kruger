@@ -11,18 +11,17 @@ import {
 const PostingForm = forwardRef(
     (
         {
-            handleOnClick,
-            handleOnSubmit,
+            handleClick,
+            handleSubmit,
             handleToggle,
-            isToggle,
             getLangFromDropDown,
             langInputValue,
-            handleOnDeleteInputValue
+            handleDeleteInputValue
         },
         ref
     ) => {
         return (
-            <Form onSubmit={handleOnSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="posting" className="mb-3">
                     {/* <Form.Label>제목</Form.Label> */}
                     <Form.Control
@@ -45,7 +44,7 @@ const PostingForm = forwardRef(
                         variant="outline-secondary"
                         id="button-addon2"
                         className="deleteBtn"
-                        onClick={handleOnDeleteInputValue}
+                        onClick={handleDeleteInputValue}
                     >
                         Delete
                     </Button>
@@ -61,6 +60,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('JavaScript')}
                         >
                             JavaScript
                         </Dropdown.Item>
@@ -70,6 +70,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('TypeScript')}
                         >
                             TypeScript
                         </Dropdown.Item>
@@ -79,6 +80,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('Node.js')}
                         >
                             Node.js
                         </Dropdown.Item>
@@ -88,6 +90,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('React')}
                         >
                             React
                         </Dropdown.Item>
@@ -97,6 +100,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('Vue')}
                         >
                             Vue
                         </Dropdown.Item>
@@ -106,6 +110,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('Python')}
                         >
                             Python
                         </Dropdown.Item>
@@ -115,6 +120,7 @@ const PostingForm = forwardRef(
                                 getLangFromDropDown(e.target.innerText);
                                 e.target.hidden = true;
                             }}
+                            hidden={langInputValue.includes('Django')}
                         >
                             Django
                         </Dropdown.Item>
@@ -130,7 +136,7 @@ const PostingForm = forwardRef(
                     />
                 </Form.Group>
                 <Col className="text-end mt-3">
-                    <button onClick={handleOnClick} className="postingBtn">
+                    <button onClick={handleClick} className="postingBtn">
                         취소
                     </button>
                     <button className="postingBtn ms-3" type="submit">

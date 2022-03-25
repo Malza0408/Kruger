@@ -8,7 +8,16 @@
         border: 0;
     }
 }
-
+.findPasswordModal {
+    .sendButton {
+        background-color: lightblue;
+        border: 0;
+    }
+    .cancelButton {
+        background-color: lightcoral;
+        border: 0;
+    }
+}
 .withdrawalModal {
     .confirmButton {
         background-color: lightblue;

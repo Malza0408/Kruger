@@ -3,6 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { get } from '../../api';
 import { UserStateContext } from '../../App';
+import useConditionalImgs from '../../custom/useConditionalImgs';
 import useFilteringLanguage from '../../custom/useFilteringLanguage';
 import Gather from './Gather';
 
@@ -53,12 +54,24 @@ const Gathers = () => {
     const [traceFocusing, setTraceFocusing] = useState(0);
     const [filteredLanguage, setFilteredLanguage] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
+
+    // 내가 고른 언어가 무엇인지 보고,
     const filteringLanguage = useFilteringLanguage({
         setFilteredLanguage,
         setFilteredProjects,
         filteredLanguage,
         projects,
         filteredProjects
+    });
+
+    // 이미지의 classname은 condition에 따라 달라진다.
+    // 클릭한 이미지의 focus를 바꿔주고, 몇개를 바꿨는지 추적한다.
+    const conditionalImgs = useConditionalImgs({
+        setTraceFocusing,
+        setImgs,
+        imgs,
+        traceFocusing,
+        filteringLanguage
     });
 
     useEffect(() => {
@@ -68,10 +81,8 @@ const Gathers = () => {
 
         const getRecruits = async () => {
             try {
-                // 여기에 Project 불러오는 로직
                 const recruitlist = await get('recruitlist');
                 setProjects([...recruitlist.data]);
-                // console.log(recruitlist.data[0]);
             } catch (error) {
                 throw new Error(error);
             }
@@ -79,6 +90,7 @@ const Gathers = () => {
 
         getRecruits();
     }, [filteredProjects, navigate, userState.user]);
+
     return (
         <>
             <Row className="m-5">
@@ -95,70 +107,7 @@ const Gathers = () => {
                                         ? ` onFocus`
                                         : ''
                                 }`}
-                                onClick={() => {
-                                    const newItem = [...imgs];
-                                    // 한개도 선택되지 않은 경우 하나 선택된다.
-                                    if (traceFocusing === 0) {
-                                        newItem.forEach((item) => {
-                                            item.isFocusing = false;
-                                        });
-                                        newItem[index].isFocusing = true;
-                                        setTraceFocusing(1);
-                                        setImgs(newItem);
-                                        filteringLanguage(
-                                            newItem[index].language
-                                        );
-                                        // 하나가 선택된 경우에
-                                    } else if (traceFocusing === 1) {
-                                        // 이미 선택되어 있던 언어를 선택했다면 focusing을 없앤다.
-                                        if (
-                                            newItem[index].isFocusing === true
-                                        ) {
-                                            newItem.forEach((item) => {
-                                                item.isFocusing = true;
-                                            });
-                                            setTraceFocusing(0);
-                                            setImgs(newItem);
-                                            filteringLanguage('none');
-                                            // 새로운 언어를 선택했다면 focusing을 추가해 준다.
-                                        } else {
-                                            newItem[index].isFocusing = true;
-                                            setTraceFocusing(
-                                                (current) => current + 1
-                                            );
-                                            setImgs(newItem);
-                                            filteringLanguage(
-                                                newItem[index].language
-                                            );
-                                        }
-                                        // 두개 이상이 선택되어 있는 경우에
-                                    } else {
-                                        // 이미 선택되어 있던 언어였다면 focusing을 없앤다.
-                                        if (
-                                            newItem[index].isFocusing === true
-                                        ) {
-                                            newItem[index].isFocusing = false;
-                                            setTraceFocusing(
-                                                (current) => current - 1
-                                            );
-                                            setImgs(newItem);
-                                            filteringLanguage(
-                                                newItem[index].language,
-                                                false
-                                            );
-                                            // 새로운 언어를 선택했다면 focusing을 추가해 준다.
-                                        } else {
-                                            newItem[index].isFocusing = true;
-                                            setTraceFocusing(
-                                                (current) => current + 1
-                                            );
-                                            setImgs(newItem);
-                                            filteringLanguage(
-                                                newItem[index].language
-                                            );
-                                        }
-                                    }
-                                }}
+                                onClick={conditionalImgs(index)}
                             ></img>
                         </Col>
                     );
