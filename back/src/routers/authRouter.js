@@ -71,7 +71,7 @@ authRouter.get('/auth/google', async (req, res, next) => {
         const params = new URLSearchParams(config);
         const finalUrl = `${uri}?${params}&grant_type=authorization_code`;
         const tokenRequest = await axios.post(finalUrl, config);
-        // console.log(tokenRequest);
+
         if (tokenRequest.status !== 200 || tokenRequest.statusText !== 'OK') {
             const errorMessage = 'google 인증 실패';
             throw new Error(errorMessage);
