@@ -64,7 +64,12 @@ const NoteBar = ({
                         onClick={() => navigate('/note/write')}
                         className="writeNoteButton"
                     >
-                        쪽지 작성
+                        <img
+                            src={`${process.env.PUBLIC_URL}/img/edit (1).png`}
+                            alt="write"
+                            width="17"
+                            height="17"
+                        ></img>
                     </Button>
                 </ButtonGroup>
             </ButtonToolbar>
