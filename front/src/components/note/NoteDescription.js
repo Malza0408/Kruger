@@ -61,7 +61,12 @@ const NoteDescription = () => {
                         onClick={() => navigate('/note')}
                         className="descriptionButton"
                     >
-                        쪽지함으로 돌아가기
+                        <img
+                            src={`${process.env.PUBLIC_URL}/img/back.png`}
+                            alt="back"
+                            width="20"
+                            height="20"
+                        ></img>
                     </Button>
                     <Button
                         variant="primary"
