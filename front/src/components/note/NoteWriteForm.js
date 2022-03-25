@@ -10,7 +10,8 @@ import {
     Form,
     Row,
     Col,
-    Button
+    Button,
+    Badge
 } from 'react-bootstrap';
 
 import * as Api from '../../api';
@@ -22,6 +23,8 @@ const NoteWriteForm = () => {
     const [to, setTo] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+
+    const [name, setName] = useState('');
 
     const [user, setUser] = useState(null);
 
@@ -41,6 +44,16 @@ const NoteWriteForm = () => {
     // 답장 작성이라면 수신자 란 수정할 수 없음
     const handelDisabled = () => {
         return `${params.replyTo}` === 'undefined' ? false : true;
+    };
+
+    const handleBlur = async (inputEmail) => {
+        await Api.get('userlist')
+            .then((res) => {
+                return res.data.filter((user) => user.email === inputEmail);
+            })
+            .then((res) =>
+                res === [] ? setName(null) : setName(res[0]?.name)
+            );
     };
 
     const handleSubmit = async (e) => {
@@ -94,12 +107,17 @@ const NoteWriteForm = () => {
                                             <strong>받는 사람</strong>
                                         </span>
                                     </Form.Label>
+                                    {/* email input 시 해당 사용자의 name 띄우기 */}
+                                    <Badge bg="secondary">{name}</Badge>
                                     <Form.Control
                                         type="text"
                                         value={to}
                                         placeholder="이메일을 입력하세요"
                                         disabled={handelDisabled()}
                                         onChange={(e) => setTo(e.target.value)}
+                                        onBlur={(e) =>
+                                            handleBlur(e.target.value)
+                                        }
                                     />
                                     {isToEmpty && (
                                         <Form.Text className="text-success">
@@ -164,6 +182,9 @@ const NoteWriteForm = () => {
                                                                     }
                                                                     setTo={
                                                                         setTo
+                                                                    }
+                                                                    setName={
+                                                                        setName
                                                                     }
                                                                 />
                                                             );
