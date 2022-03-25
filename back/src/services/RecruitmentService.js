@@ -338,6 +338,7 @@ class RecruitmentService {
         }
 
         const user = await User.findById(authorId);
+        console.log(user);
         // captain이 댓글쓸 때 어떻게?
         if (authorId === recruitment.captain.id) {
             console.log('[captain]! writing');
@@ -347,6 +348,7 @@ class RecruitmentService {
             (comment) => comment.id === commentId
         );
 
+        console.log(comments);
         if (comments.length === 0) {
             const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
             throw new Error(errorMessage);
@@ -362,7 +364,10 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        const comment = { id: commentId, author: user._id, ...toUpdate };
+        const comment = recruitment.comment;
+        const commentIndex = comment.indexOf(comments);
+        comment[commentIndex] = { id: commentId, author: user, ...toUpdate };
+
         console.log(comment);
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },

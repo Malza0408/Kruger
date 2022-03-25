@@ -23,14 +23,16 @@ class NoteService {
         console.log(createdNewTakenNote);
 
         if (createdNewSentNote) {
-            const { name, email, ...restUser } =
+            const { name, email, id, ...restUser } =
                 createdNewSentNote.fromUser._doc;
-            createdNewSentNote.fromUser._doc = { name, email };
+            createdNewSentNote.fromUser._doc = { name, email, id };
         }
 
-        const { name, email, ...restUser } = createdNewSentNote.toUser._doc;
-        createdNewSentNote.toUser._doc = { name, email };
-
+        if (createdNewSentNote) {
+            const { name, email, id, ...restUser } =
+                createdNewSentNote.toUser._doc;
+            createdNewSentNote.toUser._doc = { name, email, id };
+        }
         return createdNewSentNote;
     }
 
@@ -48,9 +50,9 @@ class NoteService {
                     email: '탈퇴한 회원입니다.'
                 };
             } else {
-                const { name, email, ...restUser } =
+                const { name, email, id, ...restUser } =
                     takenNotes[i].fromUser._doc;
-                takenNotes[i].fromUser._doc = { name, email };
+                takenNotes[i].fromUser._doc = { name, email, id };
             }
         }
 
@@ -58,8 +60,8 @@ class NoteService {
         console.log(sentNotes.length);
 
         for (let i = 0; i < sentNotes.length; i++) {
-            const { name, email, ...restUser } = sentNotes[i].fromUser._doc;
-            sentNotes[i].fromUser._doc = { name, email };
+            const { name, email, id, ...restUser } = sentNotes[i].fromUser._doc;
+            sentNotes[i].fromUser._doc = { name, email, id };
 
             if (sentNotes[i].toUser === null) {
                 sentNotes[i].toUser = {
@@ -67,8 +69,9 @@ class NoteService {
                     email: '탈퇴한 회원입니다.'
                 };
             } else {
-                const { name, email, ...restUser } = sentNotes[i].toUser._doc;
-                sentNotes[i].toUser._doc = { name, email };
+                const { name, email, id, ...restUser } =
+                    sentNotes[i].toUser._doc;
+                sentNotes[i].toUser._doc = { name, email, id };
             }
         }
 
@@ -82,8 +85,8 @@ class NoteService {
         const takenNotes = await TakenNote.findAll(user._id);
         console.log(takenNotes.length);
         for (let i = 0; i < takenNotes.length; i++) {
-            const { name, email, ...restUser } = takenNotes[i].toUser._doc;
-            takenNotes[i].toUser._doc = { name, email };
+            const { name, email, id, ...restUser } = takenNotes[i].toUser._doc;
+            takenNotes[i].toUser._doc = { name, email, id };
 
             if (takenNotes[i].fromUser === null) {
                 takenNotes[i].fromUser = {
@@ -91,9 +94,9 @@ class NoteService {
                     email: '탈퇴한 회원입니다.'
                 };
             } else {
-                const { name, email, ...restUser } =
+                const { name, email, id, ...restUser } =
                     takenNotes[i].fromUser._doc;
-                takenNotes[i].fromUser._doc = { name, email };
+                takenNotes[i].fromUser._doc = { name, email, id };
             }
         }
 
@@ -106,8 +109,8 @@ class NoteService {
         console.log(sentNotes.length);
 
         for (let i = 0; i < sentNotes.length; i++) {
-            const { name, email, ...restUser } = sentNotes[i].fromUser._doc;
-            sentNotes[i].fromUser._doc = { name, email };
+            const { name, email, id, ...restUser } = sentNotes[i].fromUser._doc;
+            sentNotes[i].fromUser._doc = { name, email, id };
 
             if (sentNotes[i].toUser === null) {
                 sentNotes[i].toUser = {
@@ -115,8 +118,9 @@ class NoteService {
                     email: '탈퇴한 회원입니다.'
                 };
             } else {
-                const { name, email, ...restUser } = sentNotes[i].toUser._doc;
-                sentNotes[i].toUser._doc = { name, email };
+                const { name, email, id, ...restUser } =
+                    sentNotes[i].toUser._doc;
+                sentNotes[i].toUser._doc = { name, email, id };
             }
         }
 
@@ -137,8 +141,8 @@ class NoteService {
             throw new Error(errorMessage);
         }
 
-        const { name, email, ...restUser } = note.toUser._doc;
-        note.toUser._doc = { name, email };
+        const { name, email, id, ...restUser } = note.toUser._doc;
+        note.toUser._doc = { name, email, id };
 
         if (note.fromUser === null) {
             note.fromUser = {
@@ -146,8 +150,8 @@ class NoteService {
                 email: '탈퇴한 회원입니다.'
             };
         } else {
-            const { name, email, ...restUser } = note.fromUser._doc;
-            note.fromUser._doc = { name, email };
+            const { name, email, id, ...restUser } = note.fromUser._doc;
+            note.fromUser._doc = { name, email, id };
         }
 
         return note;
@@ -167,8 +171,8 @@ class NoteService {
             throw new Error(errorMessage);
         }
 
-        const { name, email, ...restUser } = note.fromUser._doc;
-        note.fromUser._doc = { name, email };
+        const { name, email, id, ...restUser } = note.fromUser._doc;
+        note.fromUser._doc = { name, email, id };
 
         if (note.toUser === null) {
             note.toUser = {
@@ -176,8 +180,8 @@ class NoteService {
                 email: '탈퇴한 회원입니다.'
             };
         } else {
-            const { name, email, ...restUser } = note.toUser._doc;
-            note.toUser._doc = { name, email };
+            const { name, email, id, ...restUser } = note.toUser._doc;
+            note.toUser._doc = { name, email, id };
         }
 
         return note;
