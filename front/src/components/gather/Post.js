@@ -38,16 +38,15 @@ const Post = () => {
     const [isLike, setIsLike] = useState(false);
     // 수정할 댓글 타겟
     const [targetComment, setTargetComment] = useState('');
-    // 모집중인지?
-    const [isDeadline, setIsDeadline] = useState(false);
 
     const commentRef = useRef();
     const titleRef = useRef();
     const detailRef = useRef();
     const modifyCommentInput = useRef();
 
-    const handleDeadLine = () => {
-        if (userState.user.id === post?.captain.id) setIsDeadline(!isDeadline);
+    const handleDeadLine = async () => {
+        await Api.patch(`recruit/toggle/${post.id}`);
+        getPostData();
     };
 
     // 좋아요를 누른다.
@@ -146,9 +145,9 @@ const Post = () => {
         };
     };
 
-    // 전체 내용 수정하기 폼 띄우기
+    // 전체 내용 수정 제출
     const handleSubmit = async (e) => {
-        // if (langInputValue.length === 0) return;
+        console.log('진입!');
         e.preventDefault();
         try {
             await Api.put(`recruit/${post.id}`, {
@@ -195,6 +194,7 @@ const Post = () => {
         if (!userState.user) {
             navigate('/login');
         }
+
         getPostDataWithComment();
     }, [getPostDataWithComment, navigate, targetComment, userState.user]);
 
@@ -204,7 +204,7 @@ const Post = () => {
                 <>
                     <Row>
                         <Col className="recruit-btn-group">
-                            {isDeadline ? (
+                            {post?.nowEnrolling === true ? (
                                 <Button
                                     className="recruit-btn"
                                     variant="secondary"
@@ -270,7 +270,10 @@ const Post = () => {
                     )}
 
                     {userState.user.id === post?.captain.id ? (
-                        <Button onClick={handleToggleEditDetail}>
+                        <Button
+                            onClick={handleToggleEditDetail}
+                            className="mb-3"
+                        >
                             수정하기
                         </Button>
                     ) : (
@@ -381,7 +384,7 @@ const Post = () => {
                             variant="outline-secondary"
                             id="button-addon2"
                             className="deleteBtn"
-                            onClick={() => setLangInputValue('')}
+                            onClick={() => setLangInputValue([])}
                         >
                             Delete
                         </Button>
