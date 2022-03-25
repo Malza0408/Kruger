@@ -240,9 +240,15 @@ const NoteWriteForm = () => {
                                 variant="primary"
                                 value="전송"
                                 onClick={handleSubmit}
-                                className="descriptionButton"
+                                className="descriptionButton me-2"
                             >
                                 전송
+                            </Button>
+                            <Button
+                                onClick={() => navigate('/note')}
+                                className="descriptionButton"
+                            >
+                                취소
                             </Button>
                         </Col>
                     </Form>
