@@ -1,21 +1,22 @@
 function recruitmentUpdateMiddleware(req, res, next) {
     const { title, detail, content, language } = req.body ?? null;
+    console.log(req.body);
 
     try {
+        if (detail === null || detail === undefined) {
+            const { detail, ...restUpdate } = req.body;
+            req.body = restUpdate;
+        }
         if (title === null || title === undefined) {
             const { title, ...restUpdate } = req.body;
             req.body = restUpdate;
         }
-        if (detail !== null && detail !== undefined) {
-            const { detail, ...restUpdate } = req.body;
+        if (content === null || content === undefined) {
+            const { content, ...restUpdate } = req.body;
             req.body = restUpdate;
         }
-        if (content !== null && content !== undefined) {
-            const { content, restUpdate } = req.body;
-            req.body = restUpdate;
-        }
-        if (language !== null && language !== undefined) {
-            const { language, restUpdate } = req.body;
+        if (language === null || language === undefined) {
+            const { language, ...restUpdate } = req.body;
             req.body = restUpdate;
         }
 

@@ -69,7 +69,7 @@ recruitmentRouter.put(
         try {
             const recruitmentId = req.params.id;
             const user_id = req.currentUserId;
-            const toUpdate = req.toUpdate;
+            const toUpdate = req.body;
 
             const updatedRecruitment = await RecruitmentService.setRecruitment({
                 recruitmentId,
