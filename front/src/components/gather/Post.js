@@ -19,6 +19,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
 import { UserStateContext } from '../../App';
 import useGetLangFromDropDown from '../../custom/useGetLangFromDropDown';
+import '../../styles/scss/Post.scss';
 
 const Post = () => {
     const navigate = useNavigate();
@@ -26,14 +27,23 @@ const Post = () => {
     const post_id = useParams();
     const [post, setPost] = useState();
     const [comments, setComments] = useState([]);
-    // const []
     const [langInputValue, setLangInputValue] = useState([]);
     const [isEditPost, setIsEditPost] = useState(false);
+    const [isEditComment, setIsEditComment] = useState(false);
+    const [isLike, setIsLike] = useState(false);
+    const [targetComment, setTargetComment] = useState('');
+    const [isDeadline, setIsDeadline] = useState(false);
 
     const commentRef = useRef();
     const titleRef = useRef();
     const detailRef = useRef();
+    const modifyCommentInput = useRef();
 
+    const handleDeadLine = () => {
+        if (userState.user.id === post?.captain.id) setIsDeadline(!isDeadline);
+    };
+
+    // 좋아요를 누른다.
     const handleOnClickLike = async () => {
         try {
             if (
@@ -45,23 +55,37 @@ const Post = () => {
                 await Api.patch(`unlikedRecruit/${post.id}`);
                 getPostData();
             }
+            setIsLike(!isLike);
         } catch (error) {
             throw new Error(error);
         }
     };
 
+    // 댓글과 포스트를 함께 업데이트
     const getPostDataWithComment = useCallback(async () => {
         const result = await Api.get('recruit', post_id.id);
+        // post 불러와서 세팅
         setPost(result.data);
+        // 댓글 업데이트 하기
         setComments(result.data.comment);
-        console.log(result.data);
-    }, [post_id.id]);
+        // 내가 이 포스트를 좋아요 눌렀는지 확인
+        if (
+            result.data.like.find((id) => id === userState.user._id) ===
+            undefined
+        ) {
+            setIsLike(false);
+        } else {
+            setIsLike(true);
+        }
+    }, [post_id.id, userState.user._id]);
 
+    // 포스트를 업데이트
     const getPostData = useCallback(async () => {
         const result = await Api.get('recruit', post_id.id);
         setPost(result.data);
     }, [post_id.id]);
 
+    // 댓글을 단다.
     const handleOnSubmitComment = async (e) => {
         e.preventDefault();
         const content = commentRef.current.value;
@@ -75,7 +99,30 @@ const Post = () => {
             throw new Error(error);
         }
     };
-    const handleOnClickDelete = (commentId) => {
+
+    // 수정 이후에 수정 클릭
+    const handleOnSubmitCommentModify = async () => {
+        const content = modifyCommentInput.current.value;
+        // modifyCommentInput.current.value = '';
+        console.log('content: ', content);
+        if (content === '') {
+            setIsEditComment(false);
+            setTargetComment('');
+            return;
+        }
+        try {
+            await Api.patch(`recruit/${post.id}/${targetComment}`, {
+                content
+            });
+            setIsEditComment(false);
+            setTargetComment('');
+        } catch (error) {
+            throw new Error(error);
+        }
+    };
+
+    // 댓글을 삭제한다.
+    const handleOnClickDeleteComment = (commentId) => {
         return async () => {
             try {
                 await Api.patch(`recruit/delete/${post.id}/${commentId}`);
@@ -86,6 +133,15 @@ const Post = () => {
         };
     };
 
+    // 댓글 수정 버튼을 눌러서 input 폼을 띄운다.
+    const handleOnClickModifyComment = (commentId) => {
+        return () => {
+            setIsEditComment(true);
+            setTargetComment(commentId);
+        };
+    };
+
+    // 전체 내용 수정하기 폼 띄우기
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -99,10 +155,12 @@ const Post = () => {
         } catch (error) {}
     };
 
+    // 전체 내용 수정 폼 띄울시 폼에 language 내용 넣기
     const handleToggleEditDetail = () => {
         setLangInputValue(post.language.join(' / '));
         setIsEditPost(!isEditPost);
     };
+
     const getLangFromDropDown = useGetLangFromDropDown({
         langInputValue,
         setLangInputValue
@@ -118,54 +176,103 @@ const Post = () => {
         }
     };
 
+    const showLanguage = (post) => {
+        const language = post?.language
+            ?.reduce((prev, cur) => {
+                return prev + cur + ' / ';
+            }, '')
+            .slice(0, -3);
+        return language;
+    };
+
     useEffect(() => {
         if (!userState.user) {
             navigate('/login');
         }
-        console.log(userState.user);
         getPostDataWithComment();
-    }, [getPostDataWithComment, navigate, userState.user]);
+    }, [getPostDataWithComment, navigate, targetComment, userState.user]);
+
     return (
-        <Container fluid className="text-center" style={{ maxWidth: '1000px' }}>
+        <Container fluid className="Post">
             {isEditPost === false ? (
                 <>
+                    <Row>
+                        <Col className="recruit-btn-group">
+                            {isDeadline ? (
+                                <Button
+                                    className="recruit-btn"
+                                    variant="secondary"
+                                    onClick={handleDeadLine}
+                                >
+                                    모집완료
+                                </Button>
+                            ) : (
+                                <Button
+                                    className="recruit-btn"
+                                    variant="secondary"
+                                    onClick={handleDeadLine}
+                                >
+                                    모집중
+                                </Button>
+                            )}
+                        </Col>
+                    </Row>
                     <Row>
                         <h1>{post?.title}</h1>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col className="name">
                             <h4>{post?.captain?.name}</h4>
                         </Col>
-                        <Col>
+                        <Col className="date">
                             <h2>{post?.createdAt.substr(0, 10)}</h2>
                         </Col>
                     </Row>
                     <Row>
-                        <h2>
-                            사용언어 :{' '}
-                            {post?.language?.reduce((prev, cur, index) => {
-                                return prev + cur + ' ';
-                            }, '')}
-                        </h2>
-                        <hr style={{ maxWidth: '900px', margin: 'auto' }} />
+                        <h2>사용언어 : {showLanguage(post)}</h2>
+                        <hr />
                     </Row>
                     <Row>
                         <Col>
                             <pre>{post?.detail}</pre>
                         </Col>
                     </Row>
-                    <img
-                        src={`${process.env.PUBLIC_URL}/gatherImg/heart.png`}
-                        alt="like"
-                        width="20px"
-                        height="20px"
-                        className="me-1"
-                        onClick={handleOnClickLike}
-                    />
+                    {isLike === true ? (
+                        <Row className="heart-img">
+                            <Col>
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/gatherImg/heart.png`}
+                                    alt="like"
+                                    width="40px"
+                                    height="40px"
+                                    className="me-1"
+                                    onClick={handleOnClickLike}
+                                />
+                                <span className="like-count">
+                                    {post?.like.length}
+                                </span>
+                            </Col>
+                        </Row>
+                    ) : (
+                        <Row className="heart-img">
+                            <Col>
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/gatherImg/b-heart.png`}
+                                    alt="like"
+                                    width="40px"
+                                    height="40px"
+                                    className="me-1"
+                                    onClick={handleOnClickLike}
+                                />
+                                <span className="like-count">
+                                    {post?.like.length}
+                                </span>
+                            </Col>
+                        </Row>
+                    )}
 
-                    <span className="like-count">{post?.like.length}</span>
                     {userState.user.id === post?.captain.id ? (
-                        <Button onClick={() => handleToggleEditDetail()}>
+                        <Button onClick={handleToggleEditDetail}>
                             수정하기
                         </Button>
                     ) : (
@@ -173,36 +280,74 @@ const Post = () => {
                     )}
                     <Form onSubmit={handleOnSubmitComment}>
                         <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlTextarea1"
-                            style={{ maxWidth: '900px', margin: 'auto' }}
+                            className="mb-3 comment-form"
+                            controlId="ControlTextarea"
                         >
                             <Form.Control
                                 placeholder="댓글을 입력하세요."
                                 as="textarea"
                                 rows={4}
+                                maxLength="200"
                                 ref={commentRef}
                             />
                         </Form.Group>
-                        <Button type="submit">댓글 등록</Button>
+                        <Row className="register-comment">
+                            <Col>
+                                <button type="submit">댓글 등록</button>
+                            </Col>
+                        </Row>
                         <ul>
                             {comments?.map((comment, index) => {
                                 return (
-                                    <Row>
-                                        <Col>
-                                            <li>{comment.content}</li>
-                                        </Col>
-                                        {userState.user._id ===
-                                        comment.author ? (
+                                    <Row className="comment-container">
+                                        {targetComment !== comment.id ? (
                                             <Col>
-                                                <Button
-                                                    onClick={handleOnClickDelete(
-                                                        comment.id
-                                                    )}
-                                                >
-                                                    삭제
-                                                </Button>
+                                                <li>{comment.content}</li>
                                             </Col>
+                                        ) : targetComment === comment.id ? (
+                                            <>
+                                                <Col>
+                                                    <Form.Control
+                                                        ref={modifyCommentInput}
+                                                    />
+                                                </Col>
+                                                <Col className="complete-modify-btn">
+                                                    <button
+                                                        onClick={
+                                                            handleOnSubmitCommentModify
+                                                        }
+                                                    >
+                                                        완료
+                                                    </button>
+                                                </Col>
+                                            </>
+                                        ) : (
+                                            <></>
+                                        )}
+
+                                        {userState.user._id ===
+                                            comment.author &&
+                                        isEditComment === false ? (
+                                            <>
+                                                <Col className="comment-btns">
+                                                    <button
+                                                        className="comment-btn"
+                                                        onClick={handleOnClickModifyComment(
+                                                            comment.id
+                                                        )}
+                                                    >
+                                                        수정
+                                                    </button>
+                                                    <button
+                                                        className="comment-btn"
+                                                        onClick={handleOnClickDeleteComment(
+                                                            comment.id
+                                                        )}
+                                                    >
+                                                        삭제
+                                                    </button>
+                                                </Col>
+                                            </>
                                         ) : (
                                             <></>
                                         )}
