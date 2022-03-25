@@ -73,7 +73,10 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                         <Button
                             variant="primary"
                             size="sm"
-                            onClick={handleDelete}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(e);
+                            }}
                             className="descriptionButton"
                         >
                             삭제
