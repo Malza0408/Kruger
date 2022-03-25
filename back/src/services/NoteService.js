@@ -16,11 +16,9 @@ class NoteService {
         }
 
         const newNote = { id, fromUser, toUser, title, content };
-        console.log(id, fromUser, toUser, title, content);
 
         const createdNewSentNote = await SentNote.create({ newNote });
         const createdNewTakenNote = await TakenNote.create({ newNote });
-        console.log(createdNewTakenNote);
 
         if (createdNewSentNote) {
             const { name, email, id, ...restUser } =
@@ -39,7 +37,7 @@ class NoteService {
     static async getNotes({ user_id }) {
         const user = await User.findById(user_id);
         const takenNotes = await TakenNote.findAll(user._id);
-        console.log(takenNotes.length);
+
         for (let i = 0; i < takenNotes.length; i++) {
             const { name, email, id, ...restUser } = takenNotes[i].toUser._doc;
             takenNotes[i].toUser._doc = { name, email, id };
@@ -57,7 +55,6 @@ class NoteService {
         }
 
         const sentNotes = await SentNote.findAll(user._id);
-        console.log(sentNotes.length);
 
         for (let i = 0; i < sentNotes.length; i++) {
             const { name, email, id, ...restUser } = sentNotes[i].fromUser._doc;
@@ -83,7 +80,7 @@ class NoteService {
     static async getTakenNotes({ user_id }) {
         const user = await User.findById(user_id);
         const takenNotes = await TakenNote.findAll(user._id);
-        console.log(takenNotes.length);
+
         for (let i = 0; i < takenNotes.length; i++) {
             const { name, email, id, ...restUser } = takenNotes[i].toUser._doc;
             takenNotes[i].toUser._doc = { name, email, id };
@@ -106,7 +103,6 @@ class NoteService {
     static async getSentNotes({ user_id }) {
         const user = await User.findById(user_id);
         const sentNotes = await SentNote.findAll(user._id);
-        console.log(sentNotes.length);
 
         for (let i = 0; i < sentNotes.length; i++) {
             const { name, email, id, ...restUser } = sentNotes[i].fromUser._doc;
@@ -135,7 +131,7 @@ class NoteService {
                 '해당 쪽지는 이미 삭제되었거나 전송된 적 없는 쪽지입니다.';
             throw new Error(errorMessage);
         }
-        console.log(note);
+
         if (note.toUser.id !== user_id) {
             const errorMessage = '접근 권한이 없는 쪽지입니다.';
             throw new Error(errorMessage);
@@ -165,7 +161,7 @@ class NoteService {
                 '해당 쪽지는 이미 삭제되었거나 전송된 적 없는 쪽지입니다.';
             throw new Error(errorMessage);
         }
-        console.log(note);
+
         if (note.fromUser.id !== user_id) {
             const errorMessage = '접근 권한이 없는 쪽지입니다.';
             throw new Error(errorMessage);
