@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DispatchContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
@@ -9,17 +9,10 @@ function Github() {
     const dispatch = useContext(DispatchContext);
 
     const Spinner = () => {
-        useEffect(() => {
-            setTimeout(() => {
-                navigate('/login', { replace: true });
-            }, 3000);
-            return clearTimeout();
-        }, []);
         return (
-            <div>
-                로그인에 실패했습니다. 가입된 이메일이 이미 존재합니다 3초 뒤
-                로그인 페이지로 이동됩니다.
-            </div>
+            <>
+                <h1>Loading...</h1>
+            </>
         );
     };
 
@@ -43,7 +36,8 @@ function Github() {
             navigate('/', { replace: true });
         } catch (err) {
             // setIsLoginFail(true);
-            console.log('로그인에 실패하였습니다.\n', err);
+            alert('로그인에 실패하였습니다.\n로그인 페이지로 이동합니다.', err);
+            navigate('/', { replace: true });
         }
     };
 
