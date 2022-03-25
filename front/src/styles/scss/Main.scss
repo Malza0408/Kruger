@@ -25,14 +25,27 @@ $buttonColor: #bac8ff;
     }
 
     .githubLogin {
-        height: 50px;
-        background-color: #444343;
         border-radius: 10px;
-        border: 5px solid #444343;
-        width: 60%;
+        width: 50px;
+        height: 50px;
+        box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
     }
-    .githubLogin:hover {
-        border: 2px black solid;
+    .googleLogin {
+        border-radius: 10px;
+        width: 50px;
+        height: 50px;
+        box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
+    }
+    .kakaoLogin {
+        border-radius: 10px;
+        width: 50px;
+        height: 50px;
+        box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
+    }
+    .social:hover {
+        border-radius: 10px;
+        width: 60px;
+        height: 60px;
     }
 }
 
