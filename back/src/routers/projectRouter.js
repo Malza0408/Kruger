@@ -19,7 +19,6 @@ projectRouter.post(
             // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
             const user_id = req.currentUserId;
             const { title, description, from_date, to_date } = req.body;
-            console.log(user_id, title, description, from_date, to_date);
 
             const newProject = await ProjectService.addProject({
                 user_id,
@@ -74,7 +73,7 @@ projectRouter.put(
             const project_id = req.params.id;
             const user_id = req.currentUserId;
             // body data 로부터 업데이트할 프로젝트 정보를 추출함.
-            const toUpdate = req.toUpdate;
+            const toUpdate = req.body;
 
             // 해당 프로젝트 아이디로 프로젝트 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedProject = await ProjectService.setProject({
@@ -99,7 +98,6 @@ projectRouter.delete(
             const project_id = req.params.id;
             const user_id = req.currentUserId;
             await ProjectService.deleteProject({ project_id, user_id });
-            console.log(project_id);
             res.status(200).json('삭제되었습니다.');
         } catch (error) {
             next(error);
