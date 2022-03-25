@@ -69,12 +69,6 @@ function LoginForm() {
         }
     };
 
-    // const handleOnClickGoogle = async (googleData) => {
-    //     const res = await Api.post('auth/google/callback', {
-    //         token: googleData.tokenId
-    //     });
-    //     console.log(res);
-    // };
     const githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
     const githubRedirectUri = 'http://localhost:3000/auth/github/callback';
     const githubUri = 'https://github.com/login/oauth/authorize';
@@ -84,7 +78,6 @@ function LoginForm() {
     const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
     const kakaoRedirectUri = 'http://localhost:3000/auth/kakao/callback';
     const kakaoUri = `https://kauth.kakao.com/oauth/authorize`;
-    console.log('=======', kakaoClientId);
     return (
         <div className="login">
             <Row>

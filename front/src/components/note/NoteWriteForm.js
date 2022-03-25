@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import NoteFollow from './NoteFollow';
-
 import {
     Container,
     Accordion,
@@ -12,24 +8,25 @@ import {
     Col,
     Button,
     Badge,
-    Dropdown,
     DropdownButton,
     InputGroup
 } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import * as Api from '../../api';
+
+import NoteFollow from './NoteFollow';
 
 const NoteWriteForm = () => {
     const navigate = useNavigate();
     const params = useParams();
 
+    const [name, setName] = useState('');
+    const [user, setUser] = useState(null);
+
     const [to, setTo] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-
-    const [name, setName] = useState('');
-
-    const [user, setUser] = useState(null);
 
     const [isToEmpty, setIsToEmpty] = useState(false);
     const [isTitleEmpty, setIsTitleEmpty] = useState(false);
@@ -40,7 +37,7 @@ const NoteWriteForm = () => {
     useEffect(() => {
         Api.get(`user/current`).then((res) => setUser(res.data));
 
-        // 답장 작성이라면 이전 쪽지를 보낸 사람을 수신자로 설정
+        // 답장 작성이라면 이전 쪽지의 발신자를 수신자로 설정
         !(`${params.replyTo}` === 'undefined') && setTo(`${params.replyTo}`);
     }, []);
 
@@ -49,6 +46,7 @@ const NoteWriteForm = () => {
         return `${params.replyTo}` === 'undefined' ? false : true;
     };
 
+    // email input 시 해당 사용자의 이름 띄움
     const handleBlur = async (inputEmail) => {
         await Api.get('userlist')
             .then((res) => {
@@ -110,60 +108,18 @@ const NoteWriteForm = () => {
                                             <strong>받는 사람</strong>
                                         </span>
                                     </Form.Label>
-                                    {/* email input 시 해당 사용자의 name 띄우기 */}
+                                    {/* email input 시 해당 사용자의 name 띄움 */}
                                     <Badge bg="secondary">{name}</Badge>
-                                    <InputGroup>
-                                        <Form.Control
-                                            type="text"
-                                            value={to}
-                                            placeholder="이메일을 입력하세요"
-                                            disabled={handelDisabled()}
-                                            onChange={(e) =>
-                                                setTo(e.target.value)
-                                            }
-                                            onBlur={(e) =>
-                                                handleBlur(e.target.value)
-                                            }
-                                        />
-                                        <DropdownButton
-                                            variant="primary"
-                                            title="팔로우 목록"
-                                        >
-                                                <Col
-                                                    xs="auto"
-                                                    className="jusify-content-center"
-                                                >
-                                                    {user?.follow.length ===
-                                                    0 ? (
-                                                        <span>
-                                                            팔로우가 없습니다
-                                                        </span>
-                                                    ) : (
-                                                        user?.follow.map(
-                                                            (follow) => {
-                                                                return (
-                                                                    <NoteFollow
-                                                                        key={
-                                                                            follow.id
-                                                                        }
-                                                                        follow={
-                                                                            follow
-                                                                        }
-                                                                        setTo={
-                                                                            setTo
-                                                                        }
-                                                                        setName={
-                                                                            setName
-                                                                        }
-                                                                    />
-                                                                );
-                                                            }
-                                                        )
-                                                    )}
-                                                </Col>
-                                        </DropdownButton>
-                                    </InputGroup>
-
+                                    <Form.Control
+                                        type="text"
+                                        value={to}
+                                        placeholder="이메일을 입력하세요"
+                                        disabled={handelDisabled()}
+                                        onChange={(e) => setTo(e.target.value)}
+                                        onBlur={(e) =>
+                                            handleBlur(e.target.value)
+                                        }
+                                    />
                                     {isToEmpty && (
                                         <Form.Text className="text-success">
                                             받는 사람을 입력해주세요
