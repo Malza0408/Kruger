@@ -28,10 +28,7 @@ $maxWidth: 1000px;
         font-weight: 600;
         font-family: 'Orbitron', sans-serif;
     }
-    .heart-img {
-        text-align: right;
-        line-height: 40px;
-    }
+
     .comment-form {
         max-width: $maxWidth;
     }
@@ -45,8 +42,26 @@ $maxWidth: 1000px;
             background-color: cadetblue;
         }
     }
+    .heart-container {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+    }
+    .red-heart {
+        color: red;
+    }
+    .red-heart,
+    .black-heart {
+        transition: all 0.2s ease-out;
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
     .like-count {
         font-size: 30px;
+        width: 30px;
+        margin-left: 10px;
     }
     .register-comment {
         text-align: end;
