@@ -98,7 +98,10 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                             variant="primary"
                             size="sm"
                             className="descriptionButton"
-                            onClick={handleDelete}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(e);
+                            }}
                         >
                             삭제
                         </Button>{' '}
