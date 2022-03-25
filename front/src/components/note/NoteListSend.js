@@ -41,7 +41,6 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
 
     return (
         <Card.Text as={Col} className="sendNote">
-            {console.log(sendNote?.toUser.picture)}
             <Card.Body>
                 <Card.Title>
                     {sendNote.toUser.name === '탈퇴한 회원' ? (
