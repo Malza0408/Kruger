@@ -1,4 +1,4 @@
-import { Container, Row, Card, Col, Dropdown } from 'react-bootstrap';
+import { Row, Dropdown } from 'react-bootstrap';
 
 const NoteFollow = ({ follow, setTo, setName }) => {
     return (
@@ -16,7 +16,6 @@ const NoteFollow = ({ follow, setTo, setName }) => {
                 <Row>{follow.name}</Row>
                 <Row>{follow.email}</Row>
             </Row>
-            {/* <hr /> */}
         </Dropdown.Item>
         // </Card.Body>
         // </Card.Text>

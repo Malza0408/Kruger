@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Container, Form, Row, Col, Button } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
 
 import NoteListSend from './NoteListSend';
 import NoteListTake from './NoteListTake';

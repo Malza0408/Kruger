@@ -1,7 +1,7 @@
 import { Row, Col, Button, Card, Badge } from 'react-bootstrap';
 import * as Api from '../../api';
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NoteListTake = ({ takeNote, setTakeNote }) => {
     const navigate = useNavigate();
@@ -100,9 +100,6 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                         </Button>{' '}
                     </Col>
                 </Row>
-                {/* <Card.Text>
-                    <span className="text-muted">{takeNote.content}</span>
-                </Card.Text> */}
             </Card.Body>
             <hr />
         </Card.Text>

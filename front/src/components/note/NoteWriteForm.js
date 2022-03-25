@@ -12,7 +12,6 @@ import {
     Col,
     Button,
     Badge,
-    Dropdown,
     DropdownButton,
     InputGroup
 } from 'react-bootstrap';
@@ -129,38 +128,37 @@ const NoteWriteForm = () => {
                                             variant="primary"
                                             title="팔로우 목록"
                                         >
-                                                <Col
-                                                    xs="auto"
-                                                    className="jusify-content-center"
-                                                >
-                                                    {user?.follow.length ===
-                                                    0 ? (
-                                                        <span>
-                                                            팔로우가 없습니다
-                                                        </span>
-                                                    ) : (
-                                                        user?.follow.map(
-                                                            (follow) => {
-                                                                return (
-                                                                    <NoteFollow
-                                                                        key={
-                                                                            follow.id
-                                                                        }
-                                                                        follow={
-                                                                            follow
-                                                                        }
-                                                                        setTo={
-                                                                            setTo
-                                                                        }
-                                                                        setName={
-                                                                            setName
-                                                                        }
-                                                                    />
-                                                                );
-                                                            }
-                                                        )
-                                                    )}
-                                                </Col>
+                                            <Col
+                                                xs="auto"
+                                                className="jusify-content-center"
+                                            >
+                                                {user?.follow.length === 0 ? (
+                                                    <span>
+                                                        팔로우가 없습니다
+                                                    </span>
+                                                ) : (
+                                                    user?.follow.map(
+                                                        (follow) => {
+                                                            return (
+                                                                <NoteFollow
+                                                                    key={
+                                                                        follow.id
+                                                                    }
+                                                                    follow={
+                                                                        follow
+                                                                    }
+                                                                    setTo={
+                                                                        setTo
+                                                                    }
+                                                                    setName={
+                                                                        setName
+                                                                    }
+                                                                />
+                                                            );
+                                                        }
+                                                    )
+                                                )}
+                                            </Col>
                                         </DropdownButton>
                                     </InputGroup>
 

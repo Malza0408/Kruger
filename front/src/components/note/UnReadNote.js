@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Container, Form, Row, Col, Button, Badge } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Badge } from 'react-bootstrap';
 
 import * as Api from '../../api';
 
@@ -25,7 +25,7 @@ const UnReadNote = () => {
     // }, []);
 
     useEffect(() => {
-        setCountUnReadNoteCheck(0)
+        setCountUnReadNoteCheck(0);
         const checkTest = () => {
             // 읽지 않은 수신 쪽지가 있다면 countUnReadNote를 1씩 증가
             [...takeNoteCheck].map((note) => {

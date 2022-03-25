@@ -1,6 +1,6 @@
-import { Container, Form, Row, Col, Button, Card } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 
-const NoteListAll = ({ key, allNote, setAllNotes }) => {
+const NoteListAll = ({ allNote }) => {
     return (
         <Card.Text as={Col}>
             <Card.Body>

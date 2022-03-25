@@ -1,16 +1,8 @@
-import {
-    Container,
-    Form,
-    Row,
-    Col,
-    Button,
-    Card,
-    Badge
-} from 'react-bootstrap';
+import { Row, Col, Button, Card, Badge } from 'react-bootstrap';
 import * as Api from '../../api';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import NoteDescription from './NoteDescription';
 
 const NoteListSend = ({ sendNote, setSendNote }) => {
