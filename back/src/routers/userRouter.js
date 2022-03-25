@@ -91,7 +91,8 @@ userRouter.put(
             // URI로부터 사용자 id를 추출함.
             const user_id = req.params.id;
             // body data 로부터 업데이트할 사용자 정보를 추출함
-            const toUpdate = req.toUpdate;
+            const toUpdate = req.body;
+            console.log(toUpdate);
 
             // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedUser = await UserService.setUser({

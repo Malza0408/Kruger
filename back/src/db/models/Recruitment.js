@@ -11,7 +11,9 @@ class Recruitment {
     static async findById({ recruitmentId }) {
         const recruitment = await RecruitmentModel.findOne({
             id: recruitmentId
-        }).populate('captain');
+        })
+            .populate('captain')
+            .populate('applicant');
         return recruitment;
     }
 
