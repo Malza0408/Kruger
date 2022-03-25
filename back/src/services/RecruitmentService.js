@@ -7,10 +7,23 @@ class RecruitmentService {
         const id = uuidv4();
         // title이나 detail 검증필요?
         const captain = await User.findById(user_id);
-        console.log(language);
         const newRecruitment = { id, captain, title, detail, language };
 
         const createdNewRecruitment = await Recruitment.create(newRecruitment);
+
+        const { password, follow, follower, ...refinedUser } =
+            createdNewRecruitment.captain._doc;
+        createdNewRecruitment.captain._doc = refinedUser;
+
+        // createdNewRecruitment.captain.follow.map((v) => {
+        //     const { password, ...refinedUser } = v._doc;
+        //     v._doc = refinedUser;
+        // });
+
+        // // createdNewRecruitment.captain.follower.map((v) => {
+        // //     const { password, refinedUser } = v._doc;
+        // //     v._doc = refinedUser;
+        // // });
 
         return createdNewRecruitment;
     }
@@ -22,6 +35,9 @@ class RecruitmentService {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
+        const { password, ...refinedUser } = recruitment.captain._doc;
+        recruitment.captain._doc = refinedUser;
+
         return recruitment;
     }
 
@@ -152,6 +168,11 @@ class RecruitmentService {
         const updatedRecruitment = await Recruitment.addApplicant({
             recruitmentId,
             applicant
+        });
+
+        updatedRecruitment.applicant.map((v) => {
+            const { password, ...refinedUser } = v._doc;
+            v._doc = refinedUser;
         });
 
         return updatedRecruitment;
