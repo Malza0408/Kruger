@@ -1,11 +1,14 @@
 .sendNote {
     background-color: antiquewhite;
+    margin: 0 50px;
 }
 .takeNote {
     background-color: aliceblue;
+    margin: 0 50px;
 }
 .filterButton {
-    background-color: lightblue;
+    background-color: white;
+    border: 0;
     width: 100px;
 }
 .filterButton:hover {

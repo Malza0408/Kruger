@@ -57,7 +57,7 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                                     className="me-4 px-2 editButton"
                                     onClick={handleShowProfile}
                                 >
-                                    프로필 변경
+                                    사진 변경
                                 </button>
                                 <button
                                     className="me-4 px-2 editButton"
