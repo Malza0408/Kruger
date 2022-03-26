@@ -36,6 +36,11 @@ class RecruitmentService {
             v._doc = { id, name };
         });
 
+        recruitment.member.map((v) => {
+            const { name, ...refinedUser } = v._doc;
+            v._doc = { name };
+        });
+
         return recruitment;
     }
 
@@ -140,9 +145,6 @@ class RecruitmentService {
             recruitmentId,
             applicant
         });
-
-        const { password, ...refinedUser } = updatedRecruitment.captain._doc;
-        updatedRecruitment.captain._doc = refinedUser;
 
         updatedRecruitment.applicant.map((v) => {
             const { password, ...refinedUser } = v._doc;

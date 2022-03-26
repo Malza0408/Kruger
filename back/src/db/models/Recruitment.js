@@ -15,7 +15,8 @@ class Recruitment {
             id: recruitmentId
         })
             .populate('captain')
-            .populate('applicant');
+            .populate('applicant')
+            .populate('member');
         return recruitment;
     }
 
