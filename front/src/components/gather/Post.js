@@ -16,6 +16,7 @@ import '../../styles/scss/Post.scss';
 import ApplicantlistCanvas from './ApplicantlistCanvas';
 import MemberListCanvas from './MemberListCanvas';
 import PostForm from './PostForm';
+import Comments from './Comments';
 
 const Post = () => {
     const navigate = useNavigate();
@@ -444,73 +445,20 @@ const Post = () => {
                                 </Col>
                             </Row>
                         </Form>
-                        <ul>
-                            {comments?.map((comment) => {
-                                return (
-                                    <div
-                                        className="comment-container"
-                                        key={comment.id}
-                                    >
-                                        {targetComment !== comment.id ? (
-                                            <div>
-                                                <li>{comment.content}</li>
-                                            </div>
-                                        ) : targetComment === comment.id ? (
-                                            <>
-                                                <div className="comment-input">
-                                                    <Form.Control
-                                                        defaultValue={
-                                                            comment.content
-                                                        }
-                                                        ref={modifyCommentInput}
-                                                    />
-                                                </div>
-                                                <div className="complete-modify-btn">
-                                                    <button
-                                                        onClick={
-                                                            handleClickCommentModify
-                                                        }
-                                                    >
-                                                        완료
-                                                    </button>
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <></>
-                                        )}
-
-                                        {userState.user._id ===
-                                            comment.author &&
-                                        isEditComment === false ? (
-                                            <>
-                                                <div className="comment-btns-container">
-                                                    <button
-                                                        className="comment-btn"
-                                                        onClick={handleClickModifyComment(
-                                                            comment.id
-                                                        )}
-                                                    >
-                                                        수정
-                                                    </button>
-                                                    <button
-                                                        className="comment-btn"
-                                                        onClick={handleClickDeleteComment(
-                                                            comment.id
-                                                        )}
-                                                    >
-                                                        삭제
-                                                    </button>
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </ul>
+                        {/* 댓글 */}
+                        <Comments
+                            comments={comments}
+                            targetComment={targetComment}
+                            modifyCommentInput={modifyCommentInput}
+                            handleClickCommentModify={handleClickCommentModify}
+                            userState={userState}
+                            isEditComment={isEditComment}
+                            handleClickModifyComment={handleClickModifyComment}
+                            handleClickDeleteComment={handleClickDeleteComment}
+                        />
                     </>
                 ) : (
+                    //
                     <PostForm
                         handleSubmit={handleSubmit}
                         post={post}

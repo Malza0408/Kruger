@@ -1,7 +1,7 @@
 $maxWidth: 1000px;
 .Post {
     text-align: center;
-    max-width: 80%;
+    max-width: $maxWidth;
     button {
         background-color: #f5c342;
         border: 1px solid hsl(43, 88%, 52%);

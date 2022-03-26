@@ -31,7 +31,6 @@ const ApplicantlistCanvas = ({
                                     onClick={handliClickAcknowledgment(
                                         applicant.id
                                     )}
-                                    // disabled={post?.member.find(m => m === )}
                                 >
                                     승인
                                 </Button>
