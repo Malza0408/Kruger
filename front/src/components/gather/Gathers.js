@@ -113,7 +113,7 @@ const Gathers = () => {
                     );
                 })}
             </Row>
-            <Row xs="auto" className="jusify-content-center">
+            <Row>
                 {traceFocusing === 0
                     ? projects?.map((project, index) => {
                           return (

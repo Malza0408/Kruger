@@ -11,11 +11,7 @@ const Gather = ({ project }) => {
         navigate(`/gatherRoom/${project.id}`);
     };
     return (
-        <Card
-            style={{ width: '18rem', margin: '0 50px 50px 0' }}
-            className="Gather"
-            onClick={handleOnClick}
-        >
+        <Card className="Gather" onClick={handleOnClick}>
             <Card.Body>
                 <Row className="text-center mt-3">
                     <Card.Title className="mb-0">{project.title}</Card.Title>
