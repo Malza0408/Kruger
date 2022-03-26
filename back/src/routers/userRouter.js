@@ -146,7 +146,7 @@ userRouter.put('/unfollowUser/:id', login_required, async (req, res, next) => {
 
 // 회원탈퇴
 userRouter.delete(
-    '/users/:id',
+    '/user/current',
     login_required,
     async function (req, res, next) {
         try {
