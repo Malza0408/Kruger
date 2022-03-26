@@ -7,9 +7,7 @@ import {
     Row,
     Col,
     Button,
-    Badge,
-    DropdownButton,
-    InputGroup
+    Badge
 } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -146,21 +144,6 @@ const NoteWriteForm = () => {
                                             <strong>팔로우 목록</strong>
                                         </Accordion.Header>
                                         <Accordion.Body>
-                                            {/* 팔로우 검색창 */}
-                                            {/* <Form.Group
-                                                className="mb-3"
-                                                controlId="formNoteFriend"
-                                            >
-                                                <Form.Label>팔로우</Form.Label>
-                                                <Form.Control
-                                                    type="text"
-                                                    value={to}
-                                                    placeholder="팔로우를 검색하세요"
-                                                    onChange={(e) =>
-                                                        setTo(e.target.value)
-                                                    }
-                                                />
-                                            </Form.Group> */}
                                             {/* 팔로우 목록 */}
                                             <Col
                                                 xs="auto"
@@ -240,13 +223,13 @@ const NoteWriteForm = () => {
                                 variant="primary"
                                 value="전송"
                                 onClick={handleSubmit}
-                                className="descriptionButton me-2"
+                                className="sendButton me-2"
                             >
                                 전송
                             </Button>
                             <Button
                                 onClick={() => navigate('/note')}
-                                className="descriptionButton"
+                                className="cancelButton"
                             >
                                 취소
                             </Button>

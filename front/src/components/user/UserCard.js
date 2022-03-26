@@ -21,14 +21,15 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
     const userDelete = async (e) => {
         e.preventDefault();
 
-        await Api.delete(`users/${user.id}`);
+        // 현재 로그인한 사용자를 삭제
+        await Api.delete(`user/current`);
 
         // 탈퇴 후 로그인 화면으로 이동
         navigate('/login', { replace: true });
     };
 
     return (
-        <Card style={{ width: '18rem' }} className="mb-3 mx-4 UserCard">
+        <Card style={{ width: '18rem' }} className="mb-3 mx-4 userCard">
             <Card.Body>
                 <Row className="justify-content-md-center">
                     <img

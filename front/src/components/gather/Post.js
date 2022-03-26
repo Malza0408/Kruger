@@ -290,6 +290,7 @@ const Post = () => {
                                 )}
                             </Col>
                         </Row>
+                        {/*  내가 올린 공지 */}
                         {cmpUserAndCaptain() ? (
                             <Row>
                                 <Col className="recruit-btn-group">
@@ -307,42 +308,42 @@ const Post = () => {
                         )}
                         <Row>
                             <Col className="apply-btn-group">
-                                {/* 지원자도 아니고 멤버도 아니라면 */}
+                                {/* 내가 올린 모집글이 아니면서 */}
                                 {!cmpUserAndCaptain() &&
-                                checkApply() &&
-                                checkMember() ? (
-                                    <Button
-                                        className="apply-btn"
-                                        onClick={apply}
-                                        disabled={post?.nowEnrolling === false}
-                                    >
-                                        지원하기
-                                    </Button>
-                                ) : // 지원자이면서 아직 멤버는 아닐 때
-                                !cmpUserAndCaptain() &&
-                                  !checkApply() &&
-                                  checkMember() ? (
-                                    <Button
-                                        className="apply-btn"
-                                        onClick={cancelApply}
-                                        disabled={post?.nowEnrolling === false}
-                                    >
-                                        지원취소
-                                    </Button>
-                                ) : // 지원자이면서 멤버일 때
-                                !checkMember() ? (
-                                    <Button
-                                        className="apply-btn"
-                                        disabled={
-                                            post?.nowEnrolling === false ||
-                                            !checkMember()
-                                        }
-                                    >
-                                        지원완료
-                                    </Button>
-                                ) : (
-                                    <></>
-                                )}
+                                    // 모집 중인 글이라면
+                                    (post?.nowEnrolling ? (
+                                        // 내가 지원자도 아니고 승인된 멤버도 아니라면 지원하기!
+                                        checkApply() && checkMember() ? (
+                                            <Button
+                                                className="apply-btn"
+                                                onClick={apply}
+                                            >
+                                                지원하기
+                                            </Button>
+                                        ) : // 지원자인 경우 지원취소!(승인되지 않음)
+                                        !checkApply() ? (
+                                            <Button
+                                                className="apply-btn"
+                                                onClick={cancelApply}
+                                            >
+                                                지원취소
+                                            </Button>
+                                        ) : // 멤버일 때 승인완료!(승인 됨, 낙장불입!)
+                                        !checkMember() ? (
+                                            <Button
+                                                className="apply-btn"
+                                                disabled
+                                            >
+                                                승인완료
+                                            </Button>
+                                        ) : (
+                                            <></>
+                                        )
+                                    ) : (
+                                        <Button className="apply-btn" disabled>
+                                            지원불가
+                                        </Button>
+                                    ))}
                             </Col>
                         </Row>
                         <Row>
@@ -355,7 +356,7 @@ const Post = () => {
                                 <h4>{post?.captain?.name}</h4>
                             </Col>
                             <Col className="date">
-                                <h2>{post?.createdAt.substr(0, 10)}</h2>
+                                <h4>{post?.createdAt.substr(0, 10)}</h4>
                             </Col>
                         </Row>
                         <Row className="text-center">

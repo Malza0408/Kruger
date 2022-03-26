@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import CertificateEditForm from './CertificateEditForm';
 import CertificateCard from './CertificateCard';
 
-const Certificate = ({ certificate, setCertificate, portfolioOwnerId, isEditable }) => {
+const Certificate = ({ certificate, setCertificate, isEditable }) => {
     const [isEditing, setIsEditing] = useState(false);
 
     return (

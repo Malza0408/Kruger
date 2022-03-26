@@ -11,7 +11,6 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
     const [isAdding, setIsAdding] = useState(false);
 
     useEffect(() => {
-        // "certificatelist/유저id" 엔드포인트로 GET 요청을 하고, certificatelistf를 response의 data로 세팅함.
         Api.get('certificatelist', portfolioOwnerId).then((res) =>
             setCertificate(res.data)
         );

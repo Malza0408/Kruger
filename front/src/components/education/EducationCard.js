@@ -23,9 +23,9 @@ const EducationCard = ({
                 {/* 편집 권한이 있다면 보여준다. */}
                 {isEditable && school && (
                     <>
-                        <Col className="col-lg-1">
+                        <Col xs lg="auto">
                             <Button
-                                className="mr-3 mb-1 mvpCardConfirmButton"
+                                className="me-2 mvpCardConfirmButton"
                                 variant="primary"
                                 size="sm"
                                 onClick={handleEdit}
@@ -44,7 +44,7 @@ const EducationCard = ({
                     </>
                 )}
             </Row>
-            <hr />
+            <hr className="mvpCardHr" />
         </Card.Text>
     );
 };

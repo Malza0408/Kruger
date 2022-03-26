@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
+
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
 import FindPasswordModal from '../modal/FindPasswordModal';
@@ -39,6 +40,17 @@ function LoginForm() {
     // 이메일과 비밀번호 조건이 동시에 만족되는지 확인함.
     const isFormValid = isEmailValid && isPasswordValid;
 
+    // 소셜 로그인에 필요한 ID, URI
+    const githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+    const githubRedirectUri = 'http://localhost:3000/auth/github/callback';
+    const githubUri = 'https://github.com/login/oauth/authorize';
+    const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    const googleRedirectUri = 'http://localhost:3000/auth/google/callback';
+    const googleUri = 'https://accounts.google.com/o/oauth2/v2/auth';
+    const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
+    const kakaoRedirectUri = 'http://localhost:3000/auth/kakao/callback';
+    const kakaoUri = `https://kauth.kakao.com/oauth/authorize`;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -69,23 +81,13 @@ function LoginForm() {
         }
     };
 
-    const githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
-    const githubRedirectUri = 'http://localhost:3000/auth/github/callback';
-    const githubUri = 'https://github.com/login/oauth/authorize';
-    const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-    const googleRedirectUri = 'http://localhost:3000/auth/google/callback';
-    const googleUri = 'https://accounts.google.com/o/oauth2/v2/auth';
-    const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
-    const kakaoRedirectUri = 'http://localhost:3000/auth/kakao/callback';
-    const kakaoUri = `https://kauth.kakao.com/oauth/authorize`;
     return (
         <div className="login">
             <Row>
                 <Col className="text-center">
                     <Image
-                        className="mx-auto loginImage"
+                        className="loginImage"
                         src={`${process.env.PUBLIC_URL}/img/main.png`}
-                        alt="First slide"
                     />
                 </Col>
             </Row>
@@ -155,7 +157,7 @@ function LoginForm() {
                                     <img
                                         src={`${process.env.PUBLIC_URL}/img/github.png`}
                                         alt="github"
-                                        className="githubLogin social"
+                                        className="githubLogin"
                                         width="100px"
                                         height="100px"
                                     />
@@ -169,7 +171,7 @@ function LoginForm() {
                                     <img
                                         src={`${process.env.PUBLIC_URL}/img/google.png`}
                                         alt="google"
-                                        className="googleLogin social"
+                                        className="googleLogin"
                                         width="70px"
                                         height="70px"
                                     />
@@ -183,7 +185,7 @@ function LoginForm() {
                                     <img
                                         src={`${process.env.PUBLIC_URL}/img/kakao.png`}
                                         alt="kakao"
-                                        className="kakaoLogin social"
+                                        className="kakaoLogin"
                                         width="100px"
                                         height="100px"
                                     />
@@ -195,7 +197,7 @@ function LoginForm() {
                                 <Button
                                     variant="light"
                                     onClick={handleShow}
-                                    className="registerButton"
+                                    className="findPasswordButton"
                                 >
                                     비밀번호 찾기
                                 </Button>

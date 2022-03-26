@@ -6,6 +6,7 @@ import { UserService } from '../services/UserService';
 
 const userRouter = Router();
 
+// 회원가입
 userRouter.post('/user/register', async function (req, res, next) {
     try {
         if (is.emptyObject(req.body)) {
@@ -14,9 +15,7 @@ userRouter.post('/user/register', async function (req, res, next) {
             );
         }
 
-        // req (request) 에서 데이터 가져오기
         const { name, email, password } = req.body;
-        // 위 데이터를 유저 db에 추가하기
         const userData = { name, email, password };
         const newUser = await UserService.addUser(userData);
 
@@ -26,12 +25,11 @@ userRouter.post('/user/register', async function (req, res, next) {
     }
 });
 
+// 로그인
 userRouter.post('/user/login', async function (req, res, next) {
     try {
-        // req (request) 에서 데이터 가져오기
         const { email, password } = req.body;
 
-        // 위 데이터를 이용하여 유저 db에서 유저 찾기
         const user = await UserService.getUser({ email, password });
 
         res.status(200).send(user);
@@ -40,9 +38,9 @@ userRouter.post('/user/login', async function (req, res, next) {
     }
 });
 
+// 전체 사용자의 목록을 가져옴
 userRouter.get('/userlist', login_required, async function (req, res, next) {
     try {
-        // 전체 사용자 목록을 얻음
         const users = await UserService.getUsers();
         res.status(200).send(users);
     } catch (error) {
@@ -50,6 +48,7 @@ userRouter.get('/userlist', login_required, async function (req, res, next) {
     }
 });
 
+// 현재 사용자의 정보를 가져옴
 userRouter.get(
     '/user/current',
     login_required,
@@ -68,6 +67,7 @@ userRouter.get(
     }
 );
 
+// 해당 사용자의 정보를 가져옴
 userRouter.get('/users/:id', login_required, async function (req, res, next) {
     try {
         const user_id = req.params.id;
@@ -81,18 +81,16 @@ userRouter.get('/users/:id', login_required, async function (req, res, next) {
     }
 });
 
+// 현재 사용자의 정보를 수정함
 userRouter.put(
-    '/users/:id',
+    '/user/current',
     login_required,
     userUpdateMiddleware,
     async function (req, res, next) {
         try {
-            // URI로부터 사용자 id를 추출함.
-            const user_id = req.params.id;
-            // body data 로부터 업데이트할 사용자 정보를 추출함
+            const user_id = req.currentUserId;
             const toUpdate = req.body;
 
-            // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedUser = await UserService.setUser({
                 user_id,
                 toUpdate
@@ -105,6 +103,7 @@ userRouter.put(
     }
 );
 
+// 비밀번호 분실 시 보내 준 이메일로 임시 비밀번호 전송
 userRouter.put('/user/resetPassword', async function (req, res, next) {
     try {
         const { email } = req.body;
@@ -115,7 +114,7 @@ userRouter.put('/user/resetPassword', async function (req, res, next) {
     }
 });
 
-// 친구추가
+// 특정 사용자 팔로우
 userRouter.put('/followUser/:id', login_required, async (req, res, next) => {
     try {
         const followedId = req.params.id;
@@ -130,6 +129,7 @@ userRouter.put('/followUser/:id', login_required, async (req, res, next) => {
     }
 });
 
+// 특정 사용자 언팔로우
 userRouter.put('/unfollowUser/:id', login_required, async (req, res, next) => {
     try {
         const unfollowedId = req.params.id;
@@ -144,8 +144,9 @@ userRouter.put('/unfollowUser/:id', login_required, async (req, res, next) => {
     }
 });
 
+// 회원탈퇴
 userRouter.delete(
-    '/users/:id',
+    '/user/current',
     login_required,
     async function (req, res, next) {
         try {

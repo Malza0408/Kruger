@@ -34,11 +34,11 @@ const CertificateCard = ({
                     <span className="text-muted">{certificate.date}</span>
                 </Col>
                 {isEditable && (
-                    <Col xs lg="1">
+                    <Col xs lg="auto">
                         <Button
                             variant="primary"
                             size="sm"
-                            className="mr-3 mb-1 mvpCardConfirmButton"
+                            className="me-2 mvpCardConfirmButton"
                             onClick={() => setIsEditing(true)}
                         >
                             편집
@@ -54,7 +54,7 @@ const CertificateCard = ({
                     </Col>
                 )}
             </Row>
-            <hr />
+            <hr className="mvpCardHr" />
         </Card.Text>
     );
 };

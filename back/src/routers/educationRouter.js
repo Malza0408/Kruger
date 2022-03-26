@@ -6,6 +6,7 @@ import { EducationService } from '../services/EducationService';
 
 const educationRouter = Router();
 
+// 새로운 학력 요소 추가
 educationRouter.post(
     '/education/create',
     login_required,
@@ -23,6 +24,7 @@ educationRouter.post(
                 const errorMessage = '전공을 입력해주세요.';
                 return res.status(400).send(errorMessage);
             }
+
             const newEducation = await EducationService.addEducation({
                 user_id,
                 school,
@@ -35,7 +37,7 @@ educationRouter.post(
         }
     }
 );
-// user의 전체 education 목록 가져오기
+// 사용자의 학력 목록을 가져옴
 educationRouter.get(
     '/educationlist/:user_id',
     login_required,
@@ -52,6 +54,7 @@ educationRouter.get(
     }
 );
 
+// 해당 학력 요소의 정보를 가져옴
 educationRouter.get('/educations/:id', async (req, res, next) => {
     try {
         const education_id = req.params.id;
@@ -64,6 +67,7 @@ educationRouter.get('/educations/:id', async (req, res, next) => {
     }
 });
 
+// 해당 학력 요소 수정
 educationRouter.put(
     '/educations/:id',
     login_required,
@@ -85,6 +89,8 @@ educationRouter.put(
         }
     }
 );
+
+//해당 학력 요소 삭제
 educationRouter.delete(
     '/educations/:id',
     login_required,
