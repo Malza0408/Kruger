@@ -1,3 +1,7 @@
+.noteBackground {
+    height: 100vh;
+    background-image: url('https://cdn.discordapp.com/attachments/952087329764413545/957305997939068928/feature2__bg--pc.png');
+}
 .noteBar {
     .filterButton {
         background-color: white;
@@ -11,22 +15,26 @@
     .writeNoteButton {
         box-shadow: none;
         border: 0;
-        background-color: lightblue;
+        background-color: hsl(193, 26%, 83%);
     }
 }
 .noteList {
     .sendNote {
-        background-color: antiquewhite;
-        padding: 0 30px;
+        background-color: hsl(33, 58%, 93%);
+        padding: 10px 30px;
     }
     .takeNote {
-        background-color: aliceblue;
-        padding: 0 30px;
+        background-color: #dbeef4;
+        padding: 10px 30px;
     }
     .deleteButton {
         border: 0;
-        background-color: lightblue;
+        background-color: lightgray;
         color: black;
+        &:hover {
+            background-color: rgb(245, 178, 178);
+            box-shadow: none;
+        }
     }
 }
 .noteDescription {
@@ -34,26 +42,26 @@
     .descriptionBar {
     }
     .descriptionButton {
-        background-color: lightblue;
+        background-color: lightgray;
         color: black;
         border: 0;
     }
     .descriptionCard {
-        border: 4px solid lightblue;
+        border: 4px solid lightgray;
         border-radius: 10px;
-
         padding: 25px;
     }
 }
 
 .noteWriteForm {
+    padding: 50px;
     .sendButton {
-        background-color: lightblue;
+        background-color: #f5c342;
         color: black;
         border: 0;
     }
     .cancelButton {
-        background-color: lightcoral;
+        background-color: rgb(245, 178, 178);
         color: black;
         border: 0;
     }

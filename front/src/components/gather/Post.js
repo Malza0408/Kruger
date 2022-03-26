@@ -354,7 +354,11 @@ const Post = () => {
                                             <></>
                                         )
                                     ) : (
-                                        <Button className="apply-btn" disabled>
+                                        <Button
+                                            className="apply-btn"
+                                            variant="light"
+                                            disabled
+                                        >
                                             지원불가
                                         </Button>
                                     ))}

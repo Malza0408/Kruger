@@ -5,7 +5,7 @@ import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
 import FindPasswordModal from '../modal/FindPasswordModal';
-
+import AdvertisementMain from './AdvertisementMain';
 function LoginForm() {
     const navigate = useNavigate();
     const dispatch = useContext(DispatchContext);
@@ -92,15 +92,9 @@ function LoginForm() {
 
     return (
         <div className="login">
-            <Row>
-                <Col className="text-center">
-                    <Image
-                        className="loginImage"
-                        src={`${process.env.PUBLIC_URL}/img/main.png`}
-                    />
-                </Col>
+            <Row className="justify-content-md-center">
+                <AdvertisementMain />
             </Row>
-
             <Container>
                 <Row className="justify-content-md-center pt-5 pb-5">
                     <Col lg={6}>
