@@ -1,9 +1,7 @@
-$buttonColor: #748ffc;
-
 // User Card 디자인
 .userCard {
-    border-radius: 30px;
-    box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
+    border: 2px solid #f8f0fc;
+    box-shadow: 0 0 15px 0 rgba(128, 128, 128, 0.372);
     .profileImage {
         border-radius: 70%;
         width: 14rem;
@@ -16,29 +14,32 @@ $buttonColor: #748ffc;
         }
     }
     .editButton {
-        background-color: $buttonColor;
+        background-color: hsla(51, 77%, 91%, 0.975);
         border: 0px;
         border-radius: 5px;
-        color: white;
+        color: #495057;
+        font-weight: bold;
         padding: 5px;
         box-shadow: none;
         &:hover {
-            border: 2px solid #4c6ef5;
+            border: 2px solid black;
         }
     }
     .withdrawalButton {
-        background-color: lightcoral;
+        background-color: rgb(245, 178, 178);
         border: 0px;
         border-radius: 5px;
-        color: white;
+        color: #495057;
         padding: 5px;
         box-shadow: none;
+        font-weight: bold;
         &:hover {
-            border: 2px solid #ff6b6b;
+            border: 2px solid black;
         }
     }
     .networkButton {
-        background-color: lightblue;
+        background-color: hsl(43, 88%, 52%);
+        color: white;
         border: 0px;
         box-shadow: none;
     }
@@ -47,49 +48,67 @@ $buttonColor: #748ffc;
 // User Card 편집 디자인
 .userEditForm {
     .changePasswordButton {
-        background-color: lightblue;
+        background-color: hsla(51, 77%, 91%, 0.975);
         border: 0;
         box-shadow: none;
+        color: #495057;
+        &:hover {
+            border: 2px solid black;
+        }
     }
     .confirmButton {
-        background-color: lightblue;
+        background-color: hsla(51, 77%, 91%, 0.975);
         border: 0;
         box-shadow: none;
+        color: #495057;
+        &:hover {
+            border: 2px solid black;
+        }
     }
     .cancelButton {
-        background-color: lightcoral;
+        background-color: rgb(245, 178, 178);
         border: 0;
         box-shadow: none;
+        color: #495057;
+        &:hover {
+            border: 2px solid black;
+        }
     }
 }
 
 // 나의페이지 MVP 카드 디자인
 .mvpCard {
-    box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
+    border: 2px solid #f8f0fc;
+    box-shadow: 0 0 15px 0 rgba(128, 128, 128, 0.372);
     padding: 15px;
     .mvpCardTitle {
-        color: #364fc7;
-        font-weight: bold;
+        color: #232223;
     }
     .mvpCardAddButton {
-        background-color: $buttonColor;
-        border: 0px;
+        background-color: #f5c342;
+        border: 0;
         box-shadow: none;
         &:hover {
-            border: 2px solid #edf2ff;
+            background-color: hsl(43, 88%, 52%);
         }
     }
     .mvpCardConfirmButton {
-        background-color: lightblue;
+        background-color: hsla(51, 77%, 91%, 0.975);
+        color: #495057;
         border: 0;
-        box-shadow: none;
+        &:hover {
+            border: 2px solid black;
+        }
     }
     .mvpCardCancelButton {
-        background-color: lightcoral;
+        background-color: rgb(245, 178, 178);
+        color: #495057;
         border: 0;
-        box-shadow: none;
+        &:hover {
+            border: 2px solid black;
+        }
     }
     .mvpCardHr {
-        border: 2px #91a7ff solid;
+        border: 2px lightgray solid;
     }
 }

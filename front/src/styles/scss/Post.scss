@@ -1,7 +1,21 @@
 $maxWidth: 1000px;
 .Post {
     text-align: center;
-    max-width: $maxWidth;
+    max-width: 80%;
+    button {
+        background-color: #f5c342;
+        border: 1px solid hsl(43, 88%, 52%);
+        border-radius: 5px;
+        color: #495057;
+        font-weight: bold;
+        border-color: transparent;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+            background-color: hsl(43, 88%, 52%);
+            border: 1px solid hsl(43, 88%, 52%);
+            color: #495057;
+        }
+    }
     .recruit-btn-group {
         text-align: end;
     }
@@ -9,10 +23,16 @@ $maxWidth: 1000px;
         text-align: end;
     }
     .recruit-btn,
-    .apply-btn,
-    .applicant-list {
+    .apply-btn {
+        margin-bottom: 3px;
         border: 1px solid #f8f9fa;
         width: 120px;
+        &:focus {
+            box-shadow: none;
+            background-color: lightblue;
+            border: 0;
+            color: black;
+        }
     }
     .name {
         text-align: left;
@@ -24,19 +44,13 @@ $maxWidth: 1000px;
         font-size: 20px;
         line-height: 30px;
         margin-bottom: 10px;
-        // background-color: #4dabf7;
         box-shadow: 0px 0px 10px 0px #748ffc63;
         pointer-events: none;
         color: black;
         margin-right: 10px;
         width: 120px;
     }
-    hr {
-        max-width: 1000px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 10px;
-    }
+
     pre {
         white-space: pre-wrap;
         padding: 20px;
@@ -51,17 +65,8 @@ $maxWidth: 1000px;
     .comment-form {
         max-width: $maxWidth;
     }
-    button {
-        background-color: lightblue;
-        border-radius: 5px;
-        color: black;
-        border-color: transparent;
-        transition: all 0.2s ease-in-out;
-        &:hover {
-            background-color: cadetblue;
-        }
-    }
-    .deleteBtn {
+
+    .lang-delete {
         background-color: white;
         border: 1px solid lightgrey;
     }
@@ -70,14 +75,39 @@ $maxWidth: 1000px;
             background-color: white;
         }
     }
-    .dropdown-toggle {
+    .dropdown {
+        text-align: end;
+    }
+    #dropdownButton {
         background-color: white;
         border: 1px solid lightgrey;
+        &:focus,
+        &:hover {
+            border-color: lightgrey;
+            background-color: cadetblue;
+        }
     }
     .heart-container {
         display: flex;
         justify-content: end;
         align-items: center;
+        margin-bottom: 10px;
+    }
+    .modify-post-group {
+        max-width: 1000px;
+        display: flex;
+        margin-bottom: 10px;
+    }
+    .modify-post-btn {
+        flex: 0.9;
+        margin-left: 10%;
+        width: 100px;
+    }
+    .delete-post-btn {
+        flex: 0.1;
+        min-width: 60px;
+        text-align: end;
+        margin-left: auto;
     }
     .red-heart {
         color: red;
@@ -91,15 +121,11 @@ $maxWidth: 1000px;
     }
 
     .like-count {
+        text-align: end;
         font-size: 30px;
         width: 30px;
-        margin-left: 10px;
     }
     .register-comment {
-        text-align: end;
-    }
-
-    .complete-modify-btn {
         text-align: end;
     }
 
@@ -111,15 +137,23 @@ $maxWidth: 1000px;
         margin-bottom: 200px;
     }
     .comment-container {
+        display: flex;
+        justify-content: space-between;
         height: 42px;
         align-items: center;
         border-bottom: 1px solid lightgray;
+        .comment-input {
+            width: 80%;
+        }
     }
-    .comment-btns {
-        text-align: end;
+    .comment-btns-container {
+        display: flex;
         .comment-btn {
             margin-left: 3px;
         }
+    }
+    .complete-modify-btn {
+        text-align: end;
     }
 }
 

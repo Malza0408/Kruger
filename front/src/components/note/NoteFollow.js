@@ -2,7 +2,6 @@ import { Row, Col, Card, Button } from 'react-bootstrap';
 
 const NoteFollow = ({ follow, setTo, setName }) => {
     return (
-        // <Container>
         <Card.Text as={Col}>
         <Card.Body
             style={{ cursor: 'pointer' }}
@@ -18,7 +17,6 @@ const NoteFollow = ({ follow, setTo, setName }) => {
             </Row>
         </Card.Body>
         </Card.Text>
-        // </Container>
     );
 };
 

@@ -3,11 +3,12 @@ import { Button, Card, Col } from 'react-bootstrap';
 
 import FollowList from './FollowList';
 import FollowerList from './FollowerList';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
 
 const Follows = ({ portfolioOwnerId, isEditable }) => {
     const params = useParams();
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [follows, setFollows] = useState([]);
 
@@ -61,7 +62,16 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
                     <FollowerList user={user} />
                 </Card.Body>
             ) : (
-                <Col>
+                <Card.Body>
+                    <Button
+                        variant="light"
+                        className="noteButton"
+                        onClick={() => {
+                            navigate(`/note/write/${user.email}`);
+                        }}
+                    >
+                        쪽지
+                    </Button>
                     <Button
                         variant="light"
                         className="followButton"
@@ -76,7 +86,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
                     >
                         언팔로우
                     </Button>
-                </Col>
+                </Card.Body>
             )}
         </Card>
     );

@@ -10,6 +10,8 @@ import Awards from './award/Awards';
 import Projects from './project/Projects';
 import Certificates from './certificate/Certificates';
 import Follows from './follow/Follows';
+import Advertisement from './user/Advertisement';
+
 function Portfolio() {
     const navigate = useNavigate();
     const params = useParams();
@@ -56,8 +58,14 @@ function Portfolio() {
     }
 
     return (
-        <Container fluid>
-            <Row className="portfolio">
+        <Container
+            fluid
+            style={{
+                backgroundImage:
+                    'url(https://cdn.discordapp.com/attachments/952087329764413545/957296998850121778/unknown.png)'
+            }}
+        >
+            <Row>
                 <Col lg="1"></Col>
                 <Col lg="4">
                     <User
@@ -69,9 +77,9 @@ function Portfolio() {
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
+                    <Advertisement />
                 </Col>
-
-                <Col md="12" lg="6">
+                <Col xs="12" lg="6">
                     <div className="mb-4">
                         <Educations
                             portfolioOwnerId={portfolioOwner.id}
@@ -105,8 +113,8 @@ function Portfolio() {
                         />
                     </div>
                 </Col>
-                <Col lg="1"></Col>
             </Row>
+            <Col lg="1"></Col>
         </Container>
     );
 }

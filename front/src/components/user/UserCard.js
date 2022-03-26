@@ -21,7 +21,8 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
     const userDelete = async (e) => {
         e.preventDefault();
 
-        await Api.delete(`users/${user.id}`);
+        // 현재 로그인한 사용자를 삭제
+        await Api.delete(`user/current`);
 
         // 탈퇴 후 로그인 화면으로 이동
         navigate('/login', { replace: true });
@@ -48,6 +49,7 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                 <Card.Subtitle className="mb-2 text-muted">
                     {user?.email}
                 </Card.Subtitle>
+                <hr />
                 <Card.Text>{user?.description}</Card.Text>
                 {isEditable && (
                     <Col>
@@ -81,14 +83,16 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                     </Col>
                 )}
                 {isNetwork && (
-                    <Button
-                        size="sm"
-                        className="mt-3 networkButton"
-                        href="#"
-                        onClick={() => navigate(`/users/${user.id}`)}
-                    >
-                        포트폴리오
-                    </Button>
+                    <Col className="text-center">
+                        <Button
+                            size="sm"
+                            className="mt-3 networkButton"
+                            href="#"
+                            onClick={() => navigate(`/users/${user.id}`)}
+                        >
+                            포트폴리오
+                        </Button>
+                    </Col>
                 )}
             </Card.Body>
         </Card>

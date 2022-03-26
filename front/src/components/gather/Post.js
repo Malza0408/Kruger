@@ -5,17 +5,7 @@ import React, {
     useRef,
     useState
 } from 'react';
-import {
-    Button,
-    Container,
-    Form,
-    Row,
-    Col,
-    InputGroup,
-    DropdownButton,
-    Dropdown,
-    Offcanvas
-} from 'react-bootstrap';
+import { Button, Container, Form, Row, Col, Dropdown } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
 import { UserStateContext } from '../../App';
@@ -23,6 +13,9 @@ import useGetLangFromDropDown from '../../custom/useGetLangFromDropDown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import '../../styles/scss/Post.scss';
+import ApplicantlistCanvas from './ApplicantlistCanvas';
+import MemberListCanvas from './MemberListCanvas';
+import PostForm from './PostForm';
 
 const Post = () => {
     const navigate = useNavigate();
@@ -40,12 +33,26 @@ const Post = () => {
     // 수정할 댓글 타겟
     const [targetComment, setTargetComment] = useState('');
     const [applicants, setApplicants] = useState([]);
-    // offcanvas
-    const [showOffcanvas, setShowOffcanvas] = useState(false);
-    const handleClose = () => setShowOffcanvas(false);
-    const handleShow = async () => {
-        console.log(post);
-        setShowOffcanvas(true);
+    const [members, setMembers] = useState([]);
+
+    // Applicants offcanvas
+    const [showOffApplicantscanvas, setShowOffApplicantscanvas] =
+        useState(false);
+    const handleCloseApplicantscanvas = () => {
+        setShowOffApplicantscanvas(false);
+    };
+    const handleShowApplicatntscanvas = () => {
+        setShowOffApplicantscanvas(true);
+    };
+
+    // MemberList offcanvas
+    const [showOffMemberListcanvas, setShowOffMemberListcanvas] =
+        useState(false);
+    const handleCloseMemberListcanvas = () => {
+        setShowOffMemberListcanvas(false);
+    };
+    const handleShowMemberListcanvas = () => {
+        setShowOffMemberListcanvas(true);
     };
 
     const commentRef = useRef();
@@ -54,11 +61,6 @@ const Post = () => {
     const modifyCommentInput = useRef();
 
     const handleDeadLine = async () => {
-        console.log(post);
-        console.log(
-            post?.member.find((app) => app === userState.user._id) ===
-                userState.user._id
-        );
         if (userState.user.id === post?.captain.id) {
             await Api.patch(`recruit/toggle/${post.id}`);
             getPostData();
@@ -68,7 +70,6 @@ const Post = () => {
     };
 
     const apply = async () => {
-        console.log(post);
         await Api.patch(`recruit/apply/${post.id}`);
         getPostData();
     };
@@ -83,12 +84,12 @@ const Post = () => {
 
     const checkMember = () => {
         return (
-            post?.member.find((app) => app === userState.user._id) === undefined
+            post?.member.find((m) => m.name === userState.user.name) ===
+            undefined
         );
     };
 
     const cancelApply = async () => {
-        console.log(post);
         await Api.patch(`recruit/cancle/apply/${post.id}`);
         getPostData();
     };
@@ -221,7 +222,6 @@ const Post = () => {
     const deletePost = async () => {
         try {
             await Api.delete(`recruit/delete/${post.id}`);
-            console.log(post.id);
             navigate('/gatherRoom');
         } catch (error) {
             throw new Error(error);
@@ -262,7 +262,8 @@ const Post = () => {
 
     useEffect(() => {
         setApplicants(post?.applicant);
-    }, [post?.applicant]);
+        setMembers(post?.member);
+    }, [post?.applicant, post?.member]);
 
     return (
         <>
@@ -290,59 +291,77 @@ const Post = () => {
                                 )}
                             </Col>
                         </Row>
+                        {/*  내가 올린 공지 */}
                         {cmpUserAndCaptain() ? (
-                            <Row>
-                                <Col className="recruit-btn-group">
-                                    <Button
-                                        variant="light"
-                                        className="applicant-list"
-                                        onClick={handleShow}
-                                    >
-                                        지원자 목록
-                                    </Button>
-                                </Col>
-                            </Row>
+                            <>
+                                <Dropdown>
+                                    <Dropdown.Toggle>
+                                        지원자 / 멤버
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item
+                                            href="#/action-1"
+                                            onClick={
+                                                handleShowApplicatntscanvas
+                                            }
+                                        >
+                                            지원자 목록
+                                        </Dropdown.Item>
+                                        <Dropdown.Item
+                                            href="#/action-2"
+                                            onClick={handleShowMemberListcanvas}
+                                        >
+                                            멤버 목록
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </>
                         ) : (
                             <></>
                         )}
                         <Row>
                             <Col className="apply-btn-group">
-                                {/* 지원자도 아니고 멤버도 아니라면 */}
+                                {/* 내가 올린 모집글이 아니면서 */}
                                 {!cmpUserAndCaptain() &&
-                                checkApply() &&
-                                checkMember() ? (
-                                    <Button
-                                        className="apply-btn"
-                                        onClick={apply}
-                                        disabled={post?.nowEnrolling === false}
-                                    >
-                                        지원하기
-                                    </Button>
-                                ) : // 지원자이면서 아직 멤버는 아닐 때
-                                !cmpUserAndCaptain() &&
-                                  !checkApply() &&
-                                  checkMember() ? (
-                                    <Button
-                                        className="apply-btn"
-                                        onClick={cancelApply}
-                                        disabled={post?.nowEnrolling === false}
-                                    >
-                                        지원취소
-                                    </Button>
-                                ) : // 지원자이면서 멤버일 때
-                                !checkMember() ? (
-                                    <Button
-                                        className="apply-btn"
-                                        disabled={
-                                            post?.nowEnrolling === false ||
-                                            !checkMember()
-                                        }
-                                    >
-                                        지원완료
-                                    </Button>
-                                ) : (
-                                    <></>
-                                )}
+                                    // 모집 중인 글이라면
+                                    (post?.nowEnrolling ? (
+                                        // 내가 지원자도 아니고 승인된 멤버도 아니라면 지원하기!
+                                        checkApply() && checkMember() ? (
+                                            <Button
+                                                className="apply-btn"
+                                                onClick={apply}
+                                            >
+                                                지원하기
+                                            </Button>
+                                        ) : // 지원자인 경우 지원취소!(승인되지 않음)
+                                        !checkApply() ? (
+                                            <Button
+                                                className="apply-btn"
+                                                onClick={cancelApply}
+                                            >
+                                                지원취소
+                                            </Button>
+                                        ) : // 멤버일 때 승인완료!(승인 됨, 낙장불입!)
+                                        !checkMember() ? (
+                                            <Button
+                                                className="apply-btn"
+                                                disabled
+                                            >
+                                                승인완료
+                                            </Button>
+                                        ) : (
+                                            <></>
+                                        )
+                                    ) : (
+                                        <Button
+                                            className="apply-btn"
+                                            variant="light"
+                                            disabled
+                                        >
+                                            지원불가
+                                        </Button>
+                                    ))}
                             </Col>
                         </Row>
                         <Row>
@@ -355,12 +374,11 @@ const Post = () => {
                                 <h4>{post?.captain?.name}</h4>
                             </Col>
                             <Col className="date">
-                                <h2>{post?.createdAt.substr(0, 10)}</h2>
+                                <h4>{post?.createdAt.substr(0, 10)}</h4>
                             </Col>
                         </Row>
                         <Row className="text-center">
                             <Col>{showLanguage(post)}</Col>
-                            {/* <hr /> */}
                         </Row>
                         <Row>
                             <Col>
@@ -394,12 +412,16 @@ const Post = () => {
                         )}
 
                         {cmpUserAndCaptain() ? (
-                            <Button
-                                onClick={handleToggleEditDetail}
-                                className="mb-3"
-                            >
-                                수정하기
-                            </Button>
+                            <div className="modify-post-group">
+                                <div className="modify-post-btn">
+                                    <Button onClick={handleToggleEditDetail}>
+                                        수정하기
+                                    </Button>
+                                </div>
+                                <div className="delete-post-btn">
+                                    <Button onClick={deletePost}>삭제</Button>
+                                </div>
+                            </div>
                         ) : (
                             <></>
                         )}
@@ -411,8 +433,8 @@ const Post = () => {
                                 <Form.Control
                                     placeholder="댓글을 입력하세요."
                                     as="textarea"
-                                    rows={4}
-                                    maxLength="200"
+                                    rows={1}
+                                    maxLength="50"
                                     ref={commentRef}
                                 />
                             </Form.Group>
@@ -425,22 +447,25 @@ const Post = () => {
                         <ul>
                             {comments?.map((comment) => {
                                 return (
-                                    <Row
+                                    <div
                                         className="comment-container"
                                         key={comment.id}
                                     >
                                         {targetComment !== comment.id ? (
-                                            <Col>
+                                            <div>
                                                 <li>{comment.content}</li>
-                                            </Col>
+                                            </div>
                                         ) : targetComment === comment.id ? (
                                             <>
-                                                <Col>
+                                                <div className="comment-input">
                                                     <Form.Control
+                                                        defaultValue={
+                                                            comment.content
+                                                        }
                                                         ref={modifyCommentInput}
                                                     />
-                                                </Col>
-                                                <Col className="complete-modify-btn">
+                                                </div>
+                                                <div className="complete-modify-btn">
                                                     <button
                                                         onClick={
                                                             handleClickCommentModify
@@ -448,7 +473,7 @@ const Post = () => {
                                                     >
                                                         완료
                                                     </button>
-                                                </Col>
+                                                </div>
                                             </>
                                         ) : (
                                             <></>
@@ -458,7 +483,7 @@ const Post = () => {
                                             comment.author &&
                                         isEditComment === false ? (
                                             <>
-                                                <Col className="comment-btns">
+                                                <div className="comment-btns-container">
                                                     <button
                                                         className="comment-btn"
                                                         onClick={handleClickModifyComment(
@@ -475,191 +500,42 @@ const Post = () => {
                                                     >
                                                         삭제
                                                     </button>
-                                                </Col>
+                                                </div>
                                             </>
                                         ) : (
                                             <></>
                                         )}
-                                    </Row>
+                                    </div>
                                 );
                             })}
                         </ul>
                     </>
                 ) : (
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="posting" className="mb-3">
-                            {/* <Form.Label>제목</Form.Label> */}
-                            <Form.Control
-                                placeholder="제목을 작성해주세요."
-                                type="text"
-                                size="lg"
-                                ref={titleRef}
-                                defaultValue={post.title}
-                            />
-                        </Form.Group>
-                        <InputGroup className="mb-3">
-                            <Form.Control
-                                type="text"
-                                disabled
-                                placeholder="사용할 언어를 선택해주세요."
-                                value={langInputValue && langInputValue}
-                                className="lang-input"
-                            />
-                            <Button
-                                variant="outline-secondary"
-                                id="button-addon2"
-                                className="deleteBtn"
-                                onClick={() => setLangInputValue([])}
-                            >
-                                Delete
-                            </Button>
-                            <DropdownButton
-                                variant="outline-secondary"
-                                title="Language"
-                                id="input-group-dropdown"
-                                align="end"
-                            >
-                                <Dropdown.Item
-                                    href="#"
-                                    onClick={(e) => {
-                                        getLangFromDropDown(e.target.innerText);
-                                        e.target.hidden = true;
-                                    }}
-                                    hidden={langInputValue.includes(
-                                        'JavaScript'
-                                    )}
-                                >
-                                    JavaScript
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                    href="#"
-                                    onClick={(e) => {
-                                        getLangFromDropDown(e.target.innerText);
-                                        e.target.hidden = true;
-                                    }}
-                                    hidden={langInputValue.includes(
-                                        'TypeScript'
-                                    )}
-                                >
-                                    TypeScript
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                    href="#"
-                                    onClick={(e) => {
-                                        getLangFromDropDown(e.target.innerText);
-                                        e.target.hidden = true;
-                                    }}
-                                    hidden={langInputValue.includes('Node.js')}
-                                >
-                                    Node.js
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                    href="#"
-                                    onClick={(e) => {
-                                        getLangFromDropDown(e.target.innerText);
-                                        e.target.hidden = true;
-                                    }}
-                                    hidden={langInputValue.includes('React')}
-                                >
-                                    React
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                    href="#"
-                                    onClick={(e) => {
-                                        getLangFromDropDown(e.target.innerText);
-                                        e.target.hidden = true;
-                                    }}
-                                    hidden={langInputValue.includes('Vue')}
-                                >
-                                    Vue
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                    href="#"
-                                    onClick={(e) => {
-                                        getLangFromDropDown(e.target.innerText);
-                                        e.target.hidden = true;
-                                    }}
-                                    hidden={langInputValue.includes('Python')}
-                                >
-                                    Python
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                    href="#"
-                                    onClick={(e) => {
-                                        getLangFromDropDown(e.target.innerText);
-                                        e.target.hidden = true;
-                                    }}
-                                    hidden={langInputValue.includes('Django')}
-                                >
-                                    Django
-                                </Dropdown.Item>
-                            </DropdownButton>
-                        </InputGroup>
-                        <Form.Group controlId="posting" className="mt-3">
-                            <Form.Control
-                                as="textarea"
-                                rows={15}
-                                placeholder="프로젝트 및 스터디원을 구해보세요!"
-                                size="lg"
-                                ref={detailRef}
-                                defaultValue={post.detail}
-                            />
-                        </Form.Group>
-                        <Col className="text-end mt-3">
-                            <button
-                                className="postingBtn"
-                                onClick={handleToggleEditDetail}
-                                type="button"
-                            >
-                                취소
-                            </button>
-                            <button className="postingBtn ms-3" type="submit">
-                                등록하기
-                            </button>
-                        </Col>
-                    </Form>
-                )}
-                {cmpUserAndCaptain() ? (
-                    <Button onClick={deletePost}>포스트 삭제하기</Button>
-                ) : (
-                    <></>
+                    <PostForm
+                        handleSubmit={handleSubmit}
+                        post={post}
+                        langInputValue={langInputValue}
+                        setLangInputValue={setLangInputValue}
+                        getLangFromDropDown={getLangFromDropDown}
+                        handleToggleEditDetail={handleToggleEditDetail}
+                        ref={{
+                            titleRef,
+                            detailRef
+                        }}
+                    />
                 )}
             </Container>
-
-            <Offcanvas
-                show={showOffcanvas}
-                onHide={handleClose}
-                className="offcanvas"
-            >
-                <Offcanvas.Header
-                    style={{ backgroundColor: '#fff5f5' }}
-                    closeButton
-                >
-                    <Offcanvas.Title>지원자 목록</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    {applicants?.map((applicant, index) => {
-                        return (
-                            <Row key={index} className="applicant-list">
-                                <Col>
-                                    {index + 1}. {applicant.name}
-                                </Col>
-                                <Col className="applicant-btn-container">
-                                    <Button
-                                        className="applicant-list-btn"
-                                        onClick={handliClickAcknowledgment(
-                                            applicant.id
-                                        )}
-                                        // disabled={post?.member.find(m => m === )}
-                                    >
-                                        승인
-                                    </Button>
-                                </Col>
-                            </Row>
-                        );
-                    })}
-                </Offcanvas.Body>
-            </Offcanvas>
+            <ApplicantlistCanvas
+                showOffcanvas={showOffApplicantscanvas}
+                handleClose={handleCloseApplicantscanvas}
+                list={applicants}
+                handliClickAcknowledgment={handliClickAcknowledgment}
+            ></ApplicantlistCanvas>
+            <MemberListCanvas
+                showOffcanvas={showOffMemberListcanvas}
+                handleClose={handleCloseMemberListcanvas}
+                list={members}
+            ></MemberListCanvas>
         </>
     );
 };

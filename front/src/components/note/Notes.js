@@ -24,7 +24,7 @@ const Note = () => {
     }, [userState, navigate]);
 
     return (
-        <Container fluid>
+        <Container fluid className="noteBackground">
             <NoteBar
                 setIsNoteListAll={setIsNoteListAll}
                 setIsNoteListSending={setIsNoteListSending}

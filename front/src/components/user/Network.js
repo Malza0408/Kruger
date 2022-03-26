@@ -135,8 +135,8 @@ function Network() {
                         />
                     </Form>
                 </Col>
-                <Col>
-                    <Dropdown className="ms-2" as={ButtonGroup}>
+                <Col className="px-0">
+                    <Dropdown as={ButtonGroup}>
                         <button className="orderState">{order}</button>
 
                         <Dropdown.Toggle
