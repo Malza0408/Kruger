@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { sendMail } from './MailService';
 
 class UserService {
+    // 회원가입하기
     static async addUser(userData) {
         // 이메일 중복 확인
         const email = userData.email;
@@ -33,6 +34,7 @@ class UserService {
         const createdNewUser = await User.create(newUser);
 
         // createdNewUser의 _doc안에 값들의 객체가 있음
+        // user 에서 password 제외하고 리턴
         const createdUserKeys = Object.keys(createdNewUser._doc);
         if (createdUserKeys.indexOf('password') !== -1) {
             const { password, ...refinedNewUser } = createdNewUser._doc;
@@ -42,6 +44,7 @@ class UserService {
         return createdNewUser;
     }
 
+    // 전체 사용자 목록 보기
     static async getUsers() {
         const users = await User.findAll();
 
@@ -55,6 +58,7 @@ class UserService {
         return users;
     }
 
+    // 로그인하기
     static async getUser({ email, password }) {
         // 이메일 db에 존재 여부 확인
         const user = await User.findByEmail({ email });
@@ -79,6 +83,7 @@ class UserService {
         const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
         const token = jwt.sign({ user_id: user.id }, secretKey);
 
+        // 비밀번호 제외하고 리턴
         const loginUserKeys = Object.keys(user._doc);
         if (loginUserKeys.indexOf('password') !== -1) {
             const { password, ...refinedUser } = user._doc;
@@ -91,6 +96,7 @@ class UserService {
         return user;
     }
 
+    // 현재 로그인한 유저의 정보 보여주기
     static async getUserInfo({ user_id }) {
         const user = await User.findById(user_id);
 
@@ -107,11 +113,13 @@ class UserService {
             user._doc = refinedUser;
         }
 
+        // 팔로우한 사람 목록에서 비밀번호 제외하고 리턴
         user.follow.map((v) => {
             const { password, ...refinedUser } = v._doc;
             v._doc = refinedUser;
         });
 
+        // 팔로워 목록에서 비밀번호 제외하고 리턴
         user.follower.map((v) => {
             const { password, ...refinedUser } = v._doc;
             v._doc = refinedUser;
@@ -120,6 +128,7 @@ class UserService {
         return user;
     }
 
+    // 유저 프로필 변경
     static async setUser({ user_id, toUpdate }) {
         // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
         let user = await User.findById(user_id);
@@ -134,6 +143,7 @@ class UserService {
             throw new Error(errorMessage);
         }
 
+        // 비밀번호를 변경하려하면 비밀번호 해쉬화해서 넣기
         if (keys.indexOf('password') !== -1) {
             const index = keys.indexOf('password');
             const hashedPassword = await bcrypt.hash(values[index], 10);
@@ -144,6 +154,7 @@ class UserService {
             user = await User.update(filter, keys[i], values[i]);
         }
 
+        // 업데이트된 유저정보에서 비밀번호 제외
         const updatedUserKeys = Object.keys(user._doc);
         if (updatedUserKeys.indexOf('password') !== -1) {
             const { password, ...refinedUser } = user._doc;
@@ -153,6 +164,7 @@ class UserService {
         return user;
     }
 
+    // 비밀번호 찾기 -> 이메일로 임시비밀번호 보내기
     static async resetPassword({ email }) {
         let user = await User.findByEmail({ email });
 
@@ -178,7 +190,9 @@ class UserService {
         return;
     }
 
+    // 팔로우 하기
     static async followUser({ followedId, user_id }) {
+        // 팔로우 눌린 사람이 db에 있는지 확인하기
         let followedUser = await User.findById(followedId);
 
         if (!followedUser) {
@@ -186,6 +200,7 @@ class UserService {
             throw new Error(errorMessage);
         }
 
+        // 유저가 본인 팔로우 못하게 하기
         let user = await User.findById(user_id);
 
         if (followedUser === user) {
@@ -193,6 +208,7 @@ class UserService {
             throw new errorMessage();
         }
 
+        // 유저가 이미 팔로우 했는지 확인하기
         const validator = followedUser.follower.filter(
             (v) => v.id === user_id
         ).length;
@@ -201,6 +217,7 @@ class UserService {
             throw new Error(errorMessage);
         }
 
+        // 유저와 팔로우 눌린 사람의 팔로워, 팔로우 목록 업데이트
         const newFollowedValue = { $push: { follower: user } };
         const newFollowValue = { $push: { follow: followedUser } };
 
@@ -210,6 +227,7 @@ class UserService {
         );
         user = await User.updateFollow({ id: user_id }, newFollowValue);
 
+        // 유저의 팔로우, 팔로워 목록에서 비밀번호 제외하고 리턴
         user.follow.map((v) => {
             const { password, ...refinedUser } = v._doc;
 
@@ -224,7 +242,9 @@ class UserService {
         return user;
     }
 
+    // 팔로우 취소하기
     static async unfollowUser({ unfollowedId, user_id }) {
+        // 팔로우 취소 눌린 사람이 db 에 있는지 확인하기
         let unfollowedUser = await User.findById(unfollowedId);
 
         if (!unfollowedUser) {
@@ -232,6 +252,7 @@ class UserService {
             throw new Error(errorMessage);
         }
 
+        // 유저의 팔로우 목록에서 팔로우 취소할 사람 제거하기
         let user = await User.findById(user_id);
 
         const followArray = [];
@@ -250,16 +271,19 @@ class UserService {
         const unfollowIndex = followArray.indexOf(true);
         const unfollowedIndex = followedArray.indexOf(true);
 
+        // followArray 에 팔로우 취소 눌린 사람이 있는지 확인하기
         if (unfollowIndex === -1) {
             const errorMessage = '팔로우하지 않은 사용자입니다.';
             throw new Error(errorMessage);
         }
 
+        // 팔로우 취소 눌린 사람의 팔로워 목록에서 유저 삭제하기
         const follower = unfollowedUser._doc.follower;
         follower.splice(unfollowedIndex, 1);
 
         const newUnfollowedValue = { follower };
 
+        // 유저의 팔로우 목록에서 팔로우 취소 눌린 사람 삭제하기
         const follow = user._doc.follow;
         follow.splice(unfollowIndex, 1);
         const newUnfollowValue = { follow };
@@ -270,6 +294,7 @@ class UserService {
         );
         user = await User.updateFollow({ id: user_id }, newUnfollowValue);
 
+        // 유저의 팔로우, 팔로워 목록에서 비밀번호 제외하고 리턴
         user.follow.map((v) => {
             const { password, ...refinedUser } = v._doc;
             v._doc = refinedUser;
@@ -283,6 +308,7 @@ class UserService {
         return user;
     }
 
+    // 회원 탈퇴하기
     static async deleteUser({ user_id }) {
         await User.deleteById({ user_id });
         return;

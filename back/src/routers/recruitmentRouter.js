@@ -239,7 +239,7 @@ recruitmentRouter.patch(
             const recruitmentId = req.params.id;
             const commentId = req.params.commentId;
             const authorId = req.currentUserId;
-            const toUpdate = req.toUpdate;
+            const toUpdate = req.body;
             const updatedRecruitment = await RecruitmentService.setComment({
                 recruitmentId,
                 commentId,

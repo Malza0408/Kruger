@@ -339,40 +339,39 @@ class RecruitmentService {
 
     // 댓글 수정하기
     static async setComment({ recruitmentId, commentId, authorId, toUpdate }) {
+        // 게시물이 존재하는지 확인
         const recruitment = await Recruitment.findAuthor({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
-        const user = await User.findById(authorId);
-
-        // captain이 댓글쓸 때 어떻게?
-        if (authorId === recruitment.captain.id) {
-            console.log('[captain]! writing');
-        }
-
+        // comment 존재하는지 확인
         let comments = recruitment.comment.find(
             (comment) => comment.id === commentId
         );
 
-        if (comments.length === 0) {
-            const errorMessage = '없는 댓글이거나 이미 삭제되었습니다.';
+        if (
+            comments === null ||
+            comments === undefined ||
+            comments.length === 0
+        ) {
+            const errorMessage = '없는 댓글입니다.';
+            throw new Error(errorMessage);
+        }
+        console.log(comments);
+        // 유저가 댓글 작성자인지 확인
+        if (comments.author.id !== authorId) {
+            const errorMessage = '권한이 없는 사용자입니다.';
             throw new Error(errorMessage);
         }
 
-        if (comments === null || comments === undefined) {
-            const errorMessage = '수정 권한이 없습니다.';
-            throw new Error(errorMessage);
-        }
+        comments.content = Object.values(toUpdate)[0];
 
-        const comment = recruitment.comment;
-        const commentIndex = comment.indexOf(comments);
-        comment[commentIndex] = { id: commentId, author: user, ...toUpdate };
-
+        // 댓글 수정
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
-            { comment }
+            { comment: comments }
         );
 
         return updatedRecruitment;
@@ -380,14 +379,15 @@ class RecruitmentService {
 
     //댓글 삭제하기
     static async deleteComment({ recruitmentId, commentId, authorId }) {
-        const user = await User.findById(authorId);
+        // 게시물이 존재하는지 확인
         const recruitment = await Recruitment.findAuthor({ recruitmentId });
 
         if (!recruitment) {
             const errorMessage = '삭제된 게시물입니다.';
             throw new Error(errorMessage);
         }
-        // commentId 로 comment 찾기
+
+        // comment 존재하는지 확인
         let comment = recruitment.comment.find(
             (comment) => comment.id === commentId
         );
@@ -396,7 +396,12 @@ class RecruitmentService {
             const errorMessage = '없는 댓글입니다.';
             throw new Error(errorMessage);
         }
-
+        // 유저가 댓글 작성자인지 확인
+        if (recruitment.author.id !== authorId) {
+            const errorMessage = '권한이 없는 사용자입니다.';
+            throw new Error(errorMessage);
+        }
+        // 댓글 삭제
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             { $pull: { comment: { id: commentId } } }
@@ -407,6 +412,7 @@ class RecruitmentService {
 
     // 게시물 삭제하기
     static async deleteRecruitment({ recruitmentId, user_id }) {
+        // 게시물이 존재하는지 확인
         const recruitment = await Recruitment.findById({ recruitmentId });
 
         if (!recruitment) {
@@ -414,11 +420,13 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
+        // 유저가 게시물 작성자인지 확인
         if (recruitment._doc.captain.id !== user_id) {
             const errorMessage = '삭제할 수 없습니다.';
             throw new Error(errorMessage);
         }
 
+        // 게시물 삭제
         await Recruitment.deleteById({ recruitmentId });
         return;
     }
