@@ -52,7 +52,7 @@ const NoteBar = ({
                         className="writeNoteButton"
                     >
                         <img
-                            src={`${process.env.PUBLIC_URL}/img/refresh.png`}
+                            src={`${process.env.PUBLIC_URL}/icon/refresh.png`}
                             alt="refresh"
                             width="20"
                             height="20"
@@ -65,7 +65,7 @@ const NoteBar = ({
                         className="writeNoteButton"
                     >
                         <img
-                            src={`${process.env.PUBLIC_URL}/img/edit (1).png`}
+                            src={`${process.env.PUBLIC_URL}/icon/edit (1).png`}
                             alt="write"
                             width="17"
                             height="17"

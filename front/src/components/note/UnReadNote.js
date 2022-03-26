@@ -15,7 +15,7 @@ const UnReadNote = () => {
         });
     }, []);
 
-    // // 실시간 갱신: 5초마다 수신 쪽지 get
+    // // 읽지 않은 쪽지 수 실시간 갱신: 5초마다 수신 쪽지 get
     // useEffect(() => {
     //     const getTakeNotes = setInterval(() => {
     //         Api.get(`takenNotelist`).then((res) => {

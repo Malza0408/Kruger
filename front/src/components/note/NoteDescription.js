@@ -62,7 +62,7 @@ const NoteDescription = () => {
                         className="descriptionButton"
                     >
                         <img
-                            src={`${process.env.PUBLIC_URL}/img/back.png`}
+                            src={`${process.env.PUBLIC_URL}/icon/back.png`}
                             alt="back"
                             width="20"
                             height="20"
