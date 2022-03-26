@@ -50,6 +50,21 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                     {user?.email}
                 </Card.Subtitle>
                 <Card.Text>{user?.description}</Card.Text>
+                {!isEditable && (
+                    <Col>
+                        <Button
+                            variant="light"
+                            size="sm"
+                            onClick={() => {
+                                navigate(`/note/write/${user.email}`);
+                            }}
+                            // style={{display="ce"}}
+                            className="optionButton"
+                        >
+                            쪽지
+                        </Button>
+                    </Col>
+                )}
                 {isEditable && (
                     <Col>
                         <Row className="mt-3 text-center text-info">
