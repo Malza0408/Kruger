@@ -75,31 +75,6 @@ class RecruitmentService {
         return recruitments;
     }
 
-    static async likeRecruitment({ recruitmentId, user_id }) {
-        let likedRecruitment = await Recruitment.findById({ recruitmentId });
-
-        if (!likedRecruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const user = await User.findById(user_id);
-
-        if (likedRecruitment.like.includes(user._id)) {
-            const errorMessage = '이미 좋아요를 누른 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const newLikeValue = { $push: { like: user } };
-
-        likedRecruitment = await Recruitment.updateArray(
-            { id: recruitmentId },
-            newLikeValue
-        );
-
-        return likedRecruitment;
-    }
-
     // 모집마감 토글
     static async closeRecruitment({ recruitmentId, userId }) {
         const recruitment = await Recruitment.findById({
