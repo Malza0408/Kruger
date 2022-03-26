@@ -9,10 +9,15 @@ $maxWidth: 1000px;
         text-align: end;
     }
     .recruit-btn,
-    .apply-btn,
-    .applicant-list {
+    .apply-btn {
         border: 1px solid #f8f9fa;
         width: 120px;
+        &:focus {
+            box-shadow: none;
+            background-color: lightblue;
+            border: 0;
+            color: black;
+        }
     }
     .name {
         text-align: left;
