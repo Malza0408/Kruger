@@ -353,7 +353,6 @@ class RecruitmentService {
         let comments = recruitment.comment.find(
             (comment) => comment.id === commentId
         );
-
         if (
             comments === null ||
             comments === undefined ||
@@ -368,16 +367,17 @@ class RecruitmentService {
             const errorMessage = '권한이 없는 사용자입니다.';
             throw new Error(errorMessage);
         }
+
+        // 댓글 수정
         comments.content = Object.values(toUpdate)[0];
         const comment = recruitment.comment;
         const commentIndex = recruitment.comment.indexOf(comments);
         comment[commentIndex] = comments;
-        // 댓글 수정
         const updatedRecruitment = await Recruitment.updateArray(
             { id: recruitmentId },
             { comment }
         );
-        console.log(updatedRecruitment);
+
         return updatedRecruitment;
     }
 
@@ -400,8 +400,9 @@ class RecruitmentService {
             const errorMessage = '없는 댓글입니다.';
             throw new Error(errorMessage);
         }
+
         // 유저가 댓글 작성자인지 확인
-        if (recruitment.author.id !== authorId) {
+        if (comment.author.id !== authorId) {
             const errorMessage = '권한이 없는 사용자입니다.';
             throw new Error(errorMessage);
         }
