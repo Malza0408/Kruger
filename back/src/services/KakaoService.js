@@ -76,7 +76,7 @@ class KakaoService {
         const config = {
             code,
             client_id: process.env.KAKAO_CLIENT_ID,
-            redirect_uri: 'http://localhost:3000/auth/kakao/callback',
+            redirect_uri: `${process.env.DEFAULT_URI}/auth/kakao/callback`,
             grant_type: 'authorization_code'
         };
 

@@ -41,15 +41,24 @@ function LoginForm() {
     const isFormValid = isEmailValid && isPasswordValid;
 
     // 소셜 로그인에 필요한 ID, URI
+    const defaultUri = process.env.REACT_APP_DEFAULT_URI;
     const githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
-    const githubRedirectUri = 'http://localhost:3000/auth/github/callback';
+    const githubRedirectUri = `${defaultUri}/auth/github/callback`;
     const githubUri = 'https://github.com/login/oauth/authorize';
     const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-    const googleRedirectUri = 'http://localhost:3000/auth/google/callback';
+    const googleRedirectUri = `${defaultUri}/auth/google/callback`;
     const googleUri = 'https://accounts.google.com/o/oauth2/v2/auth';
     const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
-    const kakaoRedirectUri = 'http://localhost:3000/auth/kakao/callback';
+    const kakaoRedirectUri = `${defaultUri}/auth/kakao/callback`;
     const kakaoUri = `https://kauth.kakao.com/oauth/authorize`;
+    console.log('--------------------');
+    console.log(githubRedirectUri);
+    console.log('--------------------');
+
+    console.log(googleRedirectUri);
+    console.log('--------------------');
+
+    console.log(kakaoRedirectUri);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
