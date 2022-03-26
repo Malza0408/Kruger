@@ -6,6 +6,7 @@ import { ProjectService } from '../services/ProjectService';
 
 const projectRouter = Router();
 
+// 새로운 프로젝트 요소 추가
 projectRouter.post(
     '/project/create',
     login_required,
@@ -16,7 +17,6 @@ projectRouter.post(
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-            // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
             const user_id = req.currentUserId;
             const { title, description, from_date, to_date } = req.body;
 
@@ -35,12 +35,12 @@ projectRouter.post(
     }
 );
 
+// 사용자의 프로젝트 목록을 가져옴
 projectRouter.get(
     '/projectlist/:user_id',
     login_required,
     async function (req, res, next) {
         try {
-            // 전체 프로젝트 목록을 얻음
             const user_id = req.params.user_id;
             const projects = await ProjectService.getProjects({ user_id });
             res.status(200).send(projects);
@@ -50,6 +50,7 @@ projectRouter.get(
     }
 );
 
+// 해당 프로젝트 요소의 정보를 가져옴
 projectRouter.get('/projects/:id', login_required, async (req, res, next) => {
     try {
         const project_id = req.params.id;
@@ -63,6 +64,7 @@ projectRouter.get('/projects/:id', login_required, async (req, res, next) => {
     }
 });
 
+// 해당 프로젝트 요소 수정
 projectRouter.put(
     '/projects/:id',
     login_required,
@@ -89,6 +91,7 @@ projectRouter.put(
     }
 );
 
+// 해당 프로젝트 요소 삭제
 projectRouter.delete(
     '/projects/:id',
     login_required,

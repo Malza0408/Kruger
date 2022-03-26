@@ -6,6 +6,7 @@ import { CertificateService } from '../services/CertificateService';
 
 const certificateRouter = Router();
 
+// 새로운 자격증 요소 추가
 certificateRouter.post(
     '/certificate/create',
     login_required,
@@ -16,7 +17,6 @@ certificateRouter.post(
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-            // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
             const user_id = req.currentUserId;
             const { title, description, date } = req.body;
 
@@ -34,6 +34,7 @@ certificateRouter.post(
     }
 );
 
+// 사용자의 자격증 목룍을 가져옴
 certificateRouter.get(
     '/certificatelist/:user_id',
     login_required,
@@ -51,6 +52,7 @@ certificateRouter.get(
     }
 );
 
+// 해당 자격증 요소의 정보를 가져옴
 certificateRouter.get(
     '/certificates/:id',
     login_required,
@@ -69,6 +71,7 @@ certificateRouter.get(
     }
 );
 
+// 해당 자격증 요소 수정
 certificateRouter.put(
     '/certificates/:id',
     login_required,
@@ -94,6 +97,7 @@ certificateRouter.put(
     }
 );
 
+// 해당 자격증 요소 삭제
 certificateRouter.delete(
     '/certificates/:id',
     login_required,
