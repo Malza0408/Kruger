@@ -21,7 +21,8 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
     const userDelete = async (e) => {
         e.preventDefault();
 
-        await Api.delete(`users/current`);
+        // 현재 로그인 한 사용자를 삭제
+        await Api.delete(`user/current`);
 
         // 탈퇴 후 로그인 화면으로 이동
         navigate('/login', { replace: true });
