@@ -72,7 +72,7 @@ class GoogleService {
             code,
             client_id: process.env.GOOGLE_CLIENT_ID,
             client_secret: process.env.GOOGLE_CLIENT_SECRET,
-            redirect_uri: `${DEFAULT_URI}/auth/google/callback`
+            redirect_uri: `${process.env.DEFAULT_URI}/auth/google/callback`
         };
 
         // config 형태 url에 맞게 변경
