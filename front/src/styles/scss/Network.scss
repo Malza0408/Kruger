@@ -9,6 +9,10 @@
         background-color: #bac8ff;
         border: 0;
         box-shadow: none;
+        &:focus {
+            box-shadow: none;
+            background-color: #bac8ff;
+        }
     }
     .filterInput {
         box-shadow: none;
