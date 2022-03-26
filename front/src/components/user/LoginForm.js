@@ -84,10 +84,10 @@ function LoginForm() {
 
     return (
         <div className="login">
-            <Row className="justify-content-md-center">
-                <AdvertisementMain />
-            </Row>
             <Container>
+                <Row className="justify-content-md-center">
+                    <AdvertisementMain />
+                </Row>
                 <Row className="justify-content-md-center pt-5 pb-5">
                     <Col lg={6}>
                         <Form onSubmit={handleSubmit}>

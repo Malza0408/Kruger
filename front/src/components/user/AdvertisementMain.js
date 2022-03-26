@@ -6,7 +6,7 @@ const AdvertisementMain = () => {
             <Carousel
                 interval={2000}
                 variant="dark"
-                style={{ width: '50%' }}
+                style={{ width: '700px' }}
                 className="mb-3 mx-4"
             >
                 <Carousel.Item>
