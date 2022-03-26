@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { DispatchContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
-import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 import * as Api from '../../api';
 
 function Github() {
@@ -10,9 +9,15 @@ function Github() {
 
     const Spinner = () => {
         return (
-            <>
-                <h1>Loading...</h1>
-            </>
+            <div className="text-center">
+                <img
+                    src={`${process.env.PUBLIC_URL}/img/loading.png`}
+                    alt="loading"
+                    width="600px"
+                    height="600px"
+                    style={{ borderRadius: '40px' }}
+                />
+            </div>
         );
     };
 
@@ -36,7 +41,9 @@ function Github() {
             navigate('/', { replace: true });
         } catch (err) {
             // setIsLoginFail(true);
-            alert('로그인에 실패하였습니다.\n로그인 페이지로 이동합니다.', err);
+            alert(
+                '로그인에 실패하였습니다.\n이미 가입된 계정이 있는지 확인하세요.'
+            );
             navigate('/', { replace: true });
         }
     };
