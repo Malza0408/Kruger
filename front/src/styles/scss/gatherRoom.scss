@@ -28,7 +28,12 @@
     .newPostingBtn {
         width: 100px;
         padding: 3px 0;
-        color: #0000008c;
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
+        border: 1px solid white;
+        &:hover {
+            background-color: lightblue;
+        }
     }
 
     .Gather {
