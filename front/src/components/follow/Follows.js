@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Col } from 'react-bootstrap';
+
 import FollowList from './FollowList';
 import FollowerList from './FollowerList';
 import { useParams } from 'react-router-dom';
@@ -14,6 +15,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
         Api.get('users', portfolioOwnerId).then((res) => setUser(res.data));
     }, [portfolioOwnerId]);
 
+    // 팔로우 버튼 클릭 시 일어나는 이벤트
     const handleFollow = async () => {
         const followedId = params.userId;
         const user_id = user.id;
@@ -30,6 +32,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
             alert('이미 팔로우 중입니다.');
         }
     };
+    // 언팔로우 버튼 클릭 시 일어나는 이벤트
     const handleUnfollow = async () => {
         const followedId = params.userId;
         const user_id = user.id;
@@ -50,7 +53,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
     return (
         <Card
             style={{ width: '18rem' }}
-            className="my-3 mx-4 text-center followCard"
+            className="mx-4 text-center followCard"
         >
             {isEditable ? (
                 <Card.Body>
@@ -58,22 +61,22 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
                     <FollowerList user={user} />
                 </Card.Body>
             ) : (
-                <div>
+                <Col>
                     <Button
                         variant="light"
-                        className="follow"
+                        className="followButton"
                         onClick={handleFollow}
                     >
                         팔로우
                     </Button>
                     <Button
                         variant="light"
-                        className="unfollow"
+                        className="unfollowButton"
                         onClick={handleUnfollow}
                     >
                         언팔로우
                     </Button>
-                </div>
+                </Col>
             )}
         </Card>
     );

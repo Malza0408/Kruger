@@ -43,7 +43,6 @@ const ProjectAddForm = ({ setIsAdding, portfolioOwnerId, setProjects }) => {
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="projectAddTitle">
                 <Form.Control
-                    className="mvpCardInput"
                     type="text"
                     placeholder="프로젝트 제목"
                     onChange={(e) => {
@@ -58,7 +57,6 @@ const ProjectAddForm = ({ setIsAdding, portfolioOwnerId, setProjects }) => {
             </Form.Group>
             <Form.Group className="mt-3" controlId="projectAddDescription">
                 <Form.Control
-                    className="mvpCardInput"
                     type="text"
                     placeholder="상세내역"
                     onChange={(e) => {

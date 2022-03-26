@@ -17,7 +17,6 @@ const DefaultForm = ({
             <Form.Group className="mb-3" controlId="school">
                 <Form.Label>학교</Form.Label>
                 <Form.Control
-                    className="mvpCardInput"
                     type="text"
                     placeholder="OO대학교"
                     onChange={handleChange}
@@ -32,7 +31,6 @@ const DefaultForm = ({
             <Form.Group className="mb-3" controlId="major">
                 <Form.Label>Major</Form.Label>
                 <Form.Control
-                    className="mvpCardInput"
                     type="text"
                     placeholder="OO전공"
                     onChange={handleChange}

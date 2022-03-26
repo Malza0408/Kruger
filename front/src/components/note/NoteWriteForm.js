@@ -240,13 +240,13 @@ const NoteWriteForm = () => {
                                 variant="primary"
                                 value="전송"
                                 onClick={handleSubmit}
-                                className="descriptionButton me-2"
+                                className="sendButton me-2"
                             >
                                 전송
                             </Button>
                             <Button
                                 onClick={() => navigate('/note')}
-                                className="descriptionButton"
+                                className="cancelButton"
                             >
                                 취소
                             </Button>

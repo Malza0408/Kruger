@@ -97,7 +97,7 @@ const NoteListTake = ({ takeNote, setTakeNote }) => {
                         <Button
                             variant="primary"
                             size="sm"
-                            className="descriptionButton"
+                            className="deleteButton"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 handleDelete(e);

@@ -24,11 +24,11 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
                 </Col>
                 {/* 권한을 가졌을때만 편집 버튼 표시 */}
                 {isEditable && (
-                    <Col xs lg="1">
+                    <Col xs lg="auto">
                         <Button
                             variant="primary"
                             size="sm"
-                            className="mr-3 mb-1 mvpCardConfirmButton"
+                            className="me-2 mvpCardConfirmButton"
                             onClick={() => {
                                 setIsEditing((prev) => !prev);
                             }}
@@ -46,7 +46,7 @@ const ProjectCard = ({ setIsEditing, project, setProjects, isEditable }) => {
                     </Col>
                 )}
             </Row>
-            <hr />
+            <hr className="mvpCardHr" />
         </Card.Text>
     );
 };

@@ -11,10 +11,10 @@ const NoteList = ({ isNoteListAll, isNoteListSendig, isNoteRefreshed }) => {
     const [takeNote, setTakeNote] = useState([]);
 
     const [user, setUser] = useState(null);
- 
+
     useEffect(() => {
         Api.get(`user/current`).then((res) => setUser(res.data));
-        
+
         // 발신함
         Api.get(`sentNotelist`).then((res) => {
             setSendNote(res.data);
@@ -24,7 +24,7 @@ const NoteList = ({ isNoteListAll, isNoteListSendig, isNoteRefreshed }) => {
             setTakeNote(res.data);
         });
     }, [isNoteRefreshed]);
-    
+
     useEffect(() => {
         // 전체 쪽지함
         Api.get(`notelist`).then((res) => {
@@ -47,7 +47,7 @@ const NoteList = ({ isNoteListAll, isNoteListSendig, isNoteRefreshed }) => {
     };
 
     return (
-        <div>
+        <div className="noteList">
             {/* 전체 쪽지함 */}
             {DescCreatedAt(allNote).map((note) => {
                 return (

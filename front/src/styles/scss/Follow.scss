@@ -1,59 +1,31 @@
 .followCard {
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
-    margin-bottom: 10px;
-    .followList {
-        color: #495057;
-        margin: 0 10px;
-        background-color: white;
-        border: 0;
-        font-weight: bold;
-        font-size: 15px;
-    }
-    .followList:hover {
-        background-color: #fff5f5;
-        font-size: 17px;
-        transition: 0.8s;
-    }
-
+    padding: 10px;
+    margin-bottom: 20px;
+    .followList,
     .followerList {
         color: #495057;
         margin: 0 10px;
-        background-color: white;
         border: 0;
         font-weight: bold;
         font-size: 15px;
+        box-shadow: none;
+        &:hover {
+            background-color: #fff5f5;
+            font-size: 17px;
+            transition: 0.8s;
+        }
     }
-    .followerList:hover {
-        background-color: #fff5f5;
-        font-size: 17px;
-        transition: 0.8s;
-    }
-    .follow {
-        color: #495057;
+    .followButton,
+    .unfollowButton {
         margin: 0 10px;
-        background-color: white;
-        border: 0;
         font-weight: bold;
         font-size: 15px;
-    }
-    .follow:hover {
-        background-color: #fff5f5;
-        font-size: 17px;
-        transition: 0.8s;
-    }
-    .unfollow {
-        color: #495057;
-        margin: 0 10px;
-        background-color: white;
-        border: 0;
-        font-weight: bold;
-        font-size: 15px;
-    }
-    .unfollow:hover {
-        background-color: #fff5f5;
-        font-size: 17px;
-        transition: 0.8s;
+        box-shadow: none;
+        &:hover {
+            background-color: #fff5f5;
+        }
     }
 }
 .optionButton:hover {
