@@ -212,6 +212,7 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
+        // 해당 사용자가 있는 지 여부를 배열로 변환
         const applicantValidator = [];
         for (const user of recruitment.applicant) {
             if (user.id === applicantId) {
@@ -221,6 +222,7 @@ class RecruitmentService {
             }
         }
 
+        // 해당 사용자의 인덱스 확인
         const applyUserIndex = applicantValidator.indexOf(true);
 
         if (!applicantValidator.includes(true)) {
@@ -228,6 +230,7 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
+        // 해당 사용자가 멤버 목록에 있는 지 여부를 배열로 변환
         const memberValidator = [];
         for (const user of recruitment.member) {
             if (user.id === applicantId) {
@@ -237,6 +240,7 @@ class RecruitmentService {
             }
         }
 
+        // 해당 사용자의 인덱스 확인
         const isMemberIndex = memberValidator.indexOf(true);
 
         if (isMemberIndex !== -1) {
@@ -244,6 +248,7 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
+        // applicant 배열에서 해당 사용자의 인덱스 부분을 제거한 뒤 업데이트
         const applicant = recruitment.applicant;
         applicant.splice(applyUserIndex, 1);
         const newApplicantValue = { applicant };
@@ -253,6 +258,7 @@ class RecruitmentService {
             newApplicantValue
         );
 
+        // 사용자를 멤버 목록에 추가
         const newMemberValue = { $push: { member: applyUser } };
 
         recruitment = await Recruitment.updateArray(
