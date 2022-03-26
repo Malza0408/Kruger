@@ -22,7 +22,7 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 현재 로그인 한 사용자의 정보를 수정
+        // 현재 로그인한 사용자의 정보를 수정
         const res = await Api.put(`user/current`, {
             name,
             email,
