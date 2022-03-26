@@ -1,55 +1,63 @@
 .noteBar {
     margin: 0 200px;
+    .filterButton {
+        background-color: white;
+        border: 0;
+        width: 100px;
+        &:hover {
+            background-color: lightblue;
+        }
+    }
+
+    .writeNoteButton {
+        border: 0;
+        background-color: lightblue;
+    }
 }
-.sendNote {
-    background-color: antiquewhite;
-    margin: 15px 200px;
-    padding: 0 30px;
-}
-.takeNote {
-    background-color: aliceblue;
-    margin: 15px 200px;
-    padding: 0 30px;
-}
-.filterButton {
-    background-color: white;
-    border: 0;
-    width: 100px;
-}
-.filterButton:hover {
-    background-color: lightblue;
-}
-.filterButton:focus {
-    background-color: lightblue;
-    border: 3px solid white;
-}
-.writeNoteButton {
-    border: 0;
-    background-color: lightblue;
-}
-.descriptionButton {
-    background-color: lightblue;
-    color: black;
-    border: 0;
-}
-.descriptionButton:hover {
-    background-color: lightblue;
-    color: black;
-}
-.descriptionCard {
-    background-color: white;
-    border: 4px solid lightblue;
-    border-radius: 10px;
-    height: 70vh;
-    margin: 0 200px;
-    padding: 25px;
+.noteList {
+    .sendNote {
+        background-color: antiquewhite;
+        margin: 15px 200px;
+        padding: 0 30px;
+    }
+    .takeNote {
+        background-color: aliceblue;
+        margin: 15px 200px;
+        padding: 0 30px;
+    }
+    .deleteButton {
+        border: 0;
+        background-color: lightblue;
+        color: black;
+    }
 }
 .noteDescription {
-    margin: 15px 200px;
+    .descriptionBar {
+        margin: 0 200px;
+    }
+    .descriptionButton {
+        background-color: lightblue;
+        color: black;
+        border: 0;
+    }
+    .descriptionCard {
+        border: 4px solid lightblue;
+        border-radius: 10px;
+        margin: 0 200px;
+        padding: 25px;
+    }
 }
+
 .noteWriteForm {
     margin: 0px 200px;
-}
-.noteTitle {
-    border: 1px solid gray;
+    .sendButton {
+        background-color: lightblue;
+        color: black;
+        border: 0;
+    }
+    .cancelButton {
+        background-color: lightcoral;
+        color: black;
+        border: 0;
+    }
 }

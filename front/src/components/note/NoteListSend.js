@@ -77,7 +77,7 @@ const NoteListSend = ({ sendNote, setSendNote }) => {
                                 e.stopPropagation();
                                 handleDelete(e);
                             }}
-                            className="descriptionButton"
+                            className="deleteButton"
                         >
                             삭제
                         </Button>{' '}

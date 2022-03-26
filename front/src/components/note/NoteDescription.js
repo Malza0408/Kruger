@@ -51,9 +51,9 @@ const NoteDescription = () => {
     };
 
     return (
-        <Container fluid>
+        <Container fluid className="noteDescription">
             <ButtonToolbar
-                className="mb-3 noteDescription"
+                className="mb-3 descriptionBar"
                 aria-label="Toolbar with Button groups"
             >
                 <ButtonGroup>
@@ -80,8 +80,8 @@ const NoteDescription = () => {
                         !(note.fromUser?.name === '탈퇴한 회원') && (
                             <Button
                                 variant="primary"
-                                className="descriptionButton"
                                 onClick={reply}
+                                className="descriptionButton"
                             >
                                 답장
                             </Button>
