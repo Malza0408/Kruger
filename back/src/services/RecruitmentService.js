@@ -228,7 +228,16 @@ class RecruitmentService {
             throw new Error(errorMessage);
         }
 
-        const isMemberIndex = recruitment.member.indexOf(applyUser._id);
+        const memberValidator = [];
+        for (const user of recruitment.member) {
+            if (user.id === applicantId) {
+                memberValidator.push(true);
+            } else {
+                memberValidator.push(false);
+            }
+        }
+
+        const isMemberIndex = memberValidator.indexOf(true);
 
         if (isMemberIndex !== -1) {
             const errorMessage = '이미 멤버입니다.';
