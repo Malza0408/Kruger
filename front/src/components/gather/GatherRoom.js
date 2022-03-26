@@ -11,7 +11,7 @@ const GatherRoom = () => {
     };
 
     return (
-        <Container fluid style={{ width: '85%' }} className="gatherRoom">
+        <Container fluid style={{ padding: '0 10%' }} className="gatherRoom">
             <Row className="text-end">
                 <Col>
                     <button

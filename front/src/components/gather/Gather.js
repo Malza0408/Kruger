@@ -16,6 +16,7 @@ const Gather = ({ project }) => {
                 <Row className="text-center mt-3">
                     <Card.Title className="mb-0">{project.title}</Card.Title>
                 </Row>
+                <hr />
                 <div className="imageContainer" as={Row}>
                     <ul>
                         {project.language?.map((project, index) => {

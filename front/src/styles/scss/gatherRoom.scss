@@ -1,6 +1,7 @@
 .gatherRoom {
-    box-sizing: border-box;
-    justify-content: center;
+    height: 100vh;
+    background-image: url('https://cdn.discordapp.com/attachments/952087329764413545/957309772544229426/unknown.png');
+    background-repeat: no-repeat;
 
     img {
         cursor: pointer;
@@ -20,19 +21,13 @@
             }
         }
     }
-    button {
-        background-color: transparent;
-        color: black;
-        border-color: transparent;
-    }
     .newPostingBtn {
-        width: 100px;
-        padding: 3px 0;
+        padding: 8px;
         font-weight: 600;
-        transition: all 0.2s ease-in-out;
+        transition: all 0.5s ease-in-out;
         border: 1px solid white;
         &:hover {
-            background-color: lightblue;
+            background-color: hsl(43, 88%, 52%);
         }
     }
 
@@ -68,7 +63,6 @@
         .imageContainer {
             text-align: center;
             img {
-                margin-top: 1rem;
                 width: 45px;
                 height: 45px;
                 &:not(:last-of-type) {

@@ -30,7 +30,7 @@ $buttonColor: #bac8ff;
         height: 50px;
         box-shadow: 0px 0px 10px 0px rgba(116, 143, 252, 0.39);
         &:hover {
-            border: 2px #bac8ff solid;
+            box-shadow: 0px 0px 30px 0px rgba(116, 143, 252, 0.39);
         }
     }
 }
