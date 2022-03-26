@@ -56,38 +56,38 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
             style={{ width: '18rem' }}
             className="mx-4 text-center followCard"
         >
-                {isEditable ? (
-                    <Card.Body>
-                        <FollowList user={user} />
-                        <FollowerList user={user} />
-                    </Card.Body>
-                ) : (
-                    <Col>
-                        <Button
-                            variant="light"
-                            className="noteButton"
-                            onClick={() => {
-                                navigate(`/note/write/${user.email}`);
-                            }}
-                        >
-                            쪽지
-                        </Button>
-                        <Button
-                            variant="light"
-                            className="followButton"
-                            onClick={handleFollow}
-                        >
-                            팔로우
-                        </Button>
-                        <Button
-                            variant="light"
-                            className="unfollowButton"
-                            onClick={handleUnfollow}
-                        >
-                            언팔로우
-                        </Button>
-                    </Col>
-                )}
+            {isEditable ? (
+                <Card.Body>
+                    <FollowList user={user} />
+                    <FollowerList user={user} />
+                </Card.Body>
+            ) : (
+                <Card.Body>
+                    <Button
+                        variant="light"
+                        className="noteButton"
+                        onClick={() => {
+                            navigate(`/note/write/${user.email}`);
+                        }}
+                    >
+                        쪽지
+                    </Button>
+                    <Button
+                        variant="light"
+                        className="followButton"
+                        onClick={handleFollow}
+                    >
+                        팔로우
+                    </Button>
+                    <Button
+                        variant="light"
+                        className="unfollowButton"
+                        onClick={handleUnfollow}
+                    >
+                        언팔로우
+                    </Button>
+                </Card.Body>
+            )}
         </Card>
     );
 };
