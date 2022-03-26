@@ -1,15 +1,15 @@
 .noteBar {
-    margin: 0 200px;
     .filterButton {
         background-color: white;
         border: 0;
         width: 100px;
+        box-shadow: none;
         &:hover {
             background-color: lightblue;
         }
     }
-
     .writeNoteButton {
+        box-shadow: none;
         border: 0;
         background-color: lightblue;
     }
@@ -17,12 +17,10 @@
 .noteList {
     .sendNote {
         background-color: antiquewhite;
-        margin: 15px 200px;
         padding: 0 30px;
     }
     .takeNote {
         background-color: aliceblue;
-        margin: 15px 200px;
         padding: 0 30px;
     }
     .deleteButton {
@@ -32,8 +30,8 @@
     }
 }
 .noteDescription {
+    width: 80%;
     .descriptionBar {
-        margin: 0 200px;
     }
     .descriptionButton {
         background-color: lightblue;
@@ -43,13 +41,12 @@
     .descriptionCard {
         border: 4px solid lightblue;
         border-radius: 10px;
-        margin: 0 200px;
+
         padding: 25px;
     }
 }
 
 .noteWriteForm {
-    margin: 0px 200px;
     .sendButton {
         background-color: lightblue;
         color: black;

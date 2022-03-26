@@ -91,7 +91,7 @@ const NoteWriteForm = () => {
     };
 
     return (
-        <Container fluid>
+        <Container fluid style={{ width: '80%' }}>
             <Card className="noteWriteForm">
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>

@@ -11,7 +11,7 @@ const NoteBar = ({
     const navigate = useNavigate();
 
     return (
-        <Container fluid>
+        <Container fluid style={{ width: '80%' }}>
             <ButtonToolbar className="justify-content-between mb-3 noteBar">
                 <ButtonGroup>
                     <Button

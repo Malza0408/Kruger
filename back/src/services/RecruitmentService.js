@@ -5,12 +5,12 @@ class RecruitmentService {
     // 게시글 생성
     static async addRecruitment({ user_id, title, detail, language }) {
         const id = uuidv4();
-
         const captain = await User.findById(user_id);
         const newRecruitment = { id, captain, title, detail, language };
 
         const createdNewRecruitment = await Recruitment.create(newRecruitment);
 
+        // 불필요한 데이터 정제하고 리턴
         const { password, follow, follower, ...refinedUser } =
             createdNewRecruitment.captain._doc;
         createdNewRecruitment.captain._doc = refinedUser;
@@ -20,11 +20,14 @@ class RecruitmentService {
 
     // 게시물 1개보기
     static async getRecruitment({ recruitmentId }) {
+        // 게시물이 존재하는지 확인
         const recruitment = await Recruitment.findById({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
+
+        // 게시글에 populate 된 유저정보에서 id, name 만 리턴
         const { id, name, ...refinedUser } = recruitment.captain._doc;
         recruitment.captain._doc = { id, name };
 
@@ -43,18 +46,20 @@ class RecruitmentService {
 
     // 게시물 수정하기
     static async setRecruitment({ recruitmentId, user_id, toUpdate }) {
+        // 게시물이 존재하는지 확인
         let recruitment = await Recruitment.findById({ recruitmentId });
-
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
+        // 유저가 게시물 작성자인지 확인
         if (recruitment._doc.captain.id !== user_id) {
             const errorMessage = '수정할 수 없습니다.';
             throw new Error(errorMessage);
         }
 
+        // 게시물 수정
         const keys = Object.keys(toUpdate);
         const values = Object.values(toUpdate);
 
@@ -77,21 +82,23 @@ class RecruitmentService {
 
     // 모집마감 토글
     static async closeRecruitment({ recruitmentId, userId }) {
+        // 게시물이 존재하는지 확인
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
-
-        let nowEnrolling = recruitment.nowEnrolling;
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
 
+        // 유저가 게시글 작성자인지 확인
         if (userId !== recruitment.captain.id) {
             const errorMessage = '권한이 없습니다.';
             throw new Error(errorMessage);
         }
 
+        // 모집중 <-> 모집마감 토글
+        let nowEnrolling = recruitment.nowEnrolling;
         const updatedRecruitment = await Recruitment.toggle({
             recruitmentId,
             nowEnrolling
@@ -118,7 +125,7 @@ class RecruitmentService {
             (v) => v.id === applicant.id
         );
 
-        // 게시글이 있는지 확인
+        // 게시물이 존재하는지 확인
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
@@ -165,7 +172,7 @@ class RecruitmentService {
 
         const appliedOrNot = applicantValidator.indexOf(true);
 
-        // 게시글이 있는지 확인
+        // 게시물이 존재하는지 확인
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
@@ -195,17 +202,20 @@ class RecruitmentService {
 
     // 멤버 승인하기
     static async setMember({ recruitmentId, applicantId, user_id }) {
+        // 게시물이 존재하는지 확인
         let recruitment = await Recruitment.findById({ recruitmentId });
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
+        // 유저가 게시물 작성자인지 확인
         if (recruitment.captain.id !== user_id) {
             const errorMessage = '권한이 없는 사용자입니다.';
             throw new Error(errorMessage);
         }
 
+        // 승인할 지원자가 지원자 목록에 있는지 확인
         const applyUser = await User.findById(applicantId);
         if (!applyUser) {
             const errorMessage = '존재하지 않는 사용자입니다.';
@@ -271,53 +281,55 @@ class RecruitmentService {
 
     // 게시물에 좋아요 누르기
     static async likeRecruitment({ recruitmentId, user_id }) {
-        let likedRecruitment = await Recruitment.findById({ recruitmentId });
-
-        if (!likedRecruitment) {
-            const errorMessage = '존재하지 않는 게시물입니다.';
-            throw new Error(errorMessage);
-        }
-
-        const user = await User.findById(user_id);
-
-        const likedIndex = likedRecruitment.like.indexOf(user._id);
-
-        if (likedIndex === -1) {
-            const newLikeValue = { $push: { like: user } };
-            likedRecruitment = await Recruitment.updateArray(
-                { id: recruitmentId },
-                newLikeValue
-            );
-        } else {
-            const like = likedRecruitment.like;
-            like.splice(likedIndex, 1);
-            const newLikeValue = { like };
-
-            likedRecruitment = await Recruitment.updateArray(
-                { id: recruitmentId },
-                newLikeValue
-            );
-        }
-
-        return likedRecruitment;
-    }
-
-    // 댓글 추가하기
-    static async addComment({ recruitmentId, content, user_id }) {
-        if (content === null || content === undefined || content.length === 0) {
-            const errorMessage = '빈칸 ㄴㄴ';
-            throw new Error(errorMessage);
-        }
-
+        // 게시물이 존재하는지 확인
         let recruitment = await Recruitment.findById({ recruitmentId });
-
         if (!recruitment) {
             const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
-        const id = uuidv4();
+        const user = await User.findById(user_id);
+        const likedIndex = recruitment.like.indexOf(user._id);
 
+        // 유저가 like 리스트에 없으면 추가
+        if (likedIndex === -1) {
+            const newLikeValue = { $push: { like: user } };
+            recruitment = await Recruitment.updateArray(
+                { id: recruitmentId },
+                newLikeValue
+            );
+        } else {
+            // 유저가 like 리스트에 있으면 삭제
+            const like = recruitment.like;
+            like.splice(likedIndex, 1);
+            const newLikeValue = { like };
+
+            recruitment = await Recruitment.updateArray(
+                { id: recruitmentId },
+                newLikeValue
+            );
+        }
+
+        return recruitment;
+    }
+
+    // 댓글 추가하기
+    static async addComment({ recruitmentId, content, user_id }) {
+        // 내용이 있는지 확인
+        if (content === null || content === undefined || content.length === 0) {
+            const errorMessage = '내용을 입력해주세요.';
+            throw new Error(errorMessage);
+        }
+
+        // 게시물이 존재하는지 확인
+        let recruitment = await Recruitment.findById({ recruitmentId });
+        if (!recruitment) {
+            const errorMessage = '존재하지 않는 게시물입니다.';
+            throw new Error(errorMessage);
+        }
+
+        // 댓글 생성
+        const id = uuidv4();
         const user = await User.findById(user_id);
 
         const newCommentValue = {
@@ -379,7 +391,7 @@ class RecruitmentService {
         const recruitment = await Recruitment.findAuthor({ recruitmentId });
 
         if (!recruitment) {
-            const errorMessage = '삭제된 게시물입니다.';
+            const errorMessage = '존재하지 않는 게시물입니다.';
             throw new Error(errorMessage);
         }
 
@@ -419,7 +431,7 @@ class RecruitmentService {
 
         // 유저가 게시물 작성자인지 확인
         if (recruitment._doc.captain.id !== user_id) {
-            const errorMessage = '삭제할 수 없습니다.';
+            const errorMessage = '권한이 없는 사용자입니다.';
             throw new Error(errorMessage);
         }
 

@@ -193,7 +193,7 @@ function LoginForm() {
                             </Col>
                         </Row>
                         <Row className="mt-3 text-center">
-                            <Col lg={6}>
+                            <Col xs lg={6}>
                                 <Button
                                     variant="light"
                                     onClick={handleShow}
