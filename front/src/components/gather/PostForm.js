@@ -49,6 +49,7 @@ const PostForm = forwardRef(
                     </Button>
                     <DropdownButton
                         id="dropdownButton"
+                        variant="outline-secondary"
                         title="Language"
                         align="end"
                     >

@@ -78,6 +78,11 @@ $maxWidth: 1000px;
     #dropdownButton {
         background-color: white;
         border: 1px solid lightgrey;
+        &:focus,
+        &:hover {
+            border-color: lightgrey;
+            background-color: cadetblue;
+        }
     }
     .heart-container {
         display: flex;
