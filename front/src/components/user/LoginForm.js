@@ -92,7 +92,7 @@ function LoginForm() {
 
     return (
         <div className="login">
-            <Row className="justify-content-md-center">
+            <Row className="justify-content-md-center mb-0">
                 <AdvertisementMain />
             </Row>
             <Container>

@@ -2,7 +2,7 @@ import { Carousel, Image, Row } from 'react-bootstrap';
 
 const AdvertisementMain = () => {
     return (
-        <Row className="justify-content-md-center" style={{ height: '40vh' }}>
+        <Row className="justify-content-md-center" style={{ height: '30vh' }}>
             <Carousel
                 interval={2000}
                 variant="dark"
