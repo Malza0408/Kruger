@@ -69,11 +69,6 @@ const Post = () => {
     const modifyCommentInput = useRef();
 
     const handleDeadLine = async () => {
-        console.log(post);
-        console.log(
-            post?.member.find((app) => app === userState.user._id) ===
-                userState.user._id
-        );
         if (userState.user.id === post?.captain.id) {
             await Api.patch(`recruit/toggle/${post.id}`);
             getPostData();
@@ -83,7 +78,6 @@ const Post = () => {
     };
 
     const apply = async () => {
-        console.log(post);
         await Api.patch(`recruit/apply/${post.id}`);
         getPostData();
     };
@@ -98,7 +92,8 @@ const Post = () => {
 
     const checkMember = () => {
         return (
-            post?.member.find((app) => app === userState.user._id) === undefined
+            post?.member.find((m) => m.name === userState.user.name) ===
+            undefined
         );
     };
 
@@ -331,30 +326,6 @@ const Post = () => {
                                         </Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                {/* <Row>
-                                    <Col className="recruit-btn-group">
-                                        <Button
-                                            variant="light"
-                                            className="applicant-list"
-                                            onClick={
-                                                handleShowApplicatntscanvas
-                                            }
-                                        >
-                                            지원자 목록
-                                        </Button>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col className="recruit-btn-group">
-                                        <Button
-                                            variant="light"
-                                            className="applicant-list"
-                                            onClick={handleShowMemberListcanvas}
-                                        >
-                                            멤버 목록
-                                        </Button>
-                                    </Col>
-                                </Row> */}
                             </>
                         ) : (
                             <></>
@@ -468,8 +439,8 @@ const Post = () => {
                                 <Form.Control
                                     placeholder="댓글을 입력하세요."
                                     as="textarea"
-                                    rows={4}
-                                    maxLength="200"
+                                    rows={1}
+                                    maxLength="50"
                                     ref={commentRef}
                                 />
                             </Form.Group>
@@ -492,8 +463,11 @@ const Post = () => {
                                             </div>
                                         ) : targetComment === comment.id ? (
                                             <>
-                                                <div>
+                                                <div className="comment-input">
                                                     <Form.Control
+                                                        defaultValue={
+                                                            comment.content
+                                                        }
                                                         ref={modifyCommentInput}
                                                     />
                                                 </div>

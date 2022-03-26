@@ -13,6 +13,7 @@ $maxWidth: 1000px;
     .applicant-list {
         border: 1px solid #f8f9fa;
         width: 120px;
+        box-shadow: none;
     }
     .name {
         text-align: left;
@@ -125,6 +126,9 @@ $maxWidth: 1000px;
         height: 42px;
         align-items: center;
         border-bottom: 1px solid lightgray;
+        .comment-input {
+            width: 80%;
+        }
     }
     .comment-btns-container {
         display: flex;
