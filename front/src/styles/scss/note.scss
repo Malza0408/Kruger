@@ -3,11 +3,13 @@
         background-color: white;
         border: 0;
         width: 100px;
+        box-shadow: none;
         &:hover {
             background-color: lightblue;
         }
     }
     .writeNoteButton {
+        box-shadow: none;
         border: 0;
         background-color: lightblue;
     }
