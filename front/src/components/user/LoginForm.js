@@ -51,14 +51,6 @@ function LoginForm() {
     const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
     const kakaoRedirectUri = `${defaultUri}/auth/kakao/callback`;
     const kakaoUri = `https://kauth.kakao.com/oauth/authorize`;
-    console.log('--------------------');
-    console.log(githubRedirectUri);
-    console.log('--------------------');
-
-    console.log(googleRedirectUri);
-    console.log('--------------------');
-
-    console.log(kakaoRedirectUri);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
