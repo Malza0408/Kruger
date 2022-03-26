@@ -8,7 +8,7 @@ import { NoteService } from '../services/NoteService';
 
 const recruitmentRouter = Router();
 
-// 게시글 생성
+// 새로운 게시글 생성
 recruitmentRouter.post(
     '/recruit/create',
     login_required,
@@ -36,7 +36,21 @@ recruitmentRouter.post(
     }
 );
 
-// 게시글 하나 보기, 로그인 안해도 볼수있게.
+// 게시글 목록 보기
+recruitmentRouter.get(
+    '/recruitlist',
+    login_required,
+    async (req, res, next) => {
+        try {
+            const recruitmentList = await RecruitmentService.getRecruitments();
+            res.status(200).json(recruitmentList);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+// 해당 게시글의 정보를 가져옴
 recruitmentRouter.get(
     '/recruit/:id',
     login_required,
@@ -53,21 +67,7 @@ recruitmentRouter.get(
     }
 );
 
-// 게시글 목록 보기
-recruitmentRouter.get(
-    '/recruitlist',
-    login_required,
-    async (req, res, next) => {
-        try {
-            const recruitmentList = await RecruitmentService.getRecruitments();
-            res.status(200).json(recruitmentList);
-        } catch (error) {
-            next(error);
-        }
-    }
-);
-
-// 게시글 수정하기
+// 해당 게시글 수정 (팀장만 가능)
 recruitmentRouter.put(
     '/recruit/:id',
     login_required,
@@ -92,7 +92,7 @@ recruitmentRouter.put(
     }
 );
 
-// 게시글 모집마감 토글
+// 게시글 모집마감 토글 (팀장만 가능)
 recruitmentRouter.patch(
     '/recruit/toggle/:id',
     login_required,
@@ -112,7 +112,7 @@ recruitmentRouter.patch(
     }
 );
 
-// 모집글 지원하기
+// 해당 게시글에 지원
 recruitmentRouter.patch(
     '/recruit/apply/:id',
     login_required,
@@ -131,7 +131,7 @@ recruitmentRouter.patch(
     }
 );
 
-// 지원 취소하기
+// 해당 게시글에 지원 취소
 recruitmentRouter.patch(
     '/recruit/cancle/apply/:id',
     login_required,
@@ -152,7 +152,7 @@ recruitmentRouter.patch(
     }
 );
 
-// 멤버 승인하기
+// 멤버 승인하기 (+ 쪽지 보내줌, 팀장만 가능)
 recruitmentRouter.patch(
     '/recruit/approval/:id',
     login_required,
@@ -185,7 +185,7 @@ recruitmentRouter.patch(
     }
 );
 
-// 게시물에 좋아요 누르기
+// 게시물에 좋아요 / 좋아요 취소 (toggle)
 recruitmentRouter.patch(
     '/likedRecruit/:id',
     login_required,
@@ -207,7 +207,7 @@ recruitmentRouter.patch(
     }
 );
 
-// 댓글 달기
+// 새로운 댓글 추가
 recruitmentRouter.put(
     '/recruit/comment/:id',
     login_required,
@@ -229,7 +229,7 @@ recruitmentRouter.put(
     }
 );
 
-// 댓글 수정하기
+// 해당 댓글 수정
 recruitmentRouter.patch(
     '/recruit/:id/:commentId',
     login_required,
@@ -253,7 +253,7 @@ recruitmentRouter.patch(
     }
 );
 
-// 댓글 삭제하기
+// 해당 댓글 삭제
 recruitmentRouter.patch(
     '/recruit/delete/:id/:commentId',
     login_required,
@@ -274,7 +274,7 @@ recruitmentRouter.patch(
     }
 );
 
-// 게시글 삭제하기
+// 해당 게시글 삭제
 recruitmentRouter.delete(
     '/recruit/delete/:id',
     login_required,

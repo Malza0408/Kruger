@@ -6,6 +6,7 @@ import { CertificateService } from '../services/CertificateService';
 
 const certificateRouter = Router();
 
+// 새로운 자격증 요소 추가
 certificateRouter.post(
     '/certificate/create',
     login_required,
@@ -16,7 +17,6 @@ certificateRouter.post(
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-            // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
             const user_id = req.currentUserId;
             const { title, description, date } = req.body;
 
@@ -34,12 +34,12 @@ certificateRouter.post(
     }
 );
 
+// 사용자의 자격증 목룍을 가져옴
 certificateRouter.get(
     '/certificatelist/:user_id',
     login_required,
     async function (req, res, next) {
         try {
-            // 전체 자격증 목록을 얻음
             const user_id = req.params.user_id;
             const certificates = await CertificateService.getCertificates({
                 user_id
@@ -51,6 +51,7 @@ certificateRouter.get(
     }
 );
 
+// 해당 자격증 요소의 정보를 가져옴
 certificateRouter.get(
     '/certificates/:id',
     login_required,
@@ -69,18 +70,17 @@ certificateRouter.get(
     }
 );
 
+// 해당 자격증 요소 수정
 certificateRouter.put(
     '/certificates/:id',
     login_required,
     profileUpdateMiddleware,
     async function (req, res, next) {
         try {
-            // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
             const user_id = req.currentUserId;
             const toUpdate = req.body;
 
-            // 해당 자격증 아이디로 자격증 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedCertificate = await CertificateService.setCertificate({
                 certificate_id,
                 user_id,
@@ -94,12 +94,12 @@ certificateRouter.put(
     }
 );
 
+// 해당 자격증 요소 삭제
 certificateRouter.delete(
     '/certificates/:id',
     login_required,
     async function (req, res, next) {
         try {
-            // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
             const user_id = req.currentUserId;
             await CertificateService.deleteCertificate({

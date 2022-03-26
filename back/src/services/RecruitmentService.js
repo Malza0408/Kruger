@@ -130,7 +130,7 @@ class RecruitmentService {
     // 지원하기
     static async addApplicant({ recruitmentId, applicantId }) {
         const applicant = await User.findById(applicantId);
-        const recruitment = await Recruitment.findApplicant({
+        const recruitment = await Recruitment.findById({
             recruitmentId
         });
 
@@ -158,6 +158,9 @@ class RecruitmentService {
             recruitmentId,
             applicant
         });
+
+        const { password, ...refinedUser } = updatedRecruitment.captain._doc;
+        updatedRecruitment.captain._doc = refinedUser;
 
         updatedRecruitment.applicant.map((v) => {
             const { password, ...refinedUser } = v._doc;

@@ -5,6 +5,7 @@ import { NoteService } from '../services/NoteService';
 
 const noteRouter = Router();
 
+// 새로운 쪽지 추가
 noteRouter.post('/note/create', login_required, async (req, res, next) => {
     try {
         if (is.emptyObject(req.body)) {
@@ -12,7 +13,6 @@ noteRouter.post('/note/create', login_required, async (req, res, next) => {
                 'headers의 Content-Type을 application/json으로 설정해주세요'
             );
         }
-        // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
         const user_id = req.currentUserId;
         const { to, title, content } = req.body;
 
@@ -29,6 +29,7 @@ noteRouter.post('/note/create', login_required, async (req, res, next) => {
     }
 });
 
+// 사용자의 모든 쪽지(보낸 쪽지 + 받은 쪽지) 목록을 가져옴
 noteRouter.get('/notelist', login_required, async (req, res, next) => {
     try {
         const user_id = req.currentUserId;
@@ -40,6 +41,7 @@ noteRouter.get('/notelist', login_required, async (req, res, next) => {
     }
 });
 
+// 사용자의 받은 쪽지 목록을 가져옴
 noteRouter.get('/takenNotelist', login_required, async (req, res, next) => {
     try {
         const user_id = req.currentUserId;
@@ -51,6 +53,7 @@ noteRouter.get('/takenNotelist', login_required, async (req, res, next) => {
     }
 });
 
+// 사용자의 보낸 쪽지 목록을 가져옴
 noteRouter.get('/sentNotelist', login_required, async (req, res, next) => {
     try {
         const user_id = req.currentUserId;
@@ -62,6 +65,7 @@ noteRouter.get('/sentNotelist', login_required, async (req, res, next) => {
     }
 });
 
+// 해당 받은 쪽지의 정보를 가져옴
 noteRouter.get('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
@@ -77,6 +81,7 @@ noteRouter.get('/takenNotes/:id', login_required, async (req, res, next) => {
     }
 });
 
+// 해당 보낸 쪽지의 정보를 가져옴
 noteRouter.get('/sentNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
@@ -92,6 +97,7 @@ noteRouter.get('/sentNotes/:id', login_required, async (req, res, next) => {
     }
 });
 
+// 받은 쪽지에 읽음 표시를 해줌
 noteRouter.patch('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
@@ -102,6 +108,7 @@ noteRouter.patch('/takenNotes/:id', login_required, async (req, res, next) => {
     }
 });
 
+// 해당 받은 쪽지 삭제
 noteRouter.delete('/takenNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
@@ -114,6 +121,7 @@ noteRouter.delete('/takenNotes/:id', login_required, async (req, res, next) => {
     }
 });
 
+// 해당 보낸 쪽지 삭제
 noteRouter.delete('/sentNotes/:id', login_required, async (req, res, next) => {
     try {
         const noteId = req.params.id;
