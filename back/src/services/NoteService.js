@@ -2,6 +2,7 @@ import { TakenNote, SentNote, User } from '../db'; // from을 폴더(db) 로 설
 import { v4 as uuidv4 } from 'uuid';
 
 class NoteService {
+    // 노트 생성하기
     static async addNote({ user_id, to, title, content }) {
         const id = uuidv4();
 
@@ -39,6 +40,7 @@ class NoteService {
         return createdNewSentNote;
     }
 
+    // 노트 전체 목록 보기
     static async getNotes({ user_id }) {
         const user = await User.findById(user_id);
         const takenNotes = await TakenNote.findAll(user._id);
@@ -82,6 +84,7 @@ class NoteService {
         return notes;
     }
 
+    // 받은 노트 목록 보기
     static async getTakenNotes({ user_id }) {
         const user = await User.findById(user_id);
         const takenNotes = await TakenNote.findAll(user._id);
@@ -105,6 +108,7 @@ class NoteService {
         return takenNotes;
     }
 
+    // 보낸 노트 목록 보기
     static async getSentNotes({ user_id }) {
         const user = await User.findById(user_id);
         const sentNotes = await SentNote.findAll(user._id);
@@ -128,6 +132,7 @@ class NoteService {
         return sentNotes;
     }
 
+    // 받은 노트 1개 보기
     static async getTakenNoteInfo({ noteId, user_id }) {
         const note = await TakenNote.findById({ noteId });
 
@@ -158,6 +163,7 @@ class NoteService {
         return note;
     }
 
+    // 보낸 노트 1개 보기
     static async getSentNoteInfo({ noteId, user_id }) {
         const note = await SentNote.findById({ noteId });
 
@@ -188,11 +194,13 @@ class NoteService {
         return note;
     }
 
+    // 읽음 처리
     static async checkNote({ noteId }) {
         await TakenNote.updateCheck({ noteId });
         return;
     }
 
+    // 받은 노트 삭제
     static async deleteTakenNote({ noteId, user_id }) {
         const note = await TakenNote.findById({ noteId });
 
@@ -211,6 +219,7 @@ class NoteService {
         return;
     }
 
+    // 보낸 노트 삭제
     static async deleteSentNote({ noteId, user_id }) {
         const note = await SentNote.findById({ noteId });
 
