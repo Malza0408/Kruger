@@ -4,6 +4,7 @@ $maxWidth: 1000px;
     max-width: $maxWidth;
     button {
         background-color: lightblue;
+        border: 1px solid black;
         border-radius: 5px;
         color: black;
         border-color: transparent;
@@ -74,9 +75,14 @@ $maxWidth: 1000px;
     .dropdown {
         text-align: end;
     }
-    .language-dropdown {
+    #dropdownButton {
         background-color: white;
         border: 1px solid lightgrey;
+        &:focus,
+        &:hover {
+            border-color: lightgrey;
+            background-color: cadetblue;
+        }
     }
     .heart-container {
         display: flex;
