@@ -13,8 +13,7 @@ import {
     Col,
     InputGroup,
     DropdownButton,
-    Dropdown,
-    Offcanvas
+    Dropdown
 } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
@@ -23,6 +22,8 @@ import useGetLangFromDropDown from '../../custom/useGetLangFromDropDown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import '../../styles/scss/Post.scss';
+import ApplicantlistCanvas from './ApplicantlistCanvas';
+import MemberListCanvas from './MemberListCanvas';
 
 const Post = () => {
     const navigate = useNavigate();
@@ -40,12 +41,26 @@ const Post = () => {
     // 수정할 댓글 타겟
     const [targetComment, setTargetComment] = useState('');
     const [applicants, setApplicants] = useState([]);
-    // offcanvas
-    const [showOffcanvas, setShowOffcanvas] = useState(false);
-    const handleClose = () => setShowOffcanvas(false);
-    const handleShow = async () => {
-        console.log(post);
-        setShowOffcanvas(true);
+    const [members, setMembers] = useState([]);
+
+    // Applicants offcanvas
+    const [showOffApplicantscanvas, setShowOffApplicantscanvas] =
+        useState(false);
+    const handleCloseApplicantscanvas = () => {
+        setShowOffApplicantscanvas(false);
+    };
+    const handleShowApplicatntscanvas = () => {
+        setShowOffApplicantscanvas(true);
+    };
+
+    // MemberList offcanvas
+    const [showOffMemberListcanvas, setShowOffMemberListcanvas] =
+        useState(false);
+    const handleCloseMemberListcanvas = () => {
+        setShowOffMemberListcanvas(false);
+    };
+    const handleShowMemberListcanvas = () => {
+        setShowOffMemberListcanvas(true);
     };
 
     const commentRef = useRef();
@@ -262,7 +277,8 @@ const Post = () => {
 
     useEffect(() => {
         setApplicants(post?.applicant);
-    }, [post?.applicant]);
+        setMembers(post?.member);
+    }, [post?.applicant, post?.member]);
 
     return (
         <>
@@ -292,17 +308,54 @@ const Post = () => {
                         </Row>
                         {/*  내가 올린 공지 */}
                         {cmpUserAndCaptain() ? (
-                            <Row>
-                                <Col className="recruit-btn-group">
-                                    <Button
-                                        variant="light"
-                                        className="applicant-list"
-                                        onClick={handleShow}
-                                    >
-                                        지원자 목록
-                                    </Button>
-                                </Col>
-                            </Row>
+                            <>
+                                <Dropdown>
+                                    <Dropdown.Toggle id="dropdown-basic">
+                                        지원자 / 멤버
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item
+                                            href="#/action-1"
+                                            onClick={
+                                                handleShowApplicatntscanvas
+                                            }
+                                        >
+                                            지원자 목록
+                                        </Dropdown.Item>
+                                        <Dropdown.Item
+                                            href="#/action-2"
+                                            onClick={handleShowMemberListcanvas}
+                                        >
+                                            멤버 목록
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                {/* <Row>
+                                    <Col className="recruit-btn-group">
+                                        <Button
+                                            variant="light"
+                                            className="applicant-list"
+                                            onClick={
+                                                handleShowApplicatntscanvas
+                                            }
+                                        >
+                                            지원자 목록
+                                        </Button>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="recruit-btn-group">
+                                        <Button
+                                            variant="light"
+                                            className="applicant-list"
+                                            onClick={handleShowMemberListcanvas}
+                                        >
+                                            멤버 목록
+                                        </Button>
+                                    </Col>
+                                </Row> */}
+                            </>
                         ) : (
                             <></>
                         )}
@@ -361,7 +414,6 @@ const Post = () => {
                         </Row>
                         <Row className="text-center">
                             <Col>{showLanguage(post)}</Col>
-                            {/* <hr /> */}
                         </Row>
                         <Row>
                             <Col>
@@ -395,12 +447,16 @@ const Post = () => {
                         )}
 
                         {cmpUserAndCaptain() ? (
-                            <Button
-                                onClick={handleToggleEditDetail}
-                                className="mb-3"
-                            >
-                                수정하기
-                            </Button>
+                            <div className="modify-post-group">
+                                <div className="modify-post-btn">
+                                    <Button onClick={handleToggleEditDetail}>
+                                        수정하기
+                                    </Button>
+                                </div>
+                                <div className="delete-post-btn">
+                                    <Button onClick={deletePost}>삭제</Button>
+                                </div>
+                            </div>
                         ) : (
                             <></>
                         )}
@@ -426,22 +482,22 @@ const Post = () => {
                         <ul>
                             {comments?.map((comment) => {
                                 return (
-                                    <Row
+                                    <div
                                         className="comment-container"
                                         key={comment.id}
                                     >
                                         {targetComment !== comment.id ? (
-                                            <Col>
+                                            <div>
                                                 <li>{comment.content}</li>
-                                            </Col>
+                                            </div>
                                         ) : targetComment === comment.id ? (
                                             <>
-                                                <Col>
+                                                <div>
                                                     <Form.Control
                                                         ref={modifyCommentInput}
                                                     />
-                                                </Col>
-                                                <Col className="complete-modify-btn">
+                                                </div>
+                                                <div className="complete-modify-btn">
                                                     <button
                                                         onClick={
                                                             handleClickCommentModify
@@ -449,7 +505,7 @@ const Post = () => {
                                                     >
                                                         완료
                                                     </button>
-                                                </Col>
+                                                </div>
                                             </>
                                         ) : (
                                             <></>
@@ -459,7 +515,7 @@ const Post = () => {
                                             comment.author &&
                                         isEditComment === false ? (
                                             <>
-                                                <Col className="comment-btns">
+                                                <div className="comment-btns-container">
                                                     <button
                                                         className="comment-btn"
                                                         onClick={handleClickModifyComment(
@@ -476,12 +532,12 @@ const Post = () => {
                                                     >
                                                         삭제
                                                     </button>
-                                                </Col>
+                                                </div>
                                             </>
                                         ) : (
                                             <></>
                                         )}
-                                    </Row>
+                                    </div>
                                 );
                             })}
                         </ul>
@@ -489,7 +545,6 @@ const Post = () => {
                 ) : (
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="posting" className="mb-3">
-                            {/* <Form.Label>제목</Form.Label> */}
                             <Form.Control
                                 placeholder="제목을 작성해주세요."
                                 type="text"
@@ -509,7 +564,7 @@ const Post = () => {
                             <Button
                                 variant="outline-secondary"
                                 id="button-addon2"
-                                className="deleteBtn"
+                                className="lang-delete"
                                 onClick={() => setLangInputValue([])}
                             >
                                 Delete
@@ -620,47 +675,18 @@ const Post = () => {
                         </Col>
                     </Form>
                 )}
-                {cmpUserAndCaptain() ? (
-                    <Button onClick={deletePost}>포스트 삭제하기</Button>
-                ) : (
-                    <></>
-                )}
             </Container>
-
-            <Offcanvas
-                show={showOffcanvas}
-                onHide={handleClose}
-                className="offcanvas"
-            >
-                <Offcanvas.Header
-                    style={{ backgroundColor: '#fff5f5' }}
-                    closeButton
-                >
-                    <Offcanvas.Title>지원자 목록</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    {applicants?.map((applicant, index) => {
-                        return (
-                            <Row key={index} className="applicant-list">
-                                <Col>
-                                    {index + 1}. {applicant.name}
-                                </Col>
-                                <Col className="applicant-btn-container">
-                                    <Button
-                                        className="applicant-list-btn"
-                                        onClick={handliClickAcknowledgment(
-                                            applicant.id
-                                        )}
-                                        // disabled={post?.member.find(m => m === )}
-                                    >
-                                        승인
-                                    </Button>
-                                </Col>
-                            </Row>
-                        );
-                    })}
-                </Offcanvas.Body>
-            </Offcanvas>
+            <ApplicantlistCanvas
+                showOffcanvas={showOffApplicantscanvas}
+                handleClose={handleCloseApplicantscanvas}
+                list={applicants}
+                handliClickAcknowledgment={handliClickAcknowledgment}
+            ></ApplicantlistCanvas>
+            <MemberListCanvas
+                showOffcanvas={showOffMemberListcanvas}
+                handleClose={handleCloseMemberListcanvas}
+                list={members}
+            ></MemberListCanvas>
         </>
     );
 };
