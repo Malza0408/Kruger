@@ -77,21 +77,23 @@ class RecruitmentService {
 
     // 모집마감 토글
     static async closeRecruitment({ recruitmentId, userId }) {
+        // 게시물이 존재하는지 확인
         const recruitment = await Recruitment.findById({
             recruitmentId
         });
-
-        let nowEnrolling = recruitment.nowEnrolling;
         if (!recruitment) {
             const errorMessage = '삭제되었거나 등록되지 않은 게시물입니다.';
             throw new Error(errorMessage);
         }
 
+        // 유저가 게시글 작성자인지 확인
         if (userId !== recruitment.captain.id) {
             const errorMessage = '권한이 없습니다.';
             throw new Error(errorMessage);
         }
 
+        // 모집중 <-> 모집마감 토글
+        let nowEnrolling = recruitment.nowEnrolling;
         const updatedRecruitment = await Recruitment.toggle({
             recruitmentId,
             nowEnrolling
