@@ -12,7 +12,12 @@ $maxWidth: 1000px;
     .apply-btn {
         border: 1px solid #f8f9fa;
         width: 120px;
-        box-shadow: none;
+        &:focus {
+            box-shadow: none;
+            background-color: lightblue;
+            border: 0;
+            color: black;
+        }
     }
     .name {
         text-align: left;

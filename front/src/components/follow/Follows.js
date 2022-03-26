@@ -3,11 +3,12 @@ import { Button, Card, Col } from 'react-bootstrap';
 
 import FollowList from './FollowList';
 import FollowerList from './FollowerList';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
 
 const Follows = ({ portfolioOwnerId, isEditable }) => {
     const params = useParams();
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [follows, setFollows] = useState([]);
 
@@ -55,29 +56,38 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
             style={{ width: '18rem' }}
             className="mx-4 text-center followCard"
         >
-            {isEditable ? (
-                <Card.Body>
-                    <FollowList user={user} />
-                    <FollowerList user={user} />
-                </Card.Body>
-            ) : (
-                <Col>
-                    <Button
-                        variant="light"
-                        className="followButton"
-                        onClick={handleFollow}
-                    >
-                        팔로우
-                    </Button>
-                    <Button
-                        variant="light"
-                        className="unfollowButton"
-                        onClick={handleUnfollow}
-                    >
-                        언팔로우
-                    </Button>
-                </Col>
-            )}
+                {isEditable ? (
+                    <Card.Body>
+                        <FollowList user={user} />
+                        <FollowerList user={user} />
+                    </Card.Body>
+                ) : (
+                    <Col>
+                        <Button
+                            variant="light"
+                            className="noteButton"
+                            onClick={() => {
+                                navigate(`/note/write/${user.email}`);
+                            }}
+                        >
+                            쪽지
+                        </Button>
+                        <Button
+                            variant="light"
+                            className="followButton"
+                            onClick={handleFollow}
+                        >
+                            팔로우
+                        </Button>
+                        <Button
+                            variant="light"
+                            className="unfollowButton"
+                            onClick={handleUnfollow}
+                        >
+                            언팔로우
+                        </Button>
+                    </Col>
+                )}
         </Card>
     );
 };
