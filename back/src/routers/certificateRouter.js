@@ -40,7 +40,6 @@ certificateRouter.get(
     login_required,
     async function (req, res, next) {
         try {
-            // 전체 자격증 목록을 얻음
             const user_id = req.params.user_id;
             const certificates = await CertificateService.getCertificates({
                 user_id
@@ -78,12 +77,10 @@ certificateRouter.put(
     profileUpdateMiddleware,
     async function (req, res, next) {
         try {
-            // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
             const user_id = req.currentUserId;
             const toUpdate = req.body;
 
-            // 해당 자격증 아이디로 자격증 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
             const updatedCertificate = await CertificateService.setCertificate({
                 certificate_id,
                 user_id,
@@ -103,7 +100,6 @@ certificateRouter.delete(
     login_required,
     async function (req, res, next) {
         try {
-            // URI로부터 자격증 id를 추출함.
             const certificate_id = req.params.id;
             const user_id = req.currentUserId;
             await CertificateService.deleteCertificate({
