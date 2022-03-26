@@ -41,7 +41,7 @@ function LoginForm() {
     const isFormValid = isEmailValid && isPasswordValid;
 
     // 소셜 로그인에 필요한 ID, URI
-    const defaultUri = process.env.REACT_APP_DEFAULT_URI;
+    const defaultUri = process.env.REACT_APP_BASE_URL;
     const githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
     const githubRedirectUri = `${defaultUri}/auth/github/callback`;
     const githubUri = 'https://github.com/login/oauth/authorize';
