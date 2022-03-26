@@ -2,6 +2,7 @@ function profileUpdateMiddleware(req, res, next) {
     const { title, date, from_date, to_date, description } = req.body ?? null;
 
     try {
+        // 해당 요소가 null이거나 undefined면 req.body에서 제거해줌
         if (description === null || description === undefined) {
             const { description, ...restUpdate } = req.body;
             req.body = restUpdate;
@@ -23,13 +24,16 @@ function profileUpdateMiddleware(req, res, next) {
             req.body = restUpdate;
         }
 
+        // req.body의 값들의 배열을 만들어줌
         const values = Object.values(req.body);
 
+        // 수정할 내용이 없으면 오류처리
         if (values.length === 0) {
             const errorMessage = '수정할 내용이 없습니다.';
             return res.status(400).json(errorMessage);
         }
 
+        // 하나라도 빈칸("")이 있을 경우 오류처리
         if (values.includes('')) {
             const errorMessage = '빈칸은 ㄴㄴ.';
             return res.status(400).json(errorMessage);
