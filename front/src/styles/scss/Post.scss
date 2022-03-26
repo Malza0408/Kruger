@@ -2,6 +2,16 @@ $maxWidth: 1000px;
 .Post {
     text-align: center;
     max-width: $maxWidth;
+    button {
+        background-color: lightblue;
+        border-radius: 5px;
+        color: black;
+        border-color: transparent;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+            background-color: cadetblue;
+        }
+    }
     .recruit-btn-group {
         text-align: end;
     }
@@ -10,6 +20,7 @@ $maxWidth: 1000px;
     }
     .recruit-btn,
     .apply-btn {
+        margin-bottom: 3px;
         border: 1px solid #f8f9fa;
         width: 120px;
         &:focus {
@@ -50,16 +61,7 @@ $maxWidth: 1000px;
     .comment-form {
         max-width: $maxWidth;
     }
-    button {
-        background-color: lightblue;
-        border-radius: 5px;
-        color: black;
-        border-color: transparent;
-        transition: all 0.2s ease-in-out;
-        &:hover {
-            background-color: cadetblue;
-        }
-    }
+
     .lang-delete {
         background-color: white;
         border: 1px solid lightgrey;
@@ -72,8 +74,9 @@ $maxWidth: 1000px;
     .dropdown {
         text-align: end;
     }
-    .dropdown-toggle {
-        width: 140px;
+    .language-dropdown {
+        background-color: white;
+        border: 1px solid lightgrey;
     }
     .heart-container {
         display: flex;

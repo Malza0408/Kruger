@@ -5,16 +5,7 @@ import React, {
     useRef,
     useState
 } from 'react';
-import {
-    Button,
-    Container,
-    Form,
-    Row,
-    Col,
-    InputGroup,
-    DropdownButton,
-    Dropdown
-} from 'react-bootstrap';
+import { Button, Container, Form, Row, Col, Dropdown } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Api from '../../api';
 import { UserStateContext } from '../../App';
@@ -99,7 +90,6 @@ const Post = () => {
     };
 
     const cancelApply = async () => {
-        console.log(post);
         await Api.patch(`recruit/cancle/apply/${post.id}`);
         getPostData();
     };
@@ -232,7 +222,6 @@ const Post = () => {
     const deletePost = async () => {
         try {
             await Api.delete(`recruit/delete/${post.id}`);
-            console.log(post.id);
             navigate('/gatherRoom');
         } catch (error) {
             throw new Error(error);
@@ -306,7 +295,7 @@ const Post = () => {
                         {cmpUserAndCaptain() ? (
                             <>
                                 <Dropdown>
-                                    <Dropdown.Toggle id="dropdown-basic">
+                                    <Dropdown.Toggle>
                                         지원자 / 멤버
                                     </Dropdown.Toggle>
 

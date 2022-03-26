@@ -48,10 +48,9 @@ const PostForm = forwardRef(
                         Delete
                     </Button>
                     <DropdownButton
-                        variant="outline-secondary"
                         title="Language"
-                        id="input-group-dropdown"
                         align="end"
+                        className="language-dropdown"
                     >
                         <Dropdown.Item
                             href="#"
