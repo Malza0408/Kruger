@@ -124,7 +124,7 @@ function Network() {
     return (
         <Container fluid className="network">
             <Row className="justify-content-md-center mb-4">
-                <Col lg="3" style={{ width: '400px' }}>
+                <Col style={{ maxWidth: '400px' }}>
                     <Form onSubmit={(e) => e.preventDefault()}>
                         <Form.Control
                             className="ms-2 filterInput"
@@ -135,7 +135,7 @@ function Network() {
                         />
                     </Form>
                 </Col>
-                <Col className="px-0">
+                <Col>
                     <Dropdown as={ButtonGroup}>
                         <button className="orderState">{order}</button>
 

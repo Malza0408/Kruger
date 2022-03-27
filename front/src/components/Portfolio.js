@@ -58,13 +58,7 @@ function Portfolio() {
     }
 
     return (
-        <Container
-            fluid
-            style={{
-                backgroundImage:
-                    'url(https://cdn.discordapp.com/attachments/952087329764413545/957296998850121778/unknown.png)'
-            }}
-        >
+        <Container fluid className="portfolioBody">
             <Row>
                 <Col lg="1"></Col>
                 <Col lg="4">

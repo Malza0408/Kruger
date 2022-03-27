@@ -53,8 +53,8 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
 
     return (
         <Card
-            style={{ width: '18rem' }}
-            className="mx-4 text-center followCard"
+            style={{ width: '20rem' }}
+            className="mx-auto text-center followCard"
         >
             {isEditable ? (
                 <Card.Body>
@@ -62,7 +62,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
                     <FollowerList user={user} />
                 </Card.Body>
             ) : (
-                <Card.Body>
+                <div className="my-4">
                     <Button
                         variant="light"
                         className="noteButton"
@@ -86,7 +86,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
                     >
                         언팔로우
                     </Button>
-                </Card.Body>
+                </div>
             )}
         </Card>
     );
