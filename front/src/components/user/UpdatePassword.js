@@ -24,7 +24,7 @@ function UpdatePassword({ show, onHide, setModalShow, user }) {
         setIsconfirmPasswordEmpty(!confirmPassword);
 
         // "users/유저id" 엔드포인트로 PUT 요청함.
-        await Api.put(`users/${user.id}`, {
+        await Api.put(`user/current`, {
             password
         });
 

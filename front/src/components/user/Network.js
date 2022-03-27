@@ -49,7 +49,6 @@ function Network() {
                 });
 
                 const searchList = users.filter((user) => {
-                    // console.log(user);
                     return (
                         user?.name?.match(regexp) || user?.email?.match(regexp)
                     );
@@ -77,22 +76,20 @@ function Network() {
                 ? 1
                 : 0;
         });
-        console.log(ascUsers);
         setUsers([...ascUsers]);
     };
 
     const handleOnClickDescUser = () => {
         setOrder('이름 내림차순');
-        const ascUsers = [...users];
-        ascUsers.sort((userA, userB) => {
+        const descUsers = [...users];
+        descUsers.sort((userA, userB) => {
             return userA.name < userB.name
                 ? 1
                 : userA.name > userB.name
                 ? -1
                 : 0;
         });
-        console.log(ascUsers);
-        setUsers([...ascUsers]);
+        setUsers([...descUsers]);
     };
 
     const handleOnClickAscCreatedAt = () => {
@@ -110,15 +107,15 @@ function Network() {
 
     const handleOnClickDescCreatedAt = () => {
         setOrder('포스팅 내림차순');
-        const ascUsers = [...users];
-        ascUsers.sort((userA, userB) => {
+        const descUsers = [...users];
+        descUsers.sort((userA, userB) => {
             return userA.createdAt < userB.createdAt
                 ? 1
                 : userA.createdAt > userB.createdAt
                 ? -1
                 : 0;
         });
-        setUsers([...ascUsers]);
+        setUsers([...descUsers]);
     };
 
     return (

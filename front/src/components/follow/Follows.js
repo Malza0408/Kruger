@@ -62,7 +62,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
                     <FollowerList user={user} />
                 </Card.Body>
             ) : (
-                <Card.Body>
+                <div className="my-4">
                     <Button
                         variant="light"
                         className="noteButton"
@@ -86,7 +86,7 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
                     >
                         언팔로우
                     </Button>
-                </Card.Body>
+                </div>
             )}
         </Card>
     );

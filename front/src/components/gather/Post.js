@@ -458,7 +458,6 @@ const Post = () => {
                         />
                     </>
                 ) : (
-                    //
                     <PostForm
                         handleSubmit={handleSubmit}
                         post={post}

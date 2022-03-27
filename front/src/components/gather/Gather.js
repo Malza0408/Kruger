@@ -13,10 +13,10 @@ const Gather = ({ project }) => {
     return (
         <Card className="Gather" onClick={handleOnClick}>
             <Card.Body>
-                <Row className="text-center mt-3">
+                <Row className="title text-center mt-3">
                     <Card.Title className="mb-0">{project.title}</Card.Title>
                 </Row>
-                <hr />
+                <hr style={{ margin: '8px 0 8px 0' }} />
                 <div className="imageContainer" as={Row}>
                     <ul>
                         {project.language?.map((project, index) => {
