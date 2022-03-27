@@ -4,8 +4,8 @@ const Advertisement = () => {
     return (
         <Carousel
             interval={2000}
-            style={{ width: '18rem' }}
-            className="mb-3 mx-4"
+            style={{ width: '20rem' }}
+            className="mb-3 mx-auto"
         >
             <Carousel.Item>
                 <Image

@@ -29,7 +29,7 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
     };
 
     return (
-        <Card style={{ width: '18rem' }} className="mb-3 mx-4 userCard">
+        <Card style={{ width: '20rem' }} className="mb-3 mx-auto userCard">
             <Card.Body>
                 <Row className="justify-content-md-center">
                     <img

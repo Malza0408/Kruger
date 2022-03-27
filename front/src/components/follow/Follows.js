@@ -53,8 +53,8 @@ const Follows = ({ portfolioOwnerId, isEditable }) => {
 
     return (
         <Card
-            style={{ width: '18rem' }}
-            className="mx-4 text-center followCard"
+            style={{ width: '20rem' }}
+            className="mx-auto text-center followCard"
         >
             {isEditable ? (
                 <Card.Body>
