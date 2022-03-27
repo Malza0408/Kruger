@@ -32,7 +32,6 @@ const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
 
         const newDate = changeDateFormat();
 
-        // "certificates/certificate.id" 엔드포인트로 PUT 요청함.
         await Api.put(`certificates/${certificate.id}`, {
             user_id,
             title,
@@ -44,7 +43,7 @@ const CertificateEditForm = ({ certificate, setIsEditing, setCertificate }) => {
             setCertificate(res.data)
         );
 
-        // isEditing을 false로 세팅하여 편집창 close
+        // 편집창 닫음
         setIsEditing(false);
     };
 

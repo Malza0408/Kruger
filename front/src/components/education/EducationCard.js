@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row, Col, Button, Card } from 'react-bootstrap';
 const EducationCard = ({
-    handleEditing,
-    handleDeleting,
+    handleEdit,
+    handleDelete,
     school,
     major,
     position,
@@ -23,12 +23,12 @@ const EducationCard = ({
                 {/* 편집 권한이 있다면 보여준다. */}
                 {isEditable && school && (
                     <>
-                        <Col className="col-lg-1">
+                        <Col xs lg="auto">
                             <Button
-                                className="mr-3 mb-1 mvpCardConfirmButton"
+                                className="me-2 mvpCardConfirmButton"
                                 variant="primary"
                                 size="sm"
-                                onClick={handleEditing}
+                                onClick={handleEdit}
                             >
                                 편집
                             </Button>
@@ -36,7 +36,7 @@ const EducationCard = ({
                                 className="mvpCardCancelButton"
                                 variant="primary"
                                 size="sm"
-                                onClick={handleDeleting}
+                                onClick={handleDelete}
                             >
                                 삭제
                             </Button>
@@ -44,7 +44,7 @@ const EducationCard = ({
                     </>
                 )}
             </Row>
-            <hr />
+            <hr className="mvpCardHr" />
         </Card.Text>
     );
 };

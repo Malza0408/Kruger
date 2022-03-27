@@ -1,0 +1,170 @@
+$maxWidth: 1000px;
+.Post {
+    text-align: center;
+    max-width: $maxWidth;
+    button {
+        background-color: #f5c342;
+        border: 1px solid hsl(43, 88%, 52%);
+        border-radius: 5px;
+        color: #495057;
+        font-weight: bold;
+        border-color: transparent;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+            background-color: hsl(43, 88%, 52%);
+            border: 1px solid hsl(43, 88%, 52%);
+            color: #495057;
+        }
+    }
+    .recruit-btn-group {
+        text-align: end;
+    }
+    .apply-btn-group {
+        text-align: end;
+    }
+    .recruit-btn,
+    .apply-btn {
+        margin-bottom: 3px;
+        border: 1px solid #f8f9fa;
+        width: 120px;
+        &:focus {
+            box-shadow: none;
+            background-color: lightblue;
+            border: 0;
+            color: black;
+        }
+    }
+    .name {
+        text-align: left;
+    }
+    .date {
+        text-align: end;
+    }
+    .lang-badge {
+        font-size: 20px;
+        line-height: 30px;
+        margin-bottom: 10px;
+        box-shadow: 0px 0px 10px 0px #748ffc63;
+        pointer-events: none;
+        color: black;
+        margin-right: 10px;
+        width: 120px;
+    }
+
+    pre {
+        white-space: pre-wrap;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        font-family: 'Orbitron', sans-serif;
+        min-height: 500px;
+        font-size: 20px;
+        border: 1px solid lightgrey;
+    }
+
+    .comment-form {
+        max-width: $maxWidth;
+    }
+
+    .lang-delete {
+        background-color: white;
+        border: 1px solid lightgrey;
+    }
+    .lang-input {
+        &:disabled {
+            background-color: white;
+        }
+    }
+    .dropdown {
+        text-align: end;
+    }
+    #dropdownButton {
+        background-color: white;
+        border: 1px solid lightgrey;
+        &:focus,
+        &:hover {
+            border-color: lightgrey;
+            background-color: cadetblue;
+        }
+    }
+    .heart-container {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .modify-post-group {
+        max-width: 1000px;
+        display: flex;
+        margin-bottom: 10px;
+    }
+    .modify-post-btn {
+        flex: 0.9;
+        margin-left: 10%;
+        width: 100px;
+    }
+    .delete-post-btn {
+        flex: 0.1;
+        min-width: 60px;
+        text-align: end;
+        margin-left: auto;
+    }
+    .red-heart {
+        color: red;
+    }
+    .red-heart,
+    .black-heart {
+        transition: all 0.2s ease-out;
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    .like-count {
+        text-align: end;
+        font-size: 30px;
+        width: 30px;
+    }
+    .register-comment {
+        text-align: end;
+    }
+
+    ul {
+        list-style: none;
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 200px;
+    }
+    .comment-container {
+        display: flex;
+        justify-content: space-between;
+        height: 42px;
+        align-items: center;
+        border-bottom: 1px solid lightgray;
+        .comment-input {
+            width: 80%;
+        }
+    }
+    .comment-btns-container {
+        display: flex;
+        .comment-btn {
+            margin-left: 3px;
+        }
+    }
+    .complete-modify-btn {
+        text-align: end;
+    }
+}
+
+.offcanvas {
+    .applicant-btn-container {
+        text-align: end;
+    }
+    .applicant-list-btn {
+        border-radius: 5px;
+        background-color: lightblue;
+        border-color: transparent;
+        color: black;
+    }
+}

@@ -61,7 +61,6 @@ const CertificateAddForm = ({
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formCertificateTitle">
                     <Form.Control
-                        className="mvpCardInput"
                         type="text"
                         placeholder="자격증 제목"
                         value={title}
@@ -79,7 +78,6 @@ const CertificateAddForm = ({
                     className="mt-3"
                 >
                     <Form.Control
-                        className="mvpCardInput"
                         type="text"
                         placeholder="상세내역"
                         value={description}

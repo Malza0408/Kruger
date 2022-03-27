@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Carousel, Container, Col, Row, Form, Button } from 'react-bootstrap';
+import { Image, Container, Col, Row, Form, Button } from 'react-bootstrap';
 
 import * as Api from '../../api';
 import { DispatchContext } from '../../App';
-
+import FindPasswordModal from '../modal/FindPasswordModal';
+import AdvertisementMain from './AdvertisementMain';
 function LoginForm() {
     const navigate = useNavigate();
     const dispatch = useContext(DispatchContext);
@@ -14,6 +15,9 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     //useState로 login 실패 여부를 판단함.
     const [isLoginFail, setIsLoginFail] = useState(false);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
     const validateEmail = (email) => {
@@ -35,6 +39,18 @@ function LoginForm() {
     const isPasswordValid = validatePassword(password);
     // 이메일과 비밀번호 조건이 동시에 만족되는지 확인함.
     const isFormValid = isEmailValid && isPasswordValid;
+
+    // 소셜 로그인에 필요한 ID, URI
+    const defaultUri = process.env.REACT_APP_BASE_URL;
+    const githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+    const githubRedirectUri = `${defaultUri}/auth/github/callback`;
+    const githubUri = 'https://github.com/login/oauth/authorize';
+    const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    const googleRedirectUri = `${defaultUri}/auth/google/callback`;
+    const googleUri = 'https://accounts.google.com/o/oauth2/v2/auth';
+    const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
+    const kakaoRedirectUri = `${defaultUri}/auth/kakao/callback`;
+    const kakaoUri = `https://kauth.kakao.com/oauth/authorize`;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -58,60 +74,27 @@ function LoginForm() {
             });
 
             // 기본 페이지로 이동함.
-            navigate('/', { replace: true });
+            // navigate('/', { replace: true });
+            window.location.replace('/');
         } catch (err) {
             setIsLoginFail(true);
             console.log('로그인에 실패하였습니다.\n', err);
         }
     };
 
-    const handleOnClickGithub = (e) => {};
-
     return (
         <div className="login">
-            <Carousel variant="dark" style={{ width: '30vw', margin: 'auto' }}>
-                <Carousel.Item>
-                    <img
-                        className="d-block w-100"
-                        src="https://img1.daumcdn.net/thumb/R720x0/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fliveboard%2Fholapet%2Fba38773948b44ddd807d7ff072d679df.jpg"
-                        alt="First slide"
-                        height="250px"
-                    />
-                    <Carousel.Caption>
-                        <h3>첫번째 고양이</h3>
-                    </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                        className="d-block w-100"
-                        src="https://t1.daumcdn.net/cfile/tistory/192F1C464DD57EB614"
-                        alt="Second slide"
-                        height="250px"
-                    />
-                    <Carousel.Caption>
-                        <h3>두번째 고양이</h3>
-                    </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                        className="d-block w-100"
-                        src="https://i.ytimg.com/vi/FOQ0sDuuBSs/mqdefault.jpg"
-                        alt="Third slide"
-                        height="250px"
-                    />
-                    <Carousel.Caption>
-                        <h3>세번째 고양이</h3>
-                    </Carousel.Caption>
-                </Carousel.Item>
-            </Carousel>
-
             <Container>
+                <Row className="justify-content-md-center">
+                    <AdvertisementMain />
+                </Row>
                 <Row className="justify-content-md-center pt-5 pb-5">
-                    <Col lg={8}>
+                    <Col lg={6}>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="loginEmail">
                                 <Form.Label>이메일 주소</Form.Label>
                                 <Form.Control
+                                    className="loginInput"
                                     type="email"
                                     autoComplete="on"
                                     value={email}
@@ -129,6 +112,7 @@ function LoginForm() {
                             >
                                 <Form.Label>비밀번호</Form.Label>
                                 <Form.Control
+                                    className="passwordInput"
                                     type="password"
                                     autoComplete="on"
                                     value={password}
@@ -141,44 +125,92 @@ function LoginForm() {
                                         비밀번호는 4글자 이상입니다.
                                     </Form.Text>
                                 )}
-                            </Form.Group>
-                            <Form.Group as={Row} className="mt-3 text-center">
+
                                 {isLoginFail && (
                                     <Form.Text className="text-danger">
                                         이메일 또는 비밀번호를 잘못
                                         입력했습니다.
                                     </Form.Text>
                                 )}
-                                <Col sm={{ span: 20 }}>
+                                <Col className="mt-3 text-center">
                                     <Button
                                         variant="light"
                                         type="submit"
                                         disabled={!isFormValid}
-                                        className="loginButton"
+                                        className="loginButton mx-auto"
                                     >
                                         로그인
                                     </Button>
                                 </Col>
                             </Form.Group>
-                            <Form.Group as={Row} className="mt-3 text-center">
-                                <Col sm={{ span: 20 }}>
-                                    <Button
-                                        variant="light"
-                                        onClick={() => navigate('/register')}
-                                        className="registerButton"
-                                    >
-                                        회원가입하기
-                                    </Button>
-                                </Col>
-                            </Form.Group>
-                            <div as={Row} className="mt-3 text-center">
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/img/github.png`}
-                                    alt=""
-                                    onClick={handleOnClickGithub}
-                                />
-                            </div>
                         </Form>
+                        <Row className="mt-3 text-center">
+                            <Col>
+                                <a
+                                    href={`${githubUri}?client_id=${githubClientId}&redirect_uri=${githubRedirectUri}&scope=read:user user:email`}
+                                >
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/img/github.png`}
+                                        alt="github"
+                                        className="githubLogin"
+                                        width="100px"
+                                        height="100px"
+                                    />
+                                </a>
+                            </Col>
+
+                            <Col>
+                                <a
+                                    href={`${googleUri}?response_type=code&client_id=${googleClientId}&scope=openid%20profile%20email&redirect_uri=${googleRedirectUri}&`}
+                                >
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/img/google.png`}
+                                        alt="google"
+                                        className="googleLogin"
+                                        width="70px"
+                                        height="70px"
+                                    />
+                                </a>
+                            </Col>
+
+                            <Col>
+                                <a
+                                    href={`${kakaoUri}?response_type=code&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectUri}`}
+                                >
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/img/kakao.png`}
+                                        alt="kakao"
+                                        className="kakaoLogin"
+                                        width="100px"
+                                        height="100px"
+                                    />
+                                </a>
+                            </Col>
+                        </Row>
+                        <Row className="mt-3 text-center">
+                            <Col xs lg={6}>
+                                <Button
+                                    variant="light"
+                                    onClick={handleShow}
+                                    className="findPasswordButton"
+                                >
+                                    비밀번호 찾기
+                                </Button>
+                                <FindPasswordModal
+                                    show={show}
+                                    handleClose={handleClose}
+                                />
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="light"
+                                    onClick={() => navigate('/register')}
+                                    className="registerButton"
+                                >
+                                    회원가입하기
+                                </Button>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Container>

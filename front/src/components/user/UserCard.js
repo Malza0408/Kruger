@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import WithdrawalModal from '../modal/WithdrawalModal';
 import ChangeProfileModal from '../modal/ChangeProfileModal';
@@ -7,6 +7,7 @@ import ChangeProfileModal from '../modal/ChangeProfileModal';
 import * as Api from '../../api';
 
 function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
+    const params = useParams();
     const navigate = useNavigate();
     //프로필 변경 모달
     const [showProfile, setShowProfile] = useState(false);
@@ -20,20 +21,22 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
     const userDelete = async (e) => {
         e.preventDefault();
 
-        await Api.delete(`users/${user.id}`);
+        // 현재 로그인한 사용자를 삭제
+        await Api.delete(`user/current`);
 
         // 탈퇴 후 로그인 화면으로 이동
         navigate('/login', { replace: true });
     };
 
     return (
-        <Card style={{ width: '18rem' }} className="mb-2 ms-3 mr-5 UserCard">
+        <Card style={{ width: '20rem' }} className="mb-3 mx-auto userCard">
             <Card.Body>
                 <Row className="justify-content-md-center">
                     <img
                         className="mb-3 mt-3 profileImage"
                         src={user?.picture}
                         alt="프로필 사진"
+                        onClick={() => navigate(`/users/${user.id}`)}
                     />
                     <ChangeProfileModal
                         show={showProfile}
@@ -46,6 +49,7 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                 <Card.Subtitle className="mb-2 text-muted">
                     {user?.email}
                 </Card.Subtitle>
+                <hr />
                 <Card.Text>{user?.description}</Card.Text>
                 {isEditable && (
                     <Col>
@@ -55,7 +59,7 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                                     className="me-4 px-2 editButton"
                                     onClick={handleShowProfile}
                                 >
-                                    프로필 변경
+                                    사진 변경
                                 </button>
                                 <button
                                     className="me-4 px-2 editButton"
@@ -74,21 +78,21 @@ function UserCard({ user, setUser, setIsEditing, isEditable, isNetwork }) {
                                     handleClose={handleCloseWithdrawal}
                                     userDelete={userDelete}
                                 />
-
-                                {/* onClick={userDelete} */}
                             </Col>
                         </Row>
                     </Col>
                 )}
                 {isNetwork && (
-                    <Button
-                        size="sm"
-                        className="mt-3 networkButton"
-                        href="#"
-                        onClick={() => navigate(`/users/${user.id}`)}
-                    >
-                        포트폴리오
-                    </Button>
+                    <Col className="text-center">
+                        <Button
+                            size="sm"
+                            className="mt-3 networkButton"
+                            href="#"
+                            onClick={() => navigate(`/users/${user.id}`)}
+                        >
+                            포트폴리오
+                        </Button>
+                    </Col>
                 )}
             </Card.Body>
         </Card>

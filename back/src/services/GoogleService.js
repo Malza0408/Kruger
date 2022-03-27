@@ -1,67 +1,99 @@
-import 'dotenv/config';
-import { v4 as uuidv4 } from 'uuid';
-import Strategy from 'passport-google-oauth20';
-import passport from 'passport';
+import { User } from '../db';
 import jwt from 'jsonwebtoken';
-import { User, Oauth } from '../db';
-// 어디서 가져오는거지?
+import axios from 'axios';
 
-const config = {
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: '/auth/google/callback'
-};
+class GoogleService {
+    // jwt 디코딩
+    static base64urlDecode(str) {
+        return Buffer.from(this.base64urlUnescape(str), 'base64').toString();
+    }
 
-async function findOrCreateUser({ sub, name, email }) {
-    const user = await User.findByEmail({
-        email
-    });
-    // 기존 유저가 있으면 그냥 리턴.
-    if (user) {
+    // jwt 디코딩
+    static base64urlUnescape(str) {
+        str += Array(5 - (str.length % 4)).join('=');
+        return str.replace(/\-/g, '+').replace(/_/g, '/');
+    }
+
+    // 회원가입
+    static async addUser(userInfo) {
+        const user = await User.create(userInfo);
+        console.log('user sign in.');
         return user;
     }
-    const newUser = {
-        id: sub,
-        name,
-        email,
-        password: '',
-        loginMethod: 'google'
-    };
-    const created = await User.create(newUser);
-    return created;
+
+    // 유저가 db에 있는지 확인
+    static async checkUser(userInfo) {
+        const email = userInfo.email;
+        const id = userInfo.id;
+        let user = await User.findByEmail({ email });
+        const loginMethod = userInfo.loginMethod;
+
+        // 이메일이 같은 유저가 db에 있는지 확인
+        if (user) {
+            if (user.id === id) {
+                // id가 같으면 기존 회원이므로 토큰발급해서 로그인 시킴.
+                const secretKey =
+                    process.env.JWT_SECRET_KEY || 'jwt-secret-key';
+                const token = jwt.sign({ user_id: id }, secretKey);
+
+                // 비밀번호 제외하고 리턴
+                const { password, ...refinedUser } = user._doc;
+                user._doc = { ...refinedUser, token };
+                console.log('user log in.');
+                return user;
+            } else if (user.loginMethod !== loginMethod) {
+                // id가 다르면 다른 방법으로 가입했으므로 loginMethod 넣어서 에러 발생시킴.
+                const errorMessage = `${user.loginMethod} 로 로그인해주세요.`;
+                throw new Error(errorMessage);
+            }
+        }
+
+        // 이메일이 등록안됐으면 회원가입하는 유저.
+        user = await this.addUser(userInfo);
+    }
+
+    // 토큰으로 유저데이터 받아오기
+    static async getUserData(payload) {
+        const { sub, email, name } = payload;
+        const userInfo = {
+            id: sub,
+            name,
+            email,
+            password: '',
+            loginMethod: 'google'
+        };
+        return this.checkUser(userInfo);
+    }
+
+    // 토큰 받아오기
+    static async getToken(code) {
+        const uri = 'https://oauth2.googleapis.com/token';
+        const config = {
+            code,
+            client_id: process.env.GOOGLE_CLIENT_ID,
+            client_secret: process.env.GOOGLE_CLIENT_SECRET,
+            redirect_uri: `${process.env.DEFAULT_URI}/auth/google/callback`
+        };
+
+        // config 형태 url에 맞게 변경
+        const params = new URLSearchParams(config);
+        const finalUrl = `${uri}?${params}&grant_type=authorization_code`;
+
+        // 구글에 요청보내기
+        const tokenRequest = await axios.post(finalUrl, config);
+
+        // 에러있으면 에러 발생
+        if (tokenRequest.status !== 200 || tokenRequest.statusText !== 'OK') {
+            const errorMessage = 'google 인증 실패';
+            throw new Error(errorMessage);
+        }
+
+        // response에서 id token(jwt) 꺼내기
+        let idToken = tokenRequest.data.id_token;
+        idToken = idToken.split('.');
+        const payload = JSON.parse(this.base64urlDecode(idToken[1]));
+        return this.getUserData(payload);
+    }
 }
 
-// 구글 strategy
-passport.use(
-    new Strategy(config, async (accessToken, refreshToken, profile, done) => {
-        //profile에 구글에서 넘겨주는 유저정보 중 email, name을 사용 raw json으로 넣어줌.
-        // console.log('어세스토큰', accessToken);
-        // console.log('리프레쉬', refreshToken);
-
-        const { sub, email, name } = profile._json;
-        try {
-            const user = await findOrCreateUser({ sub, email, name });
-            // 로그인 성공 -> JWT 웹 토큰 생성
-            const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
-            const token = jwt.sign({ user_id: user.id }, secretKey);
-            //done에 넘겨준 데이터가 라우터의 req로 들어간다.
-            done(null, {
-                token: token,
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                loginMethod: user.loginMethod
-            });
-        } catch (error) {
-            done(error, null);
-        }
-    })
-);
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-passport.deserializeUser((user, done) => {
-    done(null, user);
-});
-
-export { passport };
+export { GoogleService };

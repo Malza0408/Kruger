@@ -6,7 +6,7 @@ const ChangeProfileModal = ({ show, handleClose, user, setUser }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const user_id = user.id;
-        await Api.put(`users/${user.id}`, {
+        await Api.put(`user/current`, {
             user_id,
             picture: url
         }).then();

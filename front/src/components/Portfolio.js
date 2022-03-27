@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Col, Row, Card } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 
 import { UserStateContext } from '../App';
 import * as Api from '../api';
@@ -9,6 +9,8 @@ import Educations from './education/Educations';
 import Awards from './award/Awards';
 import Projects from './project/Projects';
 import Certificates from './certificate/Certificates';
+import Follows from './follow/Follows';
+import Advertisement from './user/Advertisement';
 
 function Portfolio() {
     const navigate = useNavigate();
@@ -56,29 +58,22 @@ function Portfolio() {
     }
 
     return (
-        <Container fluid className="mt-4">
-            <Row className="portfolio">
-                <Col md="6" lg="4">
+        <Container fluid className="portfolioBody">
+            <Row>
+                <Col lg="1"></Col>
+                <Col lg="4">
                     <User
                         portfolioOwnerId={portfolioOwner.id}
                         isEditable={portfolioOwner.id === userState.user?.id}
                     />
-                    <Card
-                        style={{ width: '18rem' }}
-                        className="mb-2 ms-3 mr-5 UserCard"
-                    >
-                        <Card.Body>
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                        </Card.Body>
-                    </Card>
+
+                    <Follows
+                        portfolioOwnerId={portfolioOwner.id}
+                        isEditable={portfolioOwner.id === userState.user?.id}
+                    />
+                    <Advertisement />
                 </Col>
-                <Col md="12" lg="8">
+                <Col xs="12" lg="6">
                     <div className="mb-4">
                         <Educations
                             portfolioOwnerId={portfolioOwner.id}
@@ -113,6 +108,7 @@ function Portfolio() {
                     </div>
                 </Col>
             </Row>
+            <Col lg="1"></Col>
         </Container>
     );
 }

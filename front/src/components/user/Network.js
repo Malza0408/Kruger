@@ -49,7 +49,9 @@ function Network() {
                 });
 
                 const searchList = users.filter((user) => {
-                    return user.name.match(regexp) || user.email.match(regexp);
+                    return (
+                        user?.name?.match(regexp) || user?.email?.match(regexp)
+                    );
                 });
                 setSearchUsers([...searchList]);
             }, 300),
@@ -79,15 +81,15 @@ function Network() {
 
     const handleOnClickDescUser = () => {
         setOrder('이름 내림차순');
-        const ascUsers = [...users];
-        ascUsers.sort((userA, userB) => {
+        const descUsers = [...users];
+        descUsers.sort((userA, userB) => {
             return userA.name < userB.name
                 ? 1
                 : userA.name > userB.name
                 ? -1
                 : 0;
         });
-        setUsers([...ascUsers]);
+        setUsers([...descUsers]);
     };
 
     const handleOnClickAscCreatedAt = () => {
@@ -105,21 +107,21 @@ function Network() {
 
     const handleOnClickDescCreatedAt = () => {
         setOrder('포스팅 내림차순');
-        const ascUsers = [...users];
-        ascUsers.sort((userA, userB) => {
+        const descUsers = [...users];
+        descUsers.sort((userA, userB) => {
             return userA.createdAt < userB.createdAt
                 ? 1
                 : userA.createdAt > userB.createdAt
                 ? -1
                 : 0;
         });
-        setUsers([...ascUsers]);
+        setUsers([...descUsers]);
     };
 
     return (
         <Container fluid className="network">
             <Row className="justify-content-md-center mb-4">
-                <Col lg="3" style={{ width: '400px' }}>
+                <Col style={{ maxWidth: '400px' }}>
                     <Form onSubmit={(e) => e.preventDefault()}>
                         <Form.Control
                             className="ms-2 filterInput"
@@ -131,7 +133,7 @@ function Network() {
                     </Form>
                 </Col>
                 <Col>
-                    <Dropdown className="ms-2" as={ButtonGroup}>
+                    <Dropdown as={ButtonGroup}>
                         <button className="orderState">{order}</button>
 
                         <Dropdown.Toggle
@@ -148,9 +150,9 @@ function Network() {
                             </Dropdown.Item>
                             <Dropdown.Item
                                 onClick={handleOnClickDescUser}
-                                value="이름내름차순"
+                                value="이름내림차순"
                             >
-                                이름 내름차순
+                                이름 내림차순
                             </Dropdown.Item>
                             <Dropdown.Item
                                 onClick={handleOnClickAscCreatedAt}
@@ -169,7 +171,7 @@ function Network() {
                 </Col>
             </Row>
             <Row xs="auto" className="jusify-content-center">
-                {searchUsers?.length === 0 && inputValue === ''
+                {inputValue === ''
                     ? users.map((user) => (
                           <UserCard key={user.id} user={user} isNetwork />
                       ))

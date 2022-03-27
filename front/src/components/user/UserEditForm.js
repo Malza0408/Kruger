@@ -17,13 +17,10 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     // 비밀번호 수정 modal
     const [modalShow, setModalShow] = React.useState(false);
 
-    console.log(user);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // "users/유저id" 엔드포인트로 PUT 요청함.
-        const res = await Api.put(`users/${user.id}`, {
+        // 현재 로그인한 사용자의 정보를 수정
+        const res = await Api.put(`user/current`, {
             name,
             email,
             description

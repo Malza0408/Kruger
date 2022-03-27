@@ -1,12 +1,29 @@
 import React from 'react';
 import Gathers from './Gathers';
+import '../../styles/scss/gatherRoom.scss';
+import { Container, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-const GatherRoom = (props) => {
+const GatherRoom = () => {
+    const navigate = useNavigate();
+    const handleClickNewPosting = () => {
+        navigate('/posting');
+    };
+
     return (
-        <>
-            <p>여기는 프로젝트 모으는 방입니다</p>
+        <Container fluid style={{ padding: '0 10%' }} className="gatherRoom">
+            <Row className="text-end">
+                <Col>
+                    <button
+                        className="newPostingBtn"
+                        onClick={handleClickNewPosting}
+                    >
+                        새 글 쓰기
+                    </button>
+                </Col>
+            </Row>
             <Gathers></Gathers>
-        </>
+        </Container>
     );
 };
 

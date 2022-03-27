@@ -1,14 +1,20 @@
-$mainColor: white;
-
 .network {
-    background-color: $mainColor;
+    background-image: url(https://cdn.discordapp.com/attachments/952087329764413545/957296998850121778/unknown.png);
+    padding: 0 50px;
+    background-repeat: no-repeat;
     .orderState {
         background-color: #bac8ff;
         border: 0;
+        box-shadow: none;
     }
     .orderListButton {
-        background-color: hsl(228, 100%, 86%);
+        background-color: #bac8ff;
         border: 0;
+        box-shadow: none;
+        &:focus {
+            box-shadow: none;
+            background-color: #bac8ff;
+        }
     }
     .filterInput {
         box-shadow: none;

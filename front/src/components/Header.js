@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown, Image } from 'react-bootstrap';
 import { UserStateContext, DispatchContext } from '../App';
 import LogoutModal from './modal/LogoutModal';
 import '../styles/scss/Header.scss';
+
+import UnReadNote from '../components/note/UnReadNote';
 
 function Header() {
     const navigate = useNavigate();
@@ -29,14 +31,21 @@ function Header() {
         dispatch({ type: 'LOGOUT' });
         handleClose();
         // 기본 페이지로 돌아감.
-        navigate('/');
+        // navigate('/');
+        window.location.replace('/');
     };
 
     return (
-        <Navbar className="navbarWrap" expand="lg">
+        <Navbar className="navbarWrap mb-4" expand="lg">
             <Container>
                 <Navbar.Brand onClick={() => navigate('/')}>
-                    우매함의 봉우리^ㅡ^
+                    <Image
+                        src={`${process.env.PUBLIC_URL}/img/logo.png`}
+                        alt="logo"
+                        width="200"
+                        height="80"
+                        className="navbarLogo"
+                    />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse
@@ -44,24 +53,6 @@ function Header() {
                     className="justify-content-end"
                 >
                     <Nav activeKey={location.pathname}>
-                        <Nav.Item>
-                            <Nav.Link
-                                className="navbarButton"
-                                onClick={() => navigate('/gatherRoom')}
-                            >
-                                프로젝트
-                            </Nav.Link>
-                        </Nav.Item>
-                        <NavDropdown.Divider />
-                        <Nav.Item>
-                            <Nav.Link
-                                className="navbarButton"
-                                onClick={() => navigate('/note')}
-                            >
-                                쪽지
-                            </Nav.Link>
-                        </Nav.Item>
-                        <NavDropdown.Divider />
                         <Nav.Item>
                             <Nav.Link
                                 className="navbarButton"
@@ -74,9 +65,28 @@ function Header() {
                         <Nav.Item>
                             <Nav.Link
                                 className="navbarButton"
+                                onClick={() => navigate('/note')}
+                            >
+                                쪽지
+                                {isLogin && <UnReadNote />}
+                            </Nav.Link>
+                        </Nav.Item>
+                        <NavDropdown.Divider />
+                        <Nav.Item>
+                            <Nav.Link
+                                className="navbarButton"
                                 onClick={() => navigate('/network')}
                             >
                                 네트워크
+                            </Nav.Link>
+                        </Nav.Item>
+                        <NavDropdown.Divider />
+                        <Nav.Item>
+                            <Nav.Link
+                                className="navbarButton"
+                                onClick={() => navigate('/gatherRoom')}
+                            >
+                                프로젝트
                             </Nav.Link>
                         </Nav.Item>
                         <NavDropdown.Divider />

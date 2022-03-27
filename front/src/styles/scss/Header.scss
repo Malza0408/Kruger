@@ -1,12 +1,11 @@
-$mainColor: white;
-$buttonColor: #bac8ff;
-
 .navbarWrap {
-    background-color: $mainColor;
+    .navbarLogo {
+        cursor: pointer;
+    }
     .navbarButton {
         margin-left: 10px;
-    }
-    .navbarButton:hover {
-        background-color: $buttonColor;
+        &:hover {
+            background-color: #bac8ff;
+        }
     }
 }

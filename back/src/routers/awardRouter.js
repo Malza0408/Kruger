@@ -1,11 +1,12 @@
 import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
-import { updateMiddleware } from '../middlewares/updateMiddleware';
+import { profileUpdateMiddleware } from '../middlewares/profileUpdateMiddleware';
 import { AwardService } from '../services/AwardService';
 
 const awardRouter = Router();
 
+// 새로운 수상 요소 작성, 수상과 관련된 내용 필요
 awardRouter.post('/award/create', login_required, async (req, res, next) => {
     try {
         if (is.emptyObject(req.body)) {
@@ -13,10 +14,8 @@ awardRouter.post('/award/create', login_required, async (req, res, next) => {
                 'headers의 Content-Type을 application/json으로 설정해주세요'
             );
         }
-        // login_required에서 currentUserId에 로그인 유저의 id를 넣어둠
         const user_id = req.currentUserId;
         const { title, description } = req.body;
-        console.log(user_id, title, description);
 
         const newAward = await AwardService.addAward({
             user_id,
@@ -30,12 +29,12 @@ awardRouter.post('/award/create', login_required, async (req, res, next) => {
     }
 });
 
+// 사용자의 수상 목록을 얻음
 awardRouter.get(
     '/awardlist/:user_id',
     login_required,
     async function (req, res, next) {
         try {
-            // 전체 수상 목록을 얻음
             const user_id = req.params.user_id;
             const awards = await AwardService.getAwards({ user_id });
             res.status(200).send(awards);
@@ -45,6 +44,7 @@ awardRouter.get(
     }
 );
 
+// 해당 수상 요소의 정보를 가져옴
 awardRouter.get('/awards/:id', login_required, async (req, res, next) => {
     try {
         const award_id = req.params.id;
@@ -58,23 +58,19 @@ awardRouter.get('/awards/:id', login_required, async (req, res, next) => {
     }
 });
 
+// 해당 수상 요소 수정
 awardRouter.put(
     '/awards/:id',
     login_required,
-    updateMiddleware,
+    profileUpdateMiddleware,
     async function (req, res, next) {
         try {
-            // URI로부터 수상 요소 id를 추출함.
             const award_id = req.params.id;
-            const toUpdate = req.toUpdate;
-            console.log('toUpdate : ', toUpdate);
-            if (Object.keys(toUpdate).length === 0) {
-                const errorMessage = '수정할 내용이 없습니다.';
-                return res.status(400).send(errorMessage);
-            }
-            // 해당 수상 요소 아이디로 수상 요소 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
+            const user_id = req.currentUserId;
+            const toUpdate = req.body;
             const updatedAward = await AwardService.setAward({
                 award_id,
+                user_id,
                 toUpdate
             });
 
@@ -85,15 +81,15 @@ awardRouter.put(
     }
 );
 
+// 해당 수상 요소 삭제
 awardRouter.delete(
     '/awards/:id',
     login_required,
     async function (req, res, next) {
         try {
-            // URI로부터 수상 요소 id를 추출함.
             const award_id = req.params.id;
-            await AwardService.deleteAward({ award_id });
-            console.log(award_id);
+            const user_id = req.currentUserId;
+            await AwardService.deleteAward({ award_id, user_id });
             res.status(200).send('삭제되었습니다.');
         } catch (error) {
             next(error);

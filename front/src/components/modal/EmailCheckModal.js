@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 
-const EmailCheckModal = ({ show, setShow, errMsg, handleClose }) => {
+const EmailCheckModal = ({ show, errMsg, handleClose }) => {
     const navigate = useNavigate();
     return (
         <>

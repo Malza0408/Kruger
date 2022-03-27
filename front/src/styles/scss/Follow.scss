@@ -1,0 +1,24 @@
+.followCard {
+    border: 2px solid #f8f0fc;
+    box-shadow: 0 0 15px 0 rgba(128, 128, 128, 0.372);
+    margin-bottom: 20px;
+    .followList,
+    .followerList,
+    .followButton,
+    .unfollowButton,
+    .noteButton {
+        background-color: hsla(51, 77%, 91%, 0.975);
+        color: #495057;
+        margin: 0px 10px;
+        border: 0;
+        font-weight: bold;
+        font-size: 14px;
+        box-shadow: none;
+        &:hover {
+            background-color: #edc2c2;
+        }
+    }
+}
+.optionButton:hover {
+    background-color: #edc2c2;
+}

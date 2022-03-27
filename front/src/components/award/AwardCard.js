@@ -6,9 +6,12 @@ import * as Api from '../../api';
 const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
     const handleDelete = async () => {
         const user_id = award.user_id;
+
         await Api.delete(`awards/${award.id}`);
+
         await Api.get('awardlist', user_id).then((res) => setAwards(res.data));
     };
+
     return (
         <Card.Text as={Col}>
             <Row className="align-items-center">
@@ -19,11 +22,11 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                 </Col>
                 {/* 권한을 가졌을때만 편집 버튼 표시 */}
                 {isEditable && (
-                    <Col xs lg="1">
+                    <Col xs lg="auto">
                         <Button
                             variant="primary"
                             size="sm"
-                            className="mr-3 mb-1 mvpCardConfirmButton"
+                            className="me-2 mvpCardConfirmButton"
                             onClick={() => {
                                 setIsEditing((prev) => !prev);
                             }}
@@ -31,7 +34,7 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                             편집
                         </Button>
                         <Button
-                            className="mr-3 mvpCardCancelButton"
+                            className="mvpCardCancelButton"
                             variant="primary"
                             size="sm"
                             onClick={handleDelete}
@@ -41,7 +44,7 @@ const AwardCard = ({ setIsEditing, award, setAwards, isEditable }) => {
                     </Col>
                 )}
             </Row>
-            <hr />
+            <hr className="mvpCardHr" />
         </Card.Text>
     );
 };

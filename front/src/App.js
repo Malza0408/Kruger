@@ -10,6 +10,14 @@ import Network from './components/user/Network';
 import RegisterForm from './components/user/RegisterForm';
 import Portfolio from './components/Portfolio';
 import GatherRoom from './components/gather/GatherRoom';
+import Notes from './components/note/Notes';
+import NoteWriteForm from './components/note/NoteWriteForm';
+import NoteDescription from './components/note/NoteDescription';
+import Posting from './components/gather/Posting';
+import Post from './components/gather/Post';
+import Github from './components/social/Github';
+import Google from './components/social/Google';
+import Kakao from './components/social/Kakao';
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -43,7 +51,6 @@ function App() {
         // fetchCurrentUser 과정이 끝났으므로, isFetchCompleted 상태를 true로 바꿔줌
         setIsFetchCompleted(true);
     };
-
     // useEffect함수를 통해 fetchCurrentUser 함수를 실행함.
     useEffect(() => {
         fetchCurrentUser();
@@ -64,8 +71,33 @@ function App() {
                         <Route path="/register" element={<RegisterForm />} />
                         <Route path="/users/:userId" element={<Portfolio />} />
                         <Route path="/gatherRoom" element={<GatherRoom />} />
+                        <Route path="/gatherRoom/:id" element={<Post />} />
                         <Route path="/network" element={<Network />} />
+                        <Route path="/note" element={<Notes />} />
+                        <Route path="/note/write" element={<NoteWriteForm />} />
+                        <Route
+                            path="/note/write/:replyTo"
+                            element={<NoteWriteForm />}
+                        />
+                        <Route
+                            path="/note/:noteType/:noteId"
+                            element={<NoteDescription />}
+                        />
+                        <Route path="/posting" element={<Posting />} />
+
                         <Route path="*" element={<Portfolio />} />
+                        <Route
+                            path="/auth/github/callback"
+                            element={<Github />}
+                        />
+                        <Route
+                            path="/auth/google/callback"
+                            element={<Google />}
+                        />
+                        <Route
+                            path="/auth/kakao/callback"
+                            element={<Kakao />}
+                        />
                     </Routes>
                 </Router>
             </UserStateContext.Provider>

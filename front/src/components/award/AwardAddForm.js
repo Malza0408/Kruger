@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
+
 import * as Api from '../../api';
 
 const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
@@ -13,7 +14,6 @@ const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
         // 데이터를 추가하기
         e.preventDefault();
         const user_id = portfolioOwnerId;
-
         // title 공란이면 true
         setIsTitleEmpty(!title);
         // description 공란이면 true
@@ -33,7 +33,6 @@ const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="awardAddTitle">
                 <Form.Control
-                    className="mvpCardInput"
                     type="text"
                     placeholder="수상내역"
                     onChange={(e) => {
@@ -48,7 +47,6 @@ const AwardAddForm = ({ setIsAdding, portfolioOwnerId, setAwards }) => {
             </Form.Group>
             <Form.Group className="mt-3" controlId="awardAddDescription">
                 <Form.Control
-                    className="mvpCardInput"
                     type="text"
                     placeholder="상세내역"
                     onChange={(e) => {

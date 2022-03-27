@@ -1,0 +1,43 @@
+$maxWidth: 900px;
+.Posting {
+    width: 85%;
+    max-width: $maxWidth;
+
+    .form-control {
+        margin: auto;
+        max-width: $maxWidth;
+        &:disabled {
+            background-color: white;
+        }
+    }
+
+    button {
+        transition: all 0.2s ease-out;
+        background-color: transparent;
+        color: black;
+        background-color: white;
+        padding: 5px 10px;
+        border: 1px solid lightgrey;
+    }
+    .postingBtn {
+        border-radius: 5px;
+        background-color: lightgray;
+        &:hover {
+            background-color: white;
+            color: black;
+        }
+    }
+    .dropdown-toggle {
+        border: 1px solid #ced4da;
+        &::after {
+            color: #ced4da;
+        }
+    }
+    .input-group {
+        margin: auto;
+        max-width: $maxWidth;
+    }
+    .dropdown-menu {
+        width: 100%;
+    }
+}

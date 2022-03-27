@@ -50,7 +50,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
                 )}
                 {/* 권한이 있을 경우에만 add 버튼을 활성화 시킨다. */}
                 {isEditable && (
-                    <div className="mt-3 text-center mb-1">
+                    <div className="mt-3 text-center mb-4">
                         <div className="col-sm-12">
                             <Button
                                 variant="primary"
