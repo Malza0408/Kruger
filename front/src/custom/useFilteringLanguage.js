@@ -31,7 +31,6 @@ const useFilteringLanguage = ({
                         // 새로운 언어 넣어주고
                         newFilteredLang.push(language);
                         // 언어를 포함하고 있는 프로젝트를 찾아서 필터된 프로젝트에 넣기 위함.
-                        console.log(projects);
                         const filtered = newFilteredLang
                             .map((lang) => {
                                 const filteredP = projects.filter((project) => {

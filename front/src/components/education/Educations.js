@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import Education from './Education';
 import * as Api from '../../api';
@@ -20,9 +20,9 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
         getEducationList();
     }, [portfolioOwnerId]);
 
-    const handleOnClick = () => {
+    const handleOnClick = useCallback(() => {
         setAddState(true);
-    };
+    }, []);
 
     return (
         <Card className="mvpCard">

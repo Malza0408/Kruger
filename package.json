@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "start": "nodemon index.js --exec babel-node",
-        "test": "jest --setupFiles dotenv/config"
+        "test": "jest --setupFiles dotenv/config",
+        "heroku-postbuild": "cd front && yarn install --only=dev && yarn install && yarn build"
     },
     "repository": {
         "type": "git",
@@ -51,5 +52,8 @@
         "modulePathIgnorePatterns": [
             "__config__"
         ]
+    },
+    "engines": {
+        "node": "16.14.0"
     }
 }
