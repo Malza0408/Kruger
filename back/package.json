@@ -3,9 +3,14 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "engines": {
+        "node": "16.14.0",
+        "yarn": "1.22.17"
+    },
     "scripts": {
         "start": "nodemon index.js --exec babel-node",
-        "test": "jest --setupFiles dotenv/config"
+        "test": "jest --setupFiles dotenv/config",
+        "heroku-postbuild": "cd ../front && yarn install --only=dev"
     },
     "repository": {
         "type": "git",
