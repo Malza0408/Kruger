@@ -50,6 +50,7 @@ function Github() {
 
     // 인가코드
     let code = new URL(window.location.href).searchParams.get('code');
+    console.log('code : ', code);
     React.useEffect(() => {
         dispatch(githubLogin(code));
     }, []);
